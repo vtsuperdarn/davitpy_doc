@@ -1,0 +1,252 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>utils.timeUtils &mdash; davitpy</title>
+    
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="top" title="davitpy" href="index.html" />
+    <link rel="up" title="utils" href="utils.html" />
+    <link rel="next" title="utils.plotUtils" href="utils.plotUtils.html" />
+    <link rel="prev" title="utils" href="utils.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="utils.plotUtils.html" title="utils.plotUtils"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="utils.html" title="utils"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="utils.html" accesskey="U">utils</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="utils-timeutils">
+<h1>utils.timeUtils<a class="headerlink" href="#utils-timeutils" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<span class="target" id="module-utils.timeUtils"></span><dl class="function">
+<dt id="utils.timeUtils.dateToDecYear">
+<tt class="descclassname">utils.timeUtils.</tt><tt class="descname">dateToDecYear</tt><big>(</big><em>date</em><big>)</big><a class="reference internal" href="_modules/utils/timeUtils.html#dateToDecYear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.timeUtils.dateToDecYear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert <tt class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></tt> object to decimal year</p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>date</strong> (datetime.datetime): date and time</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>dyear</strong> (float): decimal year</li>
+</ul>
+</dd>
+</dl>
+<p>written by Sebastien, 2013-02</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.timeUtils.dateToYyyymmdd">
+<tt class="descclassname">utils.timeUtils.</tt><tt class="descname">dateToYyyymmdd</tt><big>(</big><em>myDate</em><big>)</big><a class="reference internal" href="_modules/utils/timeUtils.html#dateToYyyymmdd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.timeUtils.dateToYyyymmdd" title="Permalink to this definition">¶</a></dt>
+<dd><p>dateStr = dateToYyyymmdd(myDate)</p>
+<p>takes a python datetime object and returns a string in yyyymmdd format</p>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>myDate : a python date object</dd>
+<dt>OUTPUTS:</dt>
+<dd>dateStr : a string in yyyymmdd format</dd>
+</dl>
+<p>Written by AJ 20120718</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.timeUtils.datetimeToEpoch">
+<tt class="descclassname">utils.timeUtils.</tt><tt class="descname">datetimeToEpoch</tt><big>(</big><em>myDate</em><big>)</big><a class="reference internal" href="_modules/utils/timeUtils.html#datetimeToEpoch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.timeUtils.datetimeToEpoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>myEpoch = datetimeToEpoch(dateStr)</p>
+<p>reads in a datetime and outputs the equivalent epoch time</p>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>myDate : a datetime object</dd>
+<dt>OUTPUTS:</dt>
+<dd>myEpoch : an epoch time equal to the datetime object</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.timeUtils.julToDatetime">
+<tt class="descclassname">utils.timeUtils.</tt><tt class="descname">julToDatetime</tt><big>(</big><em>ndarray</em><big>)</big><a class="reference internal" href="_modules/utils/timeUtils.html#julToDatetime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.timeUtils.julToDatetime" title="Permalink to this definition">¶</a></dt>
+<dd><p>adate = julToDatetime( ndarray )
+Convert a julian date to a datetime object.</p>
+<p>INPUT: 
+NDARRAY: single float64 or a numpy array of Julian Dates.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.timeUtils.parseDate">
+<tt class="descclassname">utils.timeUtils.</tt><tt class="descname">parseDate</tt><big>(</big><em>date</em><big>)</big><a class="reference internal" href="_modules/utils/timeUtils.html#parseDate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.timeUtils.parseDate" title="Permalink to this definition">¶</a></dt>
+<dd><p>** adate = parseDate( date )
+Parse YYYYMMDD dates in YYYY, MM, DD and vice versa</p>
+<p>INPUT:
+DATE: experiment date in YYYYMMDD or [YYYY,MM,DD]</p>
+<p>Created by Sebastien</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.timeUtils.parseTime">
+<tt class="descclassname">utils.timeUtils.</tt><tt class="descname">parseTime</tt><big>(</big><em>time</em><big>)</big><a class="reference internal" href="_modules/utils/timeUtils.html#parseTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.timeUtils.parseTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>** atime = parseTime( time )
+Parse HHMM or HHMMSS dates in HH, MM, SS and vice versa</p>
+<p>INPUT:
+TIME: time in HHMM or HHMMSS or [HH,MM] or [HH,MM,SS]</p>
+<p>Created by Sebastien</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.timeUtils.timeYrsecToDate">
+<tt class="descclassname">utils.timeUtils.</tt><tt class="descname">timeYrsecToDate</tt><big>(</big><em>yrsec</em>, <em>year</em><big>)</big><a class="reference internal" href="_modules/utils/timeUtils.html#timeYrsecToDate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.timeUtils.timeYrsecToDate" title="Permalink to this definition">¶</a></dt>
+<dd><p>myDate = timeYrsecToDate(yrsec, year)</p>
+<p>Converts time expressed in seconds from start of year to a python DATETIME object</p>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>yrsec : seconds since start of year
+year : year in YYYY</dd>
+<dt>OUTPUTS:</dt>
+<dd>myDate : a python DATETIME object</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.timeUtils.yyyymmddToDate">
+<tt class="descclassname">utils.timeUtils.</tt><tt class="descname">yyyymmddToDate</tt><big>(</big><em>dateStr</em><big>)</big><a class="reference internal" href="_modules/utils/timeUtils.html#yyyymmddToDate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.timeUtils.yyyymmddToDate" title="Permalink to this definition">¶</a></dt>
+<dd><p>myDate = yyyymmddToDate(dateStr)</p>
+<p>takes a string in yyyymmdd format and returns a python date object</p>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>dateStr : a string in yyyymmdd format</dd>
+<dt>OUTPUTS:</dt>
+<dd>myDate : a python datetime object</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="utils.timeUtils">
+<tt class="descclassname">utils.</tt><tt class="descname">timeUtils</tt><a class="headerlink" href="#utils.timeUtils" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#utils.timeUtils" title="utils.timeUtils"><tt class="xref py py-class docutils literal"><span class="pre">utils.timeUtils</span></tt></a></p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html">
+          <img class="logo" src="_static/davitpy.svg" alt="Logo" style="width: 80%;"/>
+        </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="utils.html"
+                        title="previous chapter">utils</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="utils.plotUtils.html"
+                        title="next chapter">utils.plotUtils</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/utils.timeUtils.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="utils.plotUtils.html" title="utils.plotUtils"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="utils.html" title="utils"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="utils.html" >utils</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, VT SuperDARN Lab and Friends.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

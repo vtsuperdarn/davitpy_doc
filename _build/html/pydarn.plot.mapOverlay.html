@@ -1,0 +1,256 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pydarn.plot.mapOverlay &mdash; davitpy</title>
+    
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="top" title="davitpy" href="index.html" />
+    <link rel="up" title="pydarn.plot" href="pydarn.plot.html" />
+    <link rel="next" title="pydarn.plot.fan" href="pydarn.plot.fan.html" />
+    <link rel="prev" title="pydarn.plot.pygridPlot" href="pydarn.plot.pygridPlot.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="pydarn.plot.fan.html" title="pydarn.plot.fan"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="pydarn.plot.pygridPlot.html" title="pydarn.plot.pygridPlot"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="pydarn.html" >pydarn</a> &raquo;</li>
+          <li><a href="pydarn.plot.html" accesskey="U">pydarn.plot</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="pydarn-plot-mapoverlay">
+<h1>pydarn.plot.mapOverlay<a class="headerlink" href="#pydarn-plot-mapoverlay" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<span class="target" id="module-pydarn.plot.mapOverlay"></span><div class="section" id="module-pydarn-plot-mapoverlay">
+<h2><strong>Module</strong>: pydarn.plot.mapOverlay<a class="headerlink" href="#module-pydarn-plot-mapoverlay" title="Permalink to this headline">¶</a></h2>
+<p>Overlay information on maps</p>
+<dl class="docutils">
+<dt><strong>Functions</strong>:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="#pydarn.plot.mapOverlay.overlayRadar" title="pydarn.plot.mapOverlay.overlayRadar"><tt class="xref py py-func docutils literal"><span class="pre">overlayRadar()</span></tt></a>: Overlay radar position and name on a map</li>
+<li><a class="reference internal" href="#pydarn.plot.mapOverlay.overlayFov" title="pydarn.plot.mapOverlay.overlayFov"><tt class="xref py py-func docutils literal"><span class="pre">overlayFov()</span></tt></a>: Overlay field(s)-of-view on a map</li>
+</ul>
+</dd>
+</dl>
+<dl class="function">
+<dt id="pydarn.plot.mapOverlay.overlayFov">
+<tt class="descclassname">pydarn.plot.mapOverlay.</tt><tt class="descname">overlayFov</tt><big>(</big><em>Basemap</em>, <em>codes=None</em>, <em>ids=None</em>, <em>names=None</em>, <em>dateTime=None</em>, <em>all=False</em>, <em>maxGate=None</em>, <em>fovColor=None</em>, <em>fovAlpha=0.2</em>, <em>beams=None</em>, <em>hemi=None</em>, <em>fovObj=None</em>, <em>zorder=2</em>, <em>lineColor='k'</em>, <em>lineWidth=1</em><big>)</big><a class="reference internal" href="_modules/pydarn/plot/mapOverlay.html#overlayFov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.plot.mapOverlay.overlayFov" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overlay FoV position(s) on map</p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>Basemap</strong>: a python Basemap object on which to overplot the radar position(s)</li>
+<li><strong>[codes]</strong>: a list of radar 3-letter codes to plot</li>
+<li><strong>[ids]</strong>: a list of radar IDs to plot</li>
+<li><strong>[names]</strong>: a list of radar names to plot</li>
+<li><strong>[dateTime]</strong>: the date and time as a python datetime object</li>
+<li><strong>[all]</strong>: set to true to plot all the radars (active ones)</li>
+<li><strong>[maxGate]</strong>: Maximum number of gates to be plotted. Defaults to hdw.dat information.</li>
+<li><strong>[zorder]</strong>: the overlay order number</li>
+<li><strong>[lineColor]</strong>: FoV contour line color</li>
+<li><strong>[lineWidth]</strong>: FoV contour line width</li>
+<li><strong>[fovColor]</strong>: field of view fill color</li>
+<li><strong>[fovAlpha]</strong>: field of view fill color transparency</li>
+<li><strong>[fovObj]</strong>: a fov object. See pydarn.radar.radFov.fov</li>
+<li><strong>[hemi]</strong>: &#8216;north&#8217; or &#8216;south&#8217;, ignore radars from the other hemisphere</li>
+<li><strong>[beam]</strong>: hightlight specified beams</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>None</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pydarn</span><span class="o">,</span> <span class="nn">utils</span>
+<span class="n">width</span> <span class="o">=</span> <span class="mf">111e3</span><span class="o">*</span><span class="mi">40</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">plotUtils</span><span class="o">.</span><span class="n">mapObj</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">lat_0</span><span class="o">=</span><span class="mf">50.</span><span class="p">,</span> <span class="n">lon_0</span><span class="o">=-</span><span class="mf">95.</span><span class="p">)</span>
+<span class="c"># Plot radar position and code</span>
+<span class="n">pydarn</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">overlayRadar</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">fontSize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">codes</span><span class="o">=</span><span class="s">&#39;bks&#39;</span><span class="p">)</span>
+<span class="c"># Plot radar fov</span>
+<span class="n">pydarn</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">overlayFov</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">codes</span><span class="o">=</span><span class="s">&#39;bks&#39;</span><span class="p">,</span> <span class="n">maxGate</span><span class="o">=</span><span class="mi">75</span><span class="p">,</span> <span class="n">beams</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">23</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by Sebastien, 2012-09</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydarn.plot.mapOverlay.overlayRadar">
+<tt class="descclassname">pydarn.plot.mapOverlay.</tt><tt class="descname">overlayRadar</tt><big>(</big><em>Basemap</em>, <em>codes=None</em>, <em>ids=None</em>, <em>names=None</em>, <em>dateTime=None</em>, <em>annotate=True</em>, <em>all=False</em>, <em>hemi=None</em>, <em>zorder=2</em>, <em>markerColor='k'</em>, <em>markerSize=10</em>, <em>fontSize=10</em>, <em>xOffset=None</em><big>)</big><a class="reference internal" href="_modules/pydarn/plot/mapOverlay.html#overlayRadar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.plot.mapOverlay.overlayRadar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overlay radar position(s) and name(s) on map</p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>Basemap</strong>: a python Basemap object on which to overplot the radar position(s)</li>
+<li><strong>[codes]</strong>: a list of radar 3-letter codes to plot</li>
+<li><strong>[ids]</strong>: a list of radar IDs to plot</li>
+<li><strong>[names]</strong>: a list of radar names to plot</li>
+<li><strong>[dateTime]</strong>: the date and time as a python datetime object</li>
+<li><strong>[annotate]</strong>: wether or not to show the radar(s) name(s)</li>
+<li><strong>[all]</strong>: set to true to plot all the radars (active ones)</li>
+<li><strong>[hemi]</strong>: &#8216;north&#8217; or &#8216;south&#8217;, ignore radars from the other hemisphere</li>
+<li><strong>[zorder]</strong>: the overlay order number</li>
+<li><strong>[markerColor]</strong>:</li>
+<li><strong>[markerSize]</strong>: [point]</li>
+<li><strong>[fontSize]</strong>: [point]</li>
+<li><strong>[xOffset]</strong>: x-Offset of the annotation in map projection coordinates</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>None</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pydarn</span><span class="o">,</span> <span class="nn">utils</span>
+<span class="n">m1</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">plotUtils</span><span class="o">.</span><span class="n">mapObj</span><span class="p">(</span><span class="n">boundinglat</span><span class="o">=</span><span class="mf">30.</span><span class="p">,</span> <span class="n">gridLabels</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="s">&#39;mag&#39;</span><span class="p">)</span>
+<span class="n">pydarn</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">overlayRadar</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">fontSize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="nb">all</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">markerSize</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by Sebastien, 2012-08</p>
+</dd></dl>
+
+</div>
+<dl class="attribute">
+<dt id="pydarn.plot.mapOverlay">
+<tt class="descclassname">pydarn.plot.</tt><tt class="descname">mapOverlay</tt><a class="headerlink" href="#pydarn.plot.mapOverlay" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pydarn.plot.mapOverlay" title="pydarn.plot.mapOverlay"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.plot.mapOverlay</span></tt></a></p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html">
+          <img class="logo" src="_static/davitpy.svg" alt="Logo" style="width: 80%;"/>
+        </a></p>
+  <div class="sphinxlocaltoc">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">pydarn.plot.mapOverlay</a><ul>
+<li><a class="reference internal" href="#module-pydarn-plot-mapoverlay"><strong>Module</strong>: pydarn.plot.mapOverlay</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pydarn.plot.pygridPlot.html"
+                        title="previous chapter">pydarn.plot.pygridPlot</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pydarn.plot.fan.html"
+                        title="next chapter">pydarn.plot.fan</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/pydarn.plot.mapOverlay.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="pydarn.plot.fan.html" title="pydarn.plot.fan"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="pydarn.plot.pygridPlot.html" title="pydarn.plot.pygridPlot"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="pydarn.html" >pydarn</a> &raquo;</li>
+          <li><a href="pydarn.plot.html" >pydarn.plot</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, VT SuperDARN Lab and Friends.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>
