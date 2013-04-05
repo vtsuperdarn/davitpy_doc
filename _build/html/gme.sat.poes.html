@@ -1,0 +1,458 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gme.sat.poes &mdash; davitpy</title>
+    
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="top" title="davitpy" href="index.html" />
+    <link rel="up" title="gme.sat" href="gme.sat.html" />
+    <link rel="next" title="gme.isr" href="gme.isr.html" />
+    <link rel="prev" title="gme.sat.rbsp" href="gme.sat.rbsp.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.isr.html" title="gme.isr"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.sat.rbsp.html" title="gme.sat.rbsp"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="gme.html" >gme</a> &raquo;</li>
+          <li><a href="gme.sat.html" accesskey="U">gme.sat</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="gme-sat-poes">
+<h1>gme.sat.poes<a class="headerlink" href="#gme-sat-poes" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<span class="target" id="module-gme.sat.poes"></span><span class="target" id="module-poes"></span><div class="section" id="module-gme-sat-poes">
+<h2><strong>Module</strong>: gme.sat.poes<a class="headerlink" href="#module-gme-sat-poes" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><strong>Classes</strong>:</dt>
+<dd><ul class="first last simple">
+<li><tt class="xref py py-class docutils literal"><span class="pre">poesRec</span></tt></li>
+</ul>
+</dd>
+<dt><strong>Functions</strong>:</dt>
+<dd><ul class="first last simple">
+<li><tt class="xref py py-func docutils literal"><span class="pre">readPoes()</span></tt></li>
+<li><tt class="xref py py-func docutils literal"><span class="pre">readPoesFtp()</span></tt></li>
+<li><tt class="xref py py-func docutils literal"><span class="pre">mapPoesMongo()</span></tt></li>
+<li><tt class="xref py py-func docutils literal"><span class="pre">overlayPoesTed()</span></tt></li>
+</ul>
+</dd>
+</dl>
+<dl class="function">
+<dt id="gme.sat.poes.mapPoesMongo">
+<tt class="descclassname">gme.sat.poes.</tt><tt class="descname">mapPoesMongo</tt><big>(</big><em>sYear</em>, <em>eYear=None</em><big>)</big><a class="reference internal" href="_modules/gme/sat/poes.html#mapPoesMongo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.sat.poes.mapPoesMongo" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads poes data from the NOAA NGDC FTP server via anonymous FTP connection and maps it to the mongodb.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">In general, nobody except the database admins will need to use this function</p>
+</div>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>sYear</strong> (int): the year to begin mapping data</li>
+<li>[<strong>eYear</strong>] (int or None): the end year for mapping data.  if this is None, eYear will be sYear</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Nothing.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">gme</span><span class="o">.</span><span class="n">sat</span><span class="o">.</span><span class="n">mapPoesMongo</span><span class="p">(</span><span class="mi">2004</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130131</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gme.sat.poes.overlayPoesBnd">
+<tt class="descclassname">gme.sat.poes.</tt><tt class="descname">overlayPoesBnd</tt><big>(</big><em>baseMapObj</em>, <em>axisHandle</em>, <em>startTime</em>, <em>coords='geo'</em>, <em>hemi=1</em>, <em>equBnd=True</em>, <em>polBnd=False</em><big>)</big><a class="reference internal" href="_modules/gme/sat/poes.html#overlayPoesBnd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.sat.poes.overlayPoesBnd" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads POES TED data with in +/- 45min of the given time, fits the auroral oval boundaries and overlays them on a map object. The poleward boundary is not accurate all the times due to lesser number of satellite passes identifying it.</p>
+<p><strong>Args</strong>: 
+* <strong>baseMapObj</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the map object you want data to be overlayed on.
+* <strong>axisHandle</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the Axis Handle used.
+* <strong>startTime</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the starttime you want data for. If endTime is not given overlays data from satellites with in +/- 45 min of the startTime
+* [<strong>coords</strong>] (list or None): Coordinates of the map object on which you want data to be overlayed on. Default &#8216;geo&#8217;
+* [<strong>hemi</strong>] (list or None): Hemisphere of the map object on which you want data to be overlayed on. Value is 1 for northern hemisphere and -1 for the southern hemisphere.Default 1
+* [<strong>equBnd</strong>] (list or None): If this is True the equatorward auroral oval boundary fit from the TED data is overlayed on the map object. Default True
+* [<strong>polBnd</strong>] (list or None): If this is True the poleward auroral oval boundary fit from the TED data is overlayed on the map object. Default False</p>
+<dl class="docutils">
+<dt><strong>Returns</strong>:</dt>
+<dd>POES TED data is overlayed on the map object. If no data is found, None is returned.</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+<span class="n">poesList</span> <span class="o">=</span> <span class="n">gme</span><span class="o">.</span><span class="n">sat</span><span class="o">.</span><span class="n">overlayPoesTed</span><span class="p">(</span><span class="n">MapObj</span><span class="p">,</span> <span class="n">sTime</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by Bharat Kunduri, 20130216</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gme.sat.poes.overlayPoesTed">
+<tt class="descclassname">gme.sat.poes.</tt><tt class="descname">overlayPoesTed</tt><big>(</big><em>baseMapObj, axisHandle, startTime, endTime=None, coords='geo', hemi=1, folat=[45.0, 90.0], satNum=None, param='ted', scMin=-3.0, scMax=0.5</em><big>)</big><a class="reference internal" href="_modules/gme/sat/poes.html#overlayPoesTed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.sat.poes.overlayPoesTed" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function overlays POES TED data onto a map object.</p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first simple">
+<li><strong>baseMapObj</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the map object you want data to be overlayed on.</li>
+<li><strong>axisHandle</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the Axis Handle used.</li>
+<li><strong>startTime</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the starttime you want data for. If endTime is not given overlays data from satellites with in +/- 45 min of the startTime</li>
+<li>[<strong>endTime</strong>] (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the latest time you want data for.  if this is None, data from satellites with in +/- 45 min of the startTime is overlayed.  default = None</li>
+<li>[<strong>satnum</strong>] (int): the satellite you want data for.  eg 17 for noaa17.  if this is None, data for all satellites will be returned.  default = None</li>
+<li>[<strong>coords</strong>] (list or None): Coordinates of the map object on which you want data to be overlayed on. Default &#8216;geo&#8217;</li>
+<li>[<strong>hemi</strong>] (list or None): Hemisphere of the map object on which you want data to be overlayed on. Value is 1 for northern hemisphere and -1 for the southern hemisphere.Default 1</li>
+</ul>
+<blockquote>
+<div>[<strong>folat</strong>] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with latitude values in the range [a,b] will be returned.  default = None</div></blockquote>
+<ul class="last simple">
+<li>[<strong>param</strong>] (str): the name of the poes parameter to be plotted.  default=&#8217;ted&#8217;</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>POES TED data is overlayed on the map object. If no data is found, None is returned.</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+<span class="n">poesList</span> <span class="o">=</span> <span class="n">gme</span><span class="o">.</span><span class="n">sat</span><span class="o">.</span><span class="n">overlayPoesTed</span><span class="p">(</span><span class="n">MapObj</span><span class="p">,</span> <span class="n">sTime</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by Bharat Kunduri, 20130216</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="gme.sat.poes.poesRec">
+<em class="property">class </em><tt class="descclassname">gme.sat.poes.</tt><tt class="descname">poesRec</tt><big>(</big><em>ftpLine=None</em>, <em>dbDict=None</em>, <em>satnum=None</em>, <em>header=None</em><big>)</big><a class="reference internal" href="_modules/gme/sat/poes.html#poesRec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.sat.poes.poesRec" title="Permalink to this definition">¶</a></dt>
+<dd><p>a class to represent a record of poes data.  Extends <tt class="xref py py-class docutils literal"><span class="pre">gmeBase.gmeData</span></tt>.  Insight on the class members can be obtained from <a class="reference external" href="ftp://satdat.ngdc.noaa.gov/sem/poes/data/readme.txt">the NOAA NGDC site</a>.  Note that Poes data is available from 1998-present day (or whatever the latest NOAA has uploaded is).  <strong>The data are the 16-second averages</strong></p>
+<dl class="docutils">
+<dt><strong>Members</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>time</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): an object identifying which time these data are for</li>
+<li><strong>info</strong> (str): information about where the data come from.  <em>Please be courteous and give credit to data providers when credit is due.</em></li>
+<li><strong>dataSet</strong> (str): the name of the data set</li>
+<li><strong>satnum</strong> (ind): the noaa satellite number</li>
+<li><strong>sslat</strong> (float): Geographic Latitude of sub-satellite point, degrees</li>
+<li><strong>sslon</strong> (float): Geographic Longitude of sub-satellite point, degrees</li>
+<li><strong>folat</strong> (float): Geographic Latitude of foot-of-field-line, degrees</li>
+<li><strong>folon</strong> (float): Geographic Longitude of foot-of-field-line, degrees</li>
+<li><strong>lval</strong> (float): L-value</li>
+<li><strong>mlt</strong> (float): Magnetic local time of foot-of-field-line, degrees</li>
+<li><strong>pas0</strong> (float): MEPED-0 pitch angle at satellite, degrees</li>
+<li><strong>pas90</strong> (float): MEPED-90 pitch angle at satellite, degrees</li>
+<li><strong>mep0e1</strong> (float): MEPED-0 &gt; 30 keV electrons, counts/sec</li>
+<li><strong>mep0e2</strong> (float): MEPED-0 &gt; 100 keV electrons, counts/sec</li>
+<li><strong>mep0e3</strong> (float): MEPED-0 &gt; 300 keV electrons, counts/sec</li>
+<li><strong>mep0p1</strong> (float):MEPED-0 30 keV to 80 keV protons, counts/sec</li>
+<li><strong>mep0p2</strong> (float): MEPED-0 80 keV to 240 keV protons, counts/sec</li>
+<li><strong>mep0p3</strong> (float): 240 kev to 800 keV protons, counts/sec</li>
+<li><strong>mep0p4</strong> (float): MEPED-0 800 keV to 2500 keV protons, counts/sec</li>
+<li><strong>mep0p5</strong> (float): MEPED-0 2500 keV to 6900 keV protons, counts/sec</li>
+<li><strong>mep0p6</strong> (float): MEPED-0 &gt; 6900 keV protons, counts/sec,</li>
+<li><strong>mep90e1</strong> (float): MEPED-90 &gt; 30 keV electrons, counts/sec,</li>
+<li><strong>mep90e2</strong> (float): MEPED-90 &gt; 100 keV electrons, counts/sec</li>
+<li><strong>mep90e3</strong> (float): MEPED-90 &gt; 300 keV electrons, counts/sec</li>
+<li><strong>mep90p1</strong> (float): MEPED-90 30 keV to 80 keV protons, counts/sec</li>
+<li><strong>mep90p2</strong> (float): MEPED-90 80 keV to 240 keV protons, counts/sec</li>
+<li><strong>mep90p3</strong> (float): MEPED-90 240 kev to 800 keV protons, counts/sec,</li>
+<li><strong>mep90p4</strong> (float): MEPED-90 800 keV to 2500 keV protons, counts/sec</li>
+<li><strong>mep90p5</strong> (float): MEPED-90 2500 keV to 6900 keV protons, counts/sec</li>
+<li><strong>mep90p6</strong> (float):MEPED-90 &gt; 6900 keV protons, counts/sec</li>
+<li><strong>mepomp6</strong> (float): MEPED omni-directional &gt; 16 MeV protons, counts/sec</li>
+<li><strong>mepomp7</strong> (float): MEPED omni-directional &gt; 36 Mev protons, counts/sec</li>
+<li><strong>mepomp8</strong> (float): MEPED omni-directional &gt; 70 MeV protons, counts/sec</li>
+<li><strong>mepomp9</strong> (float): MEPED omni-directional &gt;= 140 MeV protons</li>
+<li><strong>ted</strong> (float): TED, Total Energy Detector Average, ergs/cm2/sec</li>
+<li><strong>echar</strong> (float): TED characteristic energy of electrons, eV</li>
+<li><strong>pchar</strong> (float): TED characteristic energy of protons, eV</li>
+<li><strong>econtr</strong> (float): TED electron contribution, Electron Energy/Total Energy</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If any of the members have a value of None, this means that they could not be read for that specific time</p>
+</div>
+<dl class="docutils">
+<dt><strong>Methods</strong>:</dt>
+<dd><ul class="first last simple">
+<li><tt class="xref py py-func docutils literal"><span class="pre">parseFtp()</span></tt></li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">emptyPoesObj</span> <span class="o">=</span> <span class="n">gme</span><span class="o">.</span><span class="n">sat</span><span class="o">.</span><span class="n">poesRec</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130131</p>
+<dl class="method">
+<dt id="gme.sat.poes.poesRec.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>ftpLine=None</em>, <em>dbDict=None</em>, <em>satnum=None</em>, <em>header=None</em><big>)</big><a class="reference internal" href="_modules/gme/sat/poes.html#poesRec.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.sat.poes.poesRec.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>the intialization fucntion for a <tt class="xref py py-class docutils literal"><span class="pre">omniRec</span></tt> object.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In general, users will not need to worry about this.</p>
+</div>
+<p><strong>Belongs to</strong>: <tt class="xref py py-class docutils literal"><span class="pre">omniRec</span></tt></p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li>[<strong>ftpLine</strong>] (str): an ASCII line from the FTP server. if this is provided, the object is initialized from it.  header must be provided in conjunction with this.  default=None</li>
+<li>[<strong>header</strong>] (str): the header from the ASCII FTP file.  default=None</li>
+<li>[<strong>dbDict</strong>] (dict): a dictionary read from the mongodb.  if this is provided, the object is initialized from it.  default = None</li>
+<li>[<strong>satnum</strong>] (int): the satellite nuber.  default=None</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Nothing.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">myPoesObj</span> <span class="o">=</span> <span class="n">poesRec</span><span class="p">(</span><span class="n">ftpLine</span><span class="o">=</span><span class="n">aftpLine</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130131</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gme.sat.poes.poesRec.parseFtp">
+<tt class="descname">parseFtp</tt><big>(</big><em>line</em>, <em>header</em><big>)</big><a class="reference internal" href="_modules/gme/sat/poes.html#poesRec.parseFtp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.sat.poes.poesRec.parseFtp" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is used to convert a line of poes data read from the NOAA NGDC FTP site into a <tt class="xref py py-class docutils literal"><span class="pre">poesRec</span></tt> object.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In general, users will not need to worry about this.</p>
+</div>
+<p><strong>Belongs to</strong>: <tt class="xref py py-class docutils literal"><span class="pre">poesRec</span></tt></p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>line</strong> (str): the ASCII line from the FTP server</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Nothing.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">myPoesObj</span><span class="o">.</span><span class="n">parseFtp</span><span class="p">(</span><span class="n">ftpLine</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130131</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="gme.sat.poes.readPoes">
+<tt class="descclassname">gme.sat.poes.</tt><tt class="descname">readPoes</tt><big>(</big><em>sTime</em>, <em>eTime=None</em>, <em>satnum=None</em>, <em>folat=None</em>, <em>folon=None</em>, <em>ted=None</em>, <em>echar=None</em>, <em>pchar=None</em><big>)</big><a class="reference internal" href="_modules/gme/sat/poes.html#readPoes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.sat.poes.readPoes" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads poes data.  First, it will try to get it from the mongodb, and if it can&#8217;t find it, it will look on the NOAA NGDC FTP server using <tt class="xref py py-func docutils literal"><span class="pre">readPoesFtp()</span></tt>.  The data are 16-second averages</p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>sTime</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the earliest time you want data for</li>
+<li>[<strong>eTime</strong>] (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the latest time you want data for.  if this is None, end Time will be 1 day after sTime.  default = None</li>
+<li>[<strong>satnum</strong>] (int): the satellite you want data for.  eg 17 for noaa17.  if this is None, data for all satellites will be returned.  default = None</li>
+<li>[<strong>satnum</strong>] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with bx values in the range [a,b] will be returned.  default = None</li>
+<li>[<strong>folat</strong>] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with bx values in the range [a,b] will be returned.  default = None</li>
+<li>[<strong>folon</strong>] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with bye values in the range [a,b] will be returned.  default = None</li>
+<li>[<strong>ted</strong>] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with bze values in the range [a,b] will be returned.  default = None</li>
+<li>[<strong>echar</strong>] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with bym values in the range [a,b] will be returned.  default = None</li>
+<li>[<strong>pchar</strong>] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with bzm values in the range [a,b] will be returned.  default = None</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>poesList</strong> (list or None): if data is found, a list of <tt class="xref py py-class docutils literal"><span class="pre">poesRec</span></tt> objects matching the input parameters is returned.  If no data is found, None is returned.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+<span class="n">poesList</span> <span class="o">=</span> <span class="n">gme</span><span class="o">.</span><span class="n">sat</span><span class="o">.</span><span class="n">readPoes</span><span class="p">(</span><span class="n">sTime</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">eTime</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">folat</span><span class="o">=</span><span class="p">[</span><span class="mi">60</span><span class="p">,</span><span class="mi">80</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130131</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gme.sat.poes.readPoesFtp">
+<tt class="descclassname">gme.sat.poes.</tt><tt class="descname">readPoesFtp</tt><big>(</big><em>sTime</em>, <em>eTime=None</em><big>)</big><a class="reference internal" href="_modules/gme/sat/poes.html#readPoesFtp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.sat.poes.readPoesFtp" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads poes data from the NOAA NGDC server via anonymous FTP connection.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You should not use this. Use the general function <tt class="xref py py-func docutils literal"><span class="pre">readPoes()</span></tt> instead.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>sTime</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): the earliest time you want data for</li>
+<li>[<strong>eTime</strong>] (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the latest time you want data for.  if this is None, eTime will be equal 1 day after sTime.  default = None</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>poesList</strong> (list or None): if data is found, a list of <tt class="xref py py-class docutils literal"><span class="pre">poesRec</span></tt> objects matching the input parameters is returned.  If no data is found, None is returned.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+<span class="n">poesList</span> <span class="o">=</span> <span class="n">gme</span><span class="o">.</span><span class="n">sat</span><span class="o">.</span><span class="n">readpoesFtp</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">50</span><span class="p">),</span><span class="n">eTime</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130128</p>
+</dd></dl>
+
+</div>
+<dl class="attribute">
+<dt id="gme.sat.poes">
+<tt class="descclassname">gme.sat.</tt><tt class="descname">poes</tt><a class="headerlink" href="#gme.sat.poes" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#gme.sat.poes" title="gme.sat.poes"><tt class="xref py py-class docutils literal"><span class="pre">gme.sat.poes</span></tt></a></p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html">
+          <img class="logo" src="_static/davitpy.svg" alt="Logo" style="width: 80%;"/>
+        </a></p>
+  <div class="sphinxlocaltoc">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">gme.sat.poes</a><ul>
+<li><a class="reference internal" href="#module-gme-sat-poes"><strong>Module</strong>: gme.sat.poes</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="gme.sat.rbsp.html"
+                        title="previous chapter">gme.sat.rbsp</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="gme.isr.html"
+                        title="next chapter">gme.isr</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/gme.sat.poes.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.isr.html" title="gme.isr"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.sat.rbsp.html" title="gme.sat.rbsp"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="gme.html" >gme</a> &raquo;</li>
+          <li><a href="gme.sat.html" >gme.sat</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, VT SuperDARN Lab and Friends.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

@@ -1,0 +1,313 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>utils.plotUtils &mdash; davitpy</title>
+    
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="top" title="davitpy" href="index.html" />
+    <link rel="up" title="utils" href="utils.html" />
+    <link rel="next" title="utils.geoPack" href="utils.geoPack.html" />
+    <link rel="prev" title="utils.timeUtils" href="utils.timeUtils.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="utils.geoPack.html" title="utils.geoPack"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="utils.timeUtils.html" title="utils.timeUtils"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="utils.html" accesskey="U">utils</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="utils-plotutils">
+<h1>utils.plotUtils<a class="headerlink" href="#utils-plotutils" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<span class="target" id="module-utils.plotUtils"></span><div class="section" id="module-utils-plotutils">
+<h2><strong>Module</strong>: utils.plotUtils<a class="headerlink" href="#module-utils-plotutils" title="Permalink to this headline">¶</a></h2>
+<p>Basic plotting tools</p>
+<dl class="docutils">
+<dt><strong>Functions</strong>:</dt>
+<dd><ul class="first last simple">
+<li><tt class="xref py py-func docutils literal"><span class="pre">plotUtils.map()</span></tt>: Create empty map</li>
+<li><tt class="xref py py-func docutils literal"><span class="pre">plotUtils.genCmap()</span></tt>:</li>
+</ul>
+</dd>
+</dl>
+<dl class="function">
+<dt id="utils.plotUtils.curvedEarthAxes">
+<tt class="descclassname">utils.plotUtils.</tt><tt class="descname">curvedEarthAxes</tt><big>(</big><em>rect=111</em>, <em>fig=None</em>, <em>maxground=2000</em>, <em>minalt=0</em>, <em>maxalt=500</em>, <em>Re=6371.0</em><big>)</big><a class="reference internal" href="_modules/utils/plotUtils.html#curvedEarthAxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.plotUtils.curvedEarthAxes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create curved axes in ground-range and altitude</p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li>[<strong>rect</strong>]: subplot spcification</li>
+<li>[<strong>fig</strong>]: A pylab.figure object (default to gcf)</li>
+<li>[<strong>maxground</strong>]: maximum ground range [km]</li>
+<li>[<strong>minalt</strong>]: lowest altitude limit [km]</li>
+<li>[<strong>maxalt</strong>]: highest altitude limit [km]</li>
+<li>[<strong>Re</strong>]: Earth radius</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>ax</strong>: matplotlib.axes object containing formatting</li>
+<li><strong>aax</strong>: matplotlib.axes object containing data</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">plotUtils</span>
+<span class="n">ax</span><span class="p">,</span> <span class="n">aax</span> <span class="o">=</span> <span class="n">plotUtils</span><span class="o">.</span><span class="n">curvedEarthAxes</span><span class="p">()</span>
+<span class="n">th</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ax</span><span class="o">.</span><span class="n">maxground</span><span class="o">/</span><span class="n">ax</span><span class="o">.</span><span class="n">Re</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">Re</span><span class="o">+</span><span class="n">ax</span><span class="o">.</span><span class="n">minalt</span><span class="p">,</span> <span class="n">ax</span><span class="o">.</span><span class="n">Re</span><span class="o">+</span><span class="n">ax</span><span class="o">.</span><span class="n">maxalt</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span> <span class="o">-</span><span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="mi">300</span> <span class="o">-</span> <span class="n">ax</span><span class="o">.</span><span class="n">Re</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">100</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">th</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">/</span><span class="n">th</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">*</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">th</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+<span class="n">im</span> <span class="o">=</span> <span class="n">aax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">Z</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by Sebastien, 2013-04</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.plotUtils.genCmap">
+<tt class="descclassname">utils.plotUtils.</tt><tt class="descname">genCmap</tt><big>(</big><em>param</em>, <em>scale</em>, <em>colors='lasse'</em>, <em>lowGray=False</em><big>)</big><a class="reference internal" href="_modules/utils/plotUtils.html#genCmap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.plotUtils.genCmap" title="Permalink to this definition">¶</a></dt>
+<dd><p>genCmap(fig,coll,param,scale,pos,[colors]):</p>
+<p>generates a colormap and plots a colorbar</p>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">fig: the parent figure
+coll: the collection of items (e.g. polygons) being mapped</p>
+<blockquote>
+<div>to this colormap</div></blockquote>
+<dl class="docutils">
+<dt>param: the parameter being plotted, valid for &#8216;velocity&#8217;,</dt>
+<dd>&#8216;power&#8217;, &#8216;width&#8217;, &#8216;elevation&#8217;, &#8216;phi0&#8217;</dd>
+</dl>
+<p>scale: the max and min values of the color scale in list form
+pos: the position of the parent plot, NOT of the COLORBAR
+[colors]: a string indicating which colorbar to use, valid</p>
+<blockquote class="last">
+<div>inputs are &#8216;lasse&#8217;, &#8216;aj&#8217;
+default: &#8216;lasse&#8217;</div></blockquote>
+</dd>
+</dl>
+<p>OUTPUTS:</p>
+<dl class="docutils">
+<dt>EXAMPLE:</dt>
+<dd>genCmap(myFig,polyCollection,&#8217;velocity&#8217;,[-200,200],pos)</dd>
+</dl>
+<p>Written by AJ 20120820</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="utils.plotUtils.mapObj">
+<em class="property">class </em><tt class="descclassname">utils.plotUtils.</tt><tt class="descname">mapObj</tt><big>(</big><em>datetime=None</em>, <em>coords='geo'</em>, <em>projection='stere'</em>, <em>resolution='l'</em>, <em>dateTime=None</em>, <em>lat_0=None</em>, <em>lon_0=None</em>, <em>boundinglat=None</em>, <em>width=None</em>, <em>height=None</em>, <em>fillContinents='.8'</em>, <em>fillOceans='None'</em>, <em>fillLakes='white'</em>, <em>coastLineWidth=0.0</em>, <em>grid=True</em>, <em>gridLabels=True</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/utils/plotUtils.html#mapObj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.plotUtils.mapObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class wraps arround <tt class="xref py py-class docutils literal"><span class="pre">mpl_toolkits.basemap.Basemap</span></tt> (&lt;<a class="reference external" href="http://tinyurl.com/d4rzmfo">http://tinyurl.com/d4rzmfo</a>&gt;)</p>
+<dl class="docutils">
+<dt><strong>Members</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>coords</strong> (str): map coordinate system (&#8216;geo&#8217;, &#8216;mag&#8217;, &#8216;mlt&#8217;).</li>
+<li>all members of <tt class="xref py py-class docutils literal"><span class="pre">mpl_toolkits.basemap.Basemap</span></tt> (&lt;<a class="reference external" href="http://tinyurl.com/d4rzmfo">http://tinyurl.com/d4rzmfo</a>&gt;)</li>
+</ul>
+</dd>
+<dt><strong>Methods</strong>:</dt>
+<dd><ul class="first last simple">
+<li>all methods of <tt class="xref py py-class docutils literal"><span class="pre">mpl_toolkits.basemap.Basemap</span></tt> (&lt;<a class="reference external" href="http://tinyurl.com/d4rzmfo">http://tinyurl.com/d4rzmfo</a>&gt;)</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="c"># Create the map</span>
+<span class="n">myMap</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">mapObj</span><span class="p">(</span><span class="n">boundinglat</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="s">&#39;mag&#39;</span><span class="p">)</span>
+<span class="c"># Plot the geographic and geomagnetic North Poles</span>
+<span class="c"># First convert from lat/lon to map projection coordinates...</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">myMap</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">90.</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="s">&#39;geo&#39;</span><span class="p">)</span>
+<span class="c"># ...then plot</span>
+<span class="n">myMap</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;r&#39;</span><span class="p">)</span>
+<span class="c"># Convert to map projection...</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">myMap</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">90.</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="s">&#39;mag&#39;</span><span class="p">)</span>
+<span class="c"># ...and plot</span>
+<span class="n">myMap</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;g&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Once the map is created, all plotting calls will be assumed to already be in the map&#8217;s declared coordinate system given by <strong>coords</strong>.</p>
+</div>
+<dl class="method">
+<dt id="utils.plotUtils.mapObj.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>datetime=None</em>, <em>coords='geo'</em>, <em>projection='stere'</em>, <em>resolution='l'</em>, <em>dateTime=None</em>, <em>lat_0=None</em>, <em>lon_0=None</em>, <em>boundinglat=None</em>, <em>width=None</em>, <em>height=None</em>, <em>fillContinents='.8'</em>, <em>fillOceans='None'</em>, <em>fillLakes='white'</em>, <em>coastLineWidth=0.0</em>, <em>grid=True</em>, <em>gridLabels=True</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/utils/plotUtils.html#mapObj.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.plotUtils.mapObj.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create empty map</p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>[limits]</strong>: [llLat, llLon, urLat, urLon] lower-left and upper-right corners coordinates</li>
+<li><strong>[width, height]</strong>: width and height in m from the (lat_0, lon_0) center</li>
+<li><strong>[lon_0]</strong>: center meridian (default is -70E)</li>
+<li><strong>[lat_0]</strong>: center latitude (default is -90E)</li>
+<li><strong>[boundingLat]</strong>: bounding latitude (default it +/-20)</li>
+<li><strong>[grid]</strong>: show/hide parallels and meridians grid</li>
+<li><strong>[fill_continents]</strong>: continent color. Default is &#8216;grey&#8217;</li>
+<li><strong>[fill_water]</strong>: water color. Default is &#8216;None&#8217;</li>
+<li><strong>[coords]</strong>: &#8216;geo&#8217;</li>
+<li><strong>[dateTime]</strong> (datetime.datetime): necessary for MLT plots if you want the continents to be plotted</li>
+<li><strong>[kwargs]</strong>: See &lt;<a class="reference external" href="http://tinyurl.com/d4rzmfo">http://tinyurl.com/d4rzmfo</a>&gt; for more keywords</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>map</strong>: a Basemap object (&lt;<a class="reference external" href="http://tinyurl.com/d4rzmfo">http://tinyurl.com/d4rzmfo</a>&gt;)</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">myMap</span> <span class="o">=</span> <span class="n">mapObj</span><span class="p">(</span><span class="n">lat_0</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">lon_0</span><span class="o">=-</span><span class="mi">95</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">111e3</span><span class="o">*</span><span class="mi">60</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mf">111e3</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by Sebastien, 2013-02</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<dl class="attribute">
+<dt id="utils.plotUtils">
+<tt class="descclassname">utils.</tt><tt class="descname">plotUtils</tt><a class="headerlink" href="#utils.plotUtils" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#utils.plotUtils" title="utils.plotUtils"><tt class="xref py py-class docutils literal"><span class="pre">utils.plotUtils</span></tt></a></p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html">
+          <img class="logo" src="_static/davitpy.svg" alt="Logo" style="width: 80%;"/>
+        </a></p>
+  <div class="sphinxlocaltoc">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">utils.plotUtils</a><ul>
+<li><a class="reference internal" href="#module-utils-plotutils"><strong>Module</strong>: utils.plotUtils</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="utils.timeUtils.html"
+                        title="previous chapter">utils.timeUtils</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="utils.geoPack.html"
+                        title="next chapter">utils.geoPack</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/utils.plotUtils.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="utils.geoPack.html" title="utils.geoPack"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="utils.timeUtils.html" title="utils.timeUtils"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="utils.html" >utils</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, VT SuperDARN Lab and Friends.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>
