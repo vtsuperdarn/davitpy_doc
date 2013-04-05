@@ -1,0 +1,611 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>utils.plotUtils &mdash; davitpy</title>
+    
+    <link rel="stylesheet" href="../../_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../_static/cloud.js"></script>
+    <link rel="top" title="davitpy" href="../../index.html" />
+    <link rel="up" title="utils" href="../utils.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../utils.html" accesskey="U">utils</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for utils.plotUtils</h1><div class="highlight"><pre>
+<span class="c"># Copyright (C) 2012  VT SuperDARN Lab</span>
+<span class="c"># Full license can be found in LICENSE.txt</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">*********************</span>
+<span class="sd">**Module**: utils.plotUtils</span>
+<span class="sd">*********************</span>
+<span class="sd">Basic plotting tools</span>
+
+<span class="sd">**Functions**:</span>
+<span class="sd">	* :func:`plotUtils.map`: Create empty map </span>
+<span class="sd">	* :func:`plotUtils.genCmap`: </span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits</span> <span class="kn">import</span> <span class="n">basemap</span>
+
+
+<span class="c">################################################################################</span>
+<span class="c">################################################################################</span>
+<div class="viewcode-block" id="mapObj"><a class="viewcode-back" href="../../utils.plotUtils.html#utils.plotUtils.mapObj">[docs]</a><span class="k">class</span> <span class="nc">mapObj</span><span class="p">(</span><span class="n">basemap</span><span class="o">.</span><span class="n">Basemap</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;This class wraps arround :class:`mpl_toolkits.basemap.Basemap` (&lt;http://tinyurl.com/d4rzmfo&gt;)</span>
+<span class="sd">	</span>
+<span class="sd">	**Members**: </span>
+<span class="sd">		* **coords** (str): map coordinate system (&#39;geo&#39;, &#39;mag&#39;, &#39;mlt&#39;).</span>
+<span class="sd">		* all members of :class:`mpl_toolkits.basemap.Basemap` (&lt;http://tinyurl.com/d4rzmfo&gt;) </span>
+<span class="sd">	**Methods**:</span>
+<span class="sd">		* all methods of :class:`mpl_toolkits.basemap.Basemap` (&lt;http://tinyurl.com/d4rzmfo&gt;)</span>
+<span class="sd">	**Example**:</span>
+<span class="sd">		::</span>
+
+<span class="sd">			# Create the map</span>
+<span class="sd">			myMap = utils.mapObj(boundinglat=30, coords=&#39;mag&#39;)</span>
+<span class="sd">			# Plot the geographic and geomagnetic North Poles</span>
+<span class="sd">			# First convert from lat/lon to map projection coordinates...</span>
+<span class="sd">			x, y = myMap(0., 90., coords=&#39;geo&#39;)</span>
+<span class="sd">			# ...then plot</span>
+<span class="sd">			myMap.scatter(x, y, zorder=2, color=&#39;r&#39;)</span>
+<span class="sd">			# Convert to map projection...</span>
+<span class="sd">			x, y = myMap(0., 90., coords=&#39;mag&#39;)</span>
+<span class="sd">			# ...and plot</span>
+<span class="sd">			myMap.scatter(x, y, zorder=2, color=&#39;g&#39;)</span>
+
+<span class="sd">	.. note:: Once the map is created, all plotting calls will be assumed to already be in the map&#39;s declared coordinate system given by **coords**.</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="mapObj.__init__"><a class="viewcode-back" href="../../utils.plotUtils.html#utils.plotUtils.mapObj.__init__">[docs]</a>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datetime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="s">&#39;geo&#39;</span><span class="p">,</span> 
+		<span class="n">projection</span><span class="o">=</span><span class="s">&#39;stere&#39;</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="s">&#39;l&#39;</span><span class="p">,</span> <span class="n">dateTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
+		<span class="n">lat_0</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">lon_0</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">boundinglat</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
+		<span class="n">fillContinents</span><span class="o">=</span><span class="s">&#39;.8&#39;</span><span class="p">,</span> <span class="n">fillOceans</span><span class="o">=</span><span class="s">&#39;None&#39;</span><span class="p">,</span> <span class="n">fillLakes</span><span class="o">=</span><span class="s">&#39;white&#39;</span><span class="p">,</span> <span class="n">coastLineWidth</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> 
+		<span class="n">grid</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">gridLabels</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Create empty map </span>
+<span class="sd">		</span>
+<span class="sd">		**Args**: </span>
+<span class="sd">			* **[limits]**: [llLat, llLon, urLat, urLon] lower-left and upper-right corners coordinates    </span>
+<span class="sd">			* **[width, height]**: width and height in m from the (lat_0, lon_0) center</span>
+<span class="sd">			* **[lon_0]**: center meridian (default is -70E)    </span>
+<span class="sd">			* **[lat_0]**: center latitude (default is -90E)</span>
+<span class="sd">			* **[boundingLat]**: bounding latitude (default it +/-20)    </span>
+<span class="sd">			* **[grid]**: show/hide parallels and meridians grid    </span>
+<span class="sd">			* **[fill_continents]**: continent color. Default is &#39;grey&#39;    </span>
+<span class="sd">			* **[fill_water]**: water color. Default is &#39;None&#39;    </span>
+<span class="sd">			* **[coords]**: &#39;geo&#39;</span>
+<span class="sd">			* **[dateTime]** (datetime.datetime): necessary for MLT plots if you want the continents to be plotted</span>
+<span class="sd">			* **[kwargs]**: See &lt;http://tinyurl.com/d4rzmfo&gt; for more keywords</span>
+<span class="sd">		**Returns**:</span>
+<span class="sd">			* **map**: a Basemap object (&lt;http://tinyurl.com/d4rzmfo&gt;)</span>
+<span class="sd">		**Example**:</span>
+<span class="sd">			::</span>
+
+<span class="sd">				myMap = mapObj(lat_0=50, lon_0=-95, width=111e3*60, height=111e3*60)</span>
+<span class="sd">				</span>
+<span class="sd">		written by Sebastien, 2013-02</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">aacgm</span>
+		<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+		<span class="kn">from</span> <span class="nn">pylab</span> <span class="kn">import</span> <span class="n">text</span>
+		<span class="kn">import</span> <span class="nn">math</span>
+		<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">_coordsDict</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;mag&#39;</span><span class="p">:</span> <span class="s">&#39;AACGM&#39;</span><span class="p">,</span>
+							<span class="s">&#39;geo&#39;</span><span class="p">:</span> <span class="s">&#39;Geographic&#39;</span><span class="p">,</span>
+							<span class="s">&#39;mlt&#39;</span><span class="p">:</span> <span class="s">&#39;MLT&#39;</span><span class="p">}</span>
+
+		<span class="k">if</span> <span class="n">coords</span> <span class="ow">is</span> <span class="s">&#39;mlt&#39;</span><span class="p">:</span>				
+			<span class="k">print</span> <span class="s">&#39;MLT coordinates not implemented yet.&#39;</span>
+			<span class="k">return</span>
+
+		<span class="c"># Add an extra member to the Basemap class</span>
+		<span class="k">if</span> <span class="n">coords</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">coords</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coordsDict</span><span class="p">:</span>
+			<span class="k">print</span> <span class="s">&#39;Invalid coordinate system given in coords ({}): setting &quot;geo&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
+			<span class="n">coords</span> <span class="o">=</span> <span class="s">&#39;geo&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">coords</span> <span class="o">=</span> <span class="n">coords</span>
+
+		<span class="c"># Set map projection limits and center point depending on hemisphere selection</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">lat_0</span><span class="p">:</span> 
+			<span class="n">lat_0</span> <span class="o">=</span> <span class="mf">90.</span>
+			<span class="k">if</span> <span class="n">boundinglat</span><span class="p">:</span> <span class="n">lat_0</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">copysign</span><span class="p">(</span><span class="n">lat_0</span><span class="p">,</span> <span class="n">boundinglat</span><span class="p">)</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">lon_0</span><span class="p">:</span> 
+			<span class="n">lon_0</span> <span class="o">=</span> <span class="o">-</span><span class="mf">100.</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span> <span class="o">==</span> <span class="s">&#39;mag&#39;</span><span class="p">:</span> 
+				<span class="n">_</span><span class="p">,</span> <span class="n">lon_0</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">aacgm</span><span class="o">.</span><span class="n">aacgmConv</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">lon_0</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">boundinglat</span><span class="p">:</span>
+			<span class="n">width</span> <span class="o">=</span> <span class="n">height</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="mf">111e3</span><span class="o">*</span><span class="p">(</span> <span class="nb">abs</span><span class="p">(</span><span class="n">lat_0</span> <span class="o">-</span> <span class="n">boundinglat</span><span class="p">)</span> <span class="p">)</span>
+
+		<span class="c"># Initialize map</span>
+		<span class="n">basemap</span><span class="o">.</span><span class="n">Basemap</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span> 
+				<span class="n">lat_0</span><span class="o">=</span><span class="n">lat_0</span><span class="p">,</span> <span class="n">lon_0</span><span class="o">=</span><span class="n">lon_0</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+		<span class="c"># Add continents</span>
+		<span class="k">if</span> <span class="n">coords</span> <span class="ow">is</span> <span class="ow">not</span> <span class="s">&#39;mlt&#39;</span> <span class="ow">or</span> <span class="n">dateTime</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">drawcoastlines</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="n">coastLineWidth</span><span class="p">)</span>
+			<span class="c"># self.drawmapboundary(fill_color=fillOceans)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">fillcontinents</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">fillContinents</span><span class="p">,</span> <span class="n">lake_color</span><span class="o">=</span><span class="n">fillLakes</span><span class="p">)</span>
+
+		<span class="c"># Add coordinate spec</span>
+		<span class="n">text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">urcrnrx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">urcrnry</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coordsDict</span><span class="p">[</span><span class="n">coords</span><span class="p">]</span><span class="o">+</span><span class="s">&#39; coordinates&#39;</span><span class="p">,</span> 
+				<span class="n">rotation</span><span class="o">=-</span><span class="mf">90.</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">&#39;top&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+		<span class="c"># draw parallels and meridians.</span>
+		<span class="k">if</span> <span class="n">grid</span><span class="p">:</span>
+			<span class="n">parallels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">80.</span><span class="p">,</span><span class="mf">81.</span><span class="p">,</span><span class="mf">20.</span><span class="p">)</span>
+			<span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">drawparallels</span><span class="p">(</span><span class="n">parallels</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;.6&#39;</span><span class="p">)</span>
+			<span class="c"># label parallels on map</span>
+			<span class="k">if</span> <span class="n">gridLabels</span><span class="p">:</span> 
+				<span class="n">lablon</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">llcrnrlon</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span>
+				<span class="n">rotate_label</span> <span class="o">=</span> <span class="n">lablon</span> <span class="o">-</span> <span class="n">lon_0</span> <span class="k">if</span> <span class="n">lat_0</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">lon_0</span> <span class="o">-</span> <span class="n">lablon</span> <span class="o">+</span> <span class="mf">180.</span>
+				<span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">basemap</span><span class="o">.</span><span class="n">Basemap</span><span class="o">.</span><span class="n">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lablon</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">parallels</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="n">parallels</span><span class="p">)</span>
+				<span class="k">for</span> <span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">ip</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">parallels</span><span class="p">):</span>
+					<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmin</span> <span class="o">&lt;=</span> <span class="n">ix</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmax</span><span class="p">:</span> <span class="k">continue</span>
+					<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ymin</span> <span class="o">&lt;=</span> <span class="n">iy</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ymax</span><span class="p">:</span> <span class="k">continue</span>
+					<span class="n">text</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span> <span class="n">iy</span><span class="p">,</span> <span class="s">r&quot;{:3.0f}$^\circ$&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ip</span><span class="p">),</span> 
+							<span class="n">rotation</span><span class="o">=</span><span class="n">rotate_label</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">)</span>
+			<span class="c"># label meridians on bottom and left</span>
+			<span class="n">meridians</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">180.</span><span class="p">,</span><span class="mf">181.</span><span class="p">,</span><span class="mf">20.</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">gridLabels</span><span class="p">:</span> 
+				<span class="n">merLabels</span> <span class="o">=</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span><span class="bp">False</span><span class="p">,</span><span class="bp">False</span><span class="p">,</span><span class="bp">True</span><span class="p">]</span>
+			<span class="k">else</span><span class="p">:</span> 
+				<span class="n">merLabels</span> <span class="o">=</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span><span class="bp">False</span><span class="p">,</span><span class="bp">False</span><span class="p">,</span><span class="bp">False</span><span class="p">]</span>
+			<span class="c"># draw meridians</span>
+			<span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">drawmeridians</span><span class="p">(</span><span class="n">meridians</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">merLabels</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;.6&#39;</span><span class="p">)</span>
+
+    </div>
+	<span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">aacgm</span>
+		<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+		<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+		<span class="kn">import</span> <span class="nn">inspect</span>
+
+		<span class="k">if</span> <span class="n">coords</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">coords</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coordsDict</span><span class="p">:</span>
+			<span class="k">print</span> <span class="s">&#39;Invalid coordinate system given in coords ({}): setting &quot;{}&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
+			<span class="n">coords</span> <span class="o">=</span> <span class="bp">None</span>
+
+		<span class="k">if</span> <span class="n">coords</span> <span class="ow">and</span> <span class="n">coords</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+			<span class="n">trans</span> <span class="o">=</span> <span class="n">coords</span><span class="o">+</span><span class="s">&#39;-&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span>
+			<span class="k">if</span> <span class="n">trans</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;geo-mag&#39;</span><span class="p">,</span><span class="s">&#39;mag-geo&#39;</span><span class="p">]:</span>
+				<span class="n">flag</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">trans</span> <span class="o">==</span> <span class="s">&#39;geo-mag&#39;</span> <span class="k">else</span> <span class="mi">1</span>
+				<span class="k">try</span><span class="p">:</span>
+					<span class="n">nx</span><span class="p">,</span> <span class="n">ny</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+					<span class="n">xt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+					<span class="n">yt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+					<span class="n">shape</span> <span class="o">=</span> <span class="n">xt</span><span class="o">.</span><span class="n">shape</span>	
+					<span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">aacgm</span><span class="o">.</span><span class="n">aacgmConvArr</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">yt</span><span class="o">.</span><span class="n">flatten</span><span class="p">()),</span> <span class="nb">list</span><span class="p">(</span><span class="n">xt</span><span class="o">.</span><span class="n">flatten</span><span class="p">()),</span> <span class="p">[</span><span class="mf">0.</span><span class="p">]</span><span class="o">*</span><span class="n">nx</span><span class="p">,</span> <span class="n">flag</span><span class="p">)</span>
+					<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+					<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+				<span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+					<span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">aacgm</span><span class="o">.</span><span class="n">aacgmConv</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">flag</span><span class="p">)</span>
+
+
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span> <span class="ow">is</span> <span class="s">&#39;geo&#39;</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">basemap</span><span class="o">.</span><span class="n">Basemap</span><span class="o">.</span><span class="n">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="n">inverse</span><span class="p">)</span>
+
+		<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span> <span class="ow">is</span> <span class="s">&#39;mag&#39;</span><span class="p">:</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="n">callerFile</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">callerName</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getouterframes</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">())[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+			<span class="k">except</span><span class="p">:</span> 
+				<span class="k">return</span> <span class="n">basemap</span><span class="o">.</span><span class="n">Basemap</span><span class="o">.</span><span class="n">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="n">inverse</span><span class="p">)</span>
+			<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="mf">90.</span><span class="p">:</span>
+				<span class="k">return</span> <span class="n">basemap</span><span class="o">.</span><span class="n">Basemap</span><span class="o">.</span><span class="n">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="n">inverse</span><span class="p">)</span>
+			<span class="k">if</span> <span class="s">&#39;mpl_toolkits&#39;</span> <span class="ow">in</span> <span class="n">callerFile</span> <span class="ow">and</span> <span class="n">callerName</span> <span class="ow">is</span> <span class="s">&#39;_readboundarydata&#39;</span><span class="p">:</span>
+				<span class="k">if</span> <span class="ow">not</span> <span class="n">inverse</span><span class="p">:</span>
+					<span class="k">try</span><span class="p">:</span>
+						<span class="n">nx</span><span class="p">,</span> <span class="n">ny</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+						<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+						<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+						<span class="n">shape</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+						<span class="n">yout</span><span class="p">,</span> <span class="n">xout</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">aacgm</span><span class="o">.</span><span class="n">aacgmConvArr</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">flatten</span><span class="p">()),</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">flatten</span><span class="p">()),</span> <span class="p">[</span><span class="mf">0.</span><span class="p">]</span><span class="o">*</span><span class="n">nx</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+						<span class="n">xout</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">xout</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+						<span class="n">yout</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">yout</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+					<span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+						<span class="n">yout</span><span class="p">,</span> <span class="n">xout</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">aacgm</span><span class="o">.</span><span class="n">aacgmConv</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+					<span class="k">return</span> <span class="n">basemap</span><span class="o">.</span><span class="n">Basemap</span><span class="o">.</span><span class="n">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xout</span><span class="p">,</span> <span class="n">yout</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="n">inverse</span><span class="p">)</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="k">return</span> <span class="n">basemap</span><span class="o">.</span><span class="n">Basemap</span><span class="o">.</span><span class="n">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="n">inverse</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">return</span> <span class="n">basemap</span><span class="o">.</span><span class="n">Basemap</span><span class="o">.</span><span class="n">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="n">inverse</span><span class="p">)</span>
+
+		<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span> <span class="ow">is</span> <span class="s">&#39;mlt&#39;</span><span class="p">:</span>
+			<span class="n">callerFile</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">callerName</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getouterframes</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">())[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+
+
+	<span class="k">def</span> <span class="nf">_readboundarydata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">as_polygons</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">aacgm</span>
+		<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+		<span class="kn">import</span> <span class="nn">_geoslib</span>
+		<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span> <span class="ow">is</span> <span class="s">&#39;mag&#39;</span><span class="p">:</span>
+			<span class="n">nPts</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_boundarypolyll</span><span class="o">.</span><span class="n">boundary</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+			<span class="n">lats</span><span class="p">,</span> <span class="n">lons</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">aacgm</span><span class="o">.</span><span class="n">aacgmConvArr</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_boundarypolyll</span><span class="o">.</span><span class="n">boundary</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]),</span> 
+							<span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_boundarypolyll</span><span class="o">.</span><span class="n">boundary</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]),</span> 
+							<span class="p">[</span><span class="mf">0.</span><span class="p">]</span><span class="o">*</span><span class="n">nPts</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+			<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">lons</span><span class="p">,</span><span class="n">lats</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+			<span class="n">oldgeom</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_boundarypolyll</span><span class="p">)</span>
+			<span class="n">newgeom</span> <span class="o">=</span> <span class="n">_geoslib</span><span class="o">.</span><span class="n">Polygon</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">fix</span><span class="p">()</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_boundarypolyll</span> <span class="o">=</span> <span class="n">newgeom</span>
+			<span class="n">out</span> <span class="o">=</span> <span class="n">basemap</span><span class="o">.</span><span class="n">Basemap</span><span class="o">.</span><span class="n">_readboundarydata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span><span class="c">#, as_polygons=as_polygons)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_boundarypolyll</span> <span class="o">=</span> <span class="n">oldgeom</span>
+			<span class="k">return</span> <span class="n">out</span>
+		<span class="k">else</span><span class="p">:</span> 
+			<span class="k">return</span> <span class="n">basemap</span><span class="o">.</span><span class="n">Basemap</span><span class="o">.</span><span class="n">_readboundarydata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span><span class="c">#, as_polygons=as_polygons)</span>
+</div>
+<div class="viewcode-block" id="genCmap"><a class="viewcode-back" href="../../utils.plotUtils.html#utils.plotUtils.genCmap">[docs]</a><span class="k">def</span> <span class="nf">genCmap</span><span class="p">(</span><span class="n">param</span><span class="p">,</span><span class="n">scale</span><span class="p">,</span><span class="n">colors</span><span class="o">=</span><span class="s">&#39;lasse&#39;</span><span class="p">,</span><span class="n">lowGray</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	******************************</span>
+<span class="sd">	genCmap(fig,coll,param,scale,pos,[colors]):</span>
+<span class="sd">	</span>
+<span class="sd">	generates a colormap and plots a colorbar</span>
+
+<span class="sd">	INPUTS:</span>
+<span class="sd">		fig: the parent figure</span>
+<span class="sd">		coll: the collection of items (e.g. polygons) being mapped </span>
+<span class="sd">			to this colormap</span>
+<span class="sd">		param: the parameter being plotted, valid for &#39;velocity&#39;,</span>
+<span class="sd">			&#39;power&#39;, &#39;width&#39;, &#39;elevation&#39;, &#39;phi0&#39;</span>
+<span class="sd">		scale: the max and min values of the color scale in list form</span>
+<span class="sd">		pos: the position of the parent plot, NOT of the COLORBAR</span>
+<span class="sd">		[colors]: a string indicating which colorbar to use, valid </span>
+<span class="sd">			inputs are &#39;lasse&#39;, &#39;aj&#39;</span>
+<span class="sd">			default: &#39;lasse&#39;</span>
+<span class="sd">	OUTPUTS:</span>
+
+<span class="sd">	EXAMPLE:</span>
+<span class="sd">		genCmap(myFig,polyCollection,&#39;velocity&#39;,[-200,200],pos)</span>
+<span class="sd">		</span>
+<span class="sd">	Written by AJ 20120820</span>
+<span class="sd">	</span>
+<span class="sd">	*******************************</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="kn">import</span> <span class="nn">matplotlib</span><span class="o">,</span><span class="nn">numpy</span>
+	<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plot</span>
+	
+	<span class="c">#the MPL colormaps we will be using</span>
+	<span class="n">cmj</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span>
+	<span class="n">cmpr</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">prism</span>
+	
+	<span class="c">#check for a velocity plot</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">param</span> <span class="o">==</span> <span class="s">&#39;velocity&#39;</span><span class="p">):</span>
+		
+		<span class="c">#check for what color scale we want to use</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">colors</span> <span class="o">==</span> <span class="s">&#39;aj&#39;</span><span class="p">):</span>
+			<span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">lowGray</span><span class="p">):</span>
+				<span class="c">#define our discrete colorbar</span>
+				<span class="n">cmap</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">([</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">142</span><span class="p">),</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">125</span><span class="p">),</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">11</span><span class="p">),</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">1</span><span class="p">),</span>\
+				<span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">175</span><span class="p">),</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">158</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">32</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">37</span><span class="p">)])</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">cmap</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">([</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">142</span><span class="p">),</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">125</span><span class="p">),</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">11</span><span class="p">),</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">1</span><span class="p">),</span><span class="s">&#39;.6&#39;</span><span class="p">,</span>\
+				<span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">175</span><span class="p">),</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">158</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">32</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">37</span><span class="p">)])</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">lowGray</span><span class="p">):</span>
+				<span class="c">#define our discrete colorbar</span>
+				<span class="n">cmap</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">([</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">9</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">8</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">7</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">65</span><span class="p">),</span>\
+				<span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">142</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">45</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">3</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">1</span><span class="p">)])</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">cmap</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">([</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">9</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">8</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">7</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">65</span><span class="p">),</span><span class="s">&#39;.6&#39;</span><span class="p">,</span>\
+				<span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">142</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">45</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">3</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">1</span><span class="p">)])</span>
+				
+		<span class="c">#define the boundaries for color assignments</span>
+		<span class="n">bounds</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">scale</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">scale</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">7</span><span class="p">))</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">lowGray</span><span class="p">):</span>
+			<span class="n">bounds</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">15.</span>
+			<span class="n">bounds</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">bounds</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mf">15.</span><span class="p">)</span>
+		<span class="n">bounds</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">bounds</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mf">50000.</span><span class="p">)</span>
+		<span class="n">bounds</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bounds</span><span class="p">,</span><span class="mf">50000.</span><span class="p">)</span>
+		<span class="n">norm</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">BoundaryNorm</span><span class="p">(</span><span class="n">bounds</span><span class="p">,</span> <span class="n">cmap</span><span class="o">.</span><span class="n">N</span><span class="p">)</span>
+		
+	<span class="k">elif</span><span class="p">(</span><span class="n">param</span> <span class="o">==</span> <span class="s">&#39;phi0&#39;</span><span class="p">):</span>
+		<span class="c">#check for what color scale we want to use</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">colors</span> <span class="o">==</span> <span class="s">&#39;aj&#39;</span><span class="p">):</span>
+			<span class="c">#define our discrete colorbar</span>
+			<span class="n">cmap</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">([</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">142</span><span class="p">),</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">125</span><span class="p">),</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">11</span><span class="p">),</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">1</span><span class="p">),</span>\
+			<span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">18</span><span class="p">),</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">16</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">32</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">37</span><span class="p">)])</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="c">#define our discrete colorbar</span>
+			<span class="n">cmap</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">([</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">9</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">8</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">7</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">65</span><span class="p">),</span>\
+			<span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">142</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">45</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">3</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">1</span><span class="p">)])</span>
+			
+		<span class="c">#define the boundaries for color assignments</span>
+		<span class="n">bounds</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">scale</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">scale</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">9</span><span class="p">)</span>
+		<span class="n">norm</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">BoundaryNorm</span><span class="p">(</span><span class="n">bounds</span><span class="p">,</span> <span class="n">cmap</span><span class="o">.</span><span class="n">N</span><span class="p">)</span>
+		
+	<span class="k">elif</span><span class="p">(</span><span class="n">param</span> <span class="o">==</span> <span class="s">&#39;grid&#39;</span><span class="p">):</span>
+		<span class="c">#check what color scale we want to use</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">colors</span> <span class="o">==</span> <span class="s">&#39;aj&#39;</span><span class="p">):</span>
+			<span class="c">#define our discrete colorbar</span>
+			<span class="n">cmap</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">([</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">175</span><span class="p">),</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">17</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">32</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">37</span><span class="p">),</span>\
+			<span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">142</span><span class="p">),</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">13</span><span class="p">),</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">11</span><span class="p">),</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">10</span><span class="p">)])</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="c">#define our discrete colorbar</span>
+			<span class="n">cmap</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">([</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">1</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">3</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">45</span><span class="p">),</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">142</span><span class="p">),</span>\
+			<span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">65</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">7</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">8</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">9</span><span class="p">)])</span>
+			
+		<span class="c">#define the boundaries for color assignments</span>
+		<span class="n">bounds</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">scale</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">scale</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">8</span><span class="p">))</span>
+		<span class="n">bounds</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bounds</span><span class="p">,</span><span class="mf">50000.</span><span class="p">)</span>
+		<span class="n">norm</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">BoundaryNorm</span><span class="p">(</span><span class="n">bounds</span><span class="p">,</span> <span class="n">cmap</span><span class="o">.</span><span class="n">N</span><span class="p">)</span>
+		
+	<span class="c">#if its a non-velocity plot</span>
+	<span class="k">else</span><span class="p">:</span>
+		
+		<span class="c">#check what color scale we want to use</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">colors</span> <span class="o">==</span> <span class="s">&#39;aj&#39;</span><span class="p">):</span>
+			<span class="c">#define our discrete colorbar</span>
+			<span class="n">cmap</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">([</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">175</span><span class="p">),</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">158</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">32</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">37</span><span class="p">),</span>\
+			<span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">142</span><span class="p">),</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">13</span><span class="p">),</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">11</span><span class="p">),</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">10</span><span class="p">)])</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="c">#define our discrete colorbar</span>
+			<span class="n">cmap</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">([</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">1</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">3</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">45</span><span class="p">),</span><span class="n">cmpr</span><span class="p">(</span><span class="o">.</span><span class="mi">142</span><span class="p">),</span>\
+			<span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">65</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">7</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">8</span><span class="p">),</span><span class="n">cmj</span><span class="p">(</span><span class="o">.</span><span class="mi">9</span><span class="p">)])</span>
+			
+		<span class="c">#define the boundaries for color assignments</span>
+		<span class="n">bounds</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">scale</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">scale</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">8</span><span class="p">))</span>
+		<span class="n">bounds</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bounds</span><span class="p">,</span><span class="mf">50000.</span><span class="p">)</span>
+		<span class="n">norm</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">BoundaryNorm</span><span class="p">(</span><span class="n">bounds</span><span class="p">,</span> <span class="n">cmap</span><span class="o">.</span><span class="n">N</span><span class="p">)</span>
+		
+
+	<span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s">&#39;w&#39;</span><span class="p">,</span><span class="mf">1.0</span><span class="p">)</span>
+	<span class="n">cmap</span><span class="o">.</span><span class="n">set_over</span><span class="p">(</span><span class="s">&#39;w&#39;</span><span class="p">,</span><span class="mf">1.0</span><span class="p">)</span>
+	<span class="c">#cmap.set_under(&#39;w&#39;,1.0)</span>
+
+	<span class="k">return</span> <span class="n">cmap</span><span class="p">,</span><span class="n">norm</span><span class="p">,</span><span class="n">bounds</span>
+	
+	<span class="c">#cb = drawCB(fig,coll,cmap,norm,map=map,pos=pos)</span>
+	<span class="c">#l = []</span>
+	<span class="c">##define the colorbar labels</span>
+	<span class="c">#for i in range(0,len(bounds)):</span>
+		<span class="c">#if(param == &#39;phi0&#39;):</span>
+			<span class="c">#ln = 4</span>
+			<span class="c">#if(bounds[i] == 0): ln = 3</span>
+			<span class="c">#elif(bounds[i] &lt; 0): ln = 5</span>
+			<span class="c">#l.append(str(bounds[i])[:ln])</span>
+			<span class="c">#continue</span>
+		<span class="c">#if((i == 0 and param == &#39;velocity&#39;) or i == len(bounds)-1):</span>
+			<span class="c">#l.append(&#39; &#39;)</span>
+			<span class="c">#continue</span>
+		<span class="c">#l.append(str(int(bounds[i])))</span>
+	<span class="c">#cb.ax.set_yticklabels(l)</span>
+		
+	<span class="c">##set colorbar ticklabel size</span>
+	<span class="c">#for t in cb.ax.get_yticklabels():</span>
+		<span class="c">#t.set_fontsize(9)</span>
+	
+	<span class="c">##set colorbar label</span>
+	<span class="c">#if(param == &#39;velocity&#39;): cb.set_label(&#39;Velocity [m/s]&#39;,size=10)</span>
+	<span class="c">#if(param == &#39;grid&#39;): cb.set_label(&#39;Velocity [m/s]&#39;,size=10)</span>
+	<span class="c">#if(param == &#39;power&#39;): cb.set_label(&#39;Power [dB]&#39;,size=10)</span>
+	<span class="c">#if(param == &#39;width&#39;): cb.set_label(&#39;Spec Wid [m/s]&#39;,size=10)</span>
+	<span class="c">#if(param == &#39;elevation&#39;): cb.set_label(&#39;Elev [deg]&#39;,size=10)</span>
+	<span class="c">#if(param == &#39;phi0&#39;): cb.set_label(&#39;Phi0 [rad]&#39;,size=10)</span>
+	
+	<span class="c">#return</span>
+</div>
+<span class="k">def</span> <span class="nf">drawCB</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span><span class="n">coll</span><span class="p">,</span><span class="n">cmap</span><span class="p">,</span><span class="n">norm</span><span class="p">,</span><span class="nb">map</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]):</span>
+	<span class="kn">import</span> <span class="nn">matplotlib</span><span class="o">,</span><span class="nn">numpy</span>
+	<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plot</span>
+
+	<span class="k">if</span><span class="p">(</span><span class="nb">map</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+		<span class="c">#create a new axes for the colorbar</span>
+		<span class="n">cax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+.</span><span class="mo">03</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.03</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span>
+		<span class="c">#set the colormap and boundaries for the collection</span>
+		<span class="c">#of plotted items</span>
+		<span class="k">if</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">coll</span><span class="p">,</span><span class="nb">list</span><span class="p">)):</span>
+			<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">coll</span><span class="p">:</span>
+				<span class="n">c</span><span class="o">.</span><span class="n">set_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
+				<span class="n">c</span><span class="o">.</span><span class="n">set_norm</span><span class="p">(</span><span class="n">norm</span><span class="p">)</span>
+				<span class="n">cb</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">coll</span><span class="o">.</span><span class="n">set_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
+			<span class="n">coll</span><span class="o">.</span><span class="n">set_norm</span><span class="p">(</span><span class="n">norm</span><span class="p">)</span>
+			<span class="n">cb</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">coll</span><span class="p">,</span><span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">if</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">coll</span><span class="p">,</span><span class="nb">list</span><span class="p">)):</span>
+			<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">coll</span><span class="p">:</span>
+				<span class="n">c</span><span class="o">.</span><span class="n">set_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
+				<span class="n">c</span><span class="o">.</span><span class="n">set_norm</span><span class="p">(</span><span class="n">norm</span><span class="p">)</span>
+				<span class="n">cb</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">location</span><span class="o">=</span><span class="s">&#39;right&#39;</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">coll</span><span class="o">.</span><span class="n">set_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
+			<span class="n">coll</span><span class="o">.</span><span class="n">set_norm</span><span class="p">(</span><span class="n">norm</span><span class="p">)</span>
+			<span class="n">cb</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">coll</span><span class="p">,</span><span class="n">location</span><span class="o">=</span><span class="s">&#39;right&#39;</span><span class="p">,</span><span class="n">pad</span><span class="o">=</span><span class="s">&quot;5%&quot;</span><span class="p">)</span>
+	
+	<span class="n">cb</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s">&#39;y&#39;</span><span class="p">,</span><span class="n">direction</span><span class="o">=</span><span class="s">&#39;out&#39;</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">cb</span>
+	
+
+<div class="viewcode-block" id="curvedEarthAxes"><a class="viewcode-back" href="../../utils.plotUtils.html#utils.plotUtils.curvedEarthAxes">[docs]</a><span class="k">def</span> <span class="nf">curvedEarthAxes</span><span class="p">(</span><span class="n">rect</span><span class="o">=</span><span class="mi">111</span><span class="p">,</span> <span class="n">fig</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">maxground</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">minalt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">maxalt</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">Re</span><span class="o">=</span><span class="mf">6371.</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Create curved axes in ground-range and altitude</span>
+<span class="sd">		</span>
+<span class="sd">	**Args**: </span>
+<span class="sd">		* [**rect**]: subplot spcification</span>
+<span class="sd">		* [**fig**]: A pylab.figure object (default to gcf)</span>
+<span class="sd">		* [**maxground**]: maximum ground range [km]</span>
+<span class="sd">		* [**minalt**]: lowest altitude limit [km]</span>
+<span class="sd">		* [**maxalt**]: highest altitude limit [km]</span>
+<span class="sd">		* [**Re**]: Earth radius</span>
+<span class="sd">	**Returns**:</span>
+<span class="sd">		* **ax**: matplotlib.axes object containing formatting</span>
+<span class="sd">		* **aax**: matplotlib.axes object containing data</span>
+<span class="sd">	**Example**:</span>
+<span class="sd">		::</span>
+
+<span class="sd">			import numpy as np</span>
+<span class="sd">			from utils import plotUtils</span>
+<span class="sd">			ax, aax = plotUtils.curvedEarthAxes()</span>
+<span class="sd">			th = np.linspace(0, ax.maxground/ax.Re, 50)</span>
+<span class="sd">			r = np.linspace(ax.Re+ax.minalt, ax.Re+ax.maxalt, 20)</span>
+<span class="sd">			Z = exp( -(r - 300 - ax.Re)**2 / 100**2 ) * np.cos(th[:, np.newaxis]/th.max()*4*np.pi)</span>
+<span class="sd">			x, y = np.meshgrid(th, r)</span>
+<span class="sd">			im = aax.pcolormesh(x, y, Z.T)</span>
+<span class="sd">			ax.grid()</span>
+
+<span class="sd">			</span>
+<span class="sd">	written by Sebastien, 2013-04</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">matplotlib.transforms</span> <span class="kn">import</span> <span class="n">Affine2D</span><span class="p">,</span> <span class="n">Transform</span>
+    <span class="kn">import</span> <span class="nn">mpl_toolkits.axisartist.floating_axes</span> <span class="kn">as</span> <span class="nn">floating_axes</span>
+    <span class="kn">from</span> <span class="nn">matplotlib.projections</span> <span class="kn">import</span> <span class="n">polar</span>
+    <span class="kn">from</span> <span class="nn">mpl_toolkits.axisartist.grid_finder</span> <span class="kn">import</span> <span class="n">FixedLocator</span><span class="p">,</span> <span class="n">DictFormatter</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+    <span class="kn">from</span> <span class="nn">pylab</span> <span class="kn">import</span> <span class="n">gcf</span>
+
+    <span class="n">ang</span> <span class="o">=</span> <span class="n">maxground</span> <span class="o">/</span> <span class="n">Re</span>
+    <span class="n">angle_ticks</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="s">&quot;0&quot;</span><span class="p">),</span>
+                   <span class="p">(</span><span class="o">.</span><span class="mi">25</span><span class="o">*</span><span class="n">ang</span><span class="p">,</span> <span class="s">&quot;{:.0f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">maxground</span><span class="o">*.</span><span class="mi">25</span><span class="p">)),</span>
+                   <span class="p">(</span><span class="o">.</span><span class="mi">5</span><span class="o">*</span><span class="n">ang</span><span class="p">,</span> <span class="s">&quot;{:.0f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">maxground</span><span class="o">*.</span><span class="mi">5</span><span class="p">)),</span>
+                   <span class="p">(</span><span class="o">.</span><span class="mi">75</span><span class="o">*</span><span class="n">ang</span><span class="p">,</span> <span class="s">&quot;{:.0f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">maxground</span><span class="o">*.</span><span class="mi">75</span><span class="p">))]</span>
+    <span class="n">grid_locator1</span> <span class="o">=</span> <span class="n">FixedLocator</span><span class="p">([</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">angle_ticks</span><span class="p">])</span>
+    <span class="n">tick_formatter1</span> <span class="o">=</span> <span class="n">DictFormatter</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">angle_ticks</span><span class="p">))</span>
+
+    
+    <span class="n">altran</span> <span class="o">=</span> <span class="n">maxalt</span> <span class="o">-</span> <span class="n">minalt</span>
+    <span class="n">alt_ticks</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="s">&quot;0&quot;</span><span class="p">),</span>
+                   <span class="p">(</span><span class="o">.</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">altran</span><span class="p">)</span><span class="o">+</span><span class="n">Re</span><span class="p">,</span> <span class="s">&quot;{:.0f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">((</span><span class="n">altran</span><span class="p">)</span><span class="o">*.</span><span class="mi">2</span><span class="p">)),</span>
+                   <span class="p">(</span><span class="o">.</span><span class="mi">4</span><span class="o">*</span><span class="p">(</span><span class="n">altran</span><span class="p">)</span><span class="o">+</span><span class="n">Re</span><span class="p">,</span> <span class="s">&quot;{:.0f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">((</span><span class="n">altran</span><span class="p">)</span><span class="o">*.</span><span class="mi">4</span><span class="p">)),</span>
+                   <span class="p">(</span><span class="o">.</span><span class="mi">6</span><span class="o">*</span><span class="p">(</span><span class="n">altran</span><span class="p">)</span><span class="o">+</span><span class="n">Re</span><span class="p">,</span> <span class="s">&quot;{:.0f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">((</span><span class="n">altran</span><span class="p">)</span><span class="o">*.</span><span class="mi">6</span><span class="p">)),</span>
+                   <span class="p">(</span><span class="o">.</span><span class="mi">8</span><span class="o">*</span><span class="p">(</span><span class="n">altran</span><span class="p">)</span><span class="o">+</span><span class="n">Re</span><span class="p">,</span> <span class="s">&quot;{:.0f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">((</span><span class="n">altran</span><span class="p">)</span><span class="o">*.</span><span class="mi">8</span><span class="p">))]</span>
+    <span class="n">grid_locator2</span> <span class="o">=</span> <span class="n">FixedLocator</span><span class="p">([</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">alt_ticks</span><span class="p">])</span>
+    <span class="n">tick_formatter2</span> <span class="o">=</span> <span class="n">DictFormatter</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">alt_ticks</span><span class="p">))</span>
+        
+    <span class="n">tr_rotate</span> <span class="o">=</span> <span class="n">Affine2D</span><span class="p">()</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="n">ang</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">tr_shift</span> <span class="o">=</span> <span class="n">Affine2D</span><span class="p">()</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Re</span><span class="p">)</span>
+    <span class="n">tr</span> <span class="o">=</span> <span class="n">polar</span><span class="o">.</span><span class="n">PolarTransform</span><span class="p">()</span> <span class="o">+</span> <span class="n">tr_rotate</span>
+
+    <span class="n">grid_helper</span> <span class="o">=</span> <span class="n">floating_axes</span><span class="o">.</span><span class="n">GridHelperCurveLinear</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span>
+                                        <span class="n">extremes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ang</span><span class="p">,</span> <span class="n">Re</span><span class="o">+</span><span class="n">minalt</span><span class="p">,</span> <span class="n">Re</span><span class="o">+</span><span class="n">maxalt</span><span class="p">),</span>
+                                        <span class="n">grid_locator1</span><span class="o">=</span><span class="n">grid_locator1</span><span class="p">,</span>
+                                        <span class="n">grid_locator2</span><span class="o">=</span><span class="n">grid_locator2</span><span class="p">,</span>
+                                        <span class="n">tick_formatter1</span><span class="o">=</span><span class="n">tick_formatter1</span><span class="p">,</span>
+                                        <span class="n">tick_formatter2</span><span class="o">=</span><span class="n">tick_formatter2</span><span class="p">,</span>
+                                        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">fig</span><span class="p">:</span> <span class="n">fig</span> <span class="o">=</span> <span class="n">gcf</span><span class="p">()</span>
+    <span class="n">ax1</span> <span class="o">=</span> <span class="n">floating_axes</span><span class="o">.</span><span class="n">FloatingSubplot</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">grid_helper</span><span class="o">=</span><span class="n">grid_helper</span><span class="p">)</span>
+
+    <span class="c"># adjust axis</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;left&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="s">r&quot;ALt. [km]&quot;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;bottom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="s">r&quot;Ground range [km]&quot;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">invert_xaxis</span><span class="p">()</span>
+
+    <span class="n">ax1</span><span class="o">.</span><span class="n">maxground</span> <span class="o">=</span> <span class="n">maxground</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">minalt</span> <span class="o">=</span> <span class="n">minalt</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">maxalt</span> <span class="o">=</span> <span class="n">maxalt</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">Re</span> <span class="o">=</span> <span class="n">Re</span>
+    
+    <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">tr</span><span class="p">)</span>
+
+
+    <span class="c"># create a parasite axes whose transData in RA, cz</span>
+    <span class="n">aux_ax</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">get_aux_axes</span><span class="p">(</span><span class="n">tr</span><span class="p">)</span>
+
+    <span class="n">aux_ax</span><span class="o">.</span><span class="n">patch</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">patch</span> <span class="c"># for aux_ax to have a clip path as in ax</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">zorder</span><span class="o">=</span><span class="mf">0.9</span> <span class="c"># but this has a side effect that the patch is</span>
+                        <span class="c"># drawn twice, and possibly over some other</span>
+                        <span class="c"># artists. So, we decrease the zorder a bit to</span>
+                        <span class="c"># prevent this.</span>
+
+    <span class="k">return</span> <span class="n">ax1</span><span class="p">,</span> <span class="n">aux_ax</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../../index.html">
+          <img class="logo" src="../../_static/davitpy.svg" alt="Logo" style="width: 80%;"/>
+        </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../utils.html" >utils</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, VT SuperDARN Lab and Friends.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

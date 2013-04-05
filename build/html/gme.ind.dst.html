@@ -1,0 +1,352 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gme.ind.dst &mdash; davitpy</title>
+    
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="top" title="davitpy" href="index.html" />
+    <link rel="up" title="gme.ind" href="gme.ind.html" />
+    <link rel="next" title="gme.ampere" href="gme.ampere.html" />
+    <link rel="prev" title="gme.ind.omni" href="gme.ind.omni.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.ampere.html" title="gme.ampere"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.ind.omni.html" title="gme.ind.omni"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="gme.html" >gme</a> &raquo;</li>
+          <li><a href="gme.ind.html" accesskey="U">gme.ind</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="gme-ind-dst">
+<h1>gme.ind.dst<a class="headerlink" href="#gme-ind-dst" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<span class="target" id="module-gme.ind.dst"></span><span class="target" id="module-dst"></span><div class="section" id="module-gme-ind-dst">
+<h2><strong>Module</strong>: gme.ind.dst<a class="headerlink" href="#module-gme-ind-dst" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><strong>Classes</strong>:</dt>
+<dd><ul class="first last simple">
+<li><tt class="xref py py-class docutils literal"><span class="pre">dstRec</span></tt></li>
+</ul>
+</dd>
+<dt><strong>Functions</strong>:</dt>
+<dd><ul class="first last simple">
+<li><tt class="xref py py-func docutils literal"><span class="pre">readDst()</span></tt></li>
+<li><tt class="xref py py-func docutils literal"><span class="pre">readDstWeb()</span></tt></li>
+<li><tt class="xref py py-func docutils literal"><span class="pre">mapDstMongo()</span></tt></li>
+</ul>
+</dd>
+</dl>
+<dl class="class">
+<dt id="gme.ind.dst.dstRec">
+<em class="property">class </em><tt class="descclassname">gme.ind.dst.</tt><tt class="descname">dstRec</tt><big>(</big><em>webLine=None</em>, <em>dbDict=None</em><big>)</big><a class="reference internal" href="_modules/gme/ind/dst.html#dstRec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.dst.dstRec" title="Permalink to this definition">¶</a></dt>
+<dd><p>a class to represent a record of dst data.  Extends <tt class="xref py py-class docutils literal"><span class="pre">gmeBase.gmeData</span></tt>. Note that Dst data is available from 1980-present day (or whatever the latest WDC has uploaded is).  <strong>The data are 1-hour values</strong>.  Information about dst can be found <a class="reference external" href="http://wdc.kugi.kyoto-u.ac.jp/dstdir/dst2/onDstindex.html">here</a></p>
+<dl class="docutils">
+<dt><strong>Members</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>time</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): an object identifying which time these data are for</li>
+<li><strong>dataSet</strong> (str): a string dicating the dataset this is from</li>
+<li><strong>info</strong> (str): information about where the data come from.  <em>Please be courteous and give credit to data providers when credit is due.</em></li>
+<li><strong>dst</strong> (float): the actual dst value</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If any of the members have a value of None, this means that they could not be read for that specific time</p>
+</div>
+<dl class="docutils">
+<dt><strong>Methods</strong>:</dt>
+<dd><ul class="first last simple">
+<li><tt class="xref py py-func docutils literal"><span class="pre">parseWeb()</span></tt></li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">emptyDstObj</span> <span class="o">=</span> <span class="n">gme</span><span class="o">.</span><span class="n">ind</span><span class="o">.</span><span class="n">dstRec</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130131</p>
+<dl class="method">
+<dt id="gme.ind.dst.dstRec.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>webLine=None</em>, <em>dbDict=None</em><big>)</big><a class="reference internal" href="_modules/gme/ind/dst.html#dstRec.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.dst.dstRec.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>the intialization fucntion for a <tt class="xref py py-class docutils literal"><span class="pre">dstRec</span></tt> object.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In general, users will not need to worry about this.</p>
+</div>
+<p><strong>Belongs to</strong>: <tt class="xref py py-class docutils literal"><span class="pre">dstRec</span></tt></p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li>[<strong>webLine</strong>] (str): an ASCII line from the datafile from WDC. if this is provided, the object is initialized from it.  default=None</li>
+<li>[<strong>dbDict</strong>] (dict): a dictionary read from the mongodb.  if this is provided, the object is initialized from it.  default = None</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Nothing.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">myDstObj</span> <span class="o">=</span> <span class="n">dstRec</span><span class="p">(</span><span class="n">webLine</span><span class="o">=</span><span class="n">awebLine</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130131</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gme.ind.dst.dstRec.parseWeb">
+<tt class="descname">parseWeb</tt><big>(</big><em>line</em><big>)</big><a class="reference internal" href="_modules/gme/ind/dst.html#dstRec.parseWeb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.dst.dstRec.parseWeb" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is used to convert a line of dst data from the WDC to a dstRec object</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In general, users will not need to worry about this.</p>
+</div>
+<p><strong>Belongs to</strong>: <tt class="xref py py-class docutils literal"><span class="pre">dstRec</span></tt></p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>line</strong> (str): the ASCII line from the WDC data file</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Nothing.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">myDstObj</span><span class="o">.</span><span class="n">parseWeb</span><span class="p">(</span><span class="n">webLine</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130131</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="gme.ind.dst.mapDstMongo">
+<tt class="descclassname">gme.ind.dst.</tt><tt class="descname">mapDstMongo</tt><big>(</big><em>sYear</em>, <em>eYear=None</em><big>)</big><a class="reference internal" href="_modules/gme/ind/dst.html#mapDstMongo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.dst.mapDstMongo" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads dst data from wdc and puts it in mongodb</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">In general, nobody except the database admins will need to use this function</p>
+</div>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>sYear</strong> (int): the year to begin mapping data</li>
+<li>[<strong>eYear</strong>] (int or None): the end year for mapping data.  if this is None, eYear will be sYear</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Nothing.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">gme</span><span class="o">.</span><span class="n">ind</span><span class="o">.</span><span class="n">mapDstMongo</span><span class="p">(</span><span class="mi">1997</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130123</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gme.ind.dst.readDst">
+<tt class="descclassname">gme.ind.dst.</tt><tt class="descname">readDst</tt><big>(</big><em>sTime=None</em>, <em>eTime=None</em>, <em>dst=None</em><big>)</big><a class="reference internal" href="_modules/gme/ind/dst.html#readDst"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.dst.readDst" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads dst data from the mongodb.</p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li>[<strong>sTime</strong>] (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the earliest time you want data for, default=None</li>
+<li>[<strong>eTime</strong>] (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the latest time you want data for.  if this is None, end Time will be 1 day after sTime.  default = None</li>
+<li>[<strong>dst</strong>] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with dst values in the range [a,b] will be returned.  default = None</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>dstList</strong> (list or None): if data is found, a list of <tt class="xref py py-class docutils literal"><span class="pre">dstRec</span></tt> objects matching the input parameters is returned.  If no data is found, None is returned.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+<span class="n">dstList</span> <span class="o">=</span> <span class="n">gme</span><span class="o">.</span><span class="n">ind</span><span class="o">.</span><span class="n">readDst</span><span class="p">(</span><span class="n">sTime</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">eTime</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">dst</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span><span class="mi">50</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130131</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gme.ind.dst.readDstWeb">
+<tt class="descclassname">gme.ind.dst.</tt><tt class="descname">readDstWeb</tt><big>(</big><em>sTime</em>, <em>eTime=None</em><big>)</big><a class="reference internal" href="_modules/gme/ind/dst.html#readDstWeb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.dst.readDstWeb" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads dst data from the WDC kyoto website</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You should not use this. Use the general function <tt class="xref py py-func docutils literal"><span class="pre">readDst()</span></tt> instead.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>sTime</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): the earliest time you want data for</li>
+<li>[<strong>eTime</strong>] (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the latest time you want data for.  if this is None, eTime will be equal to sTime.  default = None</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+<span class="n">dstList</span> <span class="o">=</span> <span class="n">gme</span><span class="o">.</span><span class="n">ind</span><span class="o">.</span><span class="n">readDstWeb</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">50</span><span class="p">),</span><span class="n">eTime</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130131</p>
+</dd></dl>
+
+</div>
+<dl class="attribute">
+<dt id="gme.ind.dst">
+<tt class="descclassname">gme.ind.</tt><tt class="descname">dst</tt><a class="headerlink" href="#gme.ind.dst" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#gme.ind.dst" title="gme.ind.dst"><tt class="xref py py-class docutils literal"><span class="pre">gme.ind.dst</span></tt></a></p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html">
+          <img class="logo" src="_static/davitpy.svg" alt="Logo" style="width: 80%;"/>
+        </a></p>
+  <div class="sphinxlocaltoc">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">gme.ind.dst</a><ul>
+<li><a class="reference internal" href="#module-gme-ind-dst"><strong>Module</strong>: gme.ind.dst</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="gme.ind.omni.html"
+                        title="previous chapter">gme.ind.omni</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="gme.ampere.html"
+                        title="next chapter">gme.ampere</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/gme.ind.dst.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.ampere.html" title="gme.ampere"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.ind.omni.html" title="gme.ind.omni"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="gme.html" >gme</a> &raquo;</li>
+          <li><a href="gme.ind.html" >gme.ind</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, VT SuperDARN Lab and Friends.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>
