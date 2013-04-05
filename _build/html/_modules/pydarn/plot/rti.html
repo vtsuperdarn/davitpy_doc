@@ -1,0 +1,811 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pydarn.plot.rti &mdash; davitpy</title>
+    
+    <link rel="stylesheet" href="../../../_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../../_static/cloud.js"></script>
+    <link rel="top" title="davitpy" href="../../../index.html" />
+    <link rel="up" title="pydarn.plot" href="../plot.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+    <li><a href="../../../index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../plot.html" accesskey="U">pydarn.plot</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for pydarn.plot.rti</h1><div class="highlight"><pre>
+<span class="c"># Copyright (C) 2012  VT SuperDARN Lab</span>
+<span class="c"># Full license can be found in LICENSE.txt</span>
+<span class="c"># </span>
+<span class="c"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c"># it under the terms of the GNU General Public License as published by</span>
+<span class="c"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c"># (at your option) any later version.</span>
+<span class="c"># </span>
+<span class="c"># This program is distributed in the hope that it will be useful,</span>
+<span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c"># GNU General Public License for more details.</span>
+<span class="c"># </span>
+<span class="c"># You should have received a copy of the GNU General Public License</span>
+<span class="c"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">*******************************</span>
+<span class="sd">MODULE: pydarn.plot.rti</span>
+<span class="sd">*******************************</span>
+
+<span class="sd">This module contains the following functions:</span>
+
+<span class="sd">  plotRti</span>
+<span class="sd">  </span>
+<span class="sd">  plotFreq</span>
+<span class="sd">  </span>
+<span class="sd">  plotNoise</span>
+<span class="sd">  </span>
+<span class="sd">  plotCpid</span>
+<span class="sd">  </span>
+<span class="sd">  rtiTitle</span>
+
+<span class="sd">  drawAxes</span>
+<span class="sd">  </span>
+<span class="sd">*******************************</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">pydarn</span><span class="o">,</span><span class="nn">numpy</span><span class="o">,</span><span class="nn">math</span><span class="o">,</span><span class="nn">matplotlib</span><span class="o">,</span><span class="nn">calendar</span><span class="o">,</span><span class="nn">datetime</span><span class="o">,</span><span class="nn">utils</span><span class="o">,</span><span class="nn">pylab</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plot</span>
+<span class="kn">import</span> <span class="nn">matplotlib.lines</span> <span class="kn">as</span> <span class="nn">lines</span>
+<span class="kn">from</span> <span class="nn">matplotlib.ticker</span> <span class="kn">import</span> <span class="n">MultipleLocator</span>
+<span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="kn">import</span> <span class="n">PolyCollection</span>
+<span class="kn">from</span> <span class="nn">utils.timeUtils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pydarn.sdio</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="plotRti"><a class="viewcode-back" href="../../../pydarn.plot.rti.html#pydarn.plot.rti.plotRti">[docs]</a><span class="k">def</span> <span class="nf">plotRti</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span><span class="n">rad</span><span class="p">,</span><span class="n">eTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">bmnum</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span><span class="n">fileType</span><span class="o">=</span><span class="s">&#39;fitex&#39;</span><span class="p">,</span><span class="n">params</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;velocity&#39;</span><span class="p">,</span><span class="s">&#39;power&#39;</span><span class="p">,</span><span class="s">&#39;width&#39;</span><span class="p">],</span> \
+              <span class="n">scales</span><span class="o">=</span><span class="p">[],</span><span class="n">channel</span><span class="o">=</span><span class="s">&#39;a&#39;</span><span class="p">,</span><span class="n">coords</span><span class="o">=</span><span class="s">&#39;gate&#39;</span><span class="p">,</span><span class="n">colors</span><span class="o">=</span><span class="s">&#39;lasse&#39;</span><span class="p">,</span><span class="n">yrng</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span><span class="n">gsct</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">lowGray</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> \
+              <span class="n">svg</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">png</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">filtered</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">fileName</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">custType</span><span class="o">=</span><span class="s">&#39;fitex&#39;</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  *******************************</span>
+<span class="sd">  </span>
+<span class="sd">  PACKAGE: pydarn.plot.rti</span>
+<span class="sd">  </span>
+<span class="sd">  FUNCTION: plotRti(dateStr,rad,beam=7,time=[0,2400],fileType=&#39;fitex&#39;,params=[&#39;velocity&#39;,&#39;power&#39;,&#39;width&#39;], \</span>
+<span class="sd">    scales=[],channel=&#39;a&#39;,coords=&#39;gate&#39;,colors=&#39;lasse&#39;,yrng=-1,gsct=0,pdf=0,filter=0,gflg=0)</span>
+<span class="sd">  </span>
+<span class="sd">  PURPOSE: create an rti plot for a secified radar and time period</span>
+
+<span class="sd">  INPUTS:</span>
+<span class="sd">    dateStr: a string containing the target date in yyyymmdd format</span>
+<span class="sd">    rad: the 3 letter radar code, e.g. &#39;bks&#39;</span>
+<span class="sd">    [beam]: the beam to plot</span>
+<span class="sd">      default: 7</span>
+<span class="sd">    [times]: the range of times for which the file should be read,</span>
+<span class="sd">      in SIMPLIFIED [hhmm,hhmm] format, eg [29,156], </span>
+<span class="sd">      instead of [0029,0156]</span>
+<span class="sd">      note that an end time of 2400 will read to the end of the file</span>
+<span class="sd">      default = [0,2400]</span>
+<span class="sd">    [fileType]: one of [&#39;fitex&#39;,&#39;fitacf&#39;,&#39;lmfit&#39;]</span>
+<span class="sd">      default = &#39;fitex&#39;</span>
+<span class="sd">    [params]: a list of the fit parameters to plot, allowable values are:</span>
+<span class="sd">      [&#39;velocity&#39;,&#39;power&#39;,&#39;width&#39;,&#39;elevation&#39;,&#39;phi0&#39;]</span>
+<span class="sd">      default: [&#39;velocity&#39;,&#39;power&#39;,&#39;width&#39;]</span>
+<span class="sd">    [scales]: a list of the min/max values for the color scale for</span>
+<span class="sd">      each param.  If omitted, default scales will be used.  If present,</span>
+<span class="sd">      the list should be n x 2 where n is the number of</span>
+<span class="sd">      elements in the params list.  Use an empty list for default range,</span>
+<span class="sd">      e.g. [[-250,300],[],[]]</span>
+<span class="sd">      default: [[-200,200],[0,30],[0,150]]</span>
+<span class="sd">    [channel]: the channel you wish to plot, the allowable values are</span>
+<span class="sd">      &#39;a&#39; and &#39;b&#39;</span>
+<span class="sd">      default: &#39;a&#39;</span>
+<span class="sd">    [coords]: the coordinates to use for the y axis.  The allowable values are</span>
+<span class="sd">      &#39;gate&#39;,&#39;rng&#39;,&#39;geo&#39;</span>
+<span class="sd">      default: &#39;gate&#39;</span>
+<span class="sd">    [colors]: a string indicating what color bar to use, valid inputs are</span>
+<span class="sd">      [&#39;lasse&#39;,&#39;aj&#39;]</span>
+<span class="sd">      default: &#39;lasse&#39;</span>
+<span class="sd">    [yrng]: a list indicating the min and max values for the y axis in the</span>
+<span class="sd">      chosen coordinate system, or a -1 indicating to plot everything</span>
+<span class="sd">      default: -1</span>
+<span class="sd">    [gsct]: a flag indicating whether to plot ground scatter as transparent</span>
+<span class="sd">      default: 0 (ground scatter plotted normally)</span>
+<span class="sd">    [pdf]: a flag indicating whether to output to a file</span>
+<span class="sd">      default = 0 ( on screen output)</span>
+<span class="sd">    [filter]: a flag indicating whether to boxcar filter the data</span>
+<span class="sd">      default = 0 (no filter)</span>
+<span class="sd">    [gflg]: a flag indicating whether to plot low velocities in gray</span>
+<span class="sd">      default = 0 </span>
+<span class="sd">  OUTPUTS:</span>
+
+<span class="sd">  EXAMPLE:</span>
+<span class="sd">    plotRti(&#39;20120101&#39;,&#39;bks&#39;,beam=12,time=[10,1453],fileType=&#39;fitex&#39;,</span>
+<span class="sd">    params=[&#39;vel&#39;,&#39;power&#39;],scales=[[-200,200],[]],channel=&#39;b&#39;,</span>
+<span class="sd">    coords=&#39;mag&#39;):</span>
+<span class="sd">    </span>
+<span class="sd">  Written by AJ 20121002</span>
+
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="kn">import</span> <span class="nn">os</span>
+  
+  <span class="c">#check for plotting directory, create if does not exist</span>
+  <span class="n">d</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;PYPLOTS&#39;</span><span class="p">]</span><span class="o">+</span><span class="s">&#39;/rti&#39;</span>
+  <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    
+    
+    
+  <span class="n">t1</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+  <span class="c">#check the inputs</span>
+  <span class="c">#assert(isinstance(dateStr,str) and len(dateStr) == 8),&#39;error, dateStr must be a string 8 chars long&#39;</span>
+  <span class="c">#assert(isinstance(rad,str) and len(rad) == 3),&#39;error, dateStr must be a string 3 chars long&#39;</span>
+  <span class="k">assert</span><span class="p">(</span><span class="n">coords</span> <span class="o">==</span> <span class="s">&#39;gate&#39;</span> <span class="ow">or</span> <span class="n">coords</span> <span class="o">==</span> <span class="s">&#39;rng&#39;</span> <span class="ow">or</span> <span class="n">coords</span> <span class="o">==</span> <span class="s">&#39;geo&#39;</span> <span class="ow">or</span> <span class="n">coords</span> <span class="o">==</span> <span class="s">&#39;mag&#39;</span><span class="p">),</span>\
+  <span class="s">&quot;error, coords must be one of &#39;gate&#39;,&#39;rng&#39;,&#39;geo&#39;,&#39;mag&quot;</span>
+  <span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">bmnum</span><span class="p">,</span><span class="nb">int</span><span class="p">)),</span><span class="s">&#39;error, beam must be integer&#39;</span>
+  <span class="k">assert</span><span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">),</span><span class="s">&#39;error, must input between 1 and 5 params in LIST form&#39;</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)):</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;velocity&#39;</span> <span class="ow">or</span> <span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;power&#39;</span> <span class="ow">or</span> <span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;width&#39;</span> <span class="ow">or</span> \
+    <span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;elevation&#39;</span> <span class="ow">or</span> <span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;phi0&#39;</span><span class="p">),</span> \
+    <span class="s">&quot;error, allowable params are &#39;velocity&#39;,&#39;power&#39;,&#39;width&#39;,&#39;elevation&#39;,&#39;phi0&#39;&quot;</span>
+  <span class="k">assert</span><span class="p">(</span><span class="n">scales</span> <span class="o">==</span> <span class="p">[]</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">scales</span><span class="p">)</span><span class="o">==</span><span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)),</span> \
+  <span class="s">&#39;error, if present, scales must have same number of elements as params&#39;</span>
+  <span class="k">assert</span><span class="p">(</span><span class="n">yrng</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">yrng</span><span class="p">,</span><span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="n">yrng</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">yrng</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span> \
+  <span class="s">&#39;error, yrng must equal -1 or be a list with the 2nd element larger than the first&#39;</span>
+  <span class="k">assert</span><span class="p">(</span><span class="n">colors</span> <span class="o">==</span> <span class="s">&#39;lasse&#39;</span> <span class="ow">or</span> <span class="n">colors</span> <span class="o">==</span> <span class="s">&#39;aj&#39;</span><span class="p">),</span><span class="s">&quot;error, valid inputs for color are &#39;lasse&#39; and &#39;aj&#39;&quot;</span>
+  
+  <span class="n">tscales</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)):</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">scales</span> <span class="o">==</span> <span class="p">[]</span> <span class="ow">or</span> <span class="n">scales</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="p">[]):</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;velocity&#39;</span><span class="p">):</span> <span class="n">tscales</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="o">-</span><span class="mi">200</span><span class="p">,</span><span class="mi">200</span><span class="p">])</span>
+      <span class="k">elif</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;power&#39;</span><span class="p">):</span> <span class="n">tscales</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">30</span><span class="p">])</span>
+      <span class="k">elif</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;width&#39;</span><span class="p">):</span> <span class="n">tscales</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">150</span><span class="p">])</span>
+      <span class="k">elif</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;elevation&#39;</span><span class="p">):</span> <span class="n">tscales</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">])</span>
+      <span class="k">elif</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;phi0&#39;</span><span class="p">):</span> <span class="n">tscales</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="o">-</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span> <span class="n">tscales</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scales</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+  <span class="n">scales</span> <span class="o">=</span> <span class="n">tscales</span>
+      
+  <span class="k">if</span> <span class="n">eTime</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span> <span class="n">eTime</span> <span class="o">=</span> <span class="n">sTime</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+  <span class="c">#open the file</span>
+  <span class="k">if</span> <span class="n">fileName</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="n">myFile</span> <span class="o">=</span> <span class="n">radDataOpen</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span><span class="n">rad</span><span class="p">,</span><span class="n">eTime</span><span class="p">,</span><span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span><span class="n">bmnum</span><span class="o">=</span><span class="n">bmnum</span><span class="p">,</span><span class="n">fileType</span><span class="o">=</span><span class="n">fileType</span><span class="p">,</span><span class="n">filtered</span><span class="o">=</span><span class="n">filtered</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">myFile</span> <span class="o">=</span> <span class="n">radDataOpen</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span><span class="n">rad</span><span class="p">,</span><span class="n">eTime</span><span class="p">,</span><span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span><span class="n">bmnum</span><span class="o">=</span><span class="n">bmnum</span><span class="p">,</span><span class="n">filtered</span><span class="o">=</span><span class="n">filtered</span><span class="p">,</span> 
+                          <span class="n">fileName</span><span class="o">=</span><span class="n">fileName</span><span class="p">,</span><span class="n">custType</span><span class="o">=</span><span class="n">custType</span><span class="p">)</span>
+
+  <span class="k">print</span> <span class="n">channel</span><span class="p">,</span><span class="n">bmnum</span><span class="p">,</span><span class="n">filtered</span><span class="p">,</span> <span class="n">fileName</span><span class="p">,</span> <span class="n">custType</span>
+  <span class="k">if</span> <span class="n">myFile</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&#39;error, no files available for the requested time/radar/filetype combination&#39;</span>
+    <span class="k">return</span> <span class="bp">None</span>
+  <span class="n">myBeam</span> <span class="o">=</span> <span class="n">radDataReadRec</span><span class="p">(</span><span class="n">myFile</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">myBeam</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&#39;error, no data available for the requested time/radar/filetype combination&#39;</span>
+    <span class="k">return</span> <span class="bp">None</span>
+  
+  <span class="n">vel</span><span class="p">,</span><span class="nb">pow</span><span class="p">,</span><span class="n">wid</span><span class="p">,</span><span class="n">elev</span><span class="p">,</span><span class="n">phi0</span><span class="p">,</span><span class="n">times</span><span class="p">,</span><span class="n">freq</span><span class="p">,</span><span class="n">cpid</span><span class="p">,</span><span class="n">nave</span><span class="p">,</span><span class="n">nsky</span><span class="p">,</span><span class="n">nsch</span><span class="p">,</span><span class="n">slist</span><span class="p">,</span><span class="n">mode</span><span class="p">,</span><span class="n">rsep</span><span class="p">,</span><span class="n">nrang</span><span class="p">,</span><span class="n">frang</span><span class="p">,</span><span class="n">gsflg</span> <span class="o">=</span> \
+        <span class="p">[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]</span>
+  
+  <span class="k">while</span><span class="p">(</span><span class="n">myBeam</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">time</span> <span class="o">&gt;</span> <span class="n">eTime</span><span class="p">):</span> <span class="k">break</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">bmnum</span> <span class="o">==</span> <span class="n">bmnum</span> <span class="ow">and</span> <span class="p">(</span><span class="n">sTime</span> <span class="o">&lt;=</span> <span class="n">myBeam</span><span class="o">.</span><span class="n">time</span><span class="p">)):</span>
+      <span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">time</span><span class="p">)</span>
+      <span class="n">cpid</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">cp</span><span class="p">)</span>
+      <span class="n">nave</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">prm</span><span class="o">.</span><span class="n">nave</span><span class="p">)</span>
+      <span class="n">nsky</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">prm</span><span class="o">.</span><span class="n">noisesky</span><span class="p">)</span>
+      <span class="n">rsep</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">prm</span><span class="o">.</span><span class="n">rsep</span><span class="p">)</span>
+      <span class="n">nrang</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">prm</span><span class="o">.</span><span class="n">nrang</span><span class="p">)</span>
+      <span class="n">frang</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">prm</span><span class="o">.</span><span class="n">frang</span><span class="p">)</span>
+      <span class="n">nsch</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">prm</span><span class="o">.</span><span class="n">noisesearch</span><span class="p">)</span>
+      <span class="n">freq</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">prm</span><span class="o">.</span><span class="n">tfreq</span><span class="o">/</span><span class="mf">1e3</span><span class="p">)</span>
+      <span class="n">slist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">slist</span><span class="p">)</span>
+      <span class="n">mode</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">prm</span><span class="o">.</span><span class="n">ifmode</span><span class="p">)</span>
+      <span class="k">if</span><span class="p">(</span><span class="s">&#39;velocity&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">):</span> <span class="n">vel</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">v</span><span class="p">)</span>
+      <span class="k">if</span><span class="p">(</span><span class="s">&#39;power&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">):</span> <span class="nb">pow</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">p_l</span><span class="p">)</span>
+      <span class="k">if</span><span class="p">(</span><span class="s">&#39;width&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">):</span> <span class="n">wid</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">w_l</span><span class="p">)</span>
+      <span class="k">if</span><span class="p">(</span><span class="s">&#39;elevation&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">):</span> <span class="n">elev</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">elv</span><span class="p">)</span>
+      <span class="k">if</span><span class="p">(</span><span class="s">&#39;phi0&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">):</span> <span class="n">phi0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">phi0</span><span class="p">)</span>
+      <span class="n">gsflg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">gflg</span><span class="p">)</span>
+      
+    <span class="n">myBeam</span> <span class="o">=</span> <span class="n">radDataReadRec</span><span class="p">(</span><span class="n">myFile</span><span class="p">)</span>
+    
+  
+  <span class="n">rtiFig</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+
+  <span class="n">rtiTitle</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span><span class="n">rad</span><span class="p">,</span><span class="n">fileType</span><span class="p">,</span><span class="n">bmnum</span><span class="p">)</span>
+  
+  <span class="n">plotNoise</span><span class="p">(</span><span class="n">rtiFig</span><span class="p">,</span><span class="n">times</span><span class="p">,</span><span class="n">nsky</span><span class="p">,</span><span class="n">nsch</span><span class="p">)</span>
+  
+  <span class="n">plotFreq</span><span class="p">(</span><span class="n">rtiFig</span><span class="p">,</span><span class="n">times</span><span class="p">,</span><span class="n">freq</span><span class="p">,</span><span class="n">nave</span><span class="p">)</span>
+  
+  <span class="n">plotCpid</span><span class="p">(</span><span class="n">rtiFig</span><span class="p">,</span><span class="n">times</span><span class="p">,</span><span class="n">cpid</span><span class="p">,</span><span class="n">mode</span><span class="p">)</span>
+  
+  <span class="n">figtop</span> <span class="o">=</span> <span class="o">.</span><span class="mi">77</span>
+  <span class="n">figheight</span> <span class="o">=</span> <span class="o">.</span><span class="mi">72</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)):</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;velocity&#39;</span><span class="p">):</span> <span class="n">pArr</span> <span class="o">=</span> <span class="n">vel</span>
+    <span class="k">elif</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;power&#39;</span><span class="p">):</span> <span class="n">pArr</span> <span class="o">=</span> <span class="nb">pow</span>
+    <span class="k">elif</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;width&#39;</span><span class="p">):</span> <span class="n">pArr</span> <span class="o">=</span> <span class="n">wid</span>
+    <span class="k">elif</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;elevation&#39;</span><span class="p">):</span> <span class="n">pArr</span> <span class="o">=</span> <span class="n">elev</span>
+    <span class="k">elif</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;phi0&#39;</span><span class="p">):</span> <span class="n">pArr</span> <span class="o">=</span> <span class="n">phi0</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="p">[</span><span class="o">.</span><span class="mi">1</span><span class="p">,</span><span class="n">figtop</span><span class="o">-</span><span class="n">figheight</span><span class="o">*</span><span class="p">(</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+.</span><span class="mo">02</span><span class="p">,</span><span class="o">.</span><span class="mi">76</span><span class="p">,</span><span class="n">figheight</span><span class="o">-.</span><span class="mo">02</span><span class="p">]</span>
+    
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">drawAxes</span><span class="p">(</span><span class="n">rtiFig</span><span class="p">,</span><span class="n">times</span><span class="p">,</span><span class="n">rad</span><span class="p">,</span><span class="n">cpid</span><span class="p">,</span><span class="n">bmnum</span><span class="p">,</span><span class="n">nrang</span><span class="p">,</span><span class="n">frang</span><span class="p">,</span><span class="n">rsep</span><span class="p">,</span><span class="n">p</span><span class="o">==</span><span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">yrng</span><span class="o">=</span><span class="n">yrng</span><span class="p">,</span><span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span>\
+                  <span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">)</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">pArr</span> <span class="o">==</span> <span class="p">[]):</span> <span class="k">continue</span>
+    
+    <span class="n">rmax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">nrang</span><span class="p">)</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span><span class="n">rmax</span><span class="p">))</span><span class="o">+</span><span class="mi">100000</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">tcnt</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c">#x = matplotlib.dates.date2num(times)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)):</span>
+      <span class="n">x</span><span class="p">[</span><span class="n">tcnt</span><span class="p">]</span><span class="o">=</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="n">tcnt</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">4.</span><span class="o">/</span><span class="mf">1440.</span><span class="p">):</span>
+          <span class="n">tcnt</span> <span class="o">+=</span> <span class="mi">1</span>
+          <span class="n">x</span><span class="p">[</span><span class="n">tcnt</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">tcnt</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mf">1.</span><span class="o">/</span><span class="mf">1440.</span>
+      <span class="n">tcnt</span> <span class="o">+=</span> <span class="mi">1</span>
+          
+      <span class="k">if</span><span class="p">(</span><span class="n">pArr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="p">[]):</span> <span class="k">continue</span>
+      
+      <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">slist</span><span class="p">[</span><span class="n">i</span><span class="p">])):</span>
+        <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">gsct</span> <span class="ow">or</span> <span class="n">gsflg</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+          <span class="n">data</span><span class="p">[</span><span class="n">tcnt</span><span class="p">][</span><span class="n">slist</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]]</span> <span class="o">=</span> <span class="n">pArr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+        
+    <span class="k">if</span><span class="p">(</span><span class="n">coords</span> <span class="o">==</span> <span class="s">&#39;gate&#39;</span><span class="p">):</span> <span class="n">y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">rmax</span><span class="p">,</span><span class="n">rmax</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">elif</span><span class="p">(</span><span class="n">coords</span> <span class="o">==</span> <span class="s">&#39;rng&#39;</span><span class="p">):</span> <span class="n">y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">frang</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">rmax</span><span class="o">*</span><span class="n">rsep</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">rmax</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">site</span> <span class="o">=</span> <span class="n">pydarn</span><span class="o">.</span><span class="n">radar</span><span class="o">.</span><span class="n">network</span><span class="p">()</span><span class="o">.</span><span class="n">getRadarByCode</span><span class="p">(</span><span class="n">rad</span><span class="p">)</span><span class="o">.</span><span class="n">getSiteByDate</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+      <span class="n">myFov</span> <span class="o">=</span> <span class="n">pydarn</span><span class="o">.</span><span class="n">radar</span><span class="o">.</span><span class="n">radFov</span><span class="o">.</span><span class="n">fov</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">site</span><span class="p">,</span> <span class="n">ngates</span><span class="o">=</span><span class="n">rmax</span><span class="p">,</span><span class="n">nbeams</span><span class="o">=</span><span class="n">site</span><span class="o">.</span><span class="n">maxbeam</span><span class="p">,</span><span class="n">rsep</span><span class="o">=</span><span class="n">rsep</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">)</span>
+      <span class="n">y</span> <span class="o">=</span>  <span class="n">myFov</span><span class="o">.</span><span class="n">latFull</span><span class="p">[</span><span class="n">bmnum</span><span class="p">]</span>
+      
+    <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="n">tcnt</span><span class="p">],</span> <span class="n">y</span><span class="p">)</span>
+    
+
+    <span class="n">cmap</span><span class="p">,</span><span class="n">norm</span><span class="p">,</span><span class="n">bounds</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">plotUtils</span><span class="o">.</span><span class="n">genCmap</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">p</span><span class="p">],</span><span class="n">scales</span><span class="p">[</span><span class="n">p</span><span class="p">],</span><span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span><span class="n">lowGray</span><span class="o">=</span><span class="n">lowGray</span><span class="p">)</span>
+    
+    <span class="c">#data = numpy.ma.masked_where(data == 100000., data)</span>
+    <span class="n">pcoll</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">data</span><span class="p">[:</span><span class="n">tcnt</span><span class="p">][:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span><span class="n">edgecolors</span><span class="o">=</span><span class="s">&#39;None&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">lod</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span><span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
+    
+    <span class="n">cb</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">drawCB</span><span class="p">(</span><span class="n">rtiFig</span><span class="p">,</span><span class="n">pcoll</span><span class="p">,</span><span class="n">cmap</span><span class="p">,</span><span class="n">norm</span><span class="p">,</span><span class="nb">map</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">)</span>
+    
+    <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c">#define the colorbar labels</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">bounds</span><span class="p">)):</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;phi0&#39;</span><span class="p">):</span>
+        <span class="n">ln</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">bounds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span> <span class="n">ln</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">bounds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span> <span class="n">ln</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">bounds</span><span class="p">[</span><span class="n">i</span><span class="p">])[:</span><span class="n">ln</span><span class="p">])</span>
+        <span class="k">continue</span>
+      <span class="k">if</span><span class="p">((</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">params</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;velocity&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">bounds</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">)</span>
+        <span class="k">continue</span>
+      <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">bounds</span><span class="p">[</span><span class="n">i</span><span class="p">])))</span>
+    <span class="n">cb</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+      
+    <span class="c">#set colorbar ticklabel size</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">cb</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">get_yticklabels</span><span class="p">():</span>
+      <span class="n">t</span><span class="o">.</span><span class="n">set_fontsize</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+    
+    <span class="c">#set colorbar label</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;velocity&#39;</span><span class="p">):</span> <span class="n">cb</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s">&#39;Velocity [m/s]&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;grid&#39;</span><span class="p">):</span> <span class="n">cb</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s">&#39;Velocity [m/s]&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;power&#39;</span><span class="p">):</span> <span class="n">cb</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s">&#39;Power [dB]&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;width&#39;</span><span class="p">):</span> <span class="n">cb</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s">&#39;Spec Wid [m/s]&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;elevation&#39;</span><span class="p">):</span> <span class="n">cb</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s">&#39;Elev [deg]&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;phi0&#39;</span><span class="p">):</span> <span class="n">cb</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s">&#39;Phi0 [rad]&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    
+  <span class="k">print</span> <span class="s">&#39;done plot&#39;</span>
+  
+
+  <span class="k">if</span><span class="p">(</span><span class="n">png</span><span class="p">):</span>
+    <span class="n">rtiFig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">d</span><span class="o">+</span><span class="s">&#39;/&#39;</span><span class="o">+</span><span class="n">sTime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y%m</span><span class="si">%d</span><span class="s">&quot;</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;.png&#39;</span><span class="p">,</span><span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+  <span class="k">elif</span><span class="p">(</span><span class="n">svg</span><span class="p">):</span>
+    <span class="n">rtiFig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">d</span><span class="o">+</span><span class="s">&#39;/&#39;</span><span class="o">+</span><span class="n">sTime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y%m</span><span class="si">%d</span><span class="s">&quot;</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;.svg&#39;</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">rtiFig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
+  <span class="k">print</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">-</span><span class="n">t1</span>
+
+  </div>
+<div class="viewcode-block" id="drawAxes"><a class="viewcode-back" href="../../../pydarn.plot.rti.html#pydarn.plot.rti.drawAxes">[docs]</a><span class="k">def</span> <span class="nf">drawAxes</span><span class="p">(</span><span class="n">myFig</span><span class="p">,</span><span class="n">times</span><span class="p">,</span><span class="n">rad</span><span class="p">,</span><span class="n">cpid</span><span class="p">,</span><span class="n">bmnum</span><span class="p">,</span><span class="n">nrang</span><span class="p">,</span><span class="n">frang</span><span class="p">,</span><span class="n">rsep</span><span class="p">,</span><span class="n">bottom</span><span class="p">,</span><span class="n">yrng</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span><span class="n">coords</span><span class="o">=</span><span class="s">&#39;gate&#39;</span><span class="p">,</span><span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">1</span><span class="p">,</span><span class="o">.</span><span class="mo">05</span><span class="p">,</span><span class="o">.</span><span class="mi">76</span><span class="p">,</span><span class="o">.</span><span class="mi">72</span><span class="p">]):</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  *******************************</span>
+
+<span class="sd">  PACKAGE: pydarn.plot.rti</span>
+
+<span class="sd">  FUNCTION: drawAxes(myFig,times,rad,cpid,bmnum,nrang,frang,rsep,bottom,yrng=-1,coords=&#39;gate&#39;,pos=[.1,.05,.76,.72])</span>
+
+<span class="sd">  PURPOSE: draws empty axes for an rti plot</span>
+
+<span class="sd">  INPUTS:</span>
+<span class="sd">    myFig: the MPL figure we are plotting to</span>
+<span class="sd">    times: a list of datetime objects referencing the beam soundings</span>
+<span class="sd">    rad: 3 letter radar code</span>
+<span class="sd">    cpid: list of the cpids or the beam soundings</span>
+<span class="sd">    bmnum: beam number being plotted</span>
+<span class="sd">    nrang: list of nrang for the beam soundings</span>
+<span class="sd">    frang: list of frang of the beam soundings</span>
+<span class="sd">    cpid: list of cpids of the beam soundings</span>
+<span class="sd">    rsep: list of rsep of the beam soundings</span>
+<span class="sd">    bottom: flag indicating if we are at the bottom of the page</span>
+<span class="sd">    [yrng]: range of y axis, -1=autoscale (default)</span>
+<span class="sd">    [coords]: y axis coordinate system, acceptable values are</span>
+<span class="sd">      &#39;geo&#39;, &#39;mag&#39;, &#39;gate&#39;, &#39;rng&#39;</span>
+<span class="sd">    [pos]: position of the plot</span>
+
+<span class="sd">  OUTPUTS:</span>
+<span class="sd">    ax: an axes object</span>
+<span class="sd">    </span>
+<span class="sd">  EXAMPLES:</span>
+<span class="sd">    ax = drawAxes(rtiFig,times,rad,cpid,beam,nrang,frang,rsep,p==len(params)-1,yrng=yrng,coords=coords,\</span>
+<span class="sd">      pos=pos)</span>
+<span class="sd">      </span>
+<span class="sd">  Written by AJ 20121002</span>
+
+<span class="sd">  &quot;&quot;&quot;</span>
+  
+  <span class="n">nrecs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+  <span class="c">#add an axes to the figure</span>
+  <span class="n">ax</span> <span class="o">=</span> <span class="n">myFig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_tick_params</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s">&#39;out&#39;</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_tick_params</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s">&#39;out&#39;</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_tick_params</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s">&#39;out&#39;</span><span class="p">,</span><span class="n">which</span><span class="o">=</span><span class="s">&#39;minor&#39;</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_tick_params</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s">&#39;out&#39;</span><span class="p">,</span><span class="n">which</span><span class="o">=</span><span class="s">&#39;minor&#39;</span><span class="p">)</span>
+
+  <span class="c">#draw the axes</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">plot_date</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">times</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)),</span> <span class="n">fmt</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">,</span> \
+  <span class="n">tz</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">xdate</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">ydate</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+  
+  <span class="k">if</span><span class="p">(</span><span class="n">yrng</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">ymin</span><span class="p">,</span><span class="n">ymax</span> <span class="o">=</span> <span class="mi">99999999</span><span class="p">,</span><span class="o">-</span><span class="mi">999999999</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">coords</span> <span class="o">!=</span> <span class="s">&#39;gate&#39;</span><span class="p">):</span>
+      <span class="n">oldCpid</span> <span class="o">=</span> <span class="o">-</span><span class="mi">99999999</span>
+      <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cpid</span><span class="p">)):</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">cpid</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">oldCpid</span><span class="p">):</span> <span class="k">continue</span>
+        <span class="n">oldCpid</span> <span class="o">=</span> <span class="n">cpid</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">coords</span> <span class="o">==</span> <span class="s">&#39;geo&#39;</span> <span class="ow">or</span> <span class="n">coords</span> <span class="o">==</span> <span class="s">&#39;mag&#39;</span><span class="p">):</span>
+          <span class="n">site</span> <span class="o">=</span> <span class="n">pydarn</span><span class="o">.</span><span class="n">radar</span><span class="o">.</span><span class="n">network</span><span class="p">()</span><span class="o">.</span><span class="n">getRadarByCode</span><span class="p">(</span><span class="n">rad</span><span class="p">)</span><span class="o">.</span><span class="n">getSiteByDate</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+          <span class="n">myFov</span> <span class="o">=</span> <span class="n">pydarn</span><span class="o">.</span><span class="n">radar</span><span class="o">.</span><span class="n">radFov</span><span class="o">.</span><span class="n">fov</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">site</span><span class="p">,</span> <span class="n">ngates</span><span class="o">=</span><span class="n">nrang</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">nbeams</span><span class="o">=</span><span class="n">site</span><span class="o">.</span><span class="n">maxbeam</span><span class="p">,</span><span class="n">rsep</span><span class="o">=</span><span class="n">rsep</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">)</span>
+          <span class="k">if</span><span class="p">(</span><span class="n">myFov</span><span class="o">.</span><span class="n">latFull</span><span class="p">[</span><span class="n">bmnum</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">ymax</span><span class="p">):</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">myFov</span><span class="o">.</span><span class="n">latFull</span><span class="p">[</span><span class="n">bmnum</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+          <span class="k">if</span><span class="p">(</span><span class="n">myFov</span><span class="o">.</span><span class="n">latFull</span><span class="p">[</span><span class="n">bmnum</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">ymin</span><span class="p">):</span> <span class="n">ymin</span> <span class="o">=</span> <span class="n">myFov</span><span class="o">.</span><span class="n">latFull</span><span class="p">[</span><span class="n">bmnum</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+          <span class="n">ymin</span> <span class="o">=</span> <span class="mi">0</span>
+          <span class="k">if</span><span class="p">(</span><span class="n">nrang</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">rsep</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">frang</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">ymax</span><span class="p">):</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">nrang</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">rsep</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">frang</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">ymin</span><span class="p">,</span><span class="n">ymax</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="nb">max</span><span class="p">(</span><span class="n">nrang</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">ymin</span><span class="p">,</span><span class="n">ymax</span> <span class="o">=</span> <span class="n">yrng</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">yrng</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+  <span class="n">xmin</span><span class="p">,</span><span class="n">xmax</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+  <span class="n">xrng</span> <span class="o">=</span> <span class="p">(</span><span class="n">xmax</span><span class="o">-</span><span class="n">xmin</span><span class="p">)</span>
+  <span class="n">inter</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">xrng</span><span class="o">/</span><span class="mf">6.</span><span class="o">*</span><span class="mf">86400.</span><span class="p">))</span>
+  <span class="n">inter2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">xrng</span><span class="o">/</span><span class="mf">24.</span><span class="o">*</span><span class="mf">86400.</span><span class="p">))</span>
+  <span class="c">#format the x axis</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">SecondLocator</span><span class="p">(</span><span class="n">interval</span><span class="o">=</span><span class="n">inter2</span><span class="p">))</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">SecondLocator</span><span class="p">(</span><span class="n">interval</span><span class="o">=</span><span class="n">inter</span><span class="p">))</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+  <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">bottom</span><span class="p">):</span>
+    <span class="n">loc</span><span class="p">,</span><span class="n">lab</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">xticks</span><span class="p">()</span>
+    <span class="n">plot</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">loc</span><span class="p">,(</span><span class="s">&#39; &#39;</span><span class="p">))</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s">&#39;%H:%M&#39;</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_label_text</span><span class="p">(</span><span class="s">&#39;UT&#39;</span><span class="p">)</span>
+    
+  <span class="c">#set ytick size</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+  <span class="c">#format y axis depending on coords</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">coords</span> <span class="o">==</span> <span class="s">&#39;gate&#39;</span><span class="p">):</span> 
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_label_text</span><span class="p">(</span><span class="s">&#39;Range gate&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">ticker</span><span class="o">.</span><span class="n">FormatStrFormatter</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">MultipleLocator</span><span class="p">((</span><span class="n">ymax</span><span class="o">-</span><span class="n">ymin</span><span class="p">)</span><span class="o">/</span><span class="mf">5.</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">MultipleLocator</span><span class="p">((</span><span class="n">ymax</span><span class="o">-</span><span class="n">ymin</span><span class="p">)</span><span class="o">/</span><span class="mf">25.</span><span class="p">))</span>
+  <span class="k">elif</span><span class="p">(</span><span class="n">coords</span> <span class="o">==</span> <span class="s">&#39;geo&#39;</span> <span class="ow">or</span> <span class="n">coords</span> <span class="o">==</span> <span class="s">&#39;mag&#39;</span><span class="p">):</span> 
+    <span class="k">if</span><span class="p">(</span><span class="n">coords</span> <span class="o">==</span> <span class="s">&#39;mag&#39;</span><span class="p">):</span> <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_label_text</span><span class="p">(</span><span class="s">&#39;Mag Lat [deg]&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span> <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_label_text</span><span class="p">(</span><span class="s">&#39;Geo Lat [deg]&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">ticker</span><span class="o">.</span><span class="n">FormatStrFormatter</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%0.2f</span><span class="s">&#39;</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">MultipleLocator</span><span class="p">((</span><span class="n">ymax</span><span class="o">-</span><span class="n">ymin</span><span class="p">)</span><span class="o">/</span><span class="mf">5.</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">MultipleLocator</span><span class="p">((</span><span class="n">ymax</span><span class="o">-</span><span class="n">ymin</span><span class="p">)</span><span class="o">/</span><span class="mf">25.</span><span class="p">))</span>
+  <span class="k">elif</span><span class="p">(</span><span class="n">coords</span> <span class="o">==</span> <span class="s">&#39;rng&#39;</span><span class="p">):</span> 
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_label_text</span><span class="p">(</span><span class="s">&#39;Slant Range [km]&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">ticker</span><span class="o">.</span><span class="n">FormatStrFormatter</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">MultipleLocator</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">MultipleLocator</span><span class="p">(</span><span class="mi">250</span><span class="p">))</span>
+  
+  <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="n">ymin</span><span class="p">,</span><span class="n">top</span><span class="o">=</span><span class="n">ymax</span><span class="p">)</span>
+
+  <span class="k">return</span> <span class="n">ax</span>
+    </div>
+<div class="viewcode-block" id="rtiTitle"><a class="viewcode-back" href="../../../pydarn.plot.rti.html#pydarn.plot.rti.rtiTitle">[docs]</a><span class="k">def</span> <span class="nf">rtiTitle</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">rad</span><span class="p">,</span><span class="n">fileType</span><span class="p">,</span><span class="n">beam</span><span class="p">,</span><span class="n">xmin</span><span class="o">=.</span><span class="mi">1</span><span class="p">,</span><span class="n">xmax</span><span class="o">=.</span><span class="mi">86</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  *******************************</span>
+
+<span class="sd">  PACKAGE: pydarn.plot.rti</span>
+
+<span class="sd">  FUNCTION: rtiTitle(dateStr,rad,fileType,beam,xmin=.1,xmax=.86)</span>
+
+<span class="sd">  PURPOSE: draws title for an rti plot</span>
+
+<span class="sd">  INPUTS:</span>
+<span class="sd">    dateStr: the date being plotted in &#39;yyyymmdd&#39; format</span>
+<span class="sd">    rad: the 3 letter radar code</span>
+<span class="sd">    fileType: the file type being plotted</span>
+<span class="sd">    beam: the beam number being plotted</span>
+<span class="sd">    [xmin]: minimum x value o the plot in page coords</span>
+<span class="sd">    [xmax]: maximum x value o the plot in page coords</span>
+
+<span class="sd">  OUTPUTS:</span>
+<span class="sd">    NONE</span>
+<span class="sd">    </span>
+<span class="sd">  EXAMPLES:</span>
+<span class="sd">    rtiTitle(dateStr,rad,fileType,beam)</span>
+<span class="sd">      </span>
+<span class="sd">  Written by AJ 20121002</span>
+
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="n">r</span><span class="o">=</span><span class="n">pydarn</span><span class="o">.</span><span class="n">radar</span><span class="o">.</span><span class="n">network</span><span class="p">()</span><span class="o">.</span><span class="n">getRadarByCode</span><span class="p">(</span><span class="n">rad</span><span class="p">)</span>
+  
+  <span class="n">plot</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span><span class="o">.</span><span class="mi">95</span><span class="p">,</span><span class="n">r</span><span class="o">.</span><span class="n">name</span><span class="o">+</span><span class="s">&#39;  (&#39;</span><span class="o">+</span><span class="n">fileType</span><span class="o">+</span><span class="s">&#39;)&#39;</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s">&#39;left&#39;</span><span class="p">,</span><span class="n">weight</span><span class="o">=</span><span class="mi">550</span><span class="p">)</span>
+  
+  <span class="n">plot</span><span class="o">.</span><span class="n">figtext</span><span class="p">((</span><span class="n">xmin</span><span class="o">+</span><span class="n">xmax</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span><span class="o">.</span><span class="mi">95</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">day</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;/&#39;</span><span class="o">+</span><span class="n">calendar</span><span class="o">.</span><span class="n">month_name</span><span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">month</span><span class="p">][:</span><span class="mi">3</span><span class="p">]</span><span class="o">+</span><span class="s">&#39;/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">year</span><span class="p">),</span> \
+  <span class="n">weight</span><span class="o">=</span><span class="mi">550</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="s">&#39;large&#39;</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">)</span>
+  
+  <span class="n">plot</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="n">xmax</span><span class="p">,</span><span class="o">.</span><span class="mi">95</span><span class="p">,</span><span class="s">&#39;Beam &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">beam</span><span class="p">),</span><span class="n">weight</span><span class="o">=</span><span class="mi">550</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s">&#39;right&#39;</span><span class="p">)</span>
+  </div>
+<div class="viewcode-block" id="plotCpid"><a class="viewcode-back" href="../../../pydarn.plot.rti.html#pydarn.plot.rti.plotCpid">[docs]</a><span class="k">def</span> <span class="nf">plotCpid</span><span class="p">(</span><span class="n">myFig</span><span class="p">,</span><span class="n">times</span><span class="p">,</span><span class="n">cpid</span><span class="p">,</span><span class="n">mode</span><span class="p">,</span><span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">1</span><span class="p">,</span><span class="o">.</span><span class="mi">77</span><span class="p">,</span><span class="o">.</span><span class="mi">76</span><span class="p">,</span><span class="o">.</span><span class="mo">05</span><span class="p">]):</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  *******************************</span>
+
+<span class="sd">  PACKAGE: pydarn.plot.rti</span>
+
+<span class="sd">  FUNCTION: plotCpid(myFig,times,cpid,mode,pos=[.1,.77,.76,.05])</span>
+
+<span class="sd">  PURPOSE: plots cpid panel as position pos</span>
+
+<span class="sd">  INPUTS:</span>
+<span class="sd">    myFig: the MPL figure we are plotting on</span>
+<span class="sd">    times: a list of the times of the beam soundings</span>
+<span class="sd">    cpid: a lsit of the cpids of th beam soundings</span>
+<span class="sd">    mode: a list of the ifmode param</span>
+<span class="sd">    [pos]: position of the panel</span>
+
+<span class="sd">  OUTPUTS:</span>
+<span class="sd">    NONE</span>
+<span class="sd">    </span>
+<span class="sd">  EXAMPLES:</span>
+<span class="sd">    plotCpid(rtiFig,times,cpid,mode)</span>
+<span class="sd">      </span>
+<span class="sd">  Written by AJ 20121002</span>
+
+<span class="sd">  &quot;&quot;&quot;</span>
+  
+  <span class="n">oldCpid</span> <span class="o">=</span> <span class="o">-</span><span class="mi">9999999</span>
+  
+  <span class="c">#add an axes to the figure</span>
+  <span class="n">ax</span> <span class="o">=</span> <span class="n">myFig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">tick_left</span><span class="p">()</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_tick_params</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s">&#39;out&#39;</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">top</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">MultipleLocator</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_tick_params</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s">&#39;out&#39;</span><span class="p">,</span><span class="n">which</span><span class="o">=</span><span class="s">&#39;minor&#39;</span><span class="p">)</span>
+  
+  <span class="c">#draw the axes</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">plot_date</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">times</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)),</span> <span class="n">fmt</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">,</span> \
+  <span class="n">tz</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">xdate</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">ydate</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+  
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)):</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">cpid</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">oldCpid</span><span class="p">):</span>
+      
+      <span class="n">ax</span><span class="o">.</span><span class="n">plot_date</span><span class="p">([</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="n">i</span><span class="p">])],</span>\
+      <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">fmt</span><span class="o">=</span><span class="s">&#39;k-&#39;</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">xdate</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">ydate</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+      
+      <span class="n">oldCpid</span> <span class="o">=</span> <span class="n">cpid</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+      
+      <span class="n">s</span> <span class="o">=</span> <span class="s">&#39; &#39;</span><span class="o">+</span><span class="n">pydarn</span><span class="o">.</span><span class="n">radar</span><span class="o">.</span><span class="n">radUtils</span><span class="o">.</span><span class="n">getCpName</span><span class="p">(</span><span class="n">oldCpid</span><span class="p">)</span>
+    
+      <span class="n">istr</span> <span class="o">=</span> <span class="s">&#39; &#39;</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">mode</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span> <span class="n">istr</span> <span class="o">=</span> <span class="s">&#39; IF&#39;</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">mode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span> <span class="n">istr</span> <span class="o">=</span> <span class="s">&#39; RF&#39;</span>
+      
+      <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span><span class="s">&#39; &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">oldCpid</span><span class="p">)</span><span class="o">+</span><span class="n">s</span><span class="o">+</span><span class="n">istr</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s">&#39;left&#39;</span><span class="p">,</span><span class="n">va</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+      
+      
+  <span class="n">xmin</span><span class="p">,</span><span class="n">xmax</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+  <span class="n">xrng</span> <span class="o">=</span> <span class="p">(</span><span class="n">xmax</span><span class="o">-</span><span class="n">xmin</span><span class="p">)</span>
+  <span class="n">inter</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">xrng</span><span class="o">/</span><span class="mf">6.</span><span class="o">*</span><span class="mf">86400.</span><span class="p">))</span>
+  <span class="n">inter2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">xrng</span><span class="o">/</span><span class="mf">24.</span><span class="o">*</span><span class="mf">86400.</span><span class="p">))</span>
+  <span class="c">#format the x axis</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">SecondLocator</span><span class="p">(</span><span class="n">interval</span><span class="o">=</span><span class="n">inter2</span><span class="p">))</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">SecondLocator</span><span class="p">(</span><span class="n">interval</span><span class="o">=</span><span class="n">inter</span><span class="p">))</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+      
+  <span class="c">#remove the x tick labels</span>
+  <span class="n">loc</span><span class="p">,</span><span class="n">lab</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">xticks</span><span class="p">()</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">loc</span><span class="p">,(</span><span class="s">&#39; &#39;</span><span class="p">))</span>
+  <span class="c">#use only 2 major yticks</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">yticks</span><span class="p">([],(</span><span class="s">&#39; &#39;</span><span class="p">))</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-.</span><span class="mo">07</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span><span class="s">&#39;CPID&#39;</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span><span class="n">va</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span> \
+  <span class="n">size</span><span class="o">=</span><span class="mf">8.5</span><span class="p">,</span><span class="n">rotation</span><span class="o">=</span><span class="s">&#39;vertical&#39;</span><span class="p">)</span>
+  
+  
+  
+    </div>
+<div class="viewcode-block" id="plotNoise"><a class="viewcode-back" href="../../../pydarn.plot.rti.html#pydarn.plot.rti.plotNoise">[docs]</a><span class="k">def</span> <span class="nf">plotNoise</span><span class="p">(</span><span class="n">myFig</span><span class="p">,</span><span class="n">times</span><span class="p">,</span><span class="n">sky</span><span class="p">,</span><span class="n">search</span><span class="p">,</span><span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">1</span><span class="p">,</span><span class="o">.</span><span class="mi">88</span><span class="p">,</span><span class="o">.</span><span class="mi">76</span><span class="p">,</span><span class="o">.</span><span class="mo">06</span><span class="p">]):</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  *******************************</span>
+
+<span class="sd">  PACKAGE: pydarn.plot.rti</span>
+
+<span class="sd">  FUNCTION: plotNoise(myFig,times,sky,search,pos=[.1,.88,.76,.06])</span>
+
+<span class="sd">  PURPOSE: plots a noise panel at position pos</span>
+
+<span class="sd">  INPUTS:</span>
+<span class="sd">    myFig: the MPL figure we are plotting on</span>
+<span class="sd">    times: a list of the times of the beam soundings</span>
+<span class="sd">    sky: a lsit of the noise.sky of the beam soundings</span>
+<span class="sd">    search: a list of the noise.search param</span>
+<span class="sd">    [pos]: position of the panel</span>
+
+<span class="sd">  OUTPUTS:</span>
+<span class="sd">    NONE</span>
+<span class="sd">    </span>
+<span class="sd">  EXAMPLES:</span>
+<span class="sd">    plotNoise(rtiFig,times,nsky,nsch)</span>
+<span class="sd">      </span>
+<span class="sd">  Written by AJ 20121002</span>
+
+<span class="sd">  &quot;&quot;&quot;</span>
+  
+  <span class="c">#read the data</span>
+  <span class="c">#add an axes to the figure</span>
+  <span class="n">ax</span> <span class="o">=</span> <span class="n">myFig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">tick_left</span><span class="p">()</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_tick_params</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s">&#39;out&#39;</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">top</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">MultipleLocator</span><span class="p">())</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_tick_params</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s">&#39;out&#39;</span><span class="p">,</span><span class="n">which</span><span class="o">=</span><span class="s">&#39;minor&#39;</span><span class="p">)</span>
+  
+  <span class="n">xmin</span><span class="p">,</span><span class="n">xmax</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+  <span class="n">xrng</span> <span class="o">=</span> <span class="p">(</span><span class="n">xmax</span><span class="o">-</span><span class="n">xmin</span><span class="p">)</span>
+  <span class="n">inter</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">xrng</span><span class="o">/</span><span class="mf">6.</span><span class="o">*</span><span class="mf">86400.</span><span class="p">))</span>
+  <span class="n">inter2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">xrng</span><span class="o">/</span><span class="mf">24.</span><span class="o">*</span><span class="mf">86400.</span><span class="p">))</span>
+  <span class="c">#format the x axis</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">SecondLocator</span><span class="p">(</span><span class="n">interval</span><span class="o">=</span><span class="n">inter2</span><span class="p">))</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">SecondLocator</span><span class="p">(</span><span class="n">interval</span><span class="o">=</span><span class="n">inter</span><span class="p">))</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+  
+  <span class="c">#plot the sky noise data</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">plot_date</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">times</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">sky</span><span class="p">),</span> <span class="n">fmt</span><span class="o">=</span><span class="s">&#39;k-&#39;</span><span class="p">,</span> \
+  <span class="n">tz</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">xdate</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">ydate</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+  <span class="c">#remove the x tick labels</span>
+  <span class="n">loc</span><span class="p">,</span><span class="n">lab</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">xticks</span><span class="p">()</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">loc</span><span class="p">,(</span><span class="s">&#39; &#39;</span><span class="p">))</span>
+  <span class="c">#use only 2 major yticks</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">yticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">],(</span><span class="s">&#39; &#39;</span><span class="p">))</span>
+  
+  <span class="c">#left y axis annotation</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-.</span><span class="mo">01</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+.</span><span class="mo">004</span><span class="p">,</span><span class="s">&#39;10^0&#39;</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s">&#39;right&#39;</span><span class="p">,</span><span class="n">va</span><span class="o">=</span><span class="s">&#39;bottom&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-.</span><span class="mo">01</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span><span class="s">&#39;10^6&#39;</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s">&#39;right&#39;</span><span class="p">,</span><span class="n">va</span><span class="o">=</span><span class="s">&#39;top&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-.</span><span class="mo">07</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span><span class="s">&#39;N.Sky&#39;</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span><span class="n">va</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span> \
+  <span class="n">size</span><span class="o">=</span><span class="mf">8.5</span><span class="p">,</span><span class="n">rotation</span><span class="o">=</span><span class="s">&#39;vertical&#39;</span><span class="p">)</span>
+  <span class="n">l</span><span class="o">=</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-.</span><span class="mo">06</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-.</span><span class="mo">06</span><span class="p">],</span> <span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+.</span><span class="mo">01</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">-.</span><span class="mo">01</span><span class="p">],</span> \
+  <span class="n">transform</span><span class="o">=</span><span class="n">myFig</span><span class="o">.</span><span class="n">transFigure</span><span class="p">,</span><span class="n">clip_on</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">ls</span><span class="o">=</span><span class="s">&#39;-&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">&#39;k&#39;</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>                              
+  <span class="n">ax</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+  
+  
+  <span class="c">#add an axes to the figure</span>
+  <span class="n">ax2</span> <span class="o">=</span> <span class="n">myFig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">frameon</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+  <span class="n">ax2</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">tick_right</span><span class="p">()</span>
+  <span class="n">ax2</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_tick_params</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s">&#39;out&#39;</span><span class="p">)</span>
+  <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">top</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+  <span class="n">ax2</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">MultipleLocator</span><span class="p">())</span>
+  <span class="n">ax2</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_tick_params</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s">&#39;out&#39;</span><span class="p">,</span><span class="n">which</span><span class="o">=</span><span class="s">&#39;minor&#39;</span><span class="p">)</span>
+  
+  <span class="c">#plot the search noise data</span>
+  <span class="n">ax2</span><span class="o">.</span><span class="n">plot_date</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">times</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">search</span><span class="p">),</span> <span class="n">fmt</span><span class="o">=</span><span class="s">&#39;k:&#39;</span><span class="p">,</span> \
+  <span class="n">tz</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">xdate</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">ydate</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+  
+  <span class="c">#remove the x tick labels</span>
+  <span class="n">loc</span><span class="p">,</span><span class="n">lab</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">xticks</span><span class="p">()</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">xticks</span><span class="p">([</span><span class="mi">0</span><span class="p">],(</span><span class="s">&#39; &#39;</span><span class="p">))</span>
+  <span class="c">#use only 2 major yticks</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">yticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">],(</span><span class="s">&#39; &#39;</span><span class="p">))</span>
+  
+  <span class="c">#right y axis annotation</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+.</span><span class="mo">01</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+.</span><span class="mo">004</span><span class="p">,</span><span class="s">&#39;10^0&#39;</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s">&#39;left&#39;</span><span class="p">,</span><span class="n">va</span><span class="o">=</span><span class="s">&#39;bottom&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+.</span><span class="mo">01</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span><span class="s">&#39;10^6&#39;</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s">&#39;left&#39;</span><span class="p">,</span><span class="n">va</span><span class="o">=</span><span class="s">&#39;top&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+.</span><span class="mo">06</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span><span class="s">&#39;N.Sch&#39;</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span><span class="n">va</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mf">8.5</span><span class="p">,</span><span class="n">rotation</span><span class="o">=</span><span class="s">&#39;vertical&#39;</span><span class="p">)</span>
+  <span class="n">l</span><span class="o">=</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+.</span><span class="mo">07</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+.</span><span class="mo">07</span><span class="p">],</span> <span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+.</span><span class="mo">01</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">-.</span><span class="mo">01</span><span class="p">],</span> \
+  <span class="n">transform</span><span class="o">=</span><span class="n">myFig</span><span class="o">.</span><span class="n">transFigure</span><span class="p">,</span><span class="n">clip_on</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">ls</span><span class="o">=</span><span class="s">&#39;:&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">&#39;k&#39;</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>                              
+  <span class="n">ax2</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+  </div>
+<div class="viewcode-block" id="plotFreq"><a class="viewcode-back" href="../../../pydarn.plot.rti.html#pydarn.plot.rti.plotFreq">[docs]</a><span class="k">def</span> <span class="nf">plotFreq</span><span class="p">(</span><span class="n">myFig</span><span class="p">,</span><span class="n">times</span><span class="p">,</span><span class="n">freq</span><span class="p">,</span><span class="n">nave</span><span class="p">,</span><span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">1</span><span class="p">,</span><span class="o">.</span><span class="mi">82</span><span class="p">,</span><span class="o">.</span><span class="mi">76</span><span class="p">,</span><span class="o">.</span><span class="mo">06</span><span class="p">]):</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  *******************************</span>
+
+<span class="sd">  PACKAGE: pydarn.plot.rti</span>
+
+<span class="sd">  FUNCTION: plotFreq(myFig,times,freq,nave,pos=[.1,.82,.76,.06])</span>
+
+<span class="sd">  PURPOSE: plots a frequency panel at position pos</span>
+
+<span class="sd">  INPUTS:</span>
+<span class="sd">    myFig: the MPL figure we are plotting on</span>
+<span class="sd">    times: a list of the times of the beam soundings</span>
+<span class="sd">    freq: a lsit of the tfreq of the beam soundings</span>
+<span class="sd">    search: a list of the nave param</span>
+<span class="sd">    [pos]: position of the panel</span>
+
+<span class="sd">  OUTPUTS:</span>
+<span class="sd">    NONE</span>
+<span class="sd">    </span>
+<span class="sd">  EXAMPLES:</span>
+<span class="sd">    plotNoise(rtiFig,times,tfreq,nave)</span>
+<span class="sd">      </span>
+<span class="sd">  Written by AJ 20121002</span>
+
+<span class="sd">  &quot;&quot;&quot;</span>
+    
+  <span class="c">#FIRST, DO THE TFREQ PLOTTING</span>
+  <span class="n">ax</span> <span class="o">=</span> <span class="n">myFig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">tick_left</span><span class="p">()</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_tick_params</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s">&#39;out&#39;</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">top</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">MultipleLocator</span><span class="p">())</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_tick_params</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s">&#39;out&#39;</span><span class="p">,</span><span class="n">which</span><span class="o">=</span><span class="s">&#39;minor&#39;</span><span class="p">)</span>
+  
+  <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">freq</span><span class="p">:</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">f</span> <span class="o">&gt;</span> <span class="mi">16</span><span class="p">):</span> <span class="n">f</span> <span class="o">=</span> <span class="mi">16</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">f</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">):</span> <span class="n">f</span> <span class="o">=</span> <span class="mi">10</span>
+    
+  <span class="n">ax</span><span class="o">.</span><span class="n">plot_date</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">times</span><span class="p">),</span> <span class="n">freq</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s">&#39;k-&#39;</span><span class="p">,</span> \
+  <span class="n">tz</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">xdate</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">ydate</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">markersize</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+  
+  <span class="n">loc</span><span class="p">,</span><span class="n">lab</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">xticks</span><span class="p">()</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">loc</span><span class="p">,(</span><span class="s">&#39; &#39;</span><span class="p">))</span>
+  <span class="c">#customize yticks</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">yticks</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span><span class="mi">16</span><span class="p">],(</span><span class="s">&#39; &#39;</span><span class="p">))</span>
+  
+  <span class="n">xmin</span><span class="p">,</span><span class="n">xmax</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+  <span class="n">xrng</span> <span class="o">=</span> <span class="p">(</span><span class="n">xmax</span><span class="o">-</span><span class="n">xmin</span><span class="p">)</span>
+  <span class="n">inter</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">xrng</span><span class="o">/</span><span class="mf">6.</span><span class="o">*</span><span class="mf">86400.</span><span class="p">))</span>
+  <span class="n">inter2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">xrng</span><span class="o">/</span><span class="mf">24.</span><span class="o">*</span><span class="mf">86400.</span><span class="p">))</span>
+  <span class="c">#format the x axis</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">SecondLocator</span><span class="p">(</span><span class="n">interval</span><span class="o">=</span><span class="n">inter2</span><span class="p">))</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">SecondLocator</span><span class="p">(</span><span class="n">interval</span><span class="o">=</span><span class="n">inter</span><span class="p">))</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+  
+  <span class="n">plot</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-.</span><span class="mo">01</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s">&#39;10&#39;</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s">&#39;right&#39;</span><span class="p">,</span><span class="n">va</span><span class="o">=</span><span class="s">&#39;bottom&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-.</span><span class="mo">01</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">-.</span><span class="mo">003</span><span class="p">,</span><span class="s">&#39;16&#39;</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s">&#39;right&#39;</span><span class="p">,</span><span class="n">va</span><span class="o">=</span><span class="s">&#39;top&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-.</span><span class="mo">07</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span><span class="s">&#39;Freq&#39;</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span><span class="n">va</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span><span class="n">rotation</span><span class="o">=</span><span class="s">&#39;vertical&#39;</span><span class="p">)</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-.</span><span class="mo">05</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span><span class="s">&#39;[MHz]&#39;</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span><span class="n">va</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span><span class="n">rotation</span><span class="o">=</span><span class="s">&#39;vertical&#39;</span><span class="p">)</span>
+  <span class="n">l</span><span class="o">=</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-.</span><span class="mo">04</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-.</span><span class="mo">04</span><span class="p">],</span> <span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+.</span><span class="mo">01</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">-.</span><span class="mo">01</span><span class="p">],</span> \
+  <span class="n">transform</span><span class="o">=</span><span class="n">myFig</span><span class="o">.</span><span class="n">transFigure</span><span class="p">,</span><span class="n">clip_on</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">ls</span><span class="o">=</span><span class="s">&#39;-&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">&#39;k&#39;</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>                              
+  <span class="n">ax</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+  
+  
+  <span class="c">#NEXT, DO THE NAVE PLOTTING</span>
+  <span class="n">ax2</span> <span class="o">=</span> <span class="n">myFig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">frameon</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+  <span class="n">ax2</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">tick_right</span><span class="p">()</span>
+  <span class="n">ax2</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_tick_params</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s">&#39;out&#39;</span><span class="p">)</span>
+  <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">top</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
+  <span class="n">ax2</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">MultipleLocator</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>
+  <span class="n">ax2</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_tick_params</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s">&#39;out&#39;</span><span class="p">,</span><span class="n">which</span><span class="o">=</span><span class="s">&#39;minor&#39;</span><span class="p">)</span>
+  
+  <span class="n">ax2</span><span class="o">.</span><span class="n">plot_date</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">times</span><span class="p">),</span> <span class="n">nave</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s">&#39;k:&#39;</span><span class="p">,</span> \
+  <span class="n">tz</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">xdate</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">ydate</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">markersize</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+  
+  <span class="n">loc</span><span class="p">,</span><span class="n">lab</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">xticks</span><span class="p">()</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">xticks</span><span class="p">([</span><span class="mi">0</span><span class="p">],(</span><span class="s">&#39; &#39;</span><span class="p">))</span>
+  <span class="c">#customize yticks</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">yticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">80</span><span class="p">],(</span><span class="s">&#39; &#39;</span><span class="p">))</span>
+  
+  <span class="n">plot</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+.</span><span class="mo">01</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+.</span><span class="mo">004</span><span class="p">,</span><span class="s">&#39;0&#39;</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s">&#39;left&#39;</span><span class="p">,</span><span class="n">va</span><span class="o">=</span><span class="s">&#39;bottom&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+.</span><span class="mo">01</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span><span class="s">&#39;80&#39;</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s">&#39;left&#39;</span><span class="p">,</span><span class="n">va</span><span class="o">=</span><span class="s">&#39;top&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+.</span><span class="mo">06</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span><span class="s">&#39;Nave&#39;</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span><span class="n">va</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mf">8.5</span><span class="p">,</span><span class="n">rotation</span><span class="o">=</span><span class="s">&#39;vertical&#39;</span><span class="p">)</span>
+  <span class="n">l</span><span class="o">=</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+.</span><span class="mo">07</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+.</span><span class="mo">07</span><span class="p">],</span> <span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+.</span><span class="mo">01</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">pos</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">-.</span><span class="mo">01</span><span class="p">],</span> \
+  <span class="n">transform</span><span class="o">=</span><span class="n">myFig</span><span class="o">.</span><span class="n">transFigure</span><span class="p">,</span><span class="n">clip_on</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">ls</span><span class="o">=</span><span class="s">&#39;:&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">&#39;k&#39;</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>                              
+  <span class="n">ax2</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">l</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../../../index.html">
+          <img class="logo" src="../../../_static/davitpy.svg" alt="Logo" style="width: 80%;"/>
+        </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+    <li><a href="../../../index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../plot.html" >pydarn.plot</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, VT SuperDARN Lab and Friends.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

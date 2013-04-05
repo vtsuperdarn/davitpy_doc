@@ -9,7 +9,7 @@ PAPER         =
 BUILDDIR      = build
 =======
 BUILDDIR      = _build
->>>>>>> 629ba8a35a934e615df117d6a0f300a6edd85f8c
+>>>>>>> first commit
 
 # Internal variables.
 PAPEROPT_a4     = -D latex_paper_size=a4

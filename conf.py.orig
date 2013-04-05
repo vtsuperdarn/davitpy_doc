@@ -75,7 +75,7 @@ release = '0.1'
 exclude_patterns = ['build']
 =======
 exclude_patterns = ['_build']
->>>>>>> 629ba8a35a934e615df117d6a0f300a6edd85f8c
+>>>>>>> first commit
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 #default_role = None
@@ -136,7 +136,11 @@ html_logo = 'images/davitpy.svg'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
+<<<<<<< HEAD
+html_static_path = ['static']
+=======
 html_static_path = ['_static']
+>>>>>>> first commit
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.

@@ -1,0 +1,499 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pydarn.proc.signal.sigproc &mdash; davitpy</title>
+    
+    <link rel="stylesheet" href="../../../../_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../../../_static/cloud.js"></script>
+    <link rel="top" title="davitpy" href="../../../../index.html" />
+    <link rel="up" title="pydarn.proc.signal" href="../signal.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+    <li><a href="../../../../index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../proc.html" >pydarn.proc</a> &raquo;</li>
+          <li><a href="../signal.html" accesskey="U">pydarn.proc.signal</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for pydarn.proc.signal.sigproc</h1><div class="highlight"><pre>
+<span class="c">#sigproc.py</span>
+<span class="kn">import</span> <span class="nn">copy</span> 
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">mp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy</span> <span class="kn">as</span> <span class="nn">sp</span>
+<span class="kn">import</span> <span class="nn">scipy.signal</span>
+
+<span class="kn">from</span> <span class="nn">signalCommon</span> <span class="kn">import</span> <span class="o">*</span>
+
+<div class="viewcode-block" id="dtvToSeconds"><a class="viewcode-back" href="../../../../pydarn.proc.signal.sigproc.html#pydarn.proc.signal.sigproc.dtvToSeconds">[docs]</a><span class="k">def</span> <span class="nf">dtvToSeconds</span><span class="p">(</span><span class="n">dtv</span><span class="p">,</span><span class="n">start</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Convert a datetime.datetime iterable to a numpy array of seconds from start.</span>
+<span class="sd">  :param start: datatime.datetime.  If None, then start = dtv[0].</span>
+<span class="sd">  :param dtv: datetime.datetime iterable to convert.</span>
+<span class="sd">  :returns sec: numpy.array of seconds from dtv[0].</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="k">if</span> <span class="n">start</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span> <span class="n">start</span> <span class="o">=</span> <span class="n">dtv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="n">npDtv</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dtv</span><span class="p">)</span>
+  <span class="n">timeDelta</span> <span class="o">=</span> <span class="n">npDtv</span> <span class="o">-</span> <span class="n">start</span>
+  <span class="n">sec</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">timeDelta</span><span class="p">])</span>
+  <span class="k">return</span> <span class="n">sec</span>
+</div>
+<div class="viewcode-block" id="interpolate"><a class="viewcode-back" href="../../../../pydarn.proc.signal.sigproc.html#pydarn.proc.signal.sigproc.interpolate">[docs]</a><span class="k">def</span> <span class="nf">interpolate</span><span class="p">(</span><span class="n">vtsig</span><span class="p">,</span><span class="n">start</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">stop</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">samplePeriod</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">newSigName</span><span class="o">=</span><span class="s">&#39;interpolated&#39;</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Interpolates signal onto a regular grid.</span>
+<span class="sd">  :param vtsig: VT sig/sigStruct object to be interpolated</span>
+<span class="sd">  :param start: datetime.datetime to start the new grid.</span>
+<span class="sd">    If not set, vtsig.getValidTimes()[0] is used.</span>
+<span class="sd">  :param stop: datetime.datetime to end the new grid.</span>
+<span class="sd">    If not set, vtsig.getValidTimes()[1] is used.</span>
+<span class="sd">  :param samplePeriod: Time resolution of the new grid in seconds.</span>
+<span class="sd">    If not set, 0.1*vtsig.samplePeriod() is used.</span>
+<span class="sd">  :param newSigName: String name of the attribute of the newly created signal.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="n">sigobj</span> <span class="o">=</span> <span class="n">prepForProc</span><span class="p">(</span><span class="n">vtsig</span><span class="p">)</span>
+  
+  <span class="n">valid</span> <span class="o">=</span> <span class="n">sigobj</span><span class="o">.</span><span class="n">getValidTimes</span><span class="p">()</span>
+  <span class="k">if</span> <span class="n">start</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span> <span class="n">start</span> <span class="o">=</span> <span class="n">valid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="k">if</span> <span class="n">stop</span>  <span class="o">==</span> <span class="bp">None</span><span class="p">:</span> <span class="n">stop</span>  <span class="o">=</span> <span class="n">valid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+  <span class="k">if</span> <span class="n">samplePeriod</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span> <span class="n">samplePeriod</span> <span class="o">=</span> <span class="mf">0.1</span><span class="o">*</span><span class="n">sigobj</span><span class="o">.</span><span class="n">getSamplePeriod</span><span class="p">()</span>
+
+  <span class="c">#Create new date time vector.</span>
+  <span class="n">dt</span>  <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">samplePeriod</span><span class="p">)</span>
+  <span class="n">ndt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="n">stop</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">/</span> <span class="n">dt</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()))</span>
+  <span class="n">dtv</span> <span class="o">=</span> <span class="p">[</span><span class="n">start</span> <span class="o">+</span> <span class="n">dt</span><span class="o">*</span><span class="n">xx</span> <span class="k">for</span> <span class="n">xx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ndt</span><span class="p">)]</span>
+  <span class="n">newDtv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dtv</span><span class="p">)</span>
+
+  <span class="c">#Convert sigobj.dtv to seconds from newDtv[0].</span>
+  <span class="n">start</span>  <span class="o">=</span> <span class="n">newDtv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="n">oldsec</span> <span class="o">=</span> <span class="n">dtvToSeconds</span><span class="p">(</span><span class="n">sigobj</span><span class="o">.</span><span class="n">dtv</span><span class="p">,</span><span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">)</span>
+  <span class="n">f</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">oldsec</span><span class="p">,</span><span class="n">sigobj</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+  <span class="c">#Convert newDtv to seconds from newDtv[0].</span>
+  <span class="n">newsec</span> <span class="o">=</span> <span class="n">dtvToSeconds</span><span class="p">(</span><span class="n">newDtv</span><span class="p">)</span>
+  <span class="n">newsig</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">newsec</span><span class="p">)</span>
+  
+  <span class="n">sampPeriod</span> <span class="o">=</span> <span class="n">sigobj</span><span class="o">.</span><span class="n">samplePeriod</span><span class="p">(</span><span class="n">dtv</span><span class="o">=</span><span class="n">newDtv</span><span class="p">)</span>
+  <span class="n">nyq</span> <span class="o">=</span> <span class="n">sigobj</span><span class="o">.</span><span class="n">nyquistFrequency</span><span class="p">(</span><span class="n">dtv</span><span class="o">=</span><span class="n">newDtv</span><span class="p">)</span>
+  <span class="n">comment</span> <span class="o">=</span> <span class="s">&#39;Interpolate: [&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">newDtv</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">+</span><span class="s">&#39; to &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">newDtv</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">+</span><span class="s">&#39;] dt=&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">sampPeriod</span><span class="p">)</span><span class="o">+</span><span class="s">&#39; s, Nyq=&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">nyq</span><span class="p">)</span><span class="o">+</span><span class="s">&#39; Hz&#39;</span>
+
+  <span class="n">sigobj</span><span class="o">.</span><span class="n">makeNewSignal</span><span class="p">(</span><span class="n">newSigName</span><span class="p">,</span><span class="n">newDtv</span><span class="p">,</span><span class="n">newsig</span><span class="p">,</span><span class="n">comment</span><span class="p">,</span><span class="n">appendTitle</span><span class="o">=</span><span class="s">&#39;Interpolated&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="commonDtv"><a class="viewcode-back" href="../../../../pydarn.proc.signal.sigproc.html#pydarn.proc.signal.sigproc.commonDtv">[docs]</a><span class="k">def</span> <span class="nf">commonDtv</span><span class="p">(</span><span class="n">siglist</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Takes a list of vt sig/sigStruct objects and interpolates them all to a common datetime.datetime grid. The most restrictive range of validtimes and the highest time resolution is used.</span>
+<span class="sd">  :params siglist: list of vt sig/sigStruct objects</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="n">sl</span>    <span class="o">=</span> <span class="p">[]</span>
+  <span class="n">start</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="n">stop</span>  <span class="o">=</span> <span class="p">[]</span>
+  <span class="n">dt</span>    <span class="o">=</span> <span class="p">[]</span>
+
+  <span class="c">#Find out the properties of each of the signals, put them into lists.</span>
+  <span class="k">for</span> <span class="n">sig</span> <span class="ow">in</span> <span class="n">siglist</span><span class="p">:</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">prepForProc</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
+    <span class="n">sl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+    <span class="n">dt</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">samplePeriod</span><span class="p">())</span>
+
+    <span class="n">rang</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">getValidTimes</span><span class="p">()</span>
+    <span class="n">start</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rang</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">stop</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rang</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+  <span class="c">#Sort the lists appropriately.</span>
+  <span class="n">dt</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+  <span class="n">start</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+  <span class="n">stop</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+  
+  <span class="k">for</span> <span class="n">sig</span> <span class="ow">in</span> <span class="n">sl</span><span class="p">:</span>
+    <span class="n">interpolate</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span><span class="n">start</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">stop</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mf">0.1</span><span class="o">*</span><span class="n">dt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s">&#39;common&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="detrend"><a class="viewcode-back" href="../../../../pydarn.proc.signal.sigproc.html#pydarn.proc.signal.sigproc.detrend">[docs]</a><span class="k">def</span> <span class="nf">detrend</span><span class="p">(</span><span class="n">vtsig</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Linearly detrend a vtsig object.</span>
+
+<span class="sd">    :param vtsig: vtsig object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">sigobj</span> <span class="o">=</span> <span class="n">prepForProc</span><span class="p">(</span><span class="n">vtsig</span><span class="p">)</span>
+    <span class="n">vtsig</span>  <span class="o">=</span> <span class="n">sigobj</span><span class="o">.</span><span class="n">parent</span>
+
+    <span class="c">#Detrend data</span>
+    <span class="n">detrend_data</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">detrend</span><span class="p">(</span><span class="n">sigobj</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="c">#Create new signal object.</span>
+    <span class="n">newsigobj</span> <span class="o">=</span> <span class="n">sigobj</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="s">&#39;detrended&#39;</span><span class="p">,</span><span class="s">&#39;Linear detrend (scipy.signal.detrend)&#39;</span><span class="p">)</span>
+    <span class="n">newsigobj</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">detrend_data</span><span class="p">)</span>
+
+    <span class="c">#Clear out ymin and ymax from metadata; make sure meta data block exists.</span>
+    <span class="c">#If not, create it.</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">newsigobj</span><span class="p">,</span><span class="s">&#39;metadata&#39;</span><span class="p">):</span>
+      <span class="n">delMeta</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;ymin&#39;</span><span class="p">,</span><span class="s">&#39;ymax&#39;</span><span class="p">]</span>
+      <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">delMeta</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">newsigobj</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+          <span class="k">del</span> <span class="n">newsigobj</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">newsigobj</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">key</span> <span class="o">=</span> <span class="s">&#39;title&#39;</span>
+    <span class="k">if</span> <span class="n">newsigobj</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+      <span class="n">newsigobj</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&#39;Detrended &#39;</span><span class="p">,</span><span class="n">newsigobj</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]])</span>
+    <span class="k">elif</span> <span class="n">vtsig</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+      <span class="n">newsigobj</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&#39;Detrended &#39;</span><span class="p">,</span><span class="n">vtsig</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]])</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">newsigobj</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;Detrended&#39;</span>
+
+    <span class="nb">setattr</span><span class="p">(</span><span class="n">vtsig</span><span class="p">,</span><span class="s">&#39;active&#39;</span><span class="p">,</span><span class="n">newsigobj</span><span class="p">)</span>
+
+</div>
+<span class="k">class</span> <span class="nc">filter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vtsig</span><span class="p">,</span> <span class="n">numtaps</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">cutoff_low</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">cutoff_high</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="s">&#39;blackman&#39;</span><span class="p">,</span> <span class="n">pass_zero</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">newSigName</span><span class="o">=</span><span class="s">&#39;filtered&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Filter a VT sig/sigStruct object and define a FIR filter object.</span>
+<span class="sd">    If only cutoff_low is defined, this is a high pass filter.</span>
+<span class="sd">    If only cutoff_high is defined, this is a low pass filter.</span>
+<span class="sd">    If both cutoff_low and cutoff_high is defined, this is a band pass filter.</span>
+
+<span class="sd">    Uses scipy.signal.firwin()</span>
+<span class="sd">    High pass and band pass filters inspired by Matti Pastell&#39;s page:</span>
+<span class="sd">      http://mpastell.com/2010/01/18/fir-with-scipy/</span>
+
+<span class="sd">    Metadata keys:</span>
+<span class="sd">      &#39;filter_cutoff_low&#39; --&gt; cutoff_low</span>
+<span class="sd">      &#39;filter_cutoff_high&#39; --&gt; cutoff_high</span>
+<span class="sd">      &#39;filter_cutoff_numtaps&#39; --&gt; cutoff_numtaps</span>
+
+<span class="sd">    numtaps : int</span>
+<span class="sd">      Length of the filter (number of coefficients, i.e. the filter</span>
+<span class="sd">      order + 1).  `numtaps` must be even if a passband includes the</span>
+<span class="sd">      Nyquist frequency.</span>
+
+<span class="sd">    cutoff_low: float or 1D array_like</span>
+<span class="sd">        High pass cutoff frequency of filter (expressed in the same units as `nyq`)</span>
+<span class="sd">        OR an array of cutoff frequencies (that is, band edges). In the</span>
+<span class="sd">        latter case, the frequencies in `cutoff` should be positive and</span>
+<span class="sd">        monotonically increasing between 0 and `nyq`.  The values 0 and</span>
+<span class="sd">        `nyq` must not be included in `cutoff`.</span>
+
+<span class="sd">    cutoff_high: float or 1D array_like</span>
+<span class="sd">        Like cutoff_low, but this is the low pass cutoff frequency of the filter.</span>
+
+<span class="sd">    width : float or None</span>
+<span class="sd">        If `width` is not None, then assume it is the approximate width</span>
+<span class="sd">        of the transition region (expressed in the same units as `nyq`)</span>
+<span class="sd">        for use in Kaiser FIR filter design.  In this case, the `window`</span>
+<span class="sd">        argument is ignored.</span>
+
+<span class="sd">    window : string or tuple of string and parameter values</span>
+<span class="sd">        Desired window to use. See `scipy.signal.get_window` for a list</span>
+<span class="sd">        of windows and required parameters.</span>
+
+<span class="sd">    pass_zero : bool</span>
+<span class="sd">        If True, the gain at the frequency 0 (i.e. the &quot;DC gain&quot;) is 1.</span>
+<span class="sd">        Otherwise the DC gain is 0.</span>
+
+<span class="sd">    scale : bool</span>
+<span class="sd">        Set to True to scale the coefficients so that the frequency</span>
+<span class="sd">        response is exactly unity at a certain frequency.</span>
+<span class="sd">        That frequency is either:</span>
+<span class="sd">                  0 (DC) if the first passband starts at 0 (i.e. pass_zero is True);</span>
+<span class="sd">                  `nyq` (the Nyquist rate) if the first passband ends at</span>
+<span class="sd">                      `nyq` (i.e the filter is a single band highpass filter);</span>
+<span class="sd">                  center of first passband otherwise.</span>
+
+<span class="sd">    nyq : float</span>
+<span class="sd">        Nyquist frequency.  Each frequency in `cutoff` must be between 0</span>
+<span class="sd">        and `nyq`.</span>
+
+<span class="sd">    :returns: filter object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">sigObj</span> <span class="o">=</span> <span class="n">prepForProc</span><span class="p">(</span><span class="n">vtsig</span><span class="p">)</span>
+    <span class="n">nyq</span> <span class="o">=</span> <span class="n">sigObj</span><span class="o">.</span><span class="n">nyquistFrequency</span><span class="p">()</span>
+
+    <span class="c">#Get metadata for cutoffs and numtaps.</span>
+    <span class="n">md</span> <span class="o">=</span> <span class="n">sigObj</span><span class="o">.</span><span class="n">getAllMetaData</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">cutoff_high</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">md</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&#39;filter_cutoff_high&#39;</span><span class="p">):</span>
+        <span class="n">cutoff_high</span> <span class="o">=</span> <span class="n">md</span><span class="p">[</span><span class="s">&#39;filter_cutoff_high&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">cutoff_low</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">md</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&#39;filter_cutoff_low&#39;</span><span class="p">):</span>
+        <span class="n">cutoff_low</span> <span class="o">=</span> <span class="n">md</span><span class="p">[</span><span class="s">&#39;filter_cutoff_low&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">numtaps</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">md</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&#39;filter_numtaps&#39;</span><span class="p">):</span>
+        <span class="n">numtaps</span> <span class="o">=</span> <span class="n">md</span><span class="p">[</span><span class="s">&#39;filter_numtaps&#39;</span><span class="p">]</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&#39;WARNING: You must provide numtaps.&#39;</span>
+        <span class="k">return</span>
+
+
+    <span class="k">if</span>   <span class="n">cutoff_high</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>    <span class="c">#Low pass</span>
+      <span class="n">lp</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">firwin</span><span class="p">(</span><span class="n">numtaps</span><span class="o">=</span><span class="n">numtaps</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="n">cutoff_high</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="n">window</span><span class="p">,</span> <span class="n">pass_zero</span><span class="o">=</span><span class="n">pass_zero</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span> <span class="n">nyq</span><span class="o">=</span><span class="n">nyq</span><span class="p">)</span>
+      <span class="n">d</span> <span class="o">=</span> <span class="n">lp</span>
+
+    <span class="k">if</span>   <span class="n">cutoff_low</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>    <span class="c">#High pass</span>
+      <span class="n">hp</span> <span class="o">=</span> <span class="o">-</span><span class="n">sp</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">firwin</span><span class="p">(</span><span class="n">numtaps</span><span class="o">=</span><span class="n">numtaps</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="n">cutoff_low</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="n">window</span><span class="p">,</span> <span class="n">pass_zero</span><span class="o">=</span><span class="n">pass_zero</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span> <span class="n">nyq</span><span class="o">=</span><span class="n">nyq</span><span class="p">)</span>
+      <span class="n">hp</span><span class="p">[</span><span class="n">numtaps</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">hp</span><span class="p">[</span><span class="n">numtaps</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+      <span class="n">d</span> <span class="o">=</span> <span class="n">hp</span>
+
+    <span class="k">if</span> <span class="n">cutoff_high</span> <span class="o">!=</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">cutoff_low</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+      <span class="n">d</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">lp</span><span class="o">+</span><span class="n">hp</span><span class="p">)</span>
+      <span class="n">d</span><span class="p">[</span><span class="n">numtaps</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">numtaps</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">cutoff_high</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">cutoff_low</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+      <span class="k">print</span> <span class="s">&quot;WARNING!! You must define cutoff frequencies!&quot;</span>
+      <span class="k">return</span>
+    
+    <span class="bp">self</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&#39;Filter:&#39;</span><span class="p">,</span><span class="n">window</span><span class="o">+</span><span class="s">&#39;,&#39;</span><span class="p">,</span><span class="s">&#39;Nyquist:&#39;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">nyq</span><span class="p">),</span><span class="s">&#39;Hz,&#39;</span><span class="p">,</span><span class="s">&#39;Cuttoff:&#39;</span><span class="p">,</span><span class="s">&#39;[&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">cutoff_low</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;, &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">cutoff_high</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;]&#39;</span><span class="p">,</span><span class="s">&#39;Hz&#39;</span><span class="p">])</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">nyq</span> <span class="o">=</span> <span class="n">nyq</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">ir</span> <span class="o">=</span> <span class="n">d</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">sigObj</span><span class="p">,</span><span class="n">newSigName</span><span class="o">=</span><span class="n">newSigName</span><span class="p">)</span>
+
+
+  <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">comment</span>
+
+  <span class="k">def</span> <span class="nf">plotTransferFunction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">xmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">ymin_mag</span><span class="o">=-</span><span class="mi">150</span><span class="p">,</span><span class="n">ymax_mag</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">ymin_phase</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">ymax_phase</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">worN</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+      <span class="sd">&quot;&quot;&quot;Plot the frequency and phase response of the filter object.</span>
+
+<span class="sd">      :param xmin: Minimum value for x-axis.</span>
+<span class="sd">      :param xmax: Maximum value for x-axis.</span>
+<span class="sd">      :param ymin_mag: Minimum value for y-axis for the frequency response plot.</span>
+<span class="sd">      :param ymax_mag: Maximum value for y-axis for the frequency response plot.</span>
+<span class="sd">      :param ymin_phase: Minimum value for y-axis for the phase response plot.</span>
+<span class="sd">      :param ymax_phase: Maximum value for y-axis for the phase response plot.</span>
+<span class="sd">      :param worN: worN : {None, int}, optional</span>
+<span class="sd">          passed to scipy.signal.freqz()</span>
+<span class="sd">          If None, then compute at 512 frequencies around the unit circle.</span>
+<span class="sd">          If the len(filter) &gt; 512, then compute at len(filter) frequencies around the unit circle.</span>
+<span class="sd">          If a single integer, the compute at that many frequencies.</span>
+<span class="sd">          Otherwise, compute the response at frequencies given in worN</span>
+<span class="sd">      &quot;&quot;&quot;</span>
+      <span class="k">if</span> <span class="n">worN</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ir</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">512</span><span class="p">:</span> <span class="n">worN</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ir</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span> <span class="n">worN</span> <span class="o">=</span> <span class="bp">None</span>
+      <span class="k">else</span><span class="p">:</span> <span class="k">pass</span>
+
+      <span class="n">w</span><span class="p">,</span><span class="n">h</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">freqz</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ir</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">worN</span><span class="o">=</span><span class="n">worN</span><span class="p">)</span>
+      <span class="n">h_dB</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
+      <span class="n">mp</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">211</span><span class="p">)</span>
+    
+      <span class="c">#Compute frequency vector.</span>
+      <span class="n">w</span> <span class="o">=</span> <span class="n">w</span><span class="o">/</span><span class="nb">max</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nyq</span>
+      <span class="n">mp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">h_dB</span><span class="p">,</span><span class="s">&#39;.-&#39;</span><span class="p">)</span>
+      <span class="c">#mp.axvline(x=self.fMax,color=&#39;r&#39;,ls=&#39;--&#39;,lw=2)</span>
+
+      <span class="k">if</span> <span class="n">xmin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="n">xmin</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">xmax</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">xmax</span><span class="o">=</span><span class="n">xmax</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">ymin_mag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">ymin</span><span class="o">=</span><span class="n">ymin_mag</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">ymax_mag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">ymax</span><span class="o">=</span><span class="n">ymax_mag</span><span class="p">)</span>
+
+      <span class="n">mp</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;Magnitude (db)&#39;</span><span class="p">)</span>
+      <span class="n">mp</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">r&#39;Frequency (Hz)&#39;</span><span class="p">)</span>
+
+      <span class="n">mp</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">r&#39;Frequency response&#39;</span><span class="p">)</span>
+      <span class="n">mp</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">212</span><span class="p">)</span>
+      <span class="n">h_Phase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unwrap</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">h</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">h</span><span class="p">)))</span>
+      <span class="n">mp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">h_Phase</span><span class="p">,</span><span class="s">&#39;.-&#39;</span><span class="p">)</span>
+
+      <span class="k">if</span> <span class="n">xmin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="n">xmin</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">xmax</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">xmax</span><span class="o">=</span><span class="n">xmax</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">ymin_phase</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">ymin</span><span class="o">=</span><span class="n">ymin_phase</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">ymax_phase</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">ymax</span><span class="o">=</span><span class="n">ymax_phase</span><span class="p">)</span>
+
+      <span class="n">mp</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;Phase (radians)&#39;</span><span class="p">)</span>
+      <span class="n">mp</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">r&#39;Frequency (Hz)&#39;</span><span class="p">)</span>
+      <span class="n">mp</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">r&#39;Phase response&#39;</span><span class="p">)</span>
+      <span class="n">mp</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+      <span class="n">mp</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+  <span class="c">#Plot step and impulse response</span>
+  <span class="k">def</span> <span class="nf">plotImpulseResponse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">xmin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">ymin_imp</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">ymax_imp</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">ymin_step</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">ymax_step</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+      <span class="sd">&quot;&quot;&quot;Plot the frequency and phase response of the filter object.</span>
+
+<span class="sd">      :param xmin: Minimum value for x-axis.</span>
+<span class="sd">      :param xmax: Maximum value for x-axis.</span>
+<span class="sd">      :param ymin_imp: Minimum value for y-axis for the impulse response plot.</span>
+<span class="sd">      :param ymax_imp: Maximum value for y-axis for the impulse response plot.</span>
+<span class="sd">      :param ymin_step: Minimum value for y-axis for the step response plot.</span>
+<span class="sd">      :param ymax_step: Maximum value for y-axis for the step response plot.</span>
+<span class="sd">      &quot;&quot;&quot;</span>
+    <span class="c">#  def plotImpulseResponse(b,a=1):</span>
+      <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ir</span><span class="p">)</span>
+      <span class="n">impulse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span><span class="n">l</span><span class="p">);</span> <span class="n">impulse</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span><span class="mf">1.</span>
+      <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">l</span><span class="p">)</span>
+      <span class="n">response</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">lfilter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ir</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">impulse</span><span class="p">)</span>
+      <span class="n">mp</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">211</span><span class="p">)</span>
+      <span class="n">mp</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+      <span class="n">mp</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;Amplitude&#39;</span><span class="p">)</span>
+      <span class="n">mp</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">r&#39;n (samples)&#39;</span><span class="p">)</span>
+      <span class="n">mp</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">r&#39;Impulse response&#39;</span><span class="p">)</span>
+      <span class="n">mp</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">212</span><span class="p">)</span>
+
+      <span class="n">step</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+      <span class="n">mp</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+      <span class="n">mp</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;Amplitude&#39;</span><span class="p">)</span>
+      <span class="n">mp</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">r&#39;n (samples)&#39;</span><span class="p">)</span>
+      <span class="n">mp</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">r&#39;Step response&#39;</span><span class="p">)</span>
+      <span class="n">mp</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+      <span class="n">mp</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+  <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">vtsig</span><span class="p">,</span><span class="n">newSigName</span><span class="o">=</span><span class="s">&#39;filtered&#39;</span><span class="p">):</span>
+      <span class="sd">&quot;&quot;&quot;Apply the filter to a vtsig object.</span>
+
+<span class="sd">      :param vtsig: vtsig object</span>
+<span class="sd">      :param xmax: Maximum value for x-axis.</span>
+<span class="sd">      :param ymin_imp: Minimum value for y-axis for the impulse response plot.</span>
+<span class="sd">      :param ymax_imp: Maximum value for y-axis for the impulse response plot.</span>
+<span class="sd">      :param ymin_step: Minimum value for y-axis for the step response plot.</span>
+<span class="sd">      :param ymax_step: Maximum value for y-axis for the step response plot.</span>
+<span class="sd">      &quot;&quot;&quot;</span>
+      
+      <span class="n">sigobj</span> <span class="o">=</span> <span class="n">prepForProc</span><span class="p">(</span><span class="n">vtsig</span><span class="p">)</span>
+      <span class="n">vtsig</span>  <span class="o">=</span> <span class="n">sigobj</span><span class="o">.</span><span class="n">parent</span>
+
+      <span class="c">#Apply filter</span>
+      <span class="n">filt_data</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">lfilter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ir</span><span class="p">,[</span><span class="mf">1.0</span><span class="p">],</span><span class="n">sigobj</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c">#Filter causes a delay in the signal and also doesn&#39;t get the tail end of the signal...  Shift signal around, provide info about where the signal is valid.</span>
+      <span class="n">shift</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ir</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span><span class="p">))</span>
+
+      <span class="n">start_line</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">filt_data</span><span class="p">))</span>
+      <span class="n">start_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+      <span class="n">filt_data</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">filt_data</span><span class="p">,</span><span class="n">shift</span><span class="p">)</span>
+      <span class="n">start_line</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">start_line</span><span class="p">,</span><span class="n">shift</span><span class="p">)</span>
+      
+      <span class="n">tinx0</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">shift</span><span class="p">)</span>
+      <span class="n">tinx1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">start_line</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+      <span class="n">val_tm0</span> <span class="o">=</span> <span class="n">sigobj</span><span class="o">.</span><span class="n">dtv</span><span class="p">[</span><span class="n">tinx0</span><span class="p">]</span>
+      <span class="n">val_tm1</span> <span class="o">=</span> <span class="n">sigobj</span><span class="o">.</span><span class="n">dtv</span><span class="p">[</span><span class="n">tinx1</span><span class="p">]</span>
+
+      <span class="c">#Create new signal object.</span>
+      <span class="n">newsigobj</span> <span class="o">=</span> <span class="n">sigobj</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">newSigName</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">comment</span><span class="p">)</span>
+      <span class="c">#Put in the filtered data.</span>
+      <span class="n">newsigobj</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">filt_data</span><span class="p">)</span>
+      <span class="n">newsigobj</span><span class="o">.</span><span class="n">dtv</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">sigobj</span><span class="o">.</span><span class="n">dtv</span><span class="p">)</span>
+
+      <span class="c">#Clear out ymin and ymax from metadata; make sure meta data block exists.</span>
+      <span class="c">#If not, create it.</span>
+      <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">newsigobj</span><span class="p">,</span><span class="s">&#39;metadata&#39;</span><span class="p">):</span>
+        <span class="n">delMeta</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;ymin&#39;</span><span class="p">,</span><span class="s">&#39;ymax&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">delMeta</span><span class="p">:</span>
+          <span class="k">if</span> <span class="n">newsigobj</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+            <span class="k">del</span> <span class="n">newsigobj</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">newsigobj</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
+
+      <span class="n">newsigobj</span><span class="o">.</span><span class="n">updateValidTimes</span><span class="p">([</span><span class="n">val_tm0</span><span class="p">,</span><span class="n">val_tm1</span><span class="p">])</span>
+
+      <span class="n">key</span> <span class="o">=</span> <span class="s">&#39;title&#39;</span>
+      <span class="k">if</span> <span class="n">newsigobj</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+        <span class="n">newsigobj</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&#39;Filtered&#39;</span><span class="p">,</span><span class="n">newsigobj</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]])</span>
+      <span class="k">elif</span> <span class="n">vtsig</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+        <span class="n">newsigobj</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&#39;Filtered&#39;</span><span class="p">,</span><span class="n">vtsig</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]])</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">newsigobj</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;Filtered&#39;</span>
+
+      <span class="nb">setattr</span><span class="p">(</span><span class="n">vtsig</span><span class="p">,</span><span class="s">&#39;active&#39;</span><span class="p">,</span><span class="n">newsigobj</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../../../../index.html">
+          <img class="logo" src="../../../../_static/davitpy.svg" alt="Logo" style="width: 80%;"/>
+        </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+    <li><a href="../../../../index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../proc.html" >pydarn.proc</a> &raquo;</li>
+          <li><a href="../signal.html" >pydarn.proc.signal</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, VT SuperDARN Lab and Friends.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

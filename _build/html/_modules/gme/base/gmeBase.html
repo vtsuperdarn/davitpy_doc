@@ -1,0 +1,248 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gme.base.gmeBase &mdash; davitpy</title>
+    
+    <link rel="stylesheet" href="../../../_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../../_static/cloud.js"></script>
+    <link rel="top" title="davitpy" href="../../../index.html" />
+    <link rel="up" title="gme.base" href="../base.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+    <li><a href="../../../index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../base.html" accesskey="U">gme.base</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for gme.base.gmeBase</h1><div class="highlight"><pre>
+<span class="c"># Copyright (C) 2012  VT SuperDARN Lab</span>
+<span class="c"># Full license can be found in LICENSE.txt</span>
+<span class="c"># </span>
+<span class="c"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c"># it under the terms of the GNU General Public License as published by</span>
+<span class="c"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c"># (at your option) any later version.</span>
+<span class="c"># </span>
+<span class="c"># This program is distributed in the hope that it will be useful,</span>
+<span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c"># GNU General Public License for more details.</span>
+<span class="c"># </span>
+<span class="c"># You should have received a copy of the GNU General Public License</span>
+<span class="c"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. module:: gmeBase</span>
+<span class="sd">   :synopsis: A base class for gme data.  Allows definition of common routines</span>
+
+<span class="sd">.. moduleauthor:: AJ, 20130129</span>
+
+<span class="sd">*****************************</span>
+<span class="sd">**Module**: gmeBase</span>
+<span class="sd">*****************************</span>
+<span class="sd">**Classes**:</span>
+<span class="sd">	* :class:`gmeData`</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="gmeData"><a class="viewcode-back" href="../../../gme.base.gmeBase.html#gme.base.gmeBase.gmeData">[docs]</a><span class="k">class</span> <span class="nc">gmeData</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;a class to represent a a record of gme data.  Other classes will extend this class</span>
+<span class="sd">		</span>
+<span class="sd">	**Members**: </span>
+<span class="sd">		* **time** (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_): an object identifying which time these data are for</span>
+<span class="sd">		* **dataSet** (str): a string indicating the dataset</span>
+<span class="sd">		* **info** (str): information about where the data come from.  *Please be courteous and give credit to data providers when credit is due.*</span>
+<span class="sd">	.. note::</span>
+<span class="sd">		If any of the members have a value of None, this means that they could not be read for that specific time</span>
+<span class="sd">   </span>
+<span class="sd">	**Methods**:</span>
+<span class="sd">		* :func:`parseDb`</span>
+<span class="sd">		* :func:`toDbDict`</span>
+<span class="sd">	**Example**:</span>
+<span class="sd">		::</span>
+<span class="sd">		</span>
+<span class="sd">			emptyObj = gme.base.gmeData()</span>
+<span class="sd">		</span>
+<span class="sd">	written by AJ, 20130131</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="gmeData.parseDb"><a class="viewcode-back" href="../../../gme.base.gmeBase.html#gme.base.gmeBase.gmeData.parseDb">[docs]</a>	<span class="k">def</span> <span class="nf">parseDb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dbDict</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;This method is used to parse a dictionary of gme data from the mongodb into a :class:`gmeData` object.  </span>
+<span class="sd">		</span>
+<span class="sd">		.. note:: </span>
+<span class="sd">			In general, users will not need to use this.</span>
+<span class="sd">		</span>
+<span class="sd">		**Belongs to**: :class:`gmeData`</span>
+<span class="sd">		</span>
+<span class="sd">		**Args**: </span>
+<span class="sd">			* **dbDict** (dict): the dictionary from the mongodb</span>
+<span class="sd">		**Returns**:</span>
+<span class="sd">			* Nothing.</span>
+<span class="sd">		**Example**:</span>
+<span class="sd">			::</span>
+<span class="sd">			</span>
+<span class="sd">				myObj.parseDb(mongoDbDict)</span>
+<span class="sd">			</span>
+<span class="sd">		written by AJ, 20130129</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c">#iterate over the mongo dict</span>
+		<span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">dbDict</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+			<span class="c">#check for mongo _id attribute</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">attr</span> <span class="o">==</span> <span class="s">&#39;_id&#39;</span><span class="p">):</span> <span class="k">pass</span>
+			<span class="k">elif</span><span class="p">(</span><span class="n">attr</span> <span class="o">==</span> <span class="s">&#39;kp&#39;</span><span class="p">):</span>
+				<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dbDict</span><span class="p">[</span><span class="s">&#39;kp&#39;</span><span class="p">])):</span>
+					<span class="n">num</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">dbDict</span><span class="p">[</span><span class="s">&#39;kp&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span>
+					<span class="n">mod</span> <span class="o">=</span> <span class="n">dbDict</span><span class="p">[</span><span class="s">&#39;kp&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">dbDict</span><span class="p">[</span><span class="s">&#39;kp&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+					<span class="k">if</span><span class="p">(</span><span class="n">mod</span> <span class="o">==</span> <span class="o">.</span><span class="mi">3</span><span class="p">):</span> <span class="n">mod</span> <span class="o">=</span> <span class="s">&#39;-&#39;</span>
+					<span class="k">elif</span><span class="p">(</span><span class="n">mod</span> <span class="o">==</span> <span class="o">.</span><span class="mi">7</span><span class="p">):</span> <span class="n">mod</span> <span class="o">=</span> <span class="s">&#39;+&#39;</span>
+					<span class="k">else</span><span class="p">:</span> <span class="n">mod</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">kp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">num</span><span class="o">+</span><span class="n">mod</span><span class="p">)</span> 
+			<span class="k">else</span><span class="p">:</span>
+				<span class="c">#assign the value to our object</span>
+				<span class="k">try</span><span class="p">:</span> <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">attr</span><span class="p">,</span><span class="n">val</span><span class="p">)</span>
+				<span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span>
+					<span class="k">print</span> <span class="n">e</span>
+					<span class="k">print</span> <span class="s">&#39;problem assigning&#39;</span><span class="p">,</span><span class="n">attr</span>
+					</div>
+<div class="viewcode-block" id="gmeData.toDbDict"><a class="viewcode-back" href="../../../gme.base.gmeBase.html#gme.base.gmeBase.gmeData.toDbDict">[docs]</a>	<span class="k">def</span> <span class="nf">toDbDict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;This method is used to convert a :class:`gmeData` object into a mongodb data dictionary.</span>
+<span class="sd">		</span>
+<span class="sd">		.. note::</span>
+<span class="sd">			In general, users will not need to worry about this</span>
+<span class="sd">		</span>
+<span class="sd">		**Belongs to**: :class:`gmeData`</span>
+<span class="sd">		</span>
+<span class="sd">		**Args**: </span>
+<span class="sd">			* Nothing.</span>
+<span class="sd">		**Returns**:</span>
+<span class="sd">			* **dbDict** (dict): a dictionary in the correct format for writing to the mongodb</span>
+<span class="sd">		**Example**:</span>
+<span class="sd">			::</span>
+<span class="sd">			</span>
+<span class="sd">				mongoDbDict = myObj.todbDict()</span>
+<span class="sd">			</span>
+<span class="sd">		written by AJ, 20130129</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c">#initialize a new dictionary</span>
+		<span class="n">dbDict</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="c">#create dictionary entries for all out our attributes</span>
+		<span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">attr</span> <span class="o">==</span> <span class="s">&#39;kp&#39;</span><span class="p">):</span>
+				<span class="n">dbDict</span><span class="p">[</span><span class="s">&#39;kp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+				<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kp</span><span class="p">)):</span>
+					<span class="n">num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">])</span>
+					<span class="n">mod</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+					<span class="k">if</span><span class="p">(</span><span class="n">mod</span> <span class="o">==</span> <span class="s">&#39;+&#39;</span><span class="p">):</span> <span class="n">num</span> <span class="o">+=</span> <span class="o">.</span><span class="mi">7</span>
+					<span class="k">elif</span><span class="p">(</span><span class="n">mod</span> <span class="o">==</span> <span class="s">&#39;-&#39;</span><span class="p">):</span> <span class="n">num</span> <span class="o">+=</span> <span class="o">.</span><span class="mi">3</span>
+					<span class="k">else</span><span class="p">:</span> <span class="n">num</span> <span class="o">+=</span> <span class="o">.</span><span class="mi">5</span>
+					<span class="n">dbDict</span><span class="p">[</span><span class="s">&#39;kp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span> <span class="n">dbDict</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+		<span class="k">return</span> <span class="n">dbDict</span>
+		</div>
+	<span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">myStr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataSet</span><span class="o">+</span><span class="s">&#39; record FROM: &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+		<span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">var</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+			<span class="n">myStr</span> <span class="o">+=</span> <span class="n">key</span><span class="o">+</span><span class="s">&#39; = &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">var</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+		<span class="k">return</span> <span class="n">myStr</span>
+	
+<div class="viewcode-block" id="gmeData.__init__"><a class="viewcode-back" href="../../../gme.base.gmeBase.html#gme.base.gmeBase.gmeData.__init__">[docs]</a>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">():</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">dataSet</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="bp">None</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../../../index.html">
+          <img class="logo" src="../../../_static/davitpy.svg" alt="Logo" style="width: 80%;"/>
+        </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+    <li><a href="../../../index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../base.html" >gme.base</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, VT SuperDARN Lab and Friends.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

@@ -1,4 +1,5 @@
 def davitpydoc():
+    
     import os,string
 
     docPath = '/docs/davitpy_doc'
