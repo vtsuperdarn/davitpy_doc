@@ -1,0 +1,267 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gme.sat.rbsp &mdash; davitpy</title>
+    
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="top" title="davitpy" href="index.html" />
+    <link rel="up" title="gme.sat" href="gme.sat.html" />
+    <link rel="next" title="gme.sat.poes" href="gme.sat.poes.html" />
+    <link rel="prev" title="gme.sat" href="gme.sat.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.sat.poes.html" title="gme.sat.poes"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.sat.html" title="gme.sat"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="gme.html" >gme</a> &raquo;</li>
+          <li><a href="gme.sat.html" accesskey="U">gme.sat</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="gme-sat-rbsp">
+<h1>gme.sat.rbsp<a class="headerlink" href="#gme-sat-rbsp" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<span class="target" id="module-gme.sat.rbsp"></span><div class="section" id="module-gme-rbsp">
+<h2><strong>Module</strong>: gme.rbsp<a class="headerlink" href="#module-gme-rbsp" title="Permalink to this headline">¶</a></h2>
+<p>This module handles RBSP foorpoint calculations and plotting</p>
+<dl class="docutils">
+<dt><strong>Class</strong>:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="#gme.sat.rbsp.rbspFp" title="gme.sat.rbsp.rbspFp"><tt class="xref py py-class docutils literal"><span class="pre">rbspFp</span></tt></a>: FPs reading (or calculating) and plotting</li>
+</ul>
+</dd>
+</dl>
+<dl class="class">
+<dt id="gme.sat.rbsp.rbspFp">
+<em class="property">class </em><tt class="descclassname">gme.sat.rbsp.</tt><tt class="descname">rbspFp</tt><big>(</big><em>sTime</em>, <em>eTime=None</em>, <em>spacecraft=None</em>, <em>L_shell_min=None</em>, <em>L_shell_max=None</em>, <em>apogees_only=False</em><big>)</big><a class="reference internal" href="_modules/gme/sat/rbsp.html#rbspFp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.sat.rbsp.rbspFp" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class reads FPs from the SuperDARN FPs database, or generate them if necessary</p>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>sTime</strong>: start date/time to get FPs</li>
+<li><strong>[eTime]</strong>: end date/time to get FPs (defaulst to 24 hours after <cite>sTime</cite>)</li>
+<li><strong>[hemisphere]</strong>: limit FPs loading to a specific hemisphere</li>
+<li><strong>[spacecraft]</strong>: limit FPs loading to a specific spacecraft</li>
+<li><strong>[L_shell_min]</strong>: limit FPs loading to L-shell values greater than this</li>
+<li><strong>[L_shell_max]</strong>: limit FPs loading to L-shell values lesser than this</li>
+<li><strong>[apogees_only]</strong>: record foot-points (usefull if all you want are apogees)</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="c"># Get all the FPs for 1/Sept/2012 from 0 to 6 UT</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">rbsp</span>
+<span class="n">sTime</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">eTime</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">fps</span> <span class="o">=</span> <span class="n">rbsp</span><span class="o">.</span><span class="n">rbspFp</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span> <span class="n">eTime</span><span class="p">)</span>
+<span class="c"># Pretty print the apogees in that period</span>
+<span class="k">print</span> <span class="n">fps</span>
+<span class="c"># Plot them on a map</span>
+<span class="n">fps</span><span class="o">.</span><span class="n">map</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">try not to request more than 24 hours at once, unless all you want are apogees.</p>
+</div>
+<p>written by Sebastien de Larquier, 2013-03</p>
+<dl class="method">
+<dt id="gme.sat.rbsp.rbspFp.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>sTime</em>, <em>eTime=None</em>, <em>spacecraft=None</em>, <em>L_shell_min=None</em>, <em>L_shell_max=None</em>, <em>apogees_only=False</em><big>)</big><a class="reference internal" href="_modules/gme/sat/rbsp.html#rbspFp.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.sat.rbsp.rbspFp.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gme.sat.rbsp.rbspFp.map">
+<tt class="descname">map</tt><big>(</big><em>hemisphere='north'</em>, <em>boundinglat=35</em>, <em>spacecraft=None</em>, <em>legend=True</em>, <em>date=True</em>, <em>apogees=False</em><big>)</big><a class="reference internal" href="_modules/gme/sat/rbsp.html#rbspFp.map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.sat.rbsp.rbspFp.map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot FPs on a map</p>
+<p><strong>Belongs to</strong>: <a class="reference internal" href="#gme.sat.rbsp.rbspFp" title="gme.sat.rbsp.rbspFp"><tt class="xref py py-class docutils literal"><span class="pre">rbspFp</span></tt></a></p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>[hemisphere]</strong>: plot FPs in this hemisphere (&#8216;north&#8217; or &#8216;south&#8217;)</li>
+<li><strong>[boundinglat]</strong>: bounding latitude of map (absolute value)</li>
+<li><strong>[spacecraft]</strong>: limit the plotting to one spacecraft (&#8216;a&#8217; or &#8216;b&#8217;)</li>
+<li><strong>[legend]</strong>: to show or not to show the legend</li>
+<li><strong>[date]</strong>: to show or not to show the date</li>
+<li><strong>[apogees]</strong>: to show or not to show the apogees</li>
+<li><strong>[isr]</strong>: a list of ISRs to be plotted (codes include mho, sdt, eiscat, pfisr, risr)</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>myMap</strong>: a mpl_toolkits.basemap.Basemap object</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="c"># To plot 2 panels (1 per hemisphere)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
+<span class="n">fps</span><span class="o">.</span><span class="n">map</span><span class="p">()</span>
+<span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
+<span class="n">fps</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">hemisphere</span><span class="o">=</span><span class="s">&#39;South&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gme.sat.rbsp.rbspFp.showISR">
+<tt class="descname">showISR</tt><big>(</big><em>myMap</em>, <em>isr</em><big>)</big><a class="reference internal" href="_modules/gme/sat/rbsp.html#rbspFp.showISR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.sat.rbsp.rbspFp.showISR" title="Permalink to this definition">¶</a></dt>
+<dd><p>overlay ISR fovs on map</p>
+<p><strong>Belongs to</strong>: <a class="reference internal" href="#gme.sat.rbsp.rbspFp" title="gme.sat.rbsp.rbspFp"><tt class="xref py py-class docutils literal"><span class="pre">rbspFp</span></tt></a></p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>myMap</strong>: Basemap object</li>
+<li><strong>isr</strong>: a list of ISRs to be plotted (codes include mho, sdt, eiscat, pfisr, risr)</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<dl class="attribute">
+<dt id="gme.sat.rbsp">
+<tt class="descclassname">gme.sat.</tt><tt class="descname">rbsp</tt><a class="headerlink" href="#gme.sat.rbsp" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#gme.sat.rbsp" title="gme.sat.rbsp"><tt class="xref py py-class docutils literal"><span class="pre">gme.sat.rbsp</span></tt></a></p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html">
+          <img class="logo" src="_static/davitpy.svg" alt="Logo" style="width: 80%;"/>
+        </a></p>
+  <div class="sphinxlocaltoc">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">gme.sat.rbsp</a><ul>
+<li><a class="reference internal" href="#module-gme-rbsp"><strong>Module</strong>: gme.rbsp</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="gme.sat.html"
+                        title="previous chapter">gme.sat</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="gme.sat.poes.html"
+                        title="next chapter">gme.sat.poes</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/gme.sat.rbsp.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.sat.poes.html" title="gme.sat.poes"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.sat.html" title="gme.sat"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="gme.html" >gme</a> &raquo;</li>
+          <li><a href="gme.sat.html" >gme.sat</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, VT SuperDARN Lab and Friends.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

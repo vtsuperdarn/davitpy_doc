@@ -1,0 +1,914 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gme.sat.poes &mdash; davitpy</title>
+    
+    <link rel="stylesheet" href="../../../_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../../_static/cloud.js"></script>
+    <link rel="top" title="davitpy" href="../../../index.html" />
+    <link rel="up" title="gme.sat" href="../sat.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+    <li><a href="../../../index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../sat.html" accesskey="U">gme.sat</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for gme.sat.poes</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. module:: poes</span>
+<span class="sd">   :synopsis: A module for reading, writing, and storing poes Data</span>
+
+<span class="sd">.. moduleauthor:: AJ, 20130129</span>
+
+<span class="sd">*********************</span>
+<span class="sd">**Module**: gme.sat.poes</span>
+<span class="sd">*********************</span>
+<span class="sd">**Classes**:</span>
+<span class="sd">	* :class:`poesRec`</span>
+<span class="sd">**Functions**:</span>
+<span class="sd">	* :func:`readPoes`</span>
+<span class="sd">	* :func:`readPoesFtp`</span>
+<span class="sd">	* :func:`mapPoesMongo`</span>
+<span class="sd">	* :func:`overlayPoesTed`</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">gme</span>
+<div class="viewcode-block" id="poesRec"><a class="viewcode-back" href="../../../gme.sat.poes.html#gme.sat.poes.poesRec">[docs]</a><span class="k">class</span> <span class="nc">poesRec</span><span class="p">(</span><span class="n">gme</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">gmeBase</span><span class="o">.</span><span class="n">gmeData</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;a class to represent a record of poes data.  Extends :class:`gmeBase.gmeData`.  Insight on the class members can be obtained from `the NOAA NGDC site &lt;ftp://satdat.ngdc.noaa.gov/sem/poes/data/readme.txt&gt;`_.  Note that Poes data is available from 1998-present day (or whatever the latest NOAA has uploaded is).  **The data are the 16-second averages**</span>
+<span class="sd">	</span>
+<span class="sd">	**Members**: </span>
+<span class="sd">		* **time** (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_): an object identifying which time these data are for</span>
+<span class="sd">		* **info** (str): information about where the data come from.  *Please be courteous and give credit to data providers when credit is due.*</span>
+<span class="sd">		* **dataSet** (str): the name of the data set</span>
+<span class="sd">		* **satnum** (ind): the noaa satellite number</span>
+<span class="sd">		* **sslat** (float): Geographic Latitude of sub-satellite point, degrees</span>
+<span class="sd">		* **sslon** (float): Geographic Longitude of sub-satellite point, degrees</span>
+<span class="sd">		* **folat** (float): Geographic Latitude of foot-of-field-line, degrees</span>
+<span class="sd">		* **folon** (float): Geographic Longitude of foot-of-field-line, degrees</span>
+<span class="sd">		* **lval** (float): L-value</span>
+<span class="sd">		* **mlt** (float): Magnetic local time of foot-of-field-line, degrees</span>
+<span class="sd">		* **pas0** (float): MEPED-0 pitch angle at satellite, degrees</span>
+<span class="sd">		* **pas90** (float): MEPED-90 pitch angle at satellite, degrees</span>
+<span class="sd">		* **mep0e1** (float): MEPED-0 &gt; 30 keV electrons, counts/sec</span>
+<span class="sd">		* **mep0e2** (float): MEPED-0 &gt; 100 keV electrons, counts/sec</span>
+<span class="sd">		* **mep0e3** (float): MEPED-0 &gt; 300 keV electrons, counts/sec</span>
+<span class="sd">		* **mep0p1** (float):MEPED-0 30 keV to 80 keV protons, counts/sec</span>
+<span class="sd">		* **mep0p2** (float): MEPED-0 80 keV to 240 keV protons, counts/sec</span>
+<span class="sd">		* **mep0p3** (float): 240 kev to 800 keV protons, counts/sec</span>
+<span class="sd">		* **mep0p4** (float): MEPED-0 800 keV to 2500 keV protons, counts/sec</span>
+<span class="sd">		* **mep0p5** (float): MEPED-0 2500 keV to 6900 keV protons, counts/sec</span>
+<span class="sd">		* **mep0p6** (float): MEPED-0 &gt; 6900 keV protons, counts/sec,</span>
+<span class="sd">		* **mep90e1** (float): MEPED-90 &gt; 30 keV electrons, counts/sec,</span>
+<span class="sd">		* **mep90e2** (float): MEPED-90 &gt; 100 keV electrons, counts/sec</span>
+<span class="sd">		* **mep90e3** (float): MEPED-90 &gt; 300 keV electrons, counts/sec</span>
+<span class="sd">		* **mep90p1** (float): MEPED-90 30 keV to 80 keV protons, counts/sec</span>
+<span class="sd">		* **mep90p2** (float): MEPED-90 80 keV to 240 keV protons, counts/sec</span>
+<span class="sd">		* **mep90p3** (float): MEPED-90 240 kev to 800 keV protons, counts/sec,</span>
+<span class="sd">		* **mep90p4** (float): MEPED-90 800 keV to 2500 keV protons, counts/sec</span>
+<span class="sd">		* **mep90p5** (float): MEPED-90 2500 keV to 6900 keV protons, counts/sec</span>
+<span class="sd">		* **mep90p6** (float):MEPED-90 &gt; 6900 keV protons, counts/sec</span>
+<span class="sd">		* **mepomp6** (float): MEPED omni-directional &gt; 16 MeV protons, counts/sec</span>
+<span class="sd">		* **mepomp7** (float): MEPED omni-directional &gt; 36 Mev protons, counts/sec</span>
+<span class="sd">		* **mepomp8** (float): MEPED omni-directional &gt; 70 MeV protons, counts/sec</span>
+<span class="sd">		* **mepomp9** (float): MEPED omni-directional &gt;= 140 MeV protons</span>
+<span class="sd">		* **ted** (float): TED, Total Energy Detector Average, ergs/cm2/sec</span>
+<span class="sd">		* **echar** (float): TED characteristic energy of electrons, eV</span>
+<span class="sd">		* **pchar** (float): TED characteristic energy of protons, eV</span>
+<span class="sd">		* **econtr** (float): TED electron contribution, Electron Energy/Total Energy</span>
+<span class="sd">		</span>
+<span class="sd">		</span>
+<span class="sd">	.. note::</span>
+<span class="sd">		If any of the members have a value of None, this means that they could not be read for that specific time</span>
+<span class="sd">   </span>
+<span class="sd">	**Methods**:</span>
+<span class="sd">		* :func:`parseFtp`</span>
+<span class="sd">	**Example**:</span>
+<span class="sd">		::</span>
+<span class="sd">		</span>
+<span class="sd">			emptyPoesObj = gme.sat.poesRec()</span>
+<span class="sd">		</span>
+<span class="sd">	written by AJ, 20130131</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	
+<div class="viewcode-block" id="poesRec.parseFtp"><a class="viewcode-back" href="../../../gme.sat.poes.html#gme.sat.poes.poesRec.parseFtp">[docs]</a>	<span class="k">def</span> <span class="nf">parseFtp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">line</span><span class="p">,</span> <span class="n">header</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;This method is used to convert a line of poes data read from the NOAA NGDC FTP site into a :class:`poesRec` object.</span>
+<span class="sd">		</span>
+<span class="sd">		.. note::</span>
+<span class="sd">			In general, users will not need to worry about this.</span>
+<span class="sd">		</span>
+<span class="sd">		**Belongs to**: :class:`poesRec`</span>
+<span class="sd">		</span>
+<span class="sd">		**Args**: </span>
+<span class="sd">			* **line** (str): the ASCII line from the FTP server</span>
+<span class="sd">		**Returns**:</span>
+<span class="sd">			* Nothing.</span>
+<span class="sd">		**Example**:</span>
+<span class="sd">			::</span>
+<span class="sd">			</span>
+<span class="sd">				myPoesObj.parseFtp(ftpLine)</span>
+<span class="sd">			</span>
+<span class="sd">		written by AJ, 20130131</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+		
+		<span class="c">#split the line into cols</span>
+		<span class="n">cols</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+		<span class="n">head</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">4</span><span class="p">]),</span> \
+														<span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">5</span><span class="p">])),</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">((</span><span class="nb">float</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">5</span><span class="p">])))</span><span class="o">*</span><span class="mf">1e6</span><span class="p">)))</span>
+		
+		<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">iterkeys</span><span class="p">():</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">key</span> <span class="o">==</span> <span class="s">&#39;dataSet&#39;</span> <span class="ow">or</span> <span class="n">key</span> <span class="o">==</span> <span class="s">&#39;info&#39;</span> <span class="ow">or</span> <span class="n">key</span> <span class="o">==</span> <span class="s">&#39;satnum&#39;</span> <span class="ow">or</span> <span class="n">key</span> <span class="o">==</span> <span class="s">&#39;time&#39;</span><span class="p">):</span> <span class="k">continue</span>
+			<span class="k">try</span><span class="p">:</span> <span class="n">ind</span> <span class="o">=</span> <span class="n">head</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+			<span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span>
+				<span class="k">print</span> <span class="n">e</span>
+				<span class="k">print</span> <span class="s">&#39;problem setting attribute&#39;</span><span class="p">,</span><span class="n">key</span>
+			<span class="c">#check for a good value</span>
+			<span class="k">if</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="n">ind</span><span class="p">])</span> <span class="o">!=</span> <span class="o">-</span><span class="mf">999.</span><span class="p">):</span> <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">key</span><span class="p">,</span><span class="nb">float</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="n">ind</span><span class="p">]))</span>
+	</div>
+<div class="viewcode-block" id="poesRec.__init__"><a class="viewcode-back" href="../../../gme.sat.poes.html#gme.sat.poes.poesRec.__init__">[docs]</a>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ftpLine</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dbDict</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">satnum</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;the intialization fucntion for a :class:`omniRec` object.  </span>
+<span class="sd">		</span>
+<span class="sd">		.. note::</span>
+<span class="sd">			In general, users will not need to worry about this.</span>
+<span class="sd">		</span>
+<span class="sd">		**Belongs to**: :class:`omniRec`</span>
+<span class="sd">		</span>
+<span class="sd">		**Args**: </span>
+<span class="sd">			* [**ftpLine**] (str): an ASCII line from the FTP server. if this is provided, the object is initialized from it.  header must be provided in conjunction with this.  default=None</span>
+<span class="sd">			* [**header**] (str): the header from the ASCII FTP file.  default=None</span>
+<span class="sd">			* [**dbDict**] (dict): a dictionary read from the mongodb.  if this is provided, the object is initialized from it.  default = None</span>
+<span class="sd">			* [**satnum**] (int): the satellite nuber.  default=None</span>
+<span class="sd">		**Returns**:</span>
+<span class="sd">			* Nothing.</span>
+<span class="sd">		**Example**:</span>
+<span class="sd">			::</span>
+<span class="sd">			</span>
+<span class="sd">				myPoesObj = poesRec(ftpLine=aftpLine)</span>
+<span class="sd">			</span>
+<span class="sd">		written by AJ, 20130131</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c">#note about where data came from</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">dataSet</span> <span class="o">=</span> <span class="s">&#39;Poes&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="s">&#39;These data were downloaded from NASA SPDF.  *Please be courteous and give credit to data providers when credit is due.*&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">satnum</span> <span class="o">=</span> <span class="n">satnum</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sslat</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sslon</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">folat</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">folon</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">lval</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mlt</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">pas0</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">pas90</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mep0e1</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mep0e2</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mep0e3</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mep0p1</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mep0p2</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mep0p3</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mep0p4</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mep0p5</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mep0p6</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mep90e1</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mep90e2</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mep90e3</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mep90p1</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mep90p2</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mep90p3</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mep90p4</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mep90p5</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mep90p6</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mepomp6</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mepomp7</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mepomp8</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mepomp9</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ted</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">echar</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">pchar</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">econtr</span> <span class="o">=</span> <span class="bp">None</span>
+		
+		<span class="c">#if we&#39;re initializing from an object, do it!</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">ftpLine</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">parseFtp</span><span class="p">(</span><span class="n">ftpLine</span><span class="p">,</span><span class="n">header</span><span class="p">)</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">dbDict</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">parseDb</span><span class="p">(</span><span class="n">dbDict</span><span class="p">)</span>
+		</div></div>
+<div class="viewcode-block" id="readPoes"><a class="viewcode-back" href="../../../gme.sat.poes.html#gme.sat.poes.readPoes">[docs]</a><span class="k">def</span> <span class="nf">readPoes</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span><span class="n">eTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">satnum</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">folat</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">folon</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">ted</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">echar</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">pchar</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;This function reads poes data.  First, it will try to get it from the mongodb, and if it can&#39;t find it, it will look on the NOAA NGDC FTP server using :func:`readPoesFtp`.  The data are 16-second averages</span>
+
+<span class="sd">	**Args**: </span>
+<span class="sd">		* **sTime** (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_ or None): the earliest time you want data for</span>
+<span class="sd">		* [**eTime**] (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_ or None): the latest time you want data for.  if this is None, end Time will be 1 day after sTime.  default = None</span>
+<span class="sd">		* [**satnum**] (int): the satellite you want data for.  eg 17 for noaa17.  if this is None, data for all satellites will be returned.  default = None</span>
+<span class="sd">		* [**satnum**] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with bx values in the range [a,b] will be returned.  default = None</span>
+<span class="sd">		* [**folat**] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with bx values in the range [a,b] will be returned.  default = None</span>
+<span class="sd">		* [**folon**] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with bye values in the range [a,b] will be returned.  default = None</span>
+<span class="sd">		* [**ted**] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with bze values in the range [a,b] will be returned.  default = None</span>
+<span class="sd">		* [**echar**] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with bym values in the range [a,b] will be returned.  default = None</span>
+<span class="sd">		* [**pchar**] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with bzm values in the range [a,b] will be returned.  default = None</span>
+<span class="sd">		</span>
+<span class="sd">	**Returns**:</span>
+<span class="sd">		* **poesList** (list or None): if data is found, a list of :class:`poesRec` objects matching the input parameters is returned.  If no data is found, None is returned.</span>
+<span class="sd">	**Example**:</span>
+<span class="sd">		::</span>
+<span class="sd">		</span>
+<span class="sd">			import datetime as dt</span>
+<span class="sd">			poesList = gme.sat.readPoes(sTime=dt.datetime(2011,1,1),eTime=dt.datetime(2011,6,1),folat=[60,80])</span>
+<span class="sd">		</span>
+<span class="sd">	written by AJ, 20130131</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	
+	<span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+	<span class="kn">import</span> <span class="nn">pydarn.sdio.dbUtils</span> <span class="kn">as</span> <span class="nn">db</span>
+	
+	<span class="c">#check all the inputs for validity</span>
+	<span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">)),</span> \
+		<span class="s">&#39;error, sTime must be a datetime object&#39;</span>
+	<span class="k">assert</span><span class="p">(</span><span class="n">eTime</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">eTime</span><span class="p">,</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">)),</span> \
+		<span class="s">&#39;error, eTime must be either None or a datetime object&#39;</span>
+	<span class="k">assert</span><span class="p">(</span><span class="n">satnum</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">satnum</span><span class="p">,</span><span class="nb">int</span><span class="p">)),</span> <span class="s">&#39;error, satnum must be an int&#39;</span>
+	<span class="n">var</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;folat&#39;</span><span class="p">,</span><span class="s">&#39;folon&#39;</span><span class="p">,</span><span class="s">&#39;ted&#39;</span><span class="p">,</span><span class="s">&#39;echar&#39;</span><span class="p">,</span><span class="s">&#39;pchar&#39;</span><span class="p">]:</span>
+		<span class="k">assert</span><span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="n">name</span><span class="p">],</span><span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> \
+			<span class="nb">isinstance</span><span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="mi">0</span><span class="p">],(</span><span class="nb">int</span><span class="p">,</span><span class="nb">float</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="mi">1</span><span class="p">],(</span><span class="nb">int</span><span class="p">,</span><span class="nb">float</span><span class="p">)))),</span> \
+			<span class="s">&#39;error,&#39;</span><span class="o">+</span><span class="n">name</span><span class="o">+</span><span class="s">&#39; must None or a list of 2 numbers&#39;</span>
+		
+	<span class="k">if</span><span class="p">(</span><span class="n">eTime</span> <span class="o">==</span> <span class="bp">None</span><span class="p">):</span> <span class="n">eTime</span> <span class="o">=</span> <span class="n">sTime</span><span class="o">+</span><span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+	<span class="n">qryList</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="c">#if arguments are provided, query for those</span>
+	<span class="n">qryList</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;time&#39;</span><span class="p">:{</span><span class="s">&#39;$gte&#39;</span><span class="p">:</span><span class="n">sTime</span><span class="p">}})</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">eTime</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span> <span class="n">qryList</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;time&#39;</span><span class="p">:{</span><span class="s">&#39;$lte&#39;</span><span class="p">:</span><span class="n">eTime</span><span class="p">}})</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">satnum</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span> <span class="n">qryList</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;satnum&#39;</span><span class="p">:</span><span class="n">satnum</span><span class="p">})</span>
+	<span class="n">var</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;folat&#39;</span><span class="p">,</span><span class="s">&#39;folon&#39;</span><span class="p">,</span><span class="s">&#39;ted&#39;</span><span class="p">,</span><span class="s">&#39;echar&#39;</span><span class="p">,</span><span class="s">&#39;pchar&#39;</span><span class="p">]:</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span> 
+			<span class="n">qryList</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">name</span><span class="p">:{</span><span class="s">&#39;$gte&#39;</span><span class="p">:</span><span class="nb">min</span><span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="n">name</span><span class="p">])}})</span>
+			<span class="n">qryList</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">name</span><span class="p">:{</span><span class="s">&#39;$lte&#39;</span><span class="p">:</span><span class="nb">max</span><span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="n">name</span><span class="p">])}})</span>
+			
+	<span class="c">#construct the final query definition</span>
+	<span class="n">qryDict</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;$and&#39;</span><span class="p">:</span> <span class="n">qryList</span><span class="p">}</span>
+	<span class="c">#connect to the database</span>
+	<span class="n">poesData</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">getDataConn</span><span class="p">(</span><span class="n">dbName</span><span class="o">=</span><span class="s">&#39;gme&#39;</span><span class="p">,</span><span class="n">collName</span><span class="o">=</span><span class="s">&#39;poes&#39;</span><span class="p">)</span>
+	
+	<span class="c">#do the query</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">qryList</span> <span class="o">!=</span> <span class="p">[]):</span> <span class="n">qry</span> <span class="o">=</span> <span class="n">poesData</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">qryDict</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span> <span class="n">qry</span> <span class="o">=</span> <span class="n">poesData</span><span class="o">.</span><span class="n">find</span><span class="p">()</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+		<span class="n">poesList</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">qry</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s">&#39;time&#39;</span><span class="p">):</span>
+			<span class="n">poesList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">poesRec</span><span class="p">(</span><span class="n">dbDict</span><span class="o">=</span><span class="n">rec</span><span class="p">))</span>
+		<span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">returning a list with&#39;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">poesList</span><span class="p">),</span><span class="s">&#39;records of poes data&#39;</span>
+		<span class="k">return</span> <span class="n">poesList</span>
+	<span class="c">#if we didn&#39;t find anything on the mongodb</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">could not find requested data in the mongodb&#39;</span>
+		<span class="k">return</span> <span class="bp">None</span>
+		<span class="c">#print &#39;we will look on the ftp server, but your conditions will be (mostly) ignored&#39;</span>
+		
+		<span class="c">##read from ftp server</span>
+		<span class="c">#poesList = readPoesFtp(sTime, eTime)</span>
+		
+		<span class="c">#if(poesList != None):</span>
+			<span class="c">#print &#39;\nreturning a list with&#39;,len(poesList),&#39;recs of poes data&#39;</span>
+			<span class="c">#return poesList</span>
+		<span class="c">#else:</span>
+			<span class="c">#print &#39;\n no data found on FTP server, returning None...&#39;</span>
+			<span class="c">#return None</span>
+			</div>
+<div class="viewcode-block" id="readPoesFtp"><a class="viewcode-back" href="../../../gme.sat.poes.html#gme.sat.poes.readPoesFtp">[docs]</a><span class="k">def</span> <span class="nf">readPoesFtp</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span><span class="n">eTime</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;This function reads poes data from the NOAA NGDC server via anonymous FTP connection.</span>
+<span class="sd">	</span>
+<span class="sd">	.. warning::</span>
+<span class="sd">		You should not use this. Use the general function :func:`readPoes` instead.</span>
+<span class="sd">	</span>
+<span class="sd">	**Args**: </span>
+<span class="sd">		* **sTime** (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_): the earliest time you want data for</span>
+<span class="sd">		* [**eTime**] (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_ or None): the latest time you want data for.  if this is None, eTime will be equal 1 day after sTime.  default = None</span>
+<span class="sd">	**Returns**:</span>
+<span class="sd">		* **poesList** (list or None): if data is found, a list of :class:`poesRec` objects matching the input parameters is returned.  If no data is found, None is returned.</span>
+<span class="sd">	**Example**:</span>
+<span class="sd">		::</span>
+<span class="sd">		</span>
+<span class="sd">			import datetime as dt</span>
+<span class="sd">			poesList = gme.sat.readpoesFtp(dt.datetime(2011,1,1,1,50),eTime=dt.datetime(2011,1,1,10,0))</span>
+<span class="sd">		</span>
+<span class="sd">	written by AJ, 20130128</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	
+	<span class="kn">from</span> <span class="nn">ftplib</span> <span class="kn">import</span> <span class="n">FTP</span>
+	<span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+	
+	<span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">)),</span><span class="s">&#39;error, sTime must be datetime&#39;</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">eTime</span> <span class="o">==</span> <span class="bp">None</span><span class="p">):</span> <span class="n">eTime</span><span class="o">=</span><span class="n">sTime</span><span class="o">+</span><span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+	<span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">eTime</span><span class="p">,</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">)),</span><span class="s">&#39;error, eTime must be datetime&#39;</span>
+	<span class="k">assert</span><span class="p">(</span><span class="n">eTime</span> <span class="o">&gt;=</span> <span class="n">sTime</span><span class="p">),</span> <span class="s">&#39;error, end time greater than start time&#39;</span>
+	
+	<span class="c">#connect to the server</span>
+	<span class="k">try</span><span class="p">:</span> <span class="n">ftp</span> <span class="o">=</span> <span class="n">FTP</span><span class="p">(</span><span class="s">&#39;satdat.ngdc.noaa.gov&#39;</span><span class="p">)</span>	
+	<span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span>
+		<span class="k">print</span> <span class="n">e</span>
+		<span class="k">print</span> <span class="s">&#39;problem connecting to NOAA server&#39;</span>
+		<span class="k">return</span> <span class="bp">None</span>
+		
+	<span class="c">#login as anonymous</span>
+	<span class="k">try</span><span class="p">:</span> <span class="n">l</span><span class="o">=</span><span class="n">ftp</span><span class="o">.</span><span class="n">login</span><span class="p">()</span>
+	<span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span>
+		<span class="k">print</span> <span class="n">e</span>
+		<span class="k">print</span> <span class="s">&#39;problem logging in to NOAA server&#39;</span>
+		<span class="k">return</span> <span class="bp">None</span>
+		
+	<span class="n">myPoes</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="c">#get the poes data</span>
+	<span class="n">myTime</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">sTime</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">sTime</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">sTime</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
+	<span class="k">while</span><span class="p">(</span><span class="n">myTime</span> <span class="o">&lt;=</span> <span class="n">eTime</span><span class="p">):</span>
+		<span class="c">#go to the data directory</span>
+		<span class="k">try</span><span class="p">:</span> <span class="n">ftp</span><span class="o">.</span><span class="n">cwd</span><span class="p">(</span><span class="s">&#39;/sem/poes/data/avg/txt/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">myTime</span><span class="o">.</span><span class="n">year</span><span class="p">))</span>
+		<span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span>
+			<span class="k">print</span> <span class="n">e</span>
+			<span class="k">print</span> <span class="s">&#39;error getting to data directory&#39;</span>
+			<span class="k">return</span> <span class="bp">None</span>
+		
+		<span class="c">#list directory contents</span>
+		<span class="n">dirlist</span> <span class="o">=</span> <span class="n">ftp</span><span class="o">.</span><span class="n">nlst</span><span class="p">()</span>
+		<span class="k">for</span> <span class="n">dire</span> <span class="ow">in</span> <span class="n">dirlist</span><span class="p">:</span>
+			<span class="c">#check for satellite directory</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">dire</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;noaa&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span> <span class="k">continue</span>
+			<span class="n">satnum</span> <span class="o">=</span> <span class="n">dire</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;noaa&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+			<span class="c">#chege to file directory</span>
+			<span class="n">ftp</span><span class="o">.</span><span class="n">cwd</span><span class="p">(</span><span class="s">&#39;/sem/poes/data/avg/txt/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">myTime</span><span class="o">.</span><span class="n">year</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;/&#39;</span><span class="o">+</span><span class="n">dire</span><span class="p">)</span>
+			<span class="n">fname</span> <span class="o">=</span> <span class="s">&#39;poes_n&#39;</span><span class="o">+</span><span class="n">satnum</span><span class="o">+</span><span class="s">&#39;_&#39;</span><span class="o">+</span><span class="n">myTime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y%m</span><span class="si">%d</span><span class="s">&quot;</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;.txt&#39;</span>
+			<span class="k">print</span> <span class="s">&#39;poes: RETR &#39;</span><span class="o">+</span><span class="n">fname</span>
+			<span class="c">#list to hold the lines</span>
+			<span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+			<span class="c">#get the data</span>
+			<span class="k">try</span><span class="p">:</span> <span class="n">ftp</span><span class="o">.</span><span class="n">retrlines</span><span class="p">(</span><span class="s">&#39;RETR &#39;</span><span class="o">+</span><span class="n">fname</span><span class="p">,</span><span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">)</span>
+			<span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span>
+				<span class="k">print</span> <span class="n">e</span>
+				<span class="k">print</span> <span class="s">&#39;error retrieving&#39;</span><span class="p">,</span><span class="n">fname</span>
+				
+			<span class="c">#convert the ascii lines into a list of poesRec objects</span>
+			<span class="c">#skip first (header) line</span>
+			<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+				<span class="n">cols</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+				<span class="n">t</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">4</span><span class="p">]))</span>
+				<span class="k">if</span><span class="p">(</span><span class="n">sTime</span> <span class="o">&lt;=</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="n">eTime</span><span class="p">):</span>
+					<span class="n">myPoes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">poesRec</span><span class="p">(</span><span class="n">ftpLine</span><span class="o">=</span><span class="n">line</span><span class="p">,</span><span class="n">satnum</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">satnum</span><span class="p">),</span><span class="n">header</span><span class="o">=</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+				
+		<span class="c">#increment myTime</span>
+		<span class="n">myTime</span> <span class="o">+=</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+	
+	<span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">myPoes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span> <span class="k">return</span> <span class="n">myPoes</span>
+	<span class="k">else</span><span class="p">:</span> <span class="k">return</span> <span class="bp">None</span>
+	
+</div>
+<div class="viewcode-block" id="mapPoesMongo"><a class="viewcode-back" href="../../../gme.sat.poes.html#gme.sat.poes.mapPoesMongo">[docs]</a><span class="k">def</span> <span class="nf">mapPoesMongo</span><span class="p">(</span><span class="n">sYear</span><span class="p">,</span><span class="n">eYear</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;This function reads poes data from the NOAA NGDC FTP server via anonymous FTP connection and maps it to the mongodb.  </span>
+<span class="sd">	</span>
+<span class="sd">	.. warning::</span>
+<span class="sd">		In general, nobody except the database admins will need to use this function</span>
+<span class="sd">	</span>
+<span class="sd">	**Args**: </span>
+<span class="sd">		* **sYear** (int): the year to begin mapping data</span>
+<span class="sd">		* [**eYear**] (int or None): the end year for mapping data.  if this is None, eYear will be sYear</span>
+<span class="sd">	**Returns**:</span>
+<span class="sd">		* Nothing.</span>
+<span class="sd">	**Example**:</span>
+<span class="sd">		::</span>
+<span class="sd">		</span>
+<span class="sd">			gme.sat.mapPoesMongo(2004)</span>
+<span class="sd">		</span>
+<span class="sd">	written by AJ, 20130131</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="kn">import</span> <span class="nn">pydarn.sdio.dbUtils</span> <span class="kn">as</span> <span class="nn">db</span>
+	<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+	
+	<span class="c">#check inputs</span>
+	<span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">sYear</span><span class="p">,</span><span class="nb">int</span><span class="p">)),</span><span class="s">&#39;error, sYear must be int&#39;</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">eYear</span> <span class="o">==</span> <span class="bp">None</span><span class="p">):</span> <span class="n">eYear</span><span class="o">=</span><span class="n">sYear</span>
+	<span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">eYear</span><span class="p">,</span><span class="nb">int</span><span class="p">)),</span><span class="s">&#39;error, sYear must be None or int&#39;</span>
+	<span class="k">assert</span><span class="p">(</span><span class="n">eYear</span> <span class="o">&gt;=</span> <span class="n">sYear</span><span class="p">),</span> <span class="s">&#39;error, end year greater than start year&#39;</span>
+	
+	<span class="c">#get data connection</span>
+	<span class="n">mongoData</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">getDataConn</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;DBWRITEUSER&#39;</span><span class="p">],</span><span class="n">password</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;DBWRITEPASS&#39;</span><span class="p">],</span>\
+								<span class="n">dbAddress</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;SDDB&#39;</span><span class="p">],</span><span class="n">dbName</span><span class="o">=</span><span class="s">&#39;gme&#39;</span><span class="p">,</span><span class="n">collName</span><span class="o">=</span><span class="s">&#39;poes&#39;</span><span class="p">)</span>
+	
+	<span class="c">#set up all of the indices</span>
+	<span class="n">mongoData</span><span class="o">.</span><span class="n">ensure_index</span><span class="p">(</span><span class="s">&#39;time&#39;</span><span class="p">)</span>
+	<span class="n">mongoData</span><span class="o">.</span><span class="n">ensure_index</span><span class="p">(</span><span class="s">&#39;satnum&#39;</span><span class="p">)</span>
+	<span class="n">mongoData</span><span class="o">.</span><span class="n">ensure_index</span><span class="p">(</span><span class="s">&#39;folat&#39;</span><span class="p">)</span>
+	<span class="n">mongoData</span><span class="o">.</span><span class="n">ensure_index</span><span class="p">(</span><span class="s">&#39;folon&#39;</span><span class="p">)</span>
+	<span class="n">mongoData</span><span class="o">.</span><span class="n">ensure_index</span><span class="p">(</span><span class="s">&#39;ted&#39;</span><span class="p">)</span>
+	<span class="n">mongoData</span><span class="o">.</span><span class="n">ensure_index</span><span class="p">(</span><span class="s">&#39;echar&#39;</span><span class="p">)</span>
+	<span class="n">mongoData</span><span class="o">.</span><span class="n">ensure_index</span><span class="p">(</span><span class="s">&#39;pchar&#39;</span><span class="p">)</span>
+		
+	<span class="c">#read the poes data from the FTP server</span>
+	<span class="n">myTime</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">sYear</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+	<span class="k">while</span><span class="p">(</span><span class="n">myTime</span> <span class="o">&lt;</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">eYear</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)):</span>
+		<span class="c">#10 day at a time, to not fill up RAM</span>
+		<span class="n">templist</span> <span class="o">=</span> <span class="n">readPoesFtp</span><span class="p">(</span><span class="n">myTime</span><span class="p">,</span><span class="n">myTime</span><span class="o">+</span><span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">templist</span> <span class="o">==</span> <span class="bp">None</span><span class="p">):</span> <span class="k">continue</span>
+		<span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">templist</span><span class="p">:</span>
+			<span class="c">#check if a duplicate record exists</span>
+			<span class="n">qry</span> <span class="o">=</span> <span class="n">mongoData</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s">&#39;$and&#39;</span><span class="p">:[{</span><span class="s">&#39;time&#39;</span><span class="p">:</span><span class="n">rec</span><span class="o">.</span><span class="n">time</span><span class="p">},{</span><span class="s">&#39;satnum&#39;</span><span class="p">:</span><span class="n">rec</span><span class="o">.</span><span class="n">satnum</span><span class="p">}]})</span>
+			<span class="k">print</span> <span class="n">rec</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">rec</span><span class="o">.</span><span class="n">satnum</span>
+			<span class="n">tempRec</span> <span class="o">=</span> <span class="n">rec</span><span class="o">.</span><span class="n">toDbDict</span><span class="p">()</span>
+			<span class="n">cnt</span> <span class="o">=</span> <span class="n">qry</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+			<span class="c">#if this is a new record, insert it</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">cnt</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span> <span class="n">mongoData</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">tempRec</span><span class="p">)</span>
+			<span class="c">#if this is an existing record, update it</span>
+			<span class="k">elif</span><span class="p">(</span><span class="n">cnt</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+				<span class="k">print</span> <span class="s">&#39;foundone!!&#39;</span>
+				<span class="n">dbDict</span> <span class="o">=</span> <span class="n">qry</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+				<span class="n">temp</span> <span class="o">=</span> <span class="n">dbDict</span><span class="p">[</span><span class="s">&#39;_id&#39;</span><span class="p">]</span>
+				<span class="n">dbDict</span> <span class="o">=</span> <span class="n">tempRec</span>
+				<span class="n">dbDict</span><span class="p">[</span><span class="s">&#39;_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span>
+				<span class="n">mongoData</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">dbDict</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">print</span> <span class="s">&#39;strange, there is more than 1 record for&#39;</span><span class="p">,</span><span class="n">rec</span><span class="o">.</span><span class="n">time</span>
+		<span class="k">del</span> <span class="n">templist</span>
+		<span class="n">myTime</span> <span class="o">+=</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+		
+		</div>
+<div class="viewcode-block" id="overlayPoesTed"><a class="viewcode-back" href="../../../gme.sat.poes.html#gme.sat.poes.overlayPoesTed">[docs]</a><span class="k">def</span> <span class="nf">overlayPoesTed</span><span class="p">(</span> <span class="n">baseMapObj</span><span class="p">,</span> <span class="n">axisHandle</span><span class="p">,</span> <span class="n">startTime</span><span class="p">,</span> <span class="n">endTime</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">coords</span> <span class="o">=</span> <span class="s">&#39;geo&#39;</span><span class="p">,</span> \
+										<span class="n">hemi</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">folat</span> <span class="o">=</span> <span class="p">[</span><span class="mf">45.</span><span class="p">,</span> <span class="mf">90.</span><span class="p">],</span> <span class="n">satNum</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="s">&#39;ted&#39;</span><span class="p">,</span> <span class="n">scMin</span><span class="o">=-</span><span class="mf">3.</span><span class="p">,</span><span class="n">scMax</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span> <span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;This function overlays POES TED data onto a map object.</span>
+<span class="sd">	</span>
+<span class="sd">	**Args**: </span>
+<span class="sd">		* **baseMapObj** (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_ or None): the map object you want data to be overlayed on.</span>
+<span class="sd">		* **axisHandle** (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_ or None): the Axis Handle used.</span>
+<span class="sd">		* **startTime** (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_ or None): the starttime you want data for. If endTime is not given overlays data from satellites with in +/- 45 min of the startTime</span>
+<span class="sd">		* [**endTime**] (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_ or None): the latest time you want data for.  if this is None, data from satellites with in +/- 45 min of the startTime is overlayed.  default = None</span>
+<span class="sd">		* [**satnum**] (int): the satellite you want data for.  eg 17 for noaa17.  if this is None, data for all satellites will be returned.  default = None</span>
+<span class="sd">		* [**coords**] (list or None): Coordinates of the map object on which you want data to be overlayed on. Default &#39;geo&#39;</span>
+<span class="sd">		* [**hemi**] (list or None): Hemisphere of the map object on which you want data to be overlayed on. Value is 1 for northern hemisphere and -1 for the southern hemisphere.Default 1</span>
+<span class="sd">		 [**folat**] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with latitude values in the range [a,b] will be returned.  default = None</span>
+<span class="sd">		* [**param**] (str): the name of the poes parameter to be plotted.  default=&#39;ted&#39;</span>
+<span class="sd">	**Returns**:</span>
+<span class="sd">		POES TED data is overlayed on the map object. If no data is found, None is returned.</span>
+<span class="sd">	**Example**:</span>
+<span class="sd">		::</span>
+<span class="sd">		</span>
+<span class="sd">			import datetime as dt</span>
+<span class="sd">			poesList = gme.sat.overlayPoesTed(MapObj, sTime=dt.datetime(2011,3,4,4))</span>
+<span class="sd">		</span>
+<span class="sd">	written by Bharat Kunduri, 20130216</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	
+	<span class="kn">import</span> <span class="nn">utils</span>
+	<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="kn">as</span> <span class="nn">mp</span>
+	<span class="kn">import</span> <span class="nn">datetime</span>
+	<span class="kn">import</span> <span class="nn">numpy</span>
+	<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+	<span class="kn">import</span> <span class="nn">gme.sat.poes</span> <span class="kn">as</span> <span class="nn">Poes</span>
+	<span class="kn">import</span> <span class="nn">math</span>
+	<span class="kn">import</span> <span class="nn">matplotlib.cm</span> <span class="kn">as</span> <span class="nn">cm</span>
+	<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">optimize</span>	
+
+
+    <span class="c">#check all the inputs for validity</span>
+	<span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">startTime</span><span class="p">,</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)),</span> \
+		<span class="s">&#39;error, sTime must be a datetime object&#39;</span>
+	<span class="k">assert</span><span class="p">(</span><span class="n">endTime</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">endTime</span><span class="p">,</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)),</span> \
+		<span class="s">&#39;error, eTime must be either None or a datetime object&#39;</span>
+	
+	<span class="n">var</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span>
+	
+	<span class="k">assert</span><span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="s">&#39;satNum&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="s">&#39;satNum&#39;</span><span class="p">],</span><span class="nb">list</span><span class="p">)</span> <span class="p">)),</span> \
+		<span class="s">&#39;error, satNum must None or a list of satellite (integer) numbers&#39;</span>
+	
+	<span class="k">if</span> <span class="n">satNum</span> <span class="o">!=</span> <span class="bp">None</span> <span class="p">:</span>
+		<span class="k">assert</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="n">satNum</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">5</span> <span class="p">),</span> \
+		<span class="s">&#39;error, there are only 5 POES satellites in operation (atleast when I wrote this code)&#39;</span>
+	
+	
+	<span class="k">assert</span><span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="s">&#39;folat&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="s">&#39;folat&#39;</span><span class="p">],</span><span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> \
+		<span class="nb">isinstance</span><span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="s">&#39;folat&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],(</span><span class="nb">int</span><span class="p">,</span><span class="nb">float</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="s">&#39;folat&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],(</span><span class="nb">int</span><span class="p">,</span><span class="nb">float</span><span class="p">)))),</span> \
+		<span class="s">&#39;error, folat must None or a list of 2 numbers&#39;</span>
+		
+	<span class="c"># Check the hemisphere and get the appropriate folat</span>
+	<span class="n">folat</span> <span class="o">=</span> <span class="p">[</span> <span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span> <span class="n">folat</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span> <span class="o">*</span> <span class="n">hemi</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span> <span class="n">folat</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span> <span class="o">*</span> <span class="n">hemi</span> <span class="p">]</span>
+		
+	
+	<span class="c"># Check if the endTime is given in which case the user wants a specific time interval to search for</span>
+	<span class="c"># If not we&#39;ll give him the best available passes for the selected start time...</span>
+	
+	<span class="k">if</span> <span class="p">(</span> <span class="n">endTime</span> <span class="o">!=</span> <span class="bp">None</span> <span class="p">)</span> <span class="p">:</span>
+		<span class="n">timeRange</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span> <span class="n">startTime</span><span class="p">,</span> <span class="n">endTime</span> <span class="p">]</span> <span class="p">)</span>
+	<span class="k">else</span> <span class="p">:</span>
+		<span class="n">timeRange</span> <span class="o">=</span> <span class="bp">None</span>
+	
+	<span class="n">pltTimeInterval</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span> <span class="n">minutes</span> <span class="o">=</span> <span class="mi">45</span> <span class="p">)</span> <span class="p">)</span>
+	
+	<span class="c"># check if the timeRange is set... if not set the timeRange to +/- pltTimeInterval of the startTime</span>
+	<span class="k">if</span> <span class="p">(</span> <span class="n">timeRange</span> <span class="o">==</span> <span class="bp">None</span> <span class="p">)</span> <span class="p">:</span>
+		<span class="n">timeRange</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span> <span class="n">startTime</span> <span class="o">-</span> <span class="n">pltTimeInterval</span><span class="p">,</span> <span class="n">startTime</span> <span class="o">+</span> <span class="n">pltTimeInterval</span> <span class="p">]</span> <span class="p">)</span>
+	
+	
+		
+	<span class="c"># SatNums - currently operational POES satellites are 15, 16, 17, 18, 19</span>
+	<span class="k">if</span> <span class="n">satNum</span> <span class="o">==</span> <span class="bp">None</span> <span class="p">:</span>
+		<span class="n">satNum</span> <span class="o">=</span> <span class="p">[</span><span class="bp">None</span><span class="p">]</span>
+	<span class="c"># If any particular satellite number is not chosen by user loop through all the available one&#39;s </span>
+	
+	<span class="n">satNum</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">satNum</span> <span class="p">)</span> <span class="c"># I like numpy arrays better that&#39;s why I&#39;m converting the satNum list to a numpy array</span>
+	
+	<span class="n">latPoesAll</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">satNum</span><span class="p">))]</span>
+	<span class="n">lonPoesAll</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">satNum</span><span class="p">))]</span>
+	<span class="n">tedPoesAll</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">satNum</span><span class="p">))]</span>
+	<span class="n">timePoesAll</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">satNum</span><span class="p">))]</span>
+	<span class="n">lenDataAll</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">satNum</span><span class="p">))]</span>
+	
+	<span class="n">goodFlg</span><span class="o">=</span><span class="bp">False</span>
+	
+	<span class="k">for</span> <span class="n">sN</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="n">satNum</span><span class="p">)</span> <span class="p">)</span> <span class="p">:</span>
+		
+		<span class="k">if</span><span class="p">(</span><span class="n">satNum</span><span class="p">[</span><span class="n">sN</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span>
+			<span class="n">currPoesList</span> <span class="o">=</span> <span class="n">Poes</span><span class="o">.</span><span class="n">readPoes</span><span class="p">(</span> <span class="n">timeRange</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">eTime</span> <span class="o">=</span> <span class="n">timeRange</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">satnum</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">satNum</span><span class="p">[</span><span class="n">sN</span><span class="p">]),</span> <span class="n">folat</span> <span class="o">=</span> <span class="n">folat</span> <span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">currPoesList</span> <span class="o">=</span> <span class="n">Poes</span><span class="o">.</span><span class="n">readPoes</span><span class="p">(</span> <span class="n">timeRange</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">eTime</span> <span class="o">=</span> <span class="n">timeRange</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">satnum</span> <span class="o">=</span> <span class="n">satNum</span><span class="p">[</span><span class="n">sN</span><span class="p">],</span> <span class="n">folat</span> <span class="o">=</span> <span class="n">folat</span> <span class="p">)</span>
+
+		<span class="c"># Check if the data is loaded...</span>
+		<span class="k">if</span> <span class="n">currPoesList</span> <span class="o">==</span> <span class="bp">None</span> <span class="p">:</span>
+			<span class="k">print</span> <span class="s">&#39;No data found&#39;</span>
+			<span class="k">continue</span>
+			<span class="c">#return None</span>
+
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">goodFlg</span><span class="o">=</span><span class="bp">True</span>
+		<span class="c"># Loop through the list and store the data into arrays    </span>
+		<span class="n">lenDataAll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">currPoesList</span><span class="p">))</span>
+		
+				
+		<span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">currPoesList</span> <span class="p">:</span>
+			<span class="c"># Store our data in arrays</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="n">tedPoesAll</span><span class="p">[</span><span class="n">sN</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">param</span><span class="p">)))</span>
+				<span class="n">latPoesAll</span><span class="p">[</span><span class="n">sN</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">l</span><span class="o">.</span><span class="n">folat</span> <span class="p">)</span>
+				<span class="n">lonPoesAll</span><span class="p">[</span><span class="n">sN</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">l</span><span class="o">.</span><span class="n">folon</span> <span class="p">)</span>
+				<span class="n">timePoesAll</span><span class="p">[</span><span class="n">sN</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">l</span><span class="o">.</span><span class="n">time</span> <span class="p">)</span>
+			<span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span>
+				<span class="k">print</span> <span class="n">e</span>
+				<span class="k">print</span> <span class="s">&#39;could not get parameter for time&#39;</span><span class="p">,</span><span class="n">l</span><span class="o">.</span><span class="n">time</span>
+	
+	<span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">goodFlg</span><span class="p">):</span> <span class="k">return</span> <span class="bp">None</span>
+	
+	<span class="n">latPoesAll</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">latPoesAll</span> <span class="p">)</span> 
+	<span class="n">lonPoesAll</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">lonPoesAll</span> <span class="p">)</span>
+	<span class="n">tedPoesAll</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">tedPoesAll</span> <span class="p">)</span>
+	<span class="n">timePoesAll</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">timePoesAll</span> <span class="p">)</span>
+	<span class="n">lenDataAll</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">lenDataAll</span> <span class="p">)</span>
+	
+	<span class="n">poesTicks</span> <span class="o">=</span> <span class="p">[</span> <span class="o">-</span><span class="mf">3.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span> <span class="p">]</span>
+	
+	<span class="c"># get the axis of the figure...</span>
+	<span class="n">ax</span> <span class="o">=</span> <span class="n">axisHandle</span>
+	
+	<span class="k">for</span> <span class="n">nn</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="n">satNum</span><span class="p">)</span> <span class="p">)</span> <span class="p">:</span>
+		
+		<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">baseMapObj</span><span class="p">(</span><span class="n">lonPoesAll</span><span class="p">[</span><span class="n">nn</span><span class="p">],</span> <span class="n">latPoesAll</span><span class="p">[</span><span class="n">nn</span><span class="p">])</span>
+		<span class="n">bpltpoes</span> <span class="o">=</span> <span class="n">baseMapObj</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">tedPoesAll</span><span class="p">[</span><span class="n">nn</span><span class="p">],</span> <span class="n">vmin</span><span class="o">=</span><span class="n">scMin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">scMax</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">,</span> <span class="n">zorder</span> <span class="o">=</span> <span class="mf">7.</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
+		<span class="n">timeCurr</span> <span class="o">=</span> <span class="n">timePoesAll</span><span class="p">[</span><span class="n">nn</span><span class="p">]</span>
+		<span class="k">for</span> <span class="n">aa</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="n">latPoesAll</span><span class="p">[</span><span class="n">nn</span><span class="p">])</span> <span class="p">)</span> <span class="p">:</span>
+			<span class="k">if</span> <span class="n">aa</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="n">str_curr</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timeCurr</span><span class="p">[</span><span class="n">aa</span><span class="p">]</span><span class="o">.</span><span class="n">hour</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;:&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">timeCurr</span><span class="p">[</span><span class="n">aa</span><span class="p">]</span><span class="o">.</span><span class="n">minute</span><span class="p">)</span>
+				<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span> <span class="n">str_curr</span><span class="p">,</span> <span class="n">xy</span> <span class="o">=</span><span class="p">(</span> <span class="n">x</span><span class="p">[</span><span class="n">aa</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">aa</span><span class="p">]</span> <span class="p">),</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">zorder</span> <span class="o">=</span> <span class="mf">6.</span> <span class="p">)</span>
+		
+	<span class="c">#cbar = plt.colorbar(bpltpoes, ticks = poesTicks, orientation=&#39;horizontal&#39;)</span>
+	<span class="c">#cbar.ax.set_xticklabels(poesTicks)</span>
+	<span class="c">#cbar.set_label(r&quot;Total Log Energy Flux [ergs cm$^{-2}$ s$^{-1}$]&quot;)</span>
+	<span class="k">return</span> <span class="n">bpltpoes</span>
+    
+    </div>
+<div class="viewcode-block" id="overlayPoesBnd"><a class="viewcode-back" href="../../../gme.sat.poes.html#gme.sat.poes.overlayPoesBnd">[docs]</a><span class="k">def</span> <span class="nf">overlayPoesBnd</span><span class="p">(</span> <span class="n">baseMapObj</span><span class="p">,</span> <span class="n">axisHandle</span><span class="p">,</span> <span class="n">startTime</span><span class="p">,</span> <span class="n">coords</span> <span class="o">=</span> <span class="s">&#39;geo&#39;</span><span class="p">,</span> <span class="n">hemi</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">equBnd</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">polBnd</span> <span class="o">=</span> <span class="bp">False</span> <span class="p">)</span> <span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;This function reads POES TED data with in +/- 45min of the given time, fits the auroral oval boundaries and overlays them on a map object. The poleward boundary is not accurate all the times due to lesser number of satellite passes identifying it.</span>
+
+<span class="sd">	**Args**: </span>
+<span class="sd">        * **baseMapObj** (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_ or None): the map object you want data to be overlayed on.</span>
+<span class="sd">        * **axisHandle** (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_ or None): the Axis Handle used.</span>
+<span class="sd">	* **startTime** (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_ or None): the starttime you want data for. If endTime is not given overlays data from satellites with in +/- 45 min of the startTime</span>
+<span class="sd">	* [**coords**] (list or None): Coordinates of the map object on which you want data to be overlayed on. Default &#39;geo&#39;</span>
+<span class="sd">	* [**hemi**] (list or None): Hemisphere of the map object on which you want data to be overlayed on. Value is 1 for northern hemisphere and -1 for the southern hemisphere.Default 1</span>
+<span class="sd">	* [**equBnd**] (list or None): If this is True the equatorward auroral oval boundary fit from the TED data is overlayed on the map object. Default True</span>
+<span class="sd">        * [**polBnd**] (list or None): If this is True the poleward auroral oval boundary fit from the TED data is overlayed on the map object. Default False</span>
+<span class="sd">		</span>
+<span class="sd">	**Returns**:</span>
+<span class="sd">		POES TED data is overlayed on the map object. If no data is found, None is returned.</span>
+<span class="sd">	**Example**:</span>
+<span class="sd">		::</span>
+<span class="sd">		</span>
+<span class="sd">			import datetime as dt</span>
+<span class="sd">			poesList = gme.sat.overlayPoesTed(MapObj, sTime=dt.datetime(2011,3,4,4))</span>
+<span class="sd">		</span>
+<span class="sd">	written by Bharat Kunduri, 20130216</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="kn">import</span> <span class="nn">utils</span>
+	<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="kn">as</span> <span class="nn">mp</span>
+	<span class="kn">import</span> <span class="nn">datetime</span>
+	<span class="kn">import</span> <span class="nn">numpy</span>
+	<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+	<span class="kn">import</span> <span class="nn">gme.sat.poes</span> <span class="kn">as</span> <span class="nn">Poes</span>
+	<span class="kn">import</span> <span class="nn">math</span>
+	<span class="kn">import</span> <span class="nn">matplotlib.cm</span> <span class="kn">as</span> <span class="nn">cm</span>
+	<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">optimize</span>
+
+	<span class="c">#check all the inputs for validity</span>
+	<span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">startTime</span><span class="p">,</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)),</span> \
+		<span class="s">&#39;error, sTime must be a datetime object&#39;</span>
+		
+	
+	<span class="c"># Check the hemisphere and get the appropriate folat</span>
+	<span class="n">folat</span> <span class="o">=</span> <span class="p">[</span> <span class="mf">45.</span> <span class="o">*</span> <span class="n">hemi</span><span class="p">,</span> <span class="mf">90.</span> <span class="o">*</span> <span class="n">hemi</span> <span class="p">]</span>
+	
+	<span class="c"># Get the time range we choose +/- 45 minutes....</span>
+	<span class="n">pltTimeInterval</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span> <span class="n">minutes</span> <span class="o">=</span> <span class="mi">45</span> <span class="p">)</span> <span class="p">)</span>
+	<span class="n">timeRange</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span> <span class="n">startTime</span> <span class="o">-</span> <span class="n">pltTimeInterval</span><span class="p">,</span> <span class="n">startTime</span> <span class="o">+</span> <span class="n">pltTimeInterval</span> <span class="p">]</span> <span class="p">)</span>
+	
+	<span class="n">satNum</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span> <span class="p">]</span>
+	
+	<span class="c"># We set the TED cut-off value to -0.75,</span>
+	<span class="c"># From observed cases this appeared to do well...</span>
+	<span class="c"># though fails sometimes especially during geomagnetically quiet times...</span>
+	<span class="c"># However this is version 1.0 and there always is room for improvement</span>
+	<span class="n">equBndCutoffVal</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.75</span>
+	
+	<span class="c"># If any particular satellite number is not chosen by user loop through all the available one&#39;s </span>
+	<span class="n">satNum</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">satNum</span> <span class="p">)</span> <span class="c"># I like numpy arrays better that&#39;s why I&#39;m converting the satNum list to a numpy array</span>
+	
+	<span class="n">latPoesAll</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">satNum</span><span class="p">))]</span>
+	<span class="n">lonPoesAll</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">satNum</span><span class="p">))]</span>
+	<span class="n">tedPoesAll</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">satNum</span><span class="p">))]</span>
+	<span class="n">timePoesAll</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">satNum</span><span class="p">))]</span>
+	<span class="n">lenDataAll</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">satNum</span><span class="p">))]</span>
+	
+	<span class="k">for</span> <span class="n">sN</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="n">satNum</span><span class="p">)</span> <span class="p">)</span> <span class="p">:</span>
+		<span class="n">currPoesList</span> <span class="o">=</span> <span class="n">Poes</span><span class="o">.</span><span class="n">readPoes</span><span class="p">(</span> <span class="n">timeRange</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">eTime</span> <span class="o">=</span> <span class="n">timeRange</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">satnum</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">satNum</span><span class="p">[</span><span class="n">sN</span><span class="p">]),</span> <span class="n">folat</span> <span class="o">=</span> <span class="n">folat</span> <span class="p">)</span>
+
+		<span class="c"># Check if the data is loaded...</span>
+		<span class="k">if</span> <span class="n">currPoesList</span> <span class="o">==</span> <span class="bp">None</span> <span class="p">:</span>
+			<span class="k">print</span> <span class="s">&#39;No data found&#39;</span>
+			<span class="k">continue</span>
+
+		<span class="c"># Loop through the list and store the data into arrays    </span>
+		<span class="n">lenDataAll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span> <span class="n">currPoesList</span> <span class="p">)</span> <span class="p">)</span>
+		
+		
+		<span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="n">lenDataAll</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span> <span class="p">:</span>
+		<span class="c"># Store our data in arrays if the TED data value is &gt; than the cutoff value</span>
+			<span class="k">if</span> <span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">currPoesList</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">.</span><span class="n">ted</span> <span class="p">)</span> <span class="o">&gt;</span> <span class="n">equBndCutoffVal</span> <span class="p">)</span> <span class="p">:</span>
+				<span class="n">latPoesAll</span><span class="p">[</span><span class="n">sN</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">currPoesList</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">.</span><span class="n">folat</span> <span class="p">)</span>
+				<span class="n">lonPoesAll</span><span class="p">[</span><span class="n">sN</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">currPoesList</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">.</span><span class="n">folon</span> <span class="p">)</span>
+				<span class="n">tedPoesAll</span><span class="p">[</span><span class="n">sN</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">currPoesList</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">.</span><span class="n">ted</span><span class="p">)</span> <span class="p">)</span>
+				<span class="n">timePoesAll</span><span class="p">[</span><span class="n">sN</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">currPoesList</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">.</span><span class="n">time</span> <span class="p">)</span>
+			
+		
+	
+	<span class="n">latPoesAll</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">latPoesAll</span> <span class="p">)</span> 
+	<span class="n">lonPoesAll</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">lonPoesAll</span> <span class="p">)</span>
+	<span class="n">tedPoesAll</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">tedPoesAll</span> <span class="p">)</span>
+	<span class="n">timePoesAll</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">timePoesAll</span> <span class="p">)</span>
+	<span class="n">lenDataAll</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">lenDataAll</span> <span class="p">)</span>
+	
+	
+	<span class="c"># Now to identify the boundaries...</span>
+	<span class="c"># Also need to check if the boundary is equatorward or poleward..</span>
+	<span class="c"># When satellite is moving from high-lat to low-lat decrease in flux would mean equatorward boundary</span>
+	<span class="c"># When satellite is moving from low-lat to high-lat increase in flux would mean equatorward boundary</span>
+	<span class="c"># that is what we are trying to check here</span>
+
+	<span class="n">eqBndLats</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="n">eqBndLons</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="n">poBndLats</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="n">poBndLons</span> <span class="o">=</span> <span class="p">[]</span>    
+	
+	
+	<span class="k">for</span> <span class="n">n1</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="n">satNum</span><span class="p">)</span> <span class="p">)</span> <span class="p">:</span>
+		<span class="n">currSatLats</span> <span class="o">=</span> <span class="n">latPoesAll</span><span class="p">[</span><span class="n">n1</span><span class="p">]</span>
+		<span class="n">currSatLons</span> <span class="o">=</span> <span class="n">lonPoesAll</span><span class="p">[</span><span class="n">n1</span><span class="p">]</span>
+		<span class="n">currSatTeds</span> <span class="o">=</span> <span class="n">tedPoesAll</span><span class="p">[</span><span class="n">n1</span><span class="p">]</span>
+		
+		<span class="n">testLatArrLtoh</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="n">testLonArrLtoh</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="n">testLatArrHtol</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="n">testLonArrHtol</span> <span class="o">=</span> <span class="p">[]</span>
+		
+		<span class="n">testLatArrLtohP</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="n">testLonArrLtohP</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="n">testLatArrHtolP</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="n">testLonArrHtolP</span> <span class="o">=</span> <span class="p">[]</span>
+		
+		<span class="k">for</span> <span class="n">n2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="n">currSatLats</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="p">:</span>
+		
+		
+			<span class="c">#Check if the satellite is moving form low-lat to high-lat or otherwise</span>
+			
+			<span class="k">if</span> <span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span> <span class="n">currSatLats</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span> <span class="p">)</span> <span class="o">&lt;</span> <span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span> <span class="n">currSatLats</span><span class="p">[</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span> <span class="p">:</span>
+				
+				<span class="k">if</span> <span class="p">(</span> <span class="n">currSatTeds</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">currSatTeds</span><span class="p">[</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span> <span class="p">:</span>
+					<span class="n">testLatArrLtoh</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">currSatLats</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span> <span class="p">)</span>
+					<span class="n">testLonArrLtoh</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">currSatLons</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span> <span class="p">)</span>
+				
+				<span class="k">if</span> <span class="p">(</span> <span class="n">currSatTeds</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">currSatTeds</span><span class="p">[</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span> <span class="p">:</span>
+					<span class="n">testLatArrLtohP</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">currSatLats</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span> <span class="p">)</span>
+					<span class="n">testLonArrLtohP</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">currSatLons</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span> <span class="p">)</span>
+				
+				
+				
+			<span class="k">if</span> <span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span> <span class="n">currSatLats</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span> <span class="p">)</span> <span class="o">&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span> <span class="n">currSatLats</span><span class="p">[</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span> <span class="p">:</span>
+				<span class="k">if</span> <span class="p">(</span> <span class="n">currSatTeds</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">currSatTeds</span><span class="p">[</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span> <span class="p">:</span>
+					<span class="n">testLatArrHtol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">currSatLats</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span> <span class="p">)</span>
+					<span class="n">testLonArrHtol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">currSatLons</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span> <span class="p">)</span>
+				
+				<span class="k">if</span> <span class="p">(</span> <span class="n">currSatTeds</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">currSatTeds</span><span class="p">[</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span> <span class="p">:</span>
+					<span class="n">testLatArrHtolP</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">currSatLats</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span> <span class="p">)</span>
+					<span class="n">testLonArrHtolP</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">currSatLons</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span> <span class="p">)</span>
+			
+		
+		
+		<span class="c"># I do this to find the index of the min lat...</span>
+		
+		<span class="k">if</span> <span class="p">(</span> <span class="n">testLatArrLtoh</span> <span class="o">!=</span> <span class="p">[]</span> <span class="p">)</span> <span class="p">:</span>
+			<span class="n">testLatArrLtoh</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">testLatArrLtoh</span> <span class="p">)</span>
+			<span class="n">testLonArrLtoh</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">testLonArrLtoh</span> <span class="p">)</span>
+			<span class="n">VarEqLat1</span> <span class="o">=</span> <span class="n">testLatArrLtoh</span><span class="p">[</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span> <span class="n">testLatArrLtoh</span> <span class="o">==</span> <span class="nb">min</span><span class="p">(</span><span class="n">testLatArrLtoh</span><span class="p">)</span> <span class="p">)</span> <span class="p">]</span>
+			<span class="n">VarEqLon1</span> <span class="o">=</span> <span class="n">testLonArrLtoh</span><span class="p">[</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span> <span class="n">testLatArrLtoh</span> <span class="o">==</span> <span class="nb">min</span><span class="p">(</span><span class="n">testLatArrLtoh</span><span class="p">)</span> <span class="p">)</span> <span class="p">]</span>
+			<span class="n">eqBndLats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">VarEqLat1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+			<span class="n">eqBndLons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">VarEqLon1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+		
+		
+		<span class="k">if</span> <span class="p">(</span> <span class="n">testLatArrHtol</span> <span class="o">!=</span> <span class="p">[]</span> <span class="p">)</span> <span class="p">:</span>
+			<span class="n">testLatArrHtol</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">testLatArrHtol</span> <span class="p">)</span>
+			<span class="n">testLonArrHtol</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">testLonArrHtol</span> <span class="p">)</span>
+			<span class="n">VarEqLat2</span> <span class="o">=</span> <span class="n">testLatArrHtol</span><span class="p">[</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span> <span class="n">testLatArrHtol</span> <span class="o">==</span> <span class="nb">min</span><span class="p">(</span><span class="n">testLatArrHtol</span><span class="p">)</span> <span class="p">)</span> <span class="p">]</span>
+			<span class="n">VarEqLon2</span> <span class="o">=</span> <span class="n">testLonArrHtol</span><span class="p">[</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span> <span class="n">testLatArrHtol</span> <span class="o">==</span> <span class="nb">min</span><span class="p">(</span><span class="n">testLatArrHtol</span><span class="p">)</span> <span class="p">)</span> <span class="p">]</span>
+			<span class="n">eqBndLats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">VarEqLat2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+			<span class="n">eqBndLons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">VarEqLon2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+		
+		
+		<span class="k">if</span> <span class="p">(</span> <span class="n">testLatArrLtohP</span> <span class="o">!=</span> <span class="p">[]</span> <span class="p">)</span> <span class="p">:</span>
+			<span class="n">testLatArrLtohP</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">testLatArrLtohP</span> <span class="p">)</span>
+			<span class="n">testLonArrLtohP</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">testLonArrLtohP</span> <span class="p">)</span>
+			<span class="n">VarEqLatP1</span> <span class="o">=</span> <span class="n">testLatArrLtohP</span><span class="p">[</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span> <span class="n">testLatArrLtohP</span> <span class="o">==</span> <span class="nb">min</span><span class="p">(</span><span class="n">testLatArrLtohP</span><span class="p">)</span> <span class="p">)</span> <span class="p">]</span>
+			<span class="n">VarEqLonP1</span> <span class="o">=</span> <span class="n">testLonArrLtohP</span><span class="p">[</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span> <span class="n">testLatArrLtohP</span> <span class="o">==</span> <span class="nb">min</span><span class="p">(</span><span class="n">testLatArrLtohP</span><span class="p">)</span> <span class="p">)</span> <span class="p">]</span>
+			<span class="k">if</span> <span class="n">VarEqLatP1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">64.</span> <span class="p">:</span>
+				<span class="n">poBndLats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">VarEqLatP1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+				<span class="n">poBndLons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">VarEqLonP1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+		
+		
+		<span class="k">if</span> <span class="p">(</span> <span class="n">testLatArrHtolP</span> <span class="o">!=</span> <span class="p">[]</span> <span class="p">)</span> <span class="p">:</span>
+			<span class="n">testLatArrHtolP</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">testLatArrHtolP</span> <span class="p">)</span>
+			<span class="n">testLonArrHtolP</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">testLonArrHtolP</span> <span class="p">)</span>
+			<span class="n">VarEqLatP2</span> <span class="o">=</span> <span class="n">testLatArrHtolP</span><span class="p">[</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span> <span class="n">testLatArrHtolP</span> <span class="o">==</span> <span class="nb">min</span><span class="p">(</span><span class="n">testLatArrHtolP</span><span class="p">)</span> <span class="p">)</span> <span class="p">]</span>
+			<span class="n">VarEqLonP2</span> <span class="o">=</span> <span class="n">testLonArrHtolP</span><span class="p">[</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span> <span class="n">testLatArrHtolP</span> <span class="o">==</span> <span class="nb">min</span><span class="p">(</span><span class="n">testLatArrHtolP</span><span class="p">)</span> <span class="p">)</span> <span class="p">]</span>
+			<span class="k">if</span> <span class="n">VarEqLatP2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">64</span> <span class="p">:</span>
+				<span class="n">poBndLats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">VarEqLatP2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+				<span class="n">poBndLons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">VarEqLonP2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+		
+		
+	<span class="n">eqBndLats</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">eqBndLats</span> <span class="p">)</span>
+	<span class="n">eqBndLons</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">eqBndLons</span> <span class="p">)</span>
+	<span class="n">poBndLats</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">poBndLats</span> <span class="p">)</span>
+	<span class="n">poBndLons</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">poBndLons</span> <span class="p">)</span>
+
+	<span class="c">#get the axis Handle used</span>
+	<span class="n">ax</span> <span class="o">=</span> <span class="n">axisHandle</span>
+	
+	<span class="c"># Now we do the fitting part...</span>
+	
+	<span class="n">fitfunc</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">p</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">numpy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">/</span><span class="mf">360.</span><span class="p">)</span><span class="o">+</span><span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="c"># Target function</span>
+	<span class="n">errfunc</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">p</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">fitfunc</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">y</span> <span class="c"># Distance to the target function</span>
+	
+	
+	<span class="c"># Initial guess for the parameters</span>
+	<span class="c"># Equatorward boundary</span>
+	<span class="n">p0Equ</span> <span class="o">=</span> <span class="p">[</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]</span>
+	<span class="n">p1Equ</span><span class="p">,</span> <span class="n">successEqu</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">leastsq</span><span class="p">(</span><span class="n">errfunc</span><span class="p">,</span> <span class="n">p0Equ</span><span class="p">[:],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">eqBndLons</span><span class="p">,</span> <span class="n">eqBndLats</span><span class="p">))</span>  
+	<span class="k">if</span> <span class="n">polBnd</span> <span class="o">==</span> <span class="bp">True</span> <span class="p">:</span>
+		<span class="n">p0Pol</span> <span class="o">=</span> <span class="p">[</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]</span>
+		<span class="n">p1Pol</span><span class="p">,</span> <span class="n">successPol</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">leastsq</span><span class="p">(</span><span class="n">errfunc</span><span class="p">,</span> <span class="n">p0Pol</span><span class="p">[:],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">poBndLons</span><span class="p">,</span> <span class="n">poBndLats</span><span class="p">))</span>   
+	
+	<span class="n">allPlotLons</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">360.</span><span class="p">,</span> <span class="mf">25.</span><span class="p">)</span>
+	<span class="n">allPlotLons</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
+	<span class="n">eqPlotLats</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="k">if</span> <span class="n">polBnd</span> <span class="o">==</span> <span class="bp">True</span> <span class="p">:</span>
+		<span class="n">poPlotLats</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="k">for</span> <span class="n">xx</span> <span class="ow">in</span> <span class="n">allPlotLons</span> <span class="p">:</span>
+		<span class="k">if</span> <span class="n">equBnd</span> <span class="o">==</span> <span class="bp">True</span> <span class="p">:</span>
+			<span class="n">eqPlotLats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">p1Equ</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">p1Equ</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">numpy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">xx</span><span class="o">/</span><span class="mf">360.</span><span class="p">)</span><span class="o">+</span><span class="n">p1Equ</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+		<span class="k">if</span> <span class="n">polBnd</span> <span class="o">==</span> <span class="bp">True</span> <span class="p">:</span>
+			<span class="n">poPlotLats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">p1Pol</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">p1Pol</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">numpy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">xx</span><span class="o">/</span><span class="mf">360.</span><span class="p">)</span><span class="o">+</span><span class="n">p1Pol</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+		
+	<span class="n">xEqu</span><span class="p">,</span> <span class="n">yEqu</span> <span class="o">=</span> <span class="n">baseMapObj</span><span class="p">(</span><span class="n">allPlotLons</span><span class="p">,</span> <span class="n">eqPlotLats</span><span class="p">)</span>
+	<span class="n">bpltpoes</span> <span class="o">=</span> <span class="n">baseMapObj</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">xEqu</span><span class="p">,</span><span class="n">yEqu</span><span class="p">,</span> <span class="n">zorder</span> <span class="o">=</span> <span class="mf">7.</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s">&#39;b&#39;</span> <span class="p">)</span>
+	
+	<span class="k">if</span> <span class="n">polBnd</span> <span class="o">==</span> <span class="bp">True</span> <span class="p">:</span>
+		<span class="n">xPol</span><span class="p">,</span> <span class="n">yPol</span> <span class="o">=</span> <span class="n">baseMapObj</span><span class="p">(</span><span class="n">allPlotLons</span><span class="p">,</span> <span class="n">poPlotLats</span><span class="p">)</span>
+		<span class="n">bpltpoes</span> <span class="o">=</span> <span class="n">baseMapObj</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">xPol</span><span class="p">,</span><span class="n">yPol</span><span class="p">,</span> <span class="n">zorder</span> <span class="o">=</span> <span class="mf">7.</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s">&#39;r&#39;</span> <span class="p">)</span>
+    
+        
+  
+        
+
+
+
+
+		
+
+	</div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../../../index.html">
+          <img class="logo" src="../../../_static/davitpy.svg" alt="Logo" style="width: 80%;"/>
+        </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+    <li><a href="../../../index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../sat.html" >gme.sat</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, VT SuperDARN Lab and Friends.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>
