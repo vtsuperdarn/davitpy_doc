@@ -12,19 +12,23 @@ DaViTpy is the SuperDARN Data Visualization Toolkit in Python. This documentatio
 
 * `Project wiki <https://github.com/vtsuperdarn/davitpy/wiki>`_
 
-This documentation covers the following modules of DaViTpy:
-
-* :doc:`pydarn`: SuperDARN data analysis and visualization. Includes radar data access, radar information and fields-of-view, and standard plotting tools.
-
-* :doc:`gme`: Geomagnetic Environement module. Includes access to other space science data-sets (POES, OMNI, TEC, ...).
-   
-* :doc:`models`: Useful models. Incudes empirical models (IRI, MSIS, HWM, ...), coordinate systems (AACGM, MLT), and ray-tracing.
-
-* :doc:`utils`: Useful formatting and plotting tools, as well as a solar position calculator.
-
-.. note:: most major functions of DaViTpy are llustrated in the IPython notebooks included with this distribution. Use them to see more examples and how-to's.
-
 Contents
+========
+
+* :doc:`pydarn` : SuperDARN data analysis and visualization. Includes radar data access, radar information and fields-of-view, and standard plotting tools.
+
+* :doc:`gme` : Geomagnetic Environement module. Includes access to other space science data-sets (POES, OMNI, TEC, ...).
+   
+* :doc:`models` : Useful models. Incudes empirical models (IRI, MSIS, HWM, ...), coordinate systems (AACGM, MLT), and ray-tracing.
+
+* :doc:`utils` : Useful formatting and plotting tools, as well as a solar position calculator.
+
+* :doc:`notebooks` : Some examples of how to use DaViTpy (IPython notebooks).
+
+.. note:: This project is hosted on github, and we sincerely invite your to contribute!
+
+
+Modules
 ========
 
 .. toctree::

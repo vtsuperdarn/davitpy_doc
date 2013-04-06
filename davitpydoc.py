@@ -1,13 +1,13 @@
 def davitpydoc():
-    
     import os,string
+
     docPath = '/docs/davitpy_doc'
     projPath = '/davitpy'
     
     with open(docPath+'/index_backup','r') as f:
         index = f.readlines()
     ind = index.index('   :maxdepth: 1\n')
-    ind = ind+1
+    ind = ind + 1
     
     exclude = ['.git','build','sphinx','docs','install','bin','temp.linux-x86_64-2.7']
     for root, dirs, files in os.walk('/davitpy'):
@@ -85,6 +85,24 @@ def davitpydoc():
             
         with open(os.path.join(docPath, 'index.rst'), 'w') as f:
             f.writelines(index)
+
+        # Link notebooks to nbviewer
+        with open(os.path.join(docPath, 'notebooks_backup'), 'r') as f:
+            notebooks = f.readlines()
+        
+        baseurl = 'http://nbviewer.ipython.org/urls/raw.github.com/'
+        gitpath = 'vtsuperdarn/davitpy/master/docs/notebook/'
+        for root, dirs, files in os.walk('/davitpy/docs/notebook'):
+            for fname in files:
+                if not fname[-6:] == '.ipynb': continue
+                basename = fname[:-6]
+                notebooks.append('\n* `{0} <{1}{2}{0}.ipynb>`_\n'.format(basename, baseurl, gitpath))
+                print fname, basename
+            break
+
+        with open(os.path.join(docPath, 'notebooks.rst'), 'w') as f:
+            f.writelines(notebooks)
+
 
 if __name__ == "__main__":
     davitpydoc()
