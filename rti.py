@@ -1,1 +1,1 @@
-/davitpy/pydarn/plot/rti.py
+/davitpy/pydarn/plotting/rti.py

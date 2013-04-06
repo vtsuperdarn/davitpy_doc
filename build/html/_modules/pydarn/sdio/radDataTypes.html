@@ -119,7 +119,7 @@
 <span class="sd">    </span>
 <span class="sd">  Written by AJ 20130108</span>
 <span class="sd">  &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="radDataPtr.__init__"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.radDataPtr.__init__">[docs]</a>  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">ptr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">sTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">eTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">stid</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">channel</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">bmnum</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">cp</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">ptr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">sTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">eTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">stid</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">channel</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">bmnum</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">cp</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">ptr</span> <span class="o">=</span> <span class="n">ptr</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">sTime</span> <span class="o">=</span> <span class="n">sTime</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">eTime</span> <span class="o">=</span> <span class="n">eTime</span>
@@ -130,7 +130,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">dType</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">fType</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">fBeam</span> <span class="o">=</span> <span class="bp">None</span>
-    </div>
+    
   <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="n">myStr</span> <span class="o">=</span> <span class="s">&#39;radDataPtr</span><span class="se">\n</span><span class="s">&#39;</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">var</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
@@ -342,9 +342,9 @@
 <span class="sd">  Written by AJ 20121130</span>
 <span class="sd">  &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="scanData.__init__"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.scanData.__init__">[docs]</a>  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="k">pass</span>
-  </div></div>
+  </div>
 <div class="viewcode-block" id="beamData"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.beamData">[docs]</a><span class="k">class</span> <span class="nc">beamData</span><span class="p">(</span><span class="n">baseData</span><span class="p">):</span>
   <span class="sd">&quot;&quot;&quot;a class to contain the data from a radar beam sounding, extends class :class:`baseData`</span>
 <span class="sd">  </span>
@@ -375,7 +375,7 @@
 <span class="sd">    </span>
 <span class="sd">  Written by AJ 20121130</span>
 <span class="sd">  &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="beamData.__init__"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.beamData.__init__">[docs]</a>  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">beamDict</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">myBeam</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">proctype</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">beamDict</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">myBeam</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">proctype</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="c">#initialize the attr values</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">cp</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">stid</span> <span class="o">=</span> <span class="bp">None</span>
@@ -398,7 +398,7 @@
     
     <span class="c">#if we are intializing from an object, do that</span>
     <span class="k">if</span><span class="p">(</span><span class="n">beamDict</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">beamDict</span><span class="p">)</span>
-    </div>
+    
   <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
     <span class="n">myStr</span> <span class="o">=</span> <span class="s">&#39;Beam record FROM: &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
@@ -438,7 +438,7 @@
 <span class="sd">  &quot;&quot;&quot;</span>
 
   <span class="c">#initialize the struct</span>
-<div class="viewcode-block" id="prmData.__init__"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.prmData.__init__">[docs]</a>  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prmDict</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">myPrm</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prmDict</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">myPrm</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="c">#set default values</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">nave</span> <span class="o">=</span> <span class="bp">None</span>        <span class="c">#number of averages</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">lagfr</span> <span class="o">=</span> <span class="bp">None</span>       <span class="c">#lag to first range in us</span>
@@ -466,7 +466,7 @@
     
     <span class="c">#if we are copying a structure, do that</span>
     <span class="k">if</span><span class="p">(</span><span class="n">prmDict</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">prmDict</span><span class="p">)</span>
-</div></div>
+</div>
 <div class="viewcode-block" id="fitData"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.fitData">[docs]</a><span class="k">class</span> <span class="nc">fitData</span><span class="p">(</span><span class="n">baseData</span><span class="p">):</span>
   <span class="sd">&quot;&quot;&quot;a class to contain the fitted params of a radar beam sounding, extends :class:`baseData`</span>
 <span class="sd">  </span>
@@ -500,7 +500,7 @@
 <span class="sd">  &quot;&quot;&quot;</span>
 
   <span class="c">#initialize the struct</span>
-<div class="viewcode-block" id="fitData.__init__"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.fitData.__init__">[docs]</a>  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fitDict</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">myFit</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fitDict</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">myFit</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">pwr0</span> <span class="o">=</span> <span class="bp">None</span>      <span class="c">#lag 0 power</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">slist</span> <span class="o">=</span> <span class="bp">None</span>     <span class="c"># list of range gates with backscatter</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">npnts</span> <span class="o">=</span> <span class="bp">None</span>     <span class="c">#number of range gates with scatter</span>
@@ -522,7 +522,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">elv</span> <span class="o">=</span> <span class="bp">None</span>       <span class="c">#elevation angle</span>
     
     <span class="k">if</span><span class="p">(</span><span class="n">fitDict</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">fitDict</span><span class="p">)</span>
-        </div></div>
+        </div>
 <div class="viewcode-block" id="rawData"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.rawData">[docs]</a><span class="k">class</span> <span class="nc">rawData</span><span class="p">(</span><span class="n">baseData</span><span class="p">):</span>
   <span class="sd">&quot;&quot;&quot;a class to contain the rawacf data from a radar beam sounding, extends :class:`baseData`</span>
 <span class="sd">  </span>
@@ -539,13 +539,13 @@
 <span class="sd">  &quot;&quot;&quot;</span>
 
   <span class="c">#initialize the struct</span>
-<div class="viewcode-block" id="rawData.__init__"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.rawData.__init__">[docs]</a>  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rawDict</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rawDict</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">acfd</span> <span class="o">=</span> <span class="p">[]</span>      <span class="c">#acf data</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">xcfd</span> <span class="o">=</span> <span class="p">[]</span>      <span class="c">#xcf data</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span> <span class="c">#reference to parent beam</span>
     
     <span class="k">if</span><span class="p">(</span><span class="n">rawDict</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">rawDict</span><span class="p">)</span>
-    </div></div>
+    </div>
 <div class="viewcode-block" id="iqData"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.iqData">[docs]</a><span class="k">class</span> <span class="nc">iqData</span><span class="p">(</span><span class="n">baseData</span><span class="p">):</span>
   <span class="sd">&quot;&quot;&quot; a class to contain the iq data from a radar beam sounding, extends :class:`baseData`</span>
 <span class="sd">  </span>
@@ -576,7 +576,7 @@
 <span class="sd">  &quot;&quot;&quot;</span>
 
   <span class="c">#initialize the struct</span>
-<div class="viewcode-block" id="iqData.__init__"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.iqData.__init__">[docs]</a>  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iqDict</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iqDict</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">seqnum</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">chnnum</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">smpnum</span> <span class="o">=</span> <span class="bp">None</span>
@@ -594,7 +594,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">intData</span> <span class="o">=</span> <span class="p">[]</span>
     
     <span class="k">if</span><span class="p">(</span><span class="n">iqDict</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">iqDict</span><span class="p">)</span>
-        </div></div>
+        </div>
 </pre></div>
 
           </div>

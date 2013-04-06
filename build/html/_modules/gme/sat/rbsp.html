@@ -106,7 +106,7 @@
 <span class="sd">	written by Sebastien de Larquier, 2013-03</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="rbspFp.__init__"><a class="viewcode-back" href="../../../gme.sat.rbsp.html#gme.sat.rbsp.rbspFp.__init__">[docs]</a>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sTime</span><span class="p">,</span> <span class="n">eTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">spacecraft</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sTime</span><span class="p">,</span> <span class="n">eTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">spacecraft</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
 		<span class="n">L_shell_min</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">L_shell_max</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>  
 		<span class="n">apogees_only</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
@@ -132,7 +132,7 @@
 			<span class="n">trace</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getTrace</span><span class="p">(</span><span class="n">orbit</span><span class="p">)</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">scraft</span> <span class="o">=</span> <span class="n">orbit</span><span class="p">[</span><span class="s">&#39;scraft&#39;</span><span class="p">]</span>
 
-</div>
+
 <div class="viewcode-block" id="rbspFp.map"><a class="viewcode-back" href="../../../gme.sat.rbsp.html#gme.sat.rbsp.rbspFp.map">[docs]</a>	<span class="k">def</span> <span class="nf">map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hemisphere</span><span class="o">=</span><span class="s">&#39;north&#39;</span><span class="p">,</span> <span class="n">boundinglat</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span> 
 		<span class="n">spacecraft</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> 
 		<span class="n">apogees</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>

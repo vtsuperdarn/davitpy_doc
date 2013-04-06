@@ -98,7 +98,7 @@
 <span class="sd">    written by Sebastien, 2012-08</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="network.__init__"><a class="viewcode-back" href="../../../pydarn.radar.radStruct.html#pydarn.radar.radStruct.network.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Default class constructor</span>
 <span class="sd">        </span>
 <span class="sd">        **Belongs to**: :class:`network`</span>
@@ -117,7 +117,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">radars</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="c"># Open file</span>
-        <span class="n">rad_path</span> <span class="o">=</span> <span class="n">__file__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;__init__.py&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">rad_path</span> <span class="o">=</span> <span class="n">__file__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;radStruct.py&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">rad_path</span><span class="o">+</span><span class="s">&#39;/radars.hdf5&#39;</span><span class="p">,</span><span class="s">&#39;r&#39;</span><span class="p">)</span>
         <span class="n">radarF</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s">&#39;/radar&#39;</span><span class="p">]</span>
         <span class="n">siteF</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s">&#39;/hdw&#39;</span><span class="p">]</span>
@@ -126,7 +126,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">radars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">radar</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">radars</span><span class="p">[</span><span class="n">irad</span><span class="p">]</span><span class="o">.</span><span class="n">fillFromHdf5</span><span class="p">(</span><span class="n">radarF</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">][</span><span class="n">irad</span><span class="p">],</span> <span class="n">radarF</span><span class="p">,</span> <span class="n">siteF</span><span class="p">)</span>
         <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-            </div>
+            
     <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Object length (number of radars)</span>
 <span class="sd">        </span>
@@ -403,7 +403,7 @@
 <span class="sd">    written by Sebastien, 2012-08</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c">#__slots__ = (&#39;id&#39;, &#39;status&#39;, &#39;cnum&#39;, &#39;code&#39;, &#39;name&#39;, &#39;operator&#39;, &#39;hdwfname&#39;, &#39;stTime&#39;, &#39;edTime&#39;, &#39;snum&#39;, &#39;site&#39;)</span>
-<div class="viewcode-block" id="radar.__init__"><a class="viewcode-back" href="../../../pydarn.radar.radStruct.html#pydarn.radar.radStruct.radar.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">radId</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">radId</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Default class constructor</span>
 <span class="sd">        If no argument is passed, the object is initialized to 0</span>
 <span class="sd">        </span>
@@ -436,14 +436,14 @@
 
         <span class="c"># If a radar is requested...</span>
         <span class="k">if</span> <span class="n">code</span> <span class="ow">or</span> <span class="n">radId</span><span class="p">:</span>
-            <span class="n">rad_path</span> <span class="o">=</span> <span class="n">__file__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;__init__.py&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">rad_path</span> <span class="o">=</span> <span class="n">__file__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;radStruct.py&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">rad_path</span><span class="o">+</span><span class="s">&#39;/radars.hdf5&#39;</span><span class="p">,</span><span class="s">&#39;r&#39;</span><span class="p">)</span>
             <span class="n">radarF</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s">&#39;/radar&#39;</span><span class="p">]</span>
             <span class="n">siteF</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s">&#39;/hdw&#39;</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">code</span><span class="p">:</span> <span class="n">radId</span> <span class="o">=</span> <span class="n">radarF</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">][</span> <span class="n">where</span><span class="p">(</span> <span class="n">radarF</span><span class="p">[</span><span class="s">&#39;code&#39;</span><span class="p">][:]</span> <span class="o">==</span> <span class="n">code</span> <span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">fillFromHdf5</span><span class="p">(</span><span class="n">radId</span><span class="p">,</span> <span class="n">radarF</span><span class="p">,</span> <span class="n">siteF</span><span class="p">)</span>
             <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</div>
+
 <div class="viewcode-block" id="radar.fillFromHdf5"><a class="viewcode-back" href="../../../pydarn.radar.radStruct.html#pydarn.radar.radStruct.radar.fillFromHdf5">[docs]</a>    <span class="k">def</span> <span class="nf">fillFromHdf5</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radId</span><span class="p">,</span> <span class="n">dset</span><span class="p">,</span> <span class="n">siteDset</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;fill radar structure from hdf5 dataset</span>
 <span class="sd">        </span>
@@ -588,7 +588,7 @@
 <span class="sd">    written by Sebastien, 2012-08</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="site.__init__"><a class="viewcode-back" href="../../../pydarn.radar.radStruct.html#pydarn.radar.radStruct.site.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radId</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radId</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Default class constructor</span>
 <span class="sd">        </span>
 <span class="sd">        **Belongs to**: :class:`site`</span>
@@ -623,13 +623,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">maxgate</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">maxbeam</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">if</span> <span class="n">radId</span> <span class="ow">or</span> <span class="n">code</span><span class="p">:</span> 
-            <span class="n">rad_path</span> <span class="o">=</span> <span class="n">__file__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;__init__.py&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">rad_path</span> <span class="o">=</span> <span class="n">__file__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;radStruct.py&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">rad_path</span><span class="o">+</span><span class="s">&#39;/radars.hdf5&#39;</span><span class="p">,</span><span class="s">&#39;r&#39;</span><span class="p">)</span>
             <span class="n">siteF</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s">&#39;/hdw&#39;</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">code</span><span class="p">:</span> <span class="n">radId</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s">&#39;/radar&#39;</span><span class="p">][</span><span class="s">&#39;id&#39;</span><span class="p">][</span> <span class="n">where</span><span class="p">(</span> <span class="n">f</span><span class="p">[</span><span class="s">&#39;/radar&#39;</span><span class="p">][</span><span class="s">&#39;code&#39;</span><span class="p">][:]</span> <span class="o">==</span> <span class="n">code</span> <span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">fillFromHdf5</span><span class="p">(</span><span class="n">radId</span><span class="p">,</span> <span class="n">siteF</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
             <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</div>
+
 <div class="viewcode-block" id="site.fillFromHdf5"><a class="viewcode-back" href="../../../pydarn.radar.radStruct.html#pydarn.radar.radStruct.site.fillFromHdf5">[docs]</a>    <span class="k">def</span> <span class="nf">fillFromHdf5</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radId</span><span class="p">,</span> <span class="n">dset</span><span class="p">,</span> <span class="n">ind</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;fill site structure from hdf5 dataset</span>
 <span class="sd">        </span>

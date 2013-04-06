@@ -241,7 +241,7 @@
 <span class="sd">	written by Sebastien, 2012-10</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="updateHdf5.__init__"><a class="viewcode-back" href="../../../pydarn.radar.radInfoIo.html#pydarn.radar.radInfoIo.updateHdf5.__init__">[docs]</a>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Default class constructor</span>
 <span class="sd">		</span>
 <span class="sd">		**Belongs to**: :class:`updateHdf5`</span>
@@ -263,7 +263,7 @@
 		<span class="n">dtfmt</span> <span class="o">=</span> <span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s"> %H:%M:%S&#39;</span>
 		<span class="n">dttest</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">dtfmt</span><span class="p">)</span>
 		<span class="c"># File path</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">h5_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span> <span class="n">__file__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;radInfoIO.py&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">h5_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span> <span class="n">__file__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;radInfoIo.py&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">h5_file</span> <span class="o">=</span> <span class="s">&#39;radars.hdf5&#39;</span>
 		<span class="c"># MongoDB server</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">db_user</span> <span class="o">=</span> <span class="s">&#39;sd_dbread&#39;</span>
@@ -303,7 +303,7 @@
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">h5Update</span><span class="p">()</span>
 
-</div>
+
 <div class="viewcode-block" id="updateHdf5.dbConnect"><a class="viewcode-back" href="../../../pydarn.radar.radInfoIo.html#pydarn.radar.radInfoIo.updateHdf5.dbConnect">[docs]</a>	<span class="k">def</span> <span class="nf">dbConnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Try to establish a connection to remote db database</span>
 <span class="sd">		</span>
@@ -361,17 +361,14 @@
 		<span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
 			<span class="k">try</span><span class="p">:</span>
 				<span class="c"># Open file</span>
-				<span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+				<span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span><span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+				    <span class="n">rad_ds</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&#39;radar&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype_rad</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+				    <span class="n">hdw_ds</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&#39;hdw&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype_hdw</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+				    <span class="n">info_ds</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;metadata&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype_info</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-				<span class="n">rad_ds</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&#39;radar&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype_rad</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-				<span class="n">hdw_ds</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&#39;hdw&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype_hdw</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-				<span class="n">info_ds</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;metadata&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype_info</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-
-				<span class="c"># Close file</span>
-				<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 				<span class="k">return</span> <span class="bp">True</span>
-			<span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
-				<span class="k">print</span> <span class="s">&#39;Cannot initialize HDF5 file for updates. Changing nothing.&#39;</span>
+			<span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+				<span class="k">print</span> <span class="s">&#39;Cannot initialize {} for updates. Changing nothing.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
 				<span class="k">return</span> <span class="bp">False</span>
 
 </div>

@@ -1,1 +1,1 @@
-/davitpy/gme/plot/gmeplot.py
+/davitpy/gme/plotting/gmeplot.py

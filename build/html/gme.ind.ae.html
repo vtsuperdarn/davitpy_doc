@@ -125,36 +125,6 @@
 </dl>
 <p>written by AJ, 20130131</p>
 <dl class="method">
-<dt id="gme.ind.ae.aeRec.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>webLine=None</em>, <em>dbDict=None</em>, <em>res=None</em><big>)</big><a class="reference internal" href="_modules/gme/ind/ae.html#aeRec.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.ae.aeRec.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>the intialization fucntion for a <tt class="xref py py-class docutils literal"><span class="pre">aeRec</span></tt> object.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">In general, users will not need to worry about this.</p>
-</div>
-<p><strong>Belongs to</strong>: <tt class="xref py py-class docutils literal"><span class="pre">aeRec</span></tt></p>
-<dl class="docutils">
-<dt><strong>Args</strong>: </dt>
-<dd><ul class="first last simple">
-<li>[<strong>webLine</strong>] (str): an ASCII line from the datafile from WDC. if this is provided, the object is initialized from it.  default=None</li>
-<li>[<strong>dbDict</strong>] (dict): a dictionary read from the mongodb.  if this is provided, the object is initialized from it.  default = None</li>
-</ul>
-</dd>
-<dt><strong>Returns</strong>:</dt>
-<dd><ul class="first last simple">
-<li>Nothing.</li>
-</ul>
-</dd>
-<dt><strong>Example</strong>:</dt>
-<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">myAeObj</span> <span class="o">=</span> <span class="n">aeRec</span><span class="p">(</span><span class="n">webLine</span><span class="o">=</span><span class="n">awebLine</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd>
-</dl>
-<p>written by AJ, 20130131</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="gme.ind.ae.aeRec.parseWeb">
 <tt class="descname">parseWeb</tt><big>(</big><em>line</em><big>)</big><a class="reference internal" href="_modules/gme/ind/ae.html#aeRec.parseWeb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.ae.aeRec.parseWeb" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method is used to convert a line of ae data from the WDC to a aeRec object</p>

@@ -12,13 +12,13 @@
 # serve to show the default.
 
 import sys, os
-def skip(app, what, name, obj, skip, options):
-  if name == "__init__":
-    return False
-  return skip
-
-def setup(app):
-  app.connect("autodoc-skip-member", skip)
+#def skip(app, what, name, obj, skip, options):
+#  if name == "__init__":
+#    return False
+#  return skip
+#
+#def setup(app):
+#  app.connect("autodoc-skip-member", skip)
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the

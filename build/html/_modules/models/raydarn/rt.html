@@ -111,7 +111,7 @@
 <span class="sd">            rto = raydarn.rtRun(sTime, eTime, rCode=radar, outDir=&#39;/tmp&#39;)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="rtRun.__init__"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.rtRun.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">eTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">eTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
         <span class="n">rCode</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">radarObj</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
         <span class="n">dTime</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span> <span class="n">ut</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> 
         <span class="n">freq</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">beam</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">nhops</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
@@ -187,7 +187,7 @@
             <span class="c"># Run the ray tracing</span>
             <span class="n">success</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="n">nprocs</span><span class="p">,</span> <span class="n">inputFile</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
 
-</div>
+
     <span class="k">def</span> <span class="nf">_genInput</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate input file</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -316,7 +316,7 @@
 <span class="sd">        * **readFrom** (str): rays.dat file to read the rays from</span>
 <span class="sd">        * [**site**] (:class:`pydarn.radar.site): </span>
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="rays.__init__"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.rays.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">readFrom</span><span class="p">,</span> <span class="n">site</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">saveToAscii</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">readFrom</span><span class="p">,</span> <span class="n">site</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">saveToAscii</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">readFrom</span> <span class="o">=</span> <span class="n">readFrom</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">paths</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -327,7 +327,7 @@
         <span class="k">if</span> <span class="n">saveToAscii</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">writeToAscii</span><span class="p">(</span><span class="n">saveToAscii</span><span class="p">)</span>
 
-</div>
+
 <div class="viewcode-block" id="rays.readRays"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.rays.readRays">[docs]</a>    <span class="k">def</span> <span class="nf">readRays</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">site</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Read rays.dat fortran output</span>
 

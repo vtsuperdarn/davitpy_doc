@@ -1,1 +1,1 @@
-/davitpy/pydarn/plot/pygridPlot.py
+/davitpy/pydarn/plotting/pygridPlot.py

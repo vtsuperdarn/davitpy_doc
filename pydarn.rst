@@ -7,6 +7,8 @@ pydarn
 
    pydarn.radar
 
+   pydarn.plotting
+
    pydarn.plot
 
    pydarn.proc

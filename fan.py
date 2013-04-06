@@ -1,1 +1,1 @@
-/davitpy/pydarn/plot/fan.py
+/davitpy/pydarn/plotting/fan.py

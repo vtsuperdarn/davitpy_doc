@@ -154,7 +154,7 @@ default: &#8216;lasse&#8217;</div></blockquote>
 
 <dl class="class">
 <dt id="utils.plotUtils.mapObj">
-<em class="property">class </em><tt class="descclassname">utils.plotUtils.</tt><tt class="descname">mapObj</tt><big>(</big><em>datetime=None</em>, <em>coords='geo'</em>, <em>projection='stere'</em>, <em>resolution='l'</em>, <em>dateTime=None</em>, <em>lat_0=None</em>, <em>lon_0=None</em>, <em>boundinglat=None</em>, <em>width=None</em>, <em>height=None</em>, <em>fillContinents='.8'</em>, <em>fillOceans='None'</em>, <em>fillLakes='white'</em>, <em>coastLineWidth=0.0</em>, <em>grid=True</em>, <em>gridLabels=True</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/utils/plotUtils.html#mapObj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.plotUtils.mapObj" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">utils.plotUtils.</tt><tt class="descname">mapObj</tt><big>(</big><em>datetime=None</em>, <em>coords='geo'</em>, <em>projection='stere'</em>, <em>resolution='l'</em>, <em>dateTime=None</em>, <em>lat_0=None</em>, <em>lon_0=None</em>, <em>boundinglat=None</em>, <em>width=None</em>, <em>height=None</em>, <em>fillContinents='.8'</em>, <em>fillOceans='None'</em>, <em>fillLakes=None</em>, <em>coastLineWidth=0.0</em>, <em>grid=True</em>, <em>gridLabels=True</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/utils/plotUtils.html#mapObj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.plotUtils.mapObj" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class wraps arround <tt class="xref py py-class docutils literal"><span class="pre">mpl_toolkits.basemap.Basemap</span></tt> (&lt;<a class="reference external" href="http://tinyurl.com/d4rzmfo">http://tinyurl.com/d4rzmfo</a>&gt;)</p>
 <dl class="docutils">
 <dt><strong>Members</strong>: </dt>
@@ -188,40 +188,6 @@ default: &#8216;lasse&#8217;</div></blockquote>
 <p class="first admonition-title">Note</p>
 <p class="last">Once the map is created, all plotting calls will be assumed to already be in the map&#8217;s declared coordinate system given by <strong>coords</strong>.</p>
 </div>
-<dl class="method">
-<dt id="utils.plotUtils.mapObj.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>datetime=None</em>, <em>coords='geo'</em>, <em>projection='stere'</em>, <em>resolution='l'</em>, <em>dateTime=None</em>, <em>lat_0=None</em>, <em>lon_0=None</em>, <em>boundinglat=None</em>, <em>width=None</em>, <em>height=None</em>, <em>fillContinents='.8'</em>, <em>fillOceans='None'</em>, <em>fillLakes='white'</em>, <em>coastLineWidth=0.0</em>, <em>grid=True</em>, <em>gridLabels=True</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/utils/plotUtils.html#mapObj.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.plotUtils.mapObj.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create empty map</p>
-<dl class="docutils">
-<dt><strong>Args</strong>: </dt>
-<dd><ul class="first last simple">
-<li><strong>[limits]</strong>: [llLat, llLon, urLat, urLon] lower-left and upper-right corners coordinates</li>
-<li><strong>[width, height]</strong>: width and height in m from the (lat_0, lon_0) center</li>
-<li><strong>[lon_0]</strong>: center meridian (default is -70E)</li>
-<li><strong>[lat_0]</strong>: center latitude (default is -90E)</li>
-<li><strong>[boundingLat]</strong>: bounding latitude (default it +/-20)</li>
-<li><strong>[grid]</strong>: show/hide parallels and meridians grid</li>
-<li><strong>[fill_continents]</strong>: continent color. Default is &#8216;grey&#8217;</li>
-<li><strong>[fill_water]</strong>: water color. Default is &#8216;None&#8217;</li>
-<li><strong>[coords]</strong>: &#8216;geo&#8217;</li>
-<li><strong>[dateTime]</strong> (datetime.datetime): necessary for MLT plots if you want the continents to be plotted</li>
-<li><strong>[kwargs]</strong>: See &lt;<a class="reference external" href="http://tinyurl.com/d4rzmfo">http://tinyurl.com/d4rzmfo</a>&gt; for more keywords</li>
-</ul>
-</dd>
-<dt><strong>Returns</strong>:</dt>
-<dd><ul class="first last simple">
-<li><strong>map</strong>: a Basemap object (&lt;<a class="reference external" href="http://tinyurl.com/d4rzmfo">http://tinyurl.com/d4rzmfo</a>&gt;)</li>
-</ul>
-</dd>
-<dt><strong>Example</strong>:</dt>
-<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">myMap</span> <span class="o">=</span> <span class="n">mapObj</span><span class="p">(</span><span class="n">lat_0</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">lon_0</span><span class="o">=-</span><span class="mi">95</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">111e3</span><span class="o">*</span><span class="mi">60</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mf">111e3</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd>
-</dl>
-<p>written by Sebastien, 2013-02</p>
-</dd></dl>
-
 </dd></dl>
 
 </div>

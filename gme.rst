@@ -7,6 +7,8 @@ gme
 
    gme.ampere
 
+   gme.plotting
+
    gme.sat
 
    gme.isr

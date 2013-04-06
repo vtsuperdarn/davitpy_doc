@@ -1,0 +1,267 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pydarn.plotting.fan &mdash; davitpy</title>
+    
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="top" title="davitpy" href="index.html" />
+    <link rel="up" title="pydarn.plotting" href="pydarn.plotting.html" />
+    <link rel="next" title="pydarn.plotting.rti" href="pydarn.plotting.rti.html" />
+    <link rel="prev" title="pydarn.plotting.mapOverlay" href="pydarn.plotting.mapOverlay.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="pydarn.plotting.rti.html" title="pydarn.plotting.rti"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="pydarn.plotting.mapOverlay.html" title="pydarn.plotting.mapOverlay"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="pydarn.html" >pydarn</a> &raquo;</li>
+          <li><a href="pydarn.plotting.html" accesskey="U">pydarn.plotting</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="pydarn-plotting-fan">
+<h1>pydarn.plotting.fan<a class="headerlink" href="#pydarn-plotting-fan" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<span class="target" id="module-pydarn.plotting.fan"></span><span class="target" id="module-fan"></span><div class="section" id="module-pydarn-plot-fan">
+<h2><strong>Module</strong>: pydarn.plot.fan<a class="headerlink" href="#module-pydarn-plot-fan" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><strong>Functions</strong>:</dt>
+<dd><ul class="first last simple">
+<li><tt class="xref py py-func docutils literal"><span class="pre">plotFan()</span></tt></li>
+<li><tt class="xref py py-func docutils literal"><span class="pre">overlayFan()</span></tt></li>
+</ul>
+</dd>
+</dl>
+<dl class="class">
+<dt id="pydarn.plotting.fan.AxesSequence">
+<em class="property">class </em><tt class="descclassname">pydarn.plotting.fan.</tt><tt class="descname">AxesSequence</tt><a class="reference internal" href="_modules/pydarn/plotting/fan.html#AxesSequence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.plotting.fan.AxesSequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a series of axes in a figure where only one is displayed at any
+given time. Which plot is displayed is controlled by the arrow keys.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydarn.plotting.fan.overlayFan">
+<tt class="descclassname">pydarn.plotting.fan.</tt><tt class="descname">overlayFan</tt><big>(</big><em>myData</em>, <em>myMap</em>, <em>myFig</em>, <em>param</em>, <em>coords='geo'</em>, <em>gsct=0</em>, <em>site=None</em>, <em>fov=None</em>, <em>gs_flg=</em><span class="optional">[</span><span class="optional">]</span>, <em>fill=True</em>, <em>velscl=1000.0</em>, <em>dist=1000.0</em>, <em>cmap=None</em>, <em>norm=None</em><big>)</big><a class="reference internal" href="_modules/pydarn/plotting/fan.html#overlayFan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.plotting.fan.overlayFan" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function of overlay radar scan data on a map</p>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>myData (:class:`radDataTypes.scanData` or :class:`radDataTypes.beamData` or list)</strong>: a radar beam object, a radar scanData object, or simply a list of radar beams</li>
+<li><strong>myMap</strong>: the map we are plotting on</li>
+<li><strong>[param]</strong>: the parameter we are plotting</li>
+<li><strong>[coords]</strong>: the coordinates we are plotting in</li>
+<li><strong>[param]</strong>: the parameter to be plotted, valid inputs are &#8216;velocity&#8217;, 
+&#8216;power&#8217;, &#8216;width&#8217;, &#8216;elevation&#8217;, &#8216;phi0&#8217;.  default = &#8216;velocity</li>
+<li><strong>[gsct]</strong>: a flag indicating whether we are distinguishing groudn  scatter
+default = 0</li>
+<li><strong>[intensities]</strong>: a list of intensities (used for colorbar)</li>
+<li><strong>[fov]</strong>: a radar fov object</li>
+<li><strong>[gs_flg]</strong>: a list of gs flags, 1 per range gate</li>
+<li><strong>[fill]</strong>: a flag indicating whether to plot filled or point RB cells
+default = True</li>
+<li><strong>[velscl]</strong>: the velocity to use as baseline for velocity vector length,
+only applicable if fill = 0.  default = 1000</li>
+<li><strong>[lines]</strong>: an array to have the endpoints of velocity vectors
+only applicable if fill = 0.  default = []</li>
+<li><strong>[dist]</strong>: the length in map projection coords of a velscl length
+velocity vector.  default = 1000. km</li>
+</ul>
+</dd>
+<dt><strong>OUTPUTS</strong>:</dt>
+<dd>NONE</dd>
+<dt><strong>EXAMPLE</strong>:</dt>
+<dd>overlayFan(aBeam,myMap,param,coords,gsct=gsct,site=sites[i],fov=fovs[i],                            verts=verts,intensities=intensities,gs_flg=gs_flg)</dd>
+</dl>
+<p>Written by AJ 20121004</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydarn.plotting.fan.plotFan">
+<tt class="descclassname">pydarn.plotting.fan.</tt><tt class="descname">plotFan</tt><big>(</big><em>sTime</em>, <em>rad</em>, <em>eTime=None</em>, <em>interval=60</em>, <em>fileType='fitex'</em>, <em>param='velocity'</em>, <em>filtered=False</em>, <em>scale=</em><span class="optional">[</span><span class="optional">]</span>, <em>channel='a'</em>, <em>coords='geo'</em>, <em>colors='lasse'</em>, <em>gsct=0</em>, <em>fov=1</em>, <em>edgeColors='face'</em>, <em>gflg=0</em>, <em>fill=True</em>, <em>velscl=1000.0</em>, <em>legend=1</em>, <em>overlayPoes=False</em>, <em>poesparam='ted'</em>, <em>poesMin=-3.0</em>, <em>poesMax=0.5</em>, <em>poesLabel='Total Log Energy Flux [ergs cm$^{-2}$ s$^{-1}$]'</em>, <em>overlayBnd=False</em>, <em>output='gui'</em><big>)</big><a class="reference internal" href="_modules/pydarn/plotting/fan.html#plotFan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.plotting.fan.plotFan" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to make fan plots</p>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>sTime</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): the start time you want to plot</li>
+<li><strong>rad</strong> (str): a list of 3 letter radar codes</li>
+<li><strong>[eTime]</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): the last time you want to plot.  If this is None, it will be set equal to sTime.  default = None</li>
+<li><strong>[interval]</strong> (int): the interval between fan plots, in seconds</li>
+<li><strong>[fileType]</strong>: the file type to plot, valid inputs are &#8216;fitex&#8217;,&#8217;fitacf&#8217;,
+&#8216;lmfit&#8217;.  default = &#8216;fitex&#8217;</li>
+<li><strong>[param]</strong>: the parameter to be plotted, valid inputs are &#8216;velocity&#8217;, 
+&#8216;power&#8217;, &#8216;width&#8217;, &#8216;elevation&#8217;, &#8216;phi0&#8217;.  default = &#8216;velocity</li>
+<li><strong>[filtered]</strong>: a flag indicating whether the data should be boxcar filtered
+default = 0</li>
+<li><strong>[scale]</strong>: the min and max values of the color scale.  If this is set to []
+then default values will be used</li>
+<li><strong>[channel]</strong>: the channel for which to plot data.  default = &#8216;a&#8217;</li>
+<li><strong>[coords]</strong>: the coordinate system to use, valid inputs are &#8216;geo&#8217;, &#8216;mag&#8217;
+default = &#8216;geo&#8217;</li>
+<li><strong>[colors]</strong>: the color map to use, valid inputs are &#8216;lasse&#8217;, &#8216;aj&#8217;
+default = &#8216;lasse&#8217;</li>
+<li><strong>[gsct]</strong>: a flag indicating whether to plot ground scatter as gray.
+default = 0</li>
+<li><strong>[fov]</strong>: a flag indicating whether to overplot the radar fields of view
+default = 0</li>
+<li><strong>[edgeColors]</strong>: edge colors of the polygons, default = &#8216;face&#8217;</li>
+<li><strong>[gflg]</strong>: a flag indicating whether to plot low velocities in gray
+default = 0</li>
+<li><strong>[fill]</strong>: a flag indicating whether to plot filled or point RB cells
+default = True</li>
+<li><strong>[velscl]</strong>: the velocity to use as baseline for velocity vector length,
+only applicable if fill = 0.  default = 1000</li>
+<li><strong>[legend]</strong>: a flag indicating whether to plot the legend
+only applicable if fill = 0.  default = 1</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>NONE</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">plotFan</span><span class="p">(</span><span class="s">&#39;20121001&#39;</span><span class="p">,[</span><span class="s">&#39;bks&#39;</span><span class="p">,</span><span class="s">&#39;fhw&#39;</span><span class="p">],</span><span class="n">time</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">24</span><span class="p">],</span><span class="n">interval</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">fileType</span><span class="o">=</span><span class="s">&#39;fitex&#39;</span><span class="p">,</span><span class="n">param</span><span class="o">=</span><span class="s">&#39;velocity&#39;</span><span class="p">,</span><span class="n">filtered</span><span class="o">=</span><span class="mi">0</span> <span class="p">,</span>
+          <span class="n">scale</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">400</span><span class="p">,</span><span class="mi">400</span><span class="p">],</span><span class="n">channel</span><span class="o">=</span><span class="s">&#39;a&#39;</span><span class="p">,</span><span class="n">coords</span><span class="o">=</span><span class="s">&#39;geo&#39;</span><span class="p">,</span><span class="n">colors</span><span class="o">=</span><span class="s">&#39;lasse&#39;</span><span class="p">,</span><span class="n">gsct</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">pdf</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">fov</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">edgeColors</span><span class="o">=</span><span class="s">&#39;face&#39;</span><span class="p">,</span><span class="n">gflg</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>Written by AJ 20121004</p>
+</dd></dl>
+
+</div>
+<dl class="attribute">
+<dt id="pydarn.plotting.fan">
+<tt class="descclassname">pydarn.plotting.</tt><tt class="descname">fan</tt><a class="headerlink" href="#pydarn.plotting.fan" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pydarn.plotting.fan" title="pydarn.plotting.fan"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.plotting.fan</span></tt></a></p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html">
+          <img class="logo" src="_static/davitpy.svg" alt="Logo" style="width: 80%;"/>
+        </a></p>
+  <div class="sphinxlocaltoc">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">pydarn.plotting.fan</a><ul>
+<li><a class="reference internal" href="#module-pydarn-plot-fan"><strong>Module</strong>: pydarn.plot.fan</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pydarn.plotting.mapOverlay.html"
+                        title="previous chapter">pydarn.plotting.mapOverlay</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pydarn.plotting.rti.html"
+                        title="next chapter">pydarn.plotting.rti</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/pydarn.plotting.fan.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="pydarn.plotting.rti.html" title="pydarn.plotting.rti"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="pydarn.plotting.mapOverlay.html" title="pydarn.plotting.mapOverlay"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="pydarn.html" >pydarn</a> &raquo;</li>
+          <li><a href="pydarn.plotting.html" >pydarn.plotting</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, VT SuperDARN Lab and Friends.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

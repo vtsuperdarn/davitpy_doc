@@ -118,26 +118,6 @@ This information is read from the radar.hdf5 files provided with the pydarn modu
 </div>
 <p>written by Sebastien, 2012-08</p>
 <dl class="method">
-<dt id="pydarn.radar.radStruct.network.__init__">
-<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pydarn/radar/radStruct.html#network.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.radar.radStruct.network.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Default class constructor</p>
-<p><strong>Belongs to</strong>: <a class="reference internal" href="#pydarn.radar.radStruct.network" title="pydarn.radar.radStruct.network"><tt class="xref py py-class docutils literal"><span class="pre">network</span></tt></a></p>
-<dl class="docutils">
-<dt><strong>Args</strong>: </dt>
-<dd><ul class="first last simple">
-<li><strong>None</strong></li>
-</ul>
-</dd>
-<dt><strong>Returns</strong>:</dt>
-<dd><ul class="first last simple">
-<li><strong>network</strong> (obj)</li>
-</ul>
-</dd>
-</dl>
-<p>written by Sebastien, 2012-08</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydarn.radar.radStruct.network.getAllCodes">
 <tt class="descname">getAllCodes</tt><big>(</big><em>datetime=None</em>, <em>hemi=None</em><big>)</big><a class="reference internal" href="_modules/pydarn/radar/radStruct.html#network.getAllCodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.radar.radStruct.network.getAllCodes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a list of all active radar codes</p>
@@ -332,32 +312,6 @@ getRadarByName and getRadarById</p>
 </dl>
 <p>written by Sebastien, 2012-08</p>
 <dl class="method">
-<dt id="pydarn.radar.radStruct.radar.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>code=None</em>, <em>radId=None</em><big>)</big><a class="reference internal" href="_modules/pydarn/radar/radStruct.html#radar.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.radar.radStruct.radar.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Default class constructor
-If no argument is passed, the object is initialized to 0</p>
-<p><strong>Belongs to</strong>: <a class="reference internal" href="#pydarn.radar.radStruct.radar" title="pydarn.radar.radStruct.radar"><tt class="xref py py-class docutils literal"><span class="pre">radar</span></tt></a></p>
-<dl class="docutils">
-<dt><strong>Args</strong>: </dt>
-<dd><ul class="first last simple">
-<li>[<strong>code</strong>] (str): 3-letter radar code</li>
-<li>[<strong>radId</strong>] (int): radar ID</li>
-</ul>
-</dd>
-<dt><strong>Returns</strong>:</dt>
-<dd><ul class="first last simple">
-<li><strong>radar</strong> (<a class="reference internal" href="#pydarn.radar.radStruct.radar" title="pydarn.radar.radStruct.radar"><tt class="xref py py-class docutils literal"><span class="pre">radar</span></tt></a>)</li>
-</ul>
-</dd>
-</dl>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">you should provide either <strong>code</strong> OR <strong>radId</strong>, not both</p>
-</div>
-<p>written by Sebastien, 2012-08</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydarn.radar.radStruct.radar.fillFromHdf5">
 <tt class="descname">fillFromHdf5</tt><big>(</big><em>radId</em>, <em>dset</em>, <em>siteDset</em><big>)</big><a class="reference internal" href="_modules/pydarn/radar/radStruct.html#radar.fillFromHdf5"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.radar.radStruct.radar.fillFromHdf5" title="Permalink to this definition">¶</a></dt>
 <dd><p>fill radar structure from hdf5 dataset</p>
@@ -438,32 +392,6 @@ If no argument is passed, the object is initialized to 0</p>
 </dd>
 </dl>
 <p>written by Sebastien, 2012-08</p>
-<dl class="method">
-<dt id="pydarn.radar.radStruct.site.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>radId=None</em>, <em>code=None</em>, <em>dt=None</em><big>)</big><a class="reference internal" href="_modules/pydarn/radar/radStruct.html#site.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.radar.radStruct.site.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Default class constructor</p>
-<p><strong>Belongs to</strong>: <a class="reference internal" href="#pydarn.radar.radStruct.site" title="pydarn.radar.radStruct.site"><tt class="xref py py-class docutils literal"><span class="pre">site</span></tt></a></p>
-<dl class="docutils">
-<dt><strong>Args</strong>: </dt>
-<dd><ul class="first last simple">
-<li>[<strong>radId</strong>] (int): radar ID</li>
-<li>[<strong>code</strong>] (str): 3-letter radar code</li>
-<li>[<strong>dt</strong>] (datetime.datetime): date and time of radar configurationation</li>
-</ul>
-</dd>
-<dt><strong>Returns</strong>:</dt>
-<dd><ul class="first last simple">
-<li><strong>site</strong> (<a class="reference internal" href="#pydarn.radar.radStruct.site" title="pydarn.radar.radStruct.site"><tt class="xref py py-class docutils literal"><span class="pre">site</span></tt></a>)</li>
-</ul>
-</dd>
-</dl>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">you should provide either <strong>code</strong> OR <strong>radId</strong>, not both</p>
-</div>
-<p>written by Sebastien, 2012-08</p>
-</dd></dl>
-
 <dl class="method">
 <dt id="pydarn.radar.radStruct.site.azimToBeam">
 <tt class="descname">azimToBeam</tt><big>(</big><em>azim</em><big>)</big><a class="reference internal" href="_modules/pydarn/radar/radStruct.html#site.azimToBeam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.radar.radStruct.site.azimToBeam" title="Permalink to this definition">¶</a></dt>
