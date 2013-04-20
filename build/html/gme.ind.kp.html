@@ -78,21 +78,21 @@
 <dl class="docutils">
 <dt><strong>Classes</strong>:</dt>
 <dd><ul class="first last simple">
-<li><tt class="xref py py-class docutils literal"><span class="pre">kpDay</span></tt></li>
+<li><a class="reference internal" href="#gme.ind.kp.kpDay" title="gme.ind.kp.kpDay"><tt class="xref py py-class docutils literal"><span class="pre">gme.ind.kp.kpDay</span></tt></a></li>
 </ul>
 </dd>
 <dt><strong>Functions</strong>:</dt>
 <dd><ul class="first last simple">
-<li><tt class="xref py py-func docutils literal"><span class="pre">readKp()</span></tt></li>
-<li><tt class="xref py py-func docutils literal"><span class="pre">readKpFtp()</span></tt></li>
-<li><tt class="xref py py-func docutils literal"><span class="pre">mapKpMongo()</span></tt></li>
+<li><a class="reference internal" href="#gme.ind.kp.readKp" title="gme.ind.kp.readKp"><tt class="xref py py-func docutils literal"><span class="pre">gme.ind.kp.readKp()</span></tt></a></li>
+<li><a class="reference internal" href="#gme.ind.kp.readKpFtp" title="gme.ind.kp.readKpFtp"><tt class="xref py py-func docutils literal"><span class="pre">gme.ind.kp.readKpFtp()</span></tt></a></li>
+<li><a class="reference internal" href="#gme.ind.kp.mapKpMongo" title="gme.ind.kp.mapKpMongo"><tt class="xref py py-func docutils literal"><span class="pre">gme.ind.kp.mapKpMongo()</span></tt></a></li>
 </ul>
 </dd>
 </dl>
 <dl class="class">
 <dt id="gme.ind.kp.kpDay">
 <em class="property">class </em><tt class="descclassname">gme.ind.kp.</tt><tt class="descname">kpDay</tt><big>(</big><em>ftpLine=None</em>, <em>year=None</em>, <em>dbDict=None</em><big>)</big><a class="reference internal" href="_modules/gme/ind/kp.html#kpDay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.kp.kpDay" title="Permalink to this definition">¶</a></dt>
-<dd><p>a class to represent a day of kp data. Extends <tt class="xref py py-class docutils literal"><span class="pre">gmeBase.gmeData</span></tt>  Insight on the class members can be obtained from <a class="reference external" href="ftp://ftp.ngdc.noaa.gov/STP/GEOMAGNETIC_DATA/INDICES/KP_AP/kp_ap.fmt">the NOAA FTP site</a></p>
+<dd><p>a class to represent a day of kp data. Extends <a class="reference internal" href="gme.base.gmeBase.html#gme.base.gmeBase.gmeData" title="gme.base.gmeBase.gmeData"><tt class="xref py py-class docutils literal"><span class="pre">gme.base.gmeBase.gmeData</span></tt></a>  Insight on the class members can be obtained from <a class="reference external" href="ftp://ftp.ngdc.noaa.gov/STP/GEOMAGNETIC_DATA/INDICES/KP_AP/kp_ap.fmt">the NOAA FTP site</a></p>
 <dl class="docutils">
 <dt><strong>Members</strong>: </dt>
 <dd><ul class="first last simple">
@@ -129,7 +129,7 @@
 <dt id="gme.ind.kp.kpDay.parseFtp">
 <tt class="descname">parseFtp</tt><big>(</big><em>line</em>, <em>yr</em><big>)</big><a class="reference internal" href="_modules/gme/ind/kp.html#kpDay.parseFtp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.kp.kpDay.parseFtp" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method is used to convert a line of kp data read from the GFZ-Potsdam FTP site into a <tt class="xref py py-class docutils literal"><span class="pre">kpDay</span></tt> object.  In general, users will not need to worry about this.</p>
-<p><strong>Belongs to</strong>: <tt class="xref py py-class docutils literal"><span class="pre">kpDay</span></tt></p>
+<p><strong>Belongs to</strong>: <a class="reference internal" href="#gme.ind.kp.kpDay" title="gme.ind.kp.kpDay"><tt class="xref py py-class docutils literal"><span class="pre">gme.ind.kp.kpDay</span></tt></a></p>
 <dl class="docutils">
 <dt><strong>Args</strong>: </dt>
 <dd><ul class="first last simple">
@@ -185,7 +185,7 @@
 <dl class="function">
 <dt id="gme.ind.kp.readKp">
 <tt class="descclassname">gme.ind.kp.</tt><tt class="descname">readKp</tt><big>(</big><em>sTime=None</em>, <em>eTime=None</em>, <em>kpMin=None</em>, <em>apMin=None</em>, <em>kpSum=None</em>, <em>apMean=None</em>, <em>sunspot=None</em><big>)</big><a class="reference internal" href="_modules/gme/ind/kp.html#readKp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.kp.readKp" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function reads kp data.  First, it will try to get it from the mongodb, and if it can&#8217;t find it, it will look on the GFZ ftp server using <tt class="xref py py-func docutils literal"><span class="pre">readKpFtp()</span></tt></p>
+<dd><p>This function reads kp data.  First, it will try to get it from the mongodb, and if it can&#8217;t find it, it will look on the GFZ ftp server using <a class="reference internal" href="#gme.ind.kp.readKpFtp" title="gme.ind.kp.readKpFtp"><tt class="xref py py-func docutils literal"><span class="pre">gme.ind.kp.readKpFtp()</span></tt></a></p>
 <dl class="docutils">
 <dt><strong>Args</strong>: </dt>
 <dd><ul class="first last simple">
@@ -200,7 +200,7 @@
 </dd>
 <dt><strong>Returns</strong>:</dt>
 <dd><ul class="first last simple">
-<li><strong>kpList</strong> (list or None): if data is found, a list of <tt class="xref py py-class docutils literal"><span class="pre">kpDay</span></tt> objects matching the input parameters is returned.  If not data is found, None is returned.</li>
+<li><strong>kpList</strong> (list or None): if data is found, a list of <a class="reference internal" href="#gme.ind.kp.kpDay" title="gme.ind.kp.kpDay"><tt class="xref py py-class docutils literal"><span class="pre">gme.ind.kp.kpDay</span></tt></a> objects matching the input parameters is returned.  If not data is found, None is returned.</li>
 </ul>
 </dd>
 <dt><strong>Example</strong>:</dt>
@@ -230,7 +230,7 @@
 </dd>
 <dt><strong>Returns</strong>:</dt>
 <dd><ul class="first last simple">
-<li><strong>kpList</strong> (list or None): if data is found, a list of <tt class="xref py py-class docutils literal"><span class="pre">kpDay</span></tt> objects matching the input parameters is returned.  If not data is found, None is returned.  default=None</li>
+<li><strong>kpList</strong> (list or None): if data is found, a list of <a class="reference internal" href="#gme.ind.kp.kpDay" title="gme.ind.kp.kpDay"><tt class="xref py py-class docutils literal"><span class="pre">gme.ind.kp.kpDay</span></tt></a> objects matching the input parameters is returned.  If not data is found, None is returned.  default=None</li>
 </ul>
 </dd>
 <dt><strong>Example</strong>:</dt>
@@ -324,10 +324,22 @@
     </div>
     </div>
 
+
     <div class="footer">
         &copy; Copyright 2013, VT SuperDARN Lab and Friends.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
     <!-- cloud_sptheme 1.4 -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-40150576-2', 'vt.edu');
+  ga('send', 'pageview');
+
+</script>
+
   </body>
 </html>

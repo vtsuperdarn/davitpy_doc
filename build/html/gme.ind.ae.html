@@ -78,26 +78,26 @@
 <dl class="docutils">
 <dt><strong>Classes</strong>:</dt>
 <dd><ul class="first last simple">
-<li><tt class="xref py py-class docutils literal"><span class="pre">aeRec</span></tt></li>
+<li><a class="reference internal" href="#gme.ind.ae.aeRec" title="gme.ind.ae.aeRec"><tt class="xref py py-class docutils literal"><span class="pre">gme.ind.ae.aeRec</span></tt></a></li>
 </ul>
 </dd>
 <dt><strong>Functions</strong>:</dt>
 <dd><ul class="first last simple">
-<li><tt class="xref py py-func docutils literal"><span class="pre">readAe()</span></tt></li>
-<li><tt class="xref py py-func docutils literal"><span class="pre">readAeWeb()</span></tt></li>
-<li><tt class="xref py py-func docutils literal"><span class="pre">mapAeMongo()</span></tt></li>
+<li><a class="reference internal" href="#gme.ind.ae.readAe" title="gme.ind.ae.readAe"><tt class="xref py py-func docutils literal"><span class="pre">gme.ind.ae.readAe()</span></tt></a></li>
+<li><tt class="xref py py-func docutils literal"><span class="pre">gme.ind.ae.gme.readAeWeb()</span></tt></li>
+<li><a class="reference internal" href="#gme.ind.ae.mapAeMongo" title="gme.ind.ae.mapAeMongo"><tt class="xref py py-func docutils literal"><span class="pre">gme.ind.ae.mapAeMongo()</span></tt></a></li>
 </ul>
 </dd>
 </dl>
 <dl class="class">
 <dt id="gme.ind.ae.aeRec">
 <em class="property">class </em><tt class="descclassname">gme.ind.ae.</tt><tt class="descname">aeRec</tt><big>(</big><em>webLine=None</em>, <em>dbDict=None</em>, <em>res=None</em><big>)</big><a class="reference internal" href="_modules/gme/ind/ae.html#aeRec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.ae.aeRec" title="Permalink to this definition">¶</a></dt>
-<dd><p>a class to represent a record of ae data.  Extends <tt class="xref py py-class docutils literal"><span class="pre">gmeBase.gmeData</span></tt> . Note that Ae data is available from 1990-present day (or whatever the latest WDC has uploaded is).  <strong>We have 1 hour and 1 minute values</strong>.  Information about dst can be found <a class="reference external" href="http://wdc.kugi.kyoto-u.ac.jp/aedir/ae2/onAEindex.html">here</a></p>
+<dd><p>a class to represent a record of ae data.  Extends <a class="reference internal" href="gme.base.gmeBase.html#gme.base.gmeBase.gmeData" title="gme.base.gmeBase.gmeData"><tt class="xref py py-class docutils literal"><span class="pre">gme.base.gmeBase.gmeData</span></tt></a> . Note that Ae data is available from 1990-present day (or whatever the latest WDC has uploaded is).  <strong>We have 1 hour and 1 minute values</strong>.  Information about dst can be found <a class="reference external" href="http://wdc.kugi.kyoto-u.ac.jp/aedir/ae2/onAEindex.html">here</a></p>
 <dl class="docutils">
 <dt><strong>Members</strong>: </dt>
 <dd><ul class="first last simple">
 <li><strong>time</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): an object identifying which time these data are for</li>
-<li><strong>dataSet</strong> (<tt class="xref py py-class docutils literal"><span class="pre">dst.dstRec</span></tt>)): a string dicating the dataset this is from</li>
+<li><strong>dataSet</strong> (<a class="reference internal" href="gme.ind.dst.html#gme.ind.dst.dstRec" title="gme.ind.dst.dstRec"><tt class="xref py py-class docutils literal"><span class="pre">gme.ind.dst.dstRec</span></tt></a>)): a string dicating the dataset this is from</li>
 <li><strong>info</strong> (str): information about where the data come from.  <em>Please be courteous and give credit to data providers when credit is due.</em></li>
 <li><strong>ae</strong> (float): auroral electrojet</li>
 <li><strong>au</strong> (float): auroral upper</li>
@@ -132,7 +132,7 @@
 <p class="first admonition-title">Note</p>
 <p class="last">In general, users will not need to worry about this.</p>
 </div>
-<p><strong>Belongs to</strong>: <tt class="xref py py-class docutils literal"><span class="pre">aeRec</span></tt></p>
+<p><strong>Belongs to</strong>: <a class="reference internal" href="#gme.ind.ae.aeRec" title="gme.ind.ae.aeRec"><tt class="xref py py-class docutils literal"><span class="pre">gme.ind.ae.aeRec</span></tt></a></p>
 <dl class="docutils">
 <dt><strong>Args</strong>: </dt>
 <dd><ul class="first last simple">
@@ -203,7 +203,7 @@
 </dd>
 <dt><strong>Returns</strong>:</dt>
 <dd><ul class="first last simple">
-<li><strong>aeList</strong> (list or None): if data is found, a list of <tt class="xref py py-class docutils literal"><span class="pre">aeRec</span></tt> objects matching the input parameters is returned.  If no data is found, None is returned.</li>
+<li><strong>aeList</strong> (list or None): if data is found, a list of <a class="reference internal" href="#gme.ind.ae.aeRec" title="gme.ind.ae.aeRec"><tt class="xref py py-class docutils literal"><span class="pre">gme.ind.ae.aeRec</span></tt></a> objects matching the input parameters is returned.  If no data is found, None is returned.</li>
 </ul>
 </dd>
 <dt><strong>Example</strong>:</dt>
@@ -222,7 +222,7 @@
 <dd><p>This function reads ae data from the WDC kyoto website</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">You should not use this. Use the general function <tt class="xref py py-func docutils literal"><span class="pre">readAe()</span></tt> instead.</p>
+<p class="last">You should not use this. Use the general function <a class="reference internal" href="#gme.ind.ae.readAe" title="gme.ind.ae.readAe"><tt class="xref py py-func docutils literal"><span class="pre">gme.ind.ae.readAe()</span></tt></a> instead.</p>
 </div>
 <dl class="docutils">
 <dt><strong>Args</strong>: </dt>
@@ -323,10 +323,22 @@
     </div>
     </div>
 
+
     <div class="footer">
         &copy; Copyright 2013, VT SuperDARN Lab and Friends.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
     <!-- cloud_sptheme 1.4 -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-40150576-2', 'vt.edu');
+  ga('send', 'pageview');
+
+</script>
+
   </body>
 </html>

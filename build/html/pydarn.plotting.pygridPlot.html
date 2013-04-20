@@ -73,8 +73,8 @@
 <ul class="simple">
 </ul>
 </div>
-<span class="target" id="module-pydarn.plotting.pygridPlot"></span><div class="section" id="module-pydarn-plot-pygridplot">
-<h2>MODULE: pydarn.plot.pygridPlot<a class="headerlink" href="#module-pydarn-plot-pygridplot" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-pydarn.plotting.pygridPlot"></span><div class="section" id="module-pydarn-plotting-pygridplot">
+<h2>MODULE: pydarn.plotting.pygridPlot<a class="headerlink" href="#module-pydarn-plotting-pygridplot" title="Permalink to this headline">¶</a></h2>
 <p>This module contains the following functions:</p>
 <blockquote>
 <div><p>plotPygrid</p>
@@ -84,7 +84,7 @@
 <dl class="function">
 <dt id="pydarn.plotting.pygridPlot.drawPygridMap">
 <tt class="descclassname">pydarn.plotting.pygridPlot.</tt><tt class="descname">drawPygridMap</tt><big>(</big><em>myFig</em>, <em>myGrid</em>, <em>grid=0</em><big>)</big><a class="reference internal" href="_modules/pydarn/plotting/pygridPlot.html#drawPygridMap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.plotting.pygridPlot.drawPygridMap" title="Permalink to this definition">¶</a></dt>
-<dd><p>PACKAGE: pydarn.plot.pygrid</p>
+<dd><p>PACKAGE: pydarn.plotting.pygrid</p>
 <p>FUNCTION: drawPygridMap(myFig,myGrid,grid=0)</p>
 <p>a function that draws the pygrid map</p>
 <dl class="docutils">
@@ -104,7 +104,7 @@ myGrid: a pygrid object
 <dl class="function">
 <dt id="pydarn.plotting.pygridPlot.drawPygridVecs">
 <tt class="descclassname">pydarn.plotting.pygridPlot.</tt><tt class="descname">drawPygridVecs</tt><big>(</big><em>myGrid</em>, <em>myMap</em>, <em>plot='all'</em>, <em>vmax=500</em><big>)</big><a class="reference internal" href="_modules/pydarn/plotting/pygridPlot.html#drawPygridVecs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.plotting.pygridPlot.drawPygridVecs" title="Permalink to this definition">¶</a></dt>
-<dd><p>PACKAGE: pydarn.plot.pygrid</p>
+<dd><p>PACKAGE: pydarn.plotting.pygrid</p>
 <p>FUNCTION: drawPygridVecs(myGrid,myMap,lines,intensities,plot=&#8217;all&#8217;,vmax=500)</p>
 <p>a function that assigns the information for the gridded velocity vectors</p>
 <p>INPUTS:</p>
@@ -129,41 +129,21 @@ intensities: the color scale array to be filled
 
 <dl class="function">
 <dt id="pydarn.plotting.pygridPlot.plotPygrid">
-<tt class="descclassname">pydarn.plotting.pygridPlot.</tt><tt class="descname">plotPygrid</tt><big>(</big><em>dateStr=None, plot='all', rads=None, hemi='north', time=[0, 0], interval=2, grid=0, vmax=500, vwidth=0.2</em><big>)</big><a class="reference internal" href="_modules/pydarn/plotting/pygridPlot.html#plotPygrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.plotting.pygridPlot.plotPygrid" title="Permalink to this definition">¶</a></dt>
-<dd><p>PACKAGE: pydarn.plot.pygrid</p>
-<p>FUNCTION: plotPygrid(dateStr=None,plot=&#8217;all&#8217;,rads=None,hemi=&#8217;north&#8217;,time=0,interval=2,grid=0,vmax=500,vwidth=.2)</p>
-<p>PURPOSE: a function that plots the contents of a pygrid file</p>
+<tt class="descclassname">pydarn.plotting.pygridPlot.</tt><tt class="descname">plotPygrid</tt><big>(</big><em>sTime=None</em>, <em>eTime=None</em>, <em>plot='all'</em>, <em>rads=None</em>, <em>hemi='north'</em>, <em>interval=60</em>, <em>grid=0</em>, <em>vmax=500</em>, <em>vwidth=0.2</em><big>)</big><a class="reference internal" href="_modules/pydarn/plotting/pygridPlot.html#plotPygrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.plotting.pygridPlot.plotPygrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>a function that plots the contents of a pygrid file</p>
 <dl class="docutils">
-<dt>INPUTS:</dt>
-<dd><dl class="first docutils">
-<dt>[dateStr]: a string indicating the date to plot in </dt>
-<dd>yyyymmdd format, eg &#8216;20120710&#8217;.  If set to None,
-the map and grid (optional) is drawn.
-default = None</dd>
-<dt>[plot]; the plot type.  This can be either &#8216;all&#8217; to plot all</dt>
-<dd>LOS      velocities for each grid cell, &#8216;avg&#8217; to plot the averaged LOS
-velocities in each grid cell, or &#8216;mrg&#8217; to plot the merged 2D 
-velocities.  default = &#8216;all&#8217;</dd>
-<dt>[rads]: the radars to be plotted.  This input is only used when plot </dt>
-<dd>is either &#8216;all&#8217; or &#8216;avg&#8217;.  This can be either a list of one or more 
-radars, eg [&#8216;bks&#8217;,&#8217;cvw&#8217;,...], or a hemisphere &#8216;north&#8217; or &#8216;south&#8217;
-indicating to plot all the radars for a given hemisphere.
-default = None</dd>
-<dt>[hemi]: the hemisphere for which to plot all radars.  This is only</dt>
-<dd>used when plot = &#8216;mrg&#8217;.  This can be either &#8216;north&#8217; or &#8216;south&#8217;.
-default = &#8216;north&#8217;</dd>
-<dt>[time]: the range of times to be plotted in </dt>
-<dd>MINIMIZED hhmm format, ie [23,456], NOT [0023,0456]
-default = [0,0].</dd>
-<dt>[interval]: the time interval to be used between plots in</dt>
-<dd>minutes.  default = 2</dd>
-<dt>[grid]: a flag to determine whether to plot the grid or not,</dt>
-<dd>1 = yes, 0 = no.  Note that plotting the grid can make the
-output plot file very large.  default = 0</dd>
-<dt>[vmax]: the maximum value for the color and vector length</dt>
-<dd>scale in m/s.  default = 500</dd>
-</dl>
-<p>[vwidth]: the width of the velocity vectors, default = .2</p>
+<dt><strong>ARGS</strong>:</dt>
+<dd><ul class="first simple">
+<li><strong>[dateStr]</strong>: a string indicating the date to plot in yyyymmdd format, eg &#8216;20120710&#8217;.  If set to None, the map and grid (optional) is drawn. default = None</li>
+<li><strong>[plot]</strong>; the plot type.  This can be either &#8216;all&#8217; to plot all LOS  velocities for each grid cell, &#8216;avg&#8217; to plot the averaged LOS velocities in each grid cell, or &#8216;mrg&#8217; to plot the merged 2D  velocities.  default = &#8216;all&#8217;</li>
+<li><strong>[rads]</strong>: the radars to be plotted.  This input is only used when plot  is either &#8216;all&#8217; or &#8216;avg&#8217;.  This can be either a list of one or more  radars, eg [&#8216;bks&#8217;,&#8217;cvw&#8217;,...], or a hemisphere &#8216;north&#8217; or &#8216;south&#8217; indicating to plot all the radars for a given hemisphere. default = None</li>
+<li><strong>[hemi]</strong>: the hemisphere for which to plot all radars.  This is only used when plot = &#8216;mrg&#8217;.  This can be either &#8216;north&#8217; or &#8216;south&#8217;. default = &#8216;north&#8217;</li>
+<li><strong>[time]</strong>: the range of times to be plotted in  MINIMIZED hhmm format, ie [23,456], NOT [0023,0456] default = [0,0].</li>
+<li><strong>[interval]</strong>: the time interval to be used between plots inminutes.  default = 2</li>
+<li><strong>[grid]</strong>: a flag to determine whether to plot the grid or not, 1 = yes, 0 = no.  Note that plotting the grid can make the output plot file very large.  default = 0</li>
+<li><strong>[vmax]</strong>: the maximum value for the color and vector length scale in m/s.  default = 500</li>
+<li><strong>[vwidth]</strong>: the width of the velocity vectors, default = .2</li>
+</ul>
 <dl class="last docutils">
 <dt>OUTPUTS:</dt>
 <dd>None</dd>
@@ -200,7 +180,7 @@ output plot file very large.  default = 0</dd>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">pydarn.plotting.pygridPlot</a><ul>
-<li><a class="reference internal" href="#module-pydarn-plot-pygridplot">MODULE: pydarn.plot.pygridPlot</a></li>
+<li><a class="reference internal" href="#module-pydarn-plotting-pygridplot">MODULE: pydarn.plotting.pygridPlot</a></li>
 </ul>
 </li>
 </ul>
@@ -259,10 +239,22 @@ output plot file very large.  default = 0</dd>
     </div>
     </div>
 
+
     <div class="footer">
         &copy; Copyright 2013, VT SuperDARN Lab and Friends.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
     <!-- cloud_sptheme 1.4 -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-40150576-2', 'vt.edu');
+  ga('send', 'pageview');
+
+</script>
+
   </body>
 </html>

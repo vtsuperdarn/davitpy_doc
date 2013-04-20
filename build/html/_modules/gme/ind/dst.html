@@ -86,16 +86,16 @@
 <span class="sd">**Module**: gme.ind.dst</span>
 <span class="sd">*********************</span>
 <span class="sd">**Classes**:</span>
-<span class="sd">	* :class:`dstRec`</span>
+<span class="sd">	* :class:`gme.ind.dst.dstRec`</span>
 <span class="sd">**Functions**:</span>
-<span class="sd">	* :func:`readDst`</span>
-<span class="sd">	* :func:`readDstWeb`</span>
-<span class="sd">	* :func:`mapDstMongo`</span>
+<span class="sd">	* :func:`gme.ind.dst.readDst`</span>
+<span class="sd">	* :func:`gme.ind.dst.readDstWeb`</span>
+<span class="sd">	* :func:`gme.ind.dst.mapDstMongo`</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">gme</span>
 <div class="viewcode-block" id="dstRec"><a class="viewcode-back" href="../../../gme.ind.dst.html#gme.ind.dst.dstRec">[docs]</a><span class="k">class</span> <span class="nc">dstRec</span><span class="p">(</span><span class="n">gme</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">gmeBase</span><span class="o">.</span><span class="n">gmeData</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;a class to represent a record of dst data.  Extends :class:`gmeBase.gmeData`. Note that Dst data is available from 1980-present day (or whatever the latest WDC has uploaded is).  **The data are 1-hour values**.  Information about dst can be found `here &lt;http://wdc.kugi.kyoto-u.ac.jp/dstdir/dst2/onDstindex.html&gt;`_</span>
+	<span class="sd">&quot;&quot;&quot;a class to represent a record of dst data.  Extends :class:`gme.base.gmeBase.gmeData`. Note that Dst data is available from 1980-present day (or whatever the latest WDC has uploaded is).  **The data are 1-hour values**.  Information about dst can be found `here &lt;http://wdc.kugi.kyoto-u.ac.jp/dstdir/dst2/onDstindex.html&gt;`_</span>
 <span class="sd">		</span>
 <span class="sd">	**Members**: </span>
 <span class="sd">		* **time** (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_): an object identifying which time these data are for</span>
@@ -121,7 +121,7 @@
 <span class="sd">		.. note::</span>
 <span class="sd">			In general, users will not need to worry about this.</span>
 <span class="sd">		</span>
-<span class="sd">		**Belongs to**: :class:`dstRec`</span>
+<span class="sd">		**Belongs to**: :class:`gme.ind.dst.dstRec`</span>
 <span class="sd">		</span>
 <span class="sd">		**Args**: </span>
 <span class="sd">			* **line** (str): the ASCII line from the WDC data file</span>
@@ -141,12 +141,12 @@
 		<span class="k">if</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">!=</span> <span class="mf">99999.0</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">dst</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
 		</div>
 	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">webLine</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dbDict</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;the intialization fucntion for a :class:`dstRec` object.  </span>
+		<span class="sd">&quot;&quot;&quot;the intialization fucntion for a :class:`gme.ind.dst.dstRec` object.  </span>
 <span class="sd">		</span>
 <span class="sd">		.. note::</span>
 <span class="sd">			In general, users will not need to worry about this.</span>
 <span class="sd">		</span>
-<span class="sd">		**Belongs to**: :class:`dstRec`</span>
+<span class="sd">		**Belongs to**: :class:`gme.ind.dst.dstRec`</span>
 <span class="sd">		</span>
 <span class="sd">		**Args**: </span>
 <span class="sd">			* [**webLine**] (str): an ASCII line from the datafile from WDC. if this is provided, the object is initialized from it.  default=None</span>
@@ -178,7 +178,7 @@
 <span class="sd">		* [**eTime**] (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_ or None): the latest time you want data for.  if this is None, end Time will be 1 day after sTime.  default = None</span>
 <span class="sd">		* [**dst**] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with dst values in the range [a,b] will be returned.  default = None</span>
 <span class="sd">	**Returns**:</span>
-<span class="sd">		* **dstList** (list or None): if data is found, a list of :class:`dstRec` objects matching the input parameters is returned.  If no data is found, None is returned.</span>
+<span class="sd">		* **dstList** (list or None): if data is found, a list of :class:`gme.ind.dst.dstRec` objects matching the input parameters is returned.  If no data is found, None is returned.</span>
 <span class="sd">	**Example**:</span>
 <span class="sd">		::</span>
 <span class="sd">		</span>
@@ -408,10 +408,22 @@
     </div>
     </div>
 
+
     <div class="footer">
         &copy; Copyright 2013, VT SuperDARN Lab and Friends.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
     <!-- cloud_sptheme 1.4 -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-40150576-2', 'vt.edu');
+  ga('send', 'pageview');
+
+</script>
+
   </body>
 </html>

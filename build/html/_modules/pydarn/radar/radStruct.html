@@ -733,10 +733,7 @@
 <span class="sd">        **Returns**:</span>
 <span class="sd">            * **azim** (float): beam azimuth</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">azim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">boresite</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maxbeam</span><span class="o">/</span><span class="mf">2.</span> <span class="o">-</span> <span class="n">beam</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">bmsep</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxbeam</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">azim</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bmsep</span><span class="o">/</span><span class="mf">2.</span>
-        <span class="k">return</span> <span class="n">azim</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">boresite</span> <span class="o">-</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">maxbeam</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span> <span class="o">-</span> <span class="n">beam</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">bmsep</span>
 
 </div>
 <div class="viewcode-block" id="site.azimToBeam"><a class="viewcode-back" href="../../../pydarn.radar.radStruct.html#pydarn.radar.radStruct.site.azimToBeam">[docs]</a>    <span class="k">def</span> <span class="nf">azimToBeam</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">azim</span><span class="p">):</span>
@@ -747,13 +744,13 @@
 <span class="sd">        **Returns**:</span>
 <span class="sd">            * **beam** (int): beam number</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="nb">round</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
-        <span class="n">beam</span> <span class="o">=</span> <span class="p">(</span><span class="n">azim</span><span class="o">%</span><span class="mi">360</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">boresite</span><span class="o">%</span><span class="mi">360</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">beam</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">180.</span><span class="p">:</span>
-            <span class="n">beam</span> <span class="o">=</span> <span class="n">beam</span><span class="o">/</span><span class="nb">abs</span><span class="p">(</span><span class="n">beam</span><span class="p">)</span> <span class="o">*</span> <span class="n">beam</span><span class="o">%</span><span class="mi">180</span>
-        <span class="n">beam</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">beam</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">bmsep</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxbeam</span><span class="o">/</span><span class="mf">2.</span>
-        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">beam</span><span class="p">)</span></div></div>
+        <span class="n">saz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">azim</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">boresite</span><span class="p">)</span> <span class="p">)</span>
+        <span class="n">caz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">azim</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">boresite</span><span class="p">)</span> <span class="p">)</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">saz</span><span class="p">,</span> <span class="n">caz</span><span class="p">)</span> <span class="p">)</span>
+        <span class="n">beam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span> <span class="n">delta</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">bmsep</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maxbeam</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">int_</span><span class="p">(</span><span class="n">beam</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
@@ -800,10 +797,22 @@
     </div>
     </div>
 
+
     <div class="footer">
         &copy; Copyright 2013, VT SuperDARN Lab and Friends.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
     <!-- cloud_sptheme 1.4 -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-40150576-2', 'vt.edu');
+  ga('send', 'pageview');
+
+</script>
+
   </body>
 </html>

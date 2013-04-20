@@ -69,24 +69,27 @@
 <span class="sd">This module runs the raytracing code</span>
 
 <span class="sd">**Class**:</span>
-<span class="sd">    * :class:`rt.rtRun`: run the code</span>
-<span class="sd">    * :class:`rt.rays`: store and process individual rays</span>
+<span class="sd">    * :class:`rt.RtRun`: run the code</span>
+<span class="sd">    * :class:`rt.Scatter`: store and process modeled backscatter</span>
+<span class="sd">    * :class:`rt.Edens`: store and process electron density profiles</span>
+<span class="sd">    * :class:`rt.Rays`: store and process individual rays</span>
 
 <span class="sd">.. note:: The ray tracing requires mpi to run. You can adjust the number of processors, but be wise about it and do not assign more than you have</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-
-<div class="viewcode-block" id="rtRun"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.rtRun">[docs]</a><span class="k">class</span> <span class="nc">rtRun</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="c">#########################################################################</span>
+<span class="c"># Main object</span>
+<span class="c">#########################################################################</span>
+<div class="viewcode-block" id="RtRun"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.RtRun">[docs]</a><span class="k">class</span> <span class="nc">RtRun</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;This class runs the raytracing code and processes the output</span>
 
 <span class="sd">    **Args**: </span>
-<span class="sd">        * [**sTime**] (datetime.datetime): start time</span>
-<span class="sd">        * [**eTime**] (datetime.datetime): end time (if not provided run for a single time sTime)</span>
+<span class="sd">        * [**sTime**] (datetime.datetime): start time UT</span>
+<span class="sd">        * [**eTime**] (datetime.datetime): end time UT (if not provided run for a single time sTime)</span>
 <span class="sd">        * [**rCode**] (str): radar 3-letter code</span>
 <span class="sd">        * [**radarObj**] (:class:`pydarn.radar.radar`): radar object (overrides rCode)</span>
 <span class="sd">        * [**dTime**] (float): time step in Hours</span>
-<span class="sd">        * [**ut**] (bool): specify it time is in UT</span>
 <span class="sd">        * [**freq**] (float): operating frequency [MHz]</span>
 <span class="sd">        * [**beam**] (int): beam number (if None run all beams)</span>
 <span class="sd">        * [**nhops**] (int): number of hops</span>
@@ -96,10 +99,10 @@
 <span class="sd">        * [**nmf2**] (float): F2 peak electron density [log10(m^-3)] (default: use IRI)</span>
 <span class="sd">        * [**debug**] (bool): print some diagnostics of the fortran run and output processing</span>
 <span class="sd">        * [**fext**] (str): output file id, max 10 character long (mostly used for multiple users environments, like a website)</span>
-<span class="sd">        * [**loadFrom**] (str): file name where a pickled instance of rtRun was saved (supersedes all other args)</span>
+<span class="sd">        * [**loadFrom**] (str): file name where a pickled instance of RtRun was saved (supersedes all other args)</span>
 <span class="sd">        * [**nprocs**] (int): number of processes to use with MPI</span>
 <span class="sd">    **Returns**:</span>
-<span class="sd">        * **rtRun** (:class:`rtRun`)</span>
+<span class="sd">        * **RtRun** (:class:`RtRun`)</span>
 <span class="sd">    **Example**:</span>
 <span class="sd">        ::</span>
 
@@ -108,14 +111,14 @@
 <span class="sd">            eTime = sTime + dt.timedelta(hours=2)</span>
 <span class="sd">            radar = &#39;bks&#39;</span>
 <span class="sd">            # Save the results to your /tmp directory</span>
-<span class="sd">            rto = raydarn.rtRun(sTime, eTime, rCode=radar, outDir=&#39;/tmp&#39;)</span>
+<span class="sd">            rto = raydarn.RtRun(sTime, eTime, rCode=radar, outDir=&#39;/tmp&#39;)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">eTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
         <span class="n">rCode</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">radarObj</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
-        <span class="n">dTime</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span> <span class="n">ut</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> 
+        <span class="n">dTime</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span> 
         <span class="n">freq</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">beam</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">nhops</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
-        <span class="n">elev</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">),</span> <span class="n">azim</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
+        <span class="n">elev</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="o">.</span><span class="mi">1</span><span class="p">),</span> <span class="n">azim</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
         <span class="n">hmf2</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">nmf2</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
         <span class="n">outDir</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
         <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> 
@@ -163,7 +166,6 @@
                 <span class="n">eTime</span> <span class="o">=</span> <span class="n">sTime</span> <span class="o">+</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="p">[</span><span class="n">sTime</span><span class="p">,</span> <span class="n">eTime</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dTime</span> <span class="o">=</span> <span class="n">dTime</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ut</span> <span class="o">=</span> <span class="n">ut</span>
 
             <span class="c"># Set frequency</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="n">freq</span>
@@ -195,28 +197,28 @@
 
         <span class="n">fname</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outDir</span><span class="p">,</span> <span class="s">&#39;rtrun.{}.inp&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fExt</span><span class="p">))</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:18.2f}  Transmitter latitude (degrees N)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">geolat</span> <span class="p">)</span> <span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:18.2f}  Transmitter Longitude (degrees E</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">geolon</span> <span class="p">)</span> <span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:18.2f}  Azimuth (degrees E) (begin)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">azim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:18.2f}  Azimuth (degrees E) (end)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">azim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:18.2f}  Azimuth (degrees E) (step)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">azim</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:18.2f}  Elevation angle (begin)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">elev</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:18.2f}  Elevation angle (end)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">elev</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:18.2f}  Elevation angle (step)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">elev</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:18.2f}  Frequency (Mhz)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="p">)</span> <span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:18d}  nubmer of hops (minimum 1)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhops</span><span class="p">)</span> <span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:18d}  Year (yyyy)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">year</span> <span class="p">)</span> <span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:18d}  Month and day (mmdd)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">month</span><span class="o">*</span><span class="mi">100</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">day</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:8.2f}  Transmitter latitude (degrees N)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">geolat</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:8.2f}  Transmitter Longitude (degrees E</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">geolon</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:8.2f}  Azimuth (degrees E) (begin)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">azim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:8.2f}  Azimuth (degrees E) (end)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">azim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:8.2f}  Azimuth (degrees E) (step)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">azim</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:8.2f}  Elevation angle (begin)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">elev</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:8.2f}  Elevation angle (end)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">elev</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:8.2f}  Elevation angle (step)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">elev</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:8.2f}  Frequency (Mhz)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:8d}  nubmer of hops (minimum 1)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhops</span><span class="p">)</span> <span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:8d}  Year (yyyy)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">year</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:8d}  Month and day (mmdd)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">month</span><span class="o">*</span><span class="mi">100</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">day</span> <span class="p">)</span> <span class="p">)</span>
             <span class="n">tt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hour</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">minute</span><span class="o">/</span><span class="mf">60.</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ut</span><span class="p">:</span> <span class="n">tt</span> <span class="o">+=</span> <span class="mf">25.</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:18.2f}  hour (add 25 for UT) (begin)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">tt</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">tt</span> <span class="o">+=</span> <span class="mf">25.</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:8.2f}  hour (add 25 for UT) (begin)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">tt</span> <span class="p">)</span> <span class="p">)</span>
             <span class="n">tt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hour</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">minute</span><span class="o">/</span><span class="mf">60.</span>
             <span class="n">tt</span> <span class="o">+=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">day</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">day</span><span class="p">)</span> <span class="o">*</span> <span class="mf">24.</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ut</span><span class="p">:</span> <span class="n">tt</span> <span class="o">+=</span> <span class="mf">25.</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:18.2f}  hour (add 25 for UT) (end)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">tt</span> <span class="p">)</span> <span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:18.2f}  hour (step)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">dTime</span> <span class="p">)</span> <span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:18.2f}  hmf2 (km, if 0 then ignored)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">hmf2</span> <span class="p">)</span> <span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:18.2f}  nmf2 (log10, if 0 then ignored)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">nmf2</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">tt</span> <span class="o">+=</span> <span class="mf">25.</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:8.2f}  hour (add 25 for UT) (end)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">tt</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:8.2f}  hour (step)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">dTime</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:8.2f}  hmf2 (km, if 0 then ignored)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">hmf2</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;{:8.2f}  nmf2 (log10, if 0 then ignored)</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">nmf2</span> <span class="p">)</span> <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">fname</span>
         
@@ -249,28 +251,90 @@
             <span class="k">return</span> <span class="bp">True</span>
 
 
-<div class="viewcode-block" id="rtRun.readRays"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.rtRun.readRays">[docs]</a>    <span class="k">def</span> <span class="nf">readRays</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">saveToAscii</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="RtRun.readRays"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.RtRun.readRays">[docs]</a>    <span class="k">def</span> <span class="nf">readRays</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">saveToAscii</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Read rays.dat fortran output into dictionnary</span>
 
 <span class="sd">        **Args**:</span>
 <span class="sd">            * [**saveToAscii**] (str): output content to text file</span>
 <span class="sd">            * [**debug**] (bool): print some i/o diagnostics</span>
 <span class="sd">        **Returns**:</span>
-<span class="sd">            * Add a new member to :class:`rt.rtRun`: **rays**, of type :class:`rt.rays`</span>
+<span class="sd">            * Add a new member to :class:`rt.RtRun`: **rays**, of type :class:`rt.rays`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">import</span> <span class="nn">subprocess</span> <span class="kn">as</span> <span class="nn">subp</span>
         <span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span>
 
         <span class="c"># File name and path</span>
         <span class="n">fName</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outDir</span><span class="p">,</span> <span class="s">&#39;rays.{}.dat&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fExt</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;rays&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fName</span><span class="p">):</span>
+            <span class="k">print</span> <span class="s">&#39;The file is gone, and it seems you may already have read it into memory...?&#39;</span>
+            <span class="k">return</span>
+
         <span class="c"># Initialize rays output</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rays</span> <span class="o">=</span> <span class="n">rays</span><span class="p">(</span><span class="n">fName</span><span class="p">,</span> <span class="n">site</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">site</span><span class="p">,</span> <span class="n">saveToAscii</span><span class="o">=</span><span class="n">saveToAscii</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rays</span> <span class="o">=</span> <span class="n">Rays</span><span class="p">(</span><span class="n">fName</span><span class="p">,</span> 
+            <span class="n">site</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">site</span><span class="p">,</span> <span class="n">radar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">radar</span><span class="p">,</span>
+            <span class="n">saveToAscii</span><span class="o">=</span><span class="n">saveToAscii</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
         <span class="c"># Remove Input file</span>
         <span class="n">subp</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s">&#39;rm&#39;</span><span class="p">,</span><span class="n">fName</span><span class="p">])</span>
 
 </div>
-<div class="viewcode-block" id="rtRun.save"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.rtRun.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Save :class:`rt.rtRun` to a file</span>
+<div class="viewcode-block" id="RtRun.readEdens"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.RtRun.readEdens">[docs]</a>    <span class="k">def</span> <span class="nf">readEdens</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Read edens.dat fortran output</span>
+
+<span class="sd">        **Args**:</span>
+<span class="sd">            * [**site**] (pydarn.radar.radStrict.site): site object of current radar</span>
+<span class="sd">            * [**debug**] (bool): print some i/o diagnostics</span>
+<span class="sd">        **Returns**:</span>
+<span class="sd">            * Add a new member to :class:`rt.RtRun`: **rays**, of type :class:`rt.rays`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">subprocess</span> <span class="kn">as</span> <span class="nn">subp</span>
+        <span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span>
+
+        <span class="c"># File name and path</span>
+        <span class="n">fName</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outDir</span><span class="p">,</span> <span class="s">&#39;edens.{}.dat&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fExt</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;ionos&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fName</span><span class="p">):</span>
+            <span class="k">print</span> <span class="s">&#39;The file is gone, and it seems you may already have read it into memory...?&#39;</span>
+            <span class="k">return</span>
+
+        <span class="c"># Initialize rays output</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ionos</span> <span class="o">=</span> <span class="n">Edens</span><span class="p">(</span><span class="n">fName</span><span class="p">,</span> 
+            <span class="n">site</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">site</span><span class="p">,</span> <span class="n">radar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">radar</span><span class="p">,</span>
+            <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
+        <span class="c"># Remove Input file</span>
+        <span class="n">subp</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s">&#39;rm&#39;</span><span class="p">,</span><span class="n">fName</span><span class="p">])</span>
+
+</div>
+<div class="viewcode-block" id="RtRun.readScatter"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.RtRun.readScatter">[docs]</a>    <span class="k">def</span> <span class="nf">readScatter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Read edens.dat fortran output</span>
+
+<span class="sd">        **Args**:</span>
+<span class="sd">            * [**site**] (pydarn.radar.radStrict.site): site object of current radar</span>
+<span class="sd">            * [**debug**] (bool): print some i/o diagnostics</span>
+<span class="sd">        **Returns**:</span>
+<span class="sd">            * Add a new member to :class:`rt.RtRun`: **rays**, of type :class:`rt.rays`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">subprocess</span> <span class="kn">as</span> <span class="nn">subp</span>
+        <span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span>
+
+        <span class="c"># File name and path</span>
+        <span class="n">isName</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outDir</span><span class="p">,</span> <span class="s">&#39;iscat.{}.dat&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fExt</span><span class="p">))</span>
+        <span class="n">gsName</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outDir</span><span class="p">,</span> <span class="s">&#39;gscat.{}.dat&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fExt</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;scatter&#39;</span><span class="p">)</span> \
+            <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">isName</span><span class="p">)</span> \
+            <span class="ow">or</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">gsName</span><span class="p">)):</span>
+            <span class="k">print</span> <span class="s">&#39;The files are gone, and it seems you may already have read them into memory...?&#39;</span>
+            <span class="k">return</span>
+
+        <span class="c"># Initialize rays output</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scatter</span> <span class="o">=</span> <span class="n">Scatter</span><span class="p">(</span><span class="n">gsName</span><span class="p">,</span> <span class="n">isName</span><span class="p">,</span> 
+            <span class="n">site</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">site</span><span class="p">,</span> <span class="n">radar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">radar</span><span class="p">,</span>
+            <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
+        <span class="c"># Remove Input file</span>
+        <span class="c"># subp.call([&#39;rm&#39;,isName])</span>
+        <span class="c"># subp.call([&#39;rm&#39;,gsName])</span>
+
+</div>
+<div class="viewcode-block" id="RtRun.save"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.RtRun.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save :class:`rt.RtRun` to a file</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">import</span> <span class="nn">cPickle</span> <span class="kn">as</span> <span class="nn">pickle</span>
 
@@ -278,8 +342,8 @@
             <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="rtRun.load"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.rtRun.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Load :class:`rt.rtRun` from a file</span>
+<div class="viewcode-block" id="RtRun.load"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.RtRun.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load :class:`rt.RtRun` from a file</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">import</span> <span class="nn">cPickle</span> <span class="kn">as</span> <span class="nn">pickle</span>
 
@@ -297,7 +361,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="rtRun.clean"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.rtRun.clean">[docs]</a>    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RtRun.clean"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.RtRun.clean">[docs]</a>    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Clean-up files</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="kn">import</span> <span class="nn">subprocess</span> <span class="kn">as</span> <span class="nn">subp</span>
@@ -308,17 +372,424 @@
             <span class="n">fName</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outDir</span><span class="p">,</span> <span class="s">&#39;{}.{}.dat&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fExt</span><span class="p">))</span>
             <span class="n">subp</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s">&#39;rm&#39;</span><span class="p">,</span> <span class="n">fName</span><span class="p">])</span>
 
-</div></div>
-<div class="viewcode-block" id="rays"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.rays">[docs]</a><span class="k">class</span> <span class="nc">rays</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+<span class="c">#########################################################################</span>
+<span class="c"># Electron densities</span>
+<span class="c">#########################################################################</span></div></div>
+<div class="viewcode-block" id="Edens"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.Edens">[docs]</a><span class="k">class</span> <span class="nc">Edens</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Store and process electron density profiles after ray tracing</span>
+
+<span class="sd">    **Args**:</span>
+<span class="sd">        * **readFrom** (str): edens.dat file to read the rays from</span>
+<span class="sd">        * [**site**] (:class:`pydarn.radar.site): radar site object</span>
+<span class="sd">        * [**radar**] (:class:`pydarn.radar.radar): radar object</span>
+<span class="sd">        * [**debug**] (bool): verbose mode</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">readFrom</span><span class="p">,</span> 
+        <span class="n">site</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">radar</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
+        <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">readFrom</span> <span class="o">=</span> <span class="n">readFrom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edens</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">radar</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">radar</span><span class="o">.</span><span class="n">code</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+
+        <span class="c"># Read rays</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">readEdens</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">site</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Edens.readEdens"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.Edens.readEdens">[docs]</a>    <span class="k">def</span> <span class="nf">readEdens</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">site</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Read edens.dat fortran output</span>
+
+<span class="sd">        **Args**:</span>
+<span class="sd">            * [**site**] (pydarn.radar.radStrict.site): site object of current radar</span>
+<span class="sd">            * [**debug**] (bool): print some i/o diagnostics</span>
+<span class="sd">        **Returns**:</span>
+<span class="sd">            * Populate member edens :class:`rt.Edens`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="n">unpack</span>
+        <span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+        <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
+
+        <span class="c"># Read binary file</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">readFrom</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+                <span class="k">print</span> <span class="bp">self</span><span class="o">.</span><span class="n">readFrom</span><span class="o">+</span><span class="s">&#39; header: &#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">header</span> <span class="o">=</span> <span class="n">_readHeader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">edens</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+                <span class="nb">bytes</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
+                <span class="c"># Check for eof</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">bytes</span><span class="p">:</span> <span class="k">break</span>
+                <span class="c"># read hour and azimuth</span>
+                <span class="n">hour</span><span class="p">,</span> <span class="n">azim</span> <span class="o">=</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;2f&#39;</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>
+                <span class="c"># format time index</span>
+                <span class="n">hour</span> <span class="o">=</span> <span class="n">hour</span> <span class="o">-</span> <span class="mf">25.</span>
+                <span class="n">mm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s">&#39;mmdd&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span>
+                <span class="n">dd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s">&#39;mmdd&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">mm</span><span class="o">*</span><span class="mi">100</span>
+                <span class="n">rtime</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s">&#39;year&#39;</span><span class="p">],</span> <span class="n">mm</span><span class="p">,</span> <span class="n">dd</span><span class="p">)</span> <span class="o">+</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="n">hour</span><span class="p">)</span>
+                <span class="c"># format azimuth index (beam)</span>
+                <span class="n">raz</span> <span class="o">=</span> <span class="n">site</span><span class="o">.</span><span class="n">azimToBeam</span><span class="p">(</span><span class="n">azim</span><span class="p">)</span> <span class="k">if</span> <span class="n">site</span> <span class="k">else</span> <span class="nb">round</span><span class="p">(</span><span class="n">raz</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="c"># Initialize dicts</span>
+                <span class="k">if</span> <span class="n">rtime</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edens</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> <span class="bp">self</span><span class="o">.</span><span class="n">edens</span><span class="p">[</span><span class="n">rtime</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">edens</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="c"># Read edens dict</span>
+                <span class="c"># self.edens[rtime][raz][&#39;pos&#39;] = array( unpack(&#39;{}f&#39;.format(250*2), </span>
+                <span class="c">#     f.read(250*2*4)) )</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">edens</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="s">&#39;th&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;{}f&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">250</span><span class="p">),</span> 
+                    <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">250</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span> <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">edens</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="s">&#39;nel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;{}f&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">250</span><span class="o">*</span><span class="mi">250</span><span class="p">),</span> 
+                    <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">250</span><span class="o">*</span><span class="mi">250</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span> <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">250</span><span class="p">,</span><span class="mi">250</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s">&#39;F&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">edens</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="s">&#39;dip&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;{}f&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">250</span><span class="o">*</span><span class="mi">2</span><span class="p">),</span> 
+                    <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">250</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span> <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">250</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s">&#39;F&#39;</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="Edens.plot"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.Edens.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">beam</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">maxground</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">maxalt</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+        <span class="n">nel_cmap</span><span class="o">=</span><span class="s">&#39;jet&#39;</span><span class="p">,</span> <span class="n">nel_lim</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> 
+        <span class="n">fig</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">rect</span><span class="o">=</span><span class="mi">111</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">aax</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plot electron density profile</span>
+<span class="sd">        </span>
+<span class="sd">        **Args**: </span>
+<span class="sd">            * **time** (datetime.datetime): time of profile</span>
+<span class="sd">            * [**beam**]: beam number</span>
+<span class="sd">            * [**maxground**]: maximum ground range [km]</span>
+<span class="sd">            * [**maxalt**]: highest altitude limit [km]</span>
+<span class="sd">            * [**nel_cmap**]: color map name for electron density index coloring</span>
+<span class="sd">            * [**nel_lim**]: electron density index plotting limits</span>
+<span class="sd">            * [**rect**]: subplot spcification</span>
+<span class="sd">            * [**fig**]: A pylab.figure object (default to gcf)</span>
+<span class="sd">            * [**ax**]: Existing main axes</span>
+<span class="sd">            * [**aax**]: Existing auxialary axes</span>
+<span class="sd">            * [**title**]: Show default title</span>
+<span class="sd">        **Returns**:</span>
+<span class="sd">            * **ax**: matplotlib.axes object containing formatting</span>
+<span class="sd">            * **aax**: matplotlib.axes object containing data</span>
+<span class="sd">            * **cbax**: matplotlib.axes object containing colorbar</span>
+<span class="sd">        **Example**:</span>
+<span class="sd">            ::</span>
+
+<span class="sd">                # Show electron density profile</span>
+<span class="sd">                import datetime as dt</span>
+<span class="sd">                from models import raydarn</span>
+<span class="sd">                sTime = dt.datetime(2012, 11, 18, 5)</span>
+<span class="sd">                rto = raydarn.RtRun(sTime, rCode=&#39;bks&#39;, beam=12)</span>
+<span class="sd">                rto.readEdens() # read electron density into memory</span>
+<span class="sd">                ax, aax, cbax = rto.ionos.plot(sTime, title=True)</span>
+<span class="sd">                ax.grid()</span>
+<span class="sd">                </span>
+<span class="sd">        written by Sebastien, 2013-04</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">plotUtils</span>
+        <span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="kn">import</span> <span class="n">LineCollection</span>
+        <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+        <span class="c"># Set up axes</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ax</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">aax</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">,</span> <span class="n">aax</span> <span class="o">=</span> <span class="n">plotUtils</span><span class="o">.</span><span class="n">curvedEarthAxes</span><span class="p">(</span><span class="n">fig</span><span class="o">=</span><span class="n">fig</span><span class="p">,</span> <span class="n">rect</span><span class="o">=</span><span class="n">rect</span><span class="p">,</span> 
+                <span class="n">maxground</span><span class="o">=</span><span class="n">maxground</span><span class="p">,</span> <span class="n">maxalt</span><span class="o">=</span><span class="n">maxalt</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span>
+            <span class="n">aax</span> <span class="o">=</span> <span class="n">aax</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s">&#39;time&#39;</span><span class="p">):</span>
+                <span class="n">time</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">time</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s">&#39;beam&#39;</span><span class="p">):</span>
+                <span class="n">beam</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">beam</span>
+
+        <span class="c"># make sure that the required time and beam are present</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">time</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edens</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="s">&#39;Unkown time </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">time</span>
+        <span class="k">if</span> <span class="n">beam</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="p">(</span><span class="n">beam</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edens</span><span class="p">[</span><span class="n">time</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="s">&#39;Unkown beam </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">beam</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">beam</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edens</span><span class="p">[</span><span class="n">time</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edens</span><span class="p">[</span><span class="n">time</span><span class="p">][</span><span class="n">beam</span><span class="p">][</span><span class="s">&#39;th&#39;</span><span class="p">],</span> <span class="n">ax</span><span class="o">.</span><span class="n">Re</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span><span class="mi">560</span><span class="p">,</span><span class="mi">250</span><span class="p">))</span>
+        <span class="n">im</span> <span class="o">=</span> <span class="n">aax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">edens</span><span class="p">[</span><span class="n">time</span><span class="p">][</span><span class="n">beam</span><span class="p">][</span><span class="s">&#39;nel&#39;</span><span class="p">]</span> <span class="p">),</span> 
+            <span class="n">vmin</span><span class="o">=</span><span class="n">nel_lim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vmax</span><span class="o">=</span><span class="n">nel_lim</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="n">nel_cmap</span><span class="p">)</span>
+
+        <span class="c"># Plot title with date ut time and local time</span>
+        <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+            <span class="n">stitle</span> <span class="o">=</span> <span class="n">_getTitle</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">beam</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span> <span class="n">stitle</span> <span class="p">)</span>
+
+        <span class="c"># Add a colorbar</span>
+        <span class="n">cbax</span> <span class="o">=</span> <span class="n">plotUtils</span><span class="o">.</span><span class="n">addColorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">cbax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">r&quot;N$_{el}$ [$\log_{10}(m^{-3})$]&quot;</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">beam</span> <span class="o">=</span> <span class="n">beam</span>
+        <span class="k">return</span> <span class="n">ax</span><span class="p">,</span> <span class="n">aax</span><span class="p">,</span> <span class="n">cbax</span>
+
+
+<span class="c">#########################################################################</span>
+<span class="c"># Scatter</span>
+<span class="c">#########################################################################</span></div></div>
+<div class="viewcode-block" id="Scatter"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.Scatter">[docs]</a><span class="k">class</span> <span class="nc">Scatter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Stores and process ground and ionospheric scatter</span>
+
+<span class="sd">    **Args**:</span>
+<span class="sd">        * **readISFrom** (str): iscat.dat file to read the ionospheric scatter from</span>
+<span class="sd">        * **readGSFrom** (str): gscat.dat file to read the ground scatter from</span>
+<span class="sd">        * [**site**] (:class:`pydarn.radar.site): radar site object</span>
+<span class="sd">        * [**debug**] (bool): verbose mode</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">readGSFrom</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">readISFrom</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
+        <span class="n">site</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">radar</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
+        <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">readISFrom</span> <span class="o">=</span> <span class="n">readISFrom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">readGSFrom</span> <span class="o">=</span> <span class="n">readGSFrom</span>
+
+        <span class="c"># Read ground scatter</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">readGSFrom</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gsc</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">readGS</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">site</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
+
+        <span class="c"># Read ionospheric scatter</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">readISFrom</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">isc</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">readIS</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">site</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Scatter.readGS"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.Scatter.readGS">[docs]</a>    <span class="k">def</span> <span class="nf">readGS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">site</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Read gscat.dat fortran output</span>
+
+<span class="sd">        **Args**:</span>
+<span class="sd">            * [**site**] (pydarn.radar.radStrict.site): site object of current radar</span>
+<span class="sd">            * [**debug**] (bool): print some i/o diagnostics</span>
+<span class="sd">        **Returns**:</span>
+<span class="sd">            * Populate member isc :class:`rt.Scatter`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="n">unpack</span>
+        <span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">readGSFrom</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="c"># read header</span>
+            <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+                <span class="k">print</span> <span class="bp">self</span><span class="o">.</span><span class="n">readGSFrom</span><span class="o">+</span><span class="s">&#39; header: &#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">header</span> <span class="o">=</span> <span class="n">_readHeader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
+            <span class="c"># Then read ray data, one ray at a time</span>
+            <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+                <span class="nb">bytes</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
+                <span class="c"># Check for eof</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">bytes</span><span class="p">:</span> <span class="k">break</span>
+                <span class="c"># read number of ray steps, time, azimuth and elevation</span>
+                <span class="n">rhr</span><span class="p">,</span> <span class="n">raz</span><span class="p">,</span> <span class="n">rel</span> <span class="o">=</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;3f&#39;</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>
+                <span class="c"># Read reminder of the record</span>
+                <span class="n">rr</span><span class="p">,</span> <span class="n">tht</span><span class="p">,</span> <span class="n">gran</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span>  <span class="o">=</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;5f&#39;</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span>
+                <span class="c"># Convert azimuth to beam number</span>
+                <span class="n">raz</span> <span class="o">=</span> <span class="n">site</span><span class="o">.</span><span class="n">azimToBeam</span><span class="p">(</span><span class="n">raz</span><span class="p">)</span> <span class="k">if</span> <span class="n">site</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">raz</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="c"># convert time to python datetime</span>
+                <span class="n">rhr</span> <span class="o">=</span> <span class="n">rhr</span> <span class="o">-</span> <span class="mf">25.</span>
+                <span class="n">mm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s">&#39;mmdd&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span>
+                <span class="n">dd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s">&#39;mmdd&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">mm</span><span class="o">*</span><span class="mi">100</span>
+                <span class="n">rtime</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s">&#39;year&#39;</span><span class="p">],</span> <span class="n">mm</span><span class="p">,</span> <span class="n">dd</span><span class="p">)</span> <span class="o">+</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="n">rhr</span><span class="p">)</span>
+                <span class="c"># Create new entries in rays dict</span>
+                <span class="k">if</span> <span class="n">rtime</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gsc</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> <span class="bp">self</span><span class="o">.</span><span class="n">gsc</span><span class="p">[</span><span class="n">rtime</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">if</span> <span class="n">raz</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gsc</span><span class="p">[</span><span class="n">rtime</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> <span class="bp">self</span><span class="o">.</span><span class="n">gsc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">if</span> <span class="n">rel</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gsc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> 
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gsc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="s">&#39;r&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+                        <span class="s">&#39;th&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+                        <span class="s">&#39;gran&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+                        <span class="s">&#39;lat&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+                        <span class="s">&#39;lon&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">}</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gsc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;r&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">gsc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;r&#39;</span><span class="p">],</span> <span class="n">rr</span> <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gsc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;th&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">gsc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;th&#39;</span><span class="p">],</span> <span class="n">tht</span> <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gsc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;gran&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">gsc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;gran&#39;</span><span class="p">],</span> <span class="n">gran</span> <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gsc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;lat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">gsc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;lat&#39;</span><span class="p">],</span> <span class="n">lat</span> <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gsc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;lon&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">gsc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;lon&#39;</span><span class="p">],</span> <span class="n">lon</span> <span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="Scatter.readIS"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.Scatter.readIS">[docs]</a>    <span class="k">def</span> <span class="nf">readIS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">site</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Read iscat.dat fortran output</span>
+
+<span class="sd">        **Args**:</span>
+<span class="sd">            * [**site**] (pydarn.radar.radStrict.site): site object of current radar</span>
+<span class="sd">            * [**debug**] (bool): print some i/o diagnostics</span>
+<span class="sd">        **Returns**:</span>
+<span class="sd">            * Populate member isc :class:`rt.Scatter`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="n">unpack</span>
+        <span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+        <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="nb">round</span><span class="p">,</span> <span class="n">array</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">readISFrom</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="c"># read header</span>
+            <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+                <span class="k">print</span> <span class="bp">self</span><span class="o">.</span><span class="n">readISFrom</span><span class="o">+</span><span class="s">&#39; header: &#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">header</span> <span class="o">=</span> <span class="n">_readHeader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
+            <span class="c"># Then read ray data, one ray at a time</span>
+            <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+                <span class="nb">bytes</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
+                <span class="c"># Check for eof</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">bytes</span><span class="p">:</span> <span class="k">break</span>
+                <span class="c"># read number of ray steps, time, azimuth and elevation</span>
+                <span class="n">nstp</span><span class="p">,</span> <span class="n">rhr</span><span class="p">,</span> <span class="n">raz</span><span class="p">,</span> <span class="n">rel</span> <span class="o">=</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;4f&#39;</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>
+                <span class="n">nstp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nstp</span><span class="p">)</span>
+                <span class="c"># Convert azimuth to beam number</span>
+                <span class="n">raz</span> <span class="o">=</span> <span class="n">site</span><span class="o">.</span><span class="n">azimToBeam</span><span class="p">(</span><span class="n">raz</span><span class="p">)</span> <span class="k">if</span> <span class="n">site</span> <span class="k">else</span> <span class="nb">round</span><span class="p">(</span><span class="n">raz</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="c"># convert time to python datetime</span>
+                <span class="n">rhr</span> <span class="o">=</span> <span class="n">rhr</span> <span class="o">-</span> <span class="mf">25.</span>
+                <span class="n">mm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s">&#39;mmdd&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span>
+                <span class="n">dd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s">&#39;mmdd&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">mm</span><span class="o">*</span><span class="mi">100</span>
+                <span class="n">rtime</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s">&#39;year&#39;</span><span class="p">],</span> <span class="n">mm</span><span class="p">,</span> <span class="n">dd</span><span class="p">)</span> <span class="o">+</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="n">rhr</span><span class="p">)</span>
+                <span class="c"># Create new entries in rays dict</span>
+                <span class="k">if</span> <span class="n">rtime</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">isc</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> <span class="bp">self</span><span class="o">.</span><span class="n">isc</span><span class="p">[</span><span class="n">rtime</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">if</span> <span class="n">raz</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">isc</span><span class="p">[</span><span class="n">rtime</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> <span class="bp">self</span><span class="o">.</span><span class="n">isc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">isc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="c"># Read to paths dict</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">isc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;nstp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">nstp</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">isc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;r&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;{}f&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nstp</span><span class="p">),</span> 
+                    <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nstp</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span> <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">isc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;th&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;{}f&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nstp</span><span class="p">),</span> 
+                    <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nstp</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span> <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">isc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;gran&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;{}f&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nstp</span><span class="p">),</span> 
+                    <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nstp</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span> <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">isc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;rel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;{}f&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nstp</span><span class="p">),</span> 
+                    <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nstp</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span> <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">isc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;w&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;{}f&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nstp</span><span class="p">),</span> 
+                    <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nstp</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span> <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">isc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;nr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;{}f&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nstp</span><span class="p">),</span> 
+                    <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nstp</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span> <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">isc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;lat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;{}f&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nstp</span><span class="p">),</span> 
+                    <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nstp</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span> <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">isc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;lon&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;{}f&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nstp</span><span class="p">),</span> 
+                    <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nstp</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span> <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">isc</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;h&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;{}f&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nstp</span><span class="p">),</span> 
+                    <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nstp</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span> <span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="Scatter.plot"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.Scatter.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">beam</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">maxground</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">maxalt</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+        <span class="n">iscat</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">gscat</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">weighted</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">&#39;hot_r&#39;</span><span class="p">,</span> 
+        <span class="n">fig</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">rect</span><span class="o">=</span><span class="mi">111</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">aax</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plot scatter on ground/altitude profile</span>
+<span class="sd">        </span>
+<span class="sd">        **Args**: </span>
+<span class="sd">            * **time** (datetime.datetime): time of profile</span>
+<span class="sd">            * [**beam**]: beam number</span>
+<span class="sd">            * [**iscat**] (bool): show ionospheric scatter</span>
+<span class="sd">            * [**gscat**] (bool): show ground scatter</span>
+<span class="sd">            * [**maxground**]: maximum ground range [km]</span>
+<span class="sd">            * [**maxalt**]: highest altitude limit [km]</span>
+<span class="sd">            * [**rect**]: subplot spcification</span>
+<span class="sd">            * [**fig**]: A pylab.figure object (default to gcf)</span>
+<span class="sd">            * [**ax**]: Existing main axes</span>
+<span class="sd">            * [**aax**]: Existing auxialary axes</span>
+<span class="sd">            * [**title**]: Show default title</span>
+<span class="sd">            * [**weighted**] (bool): plot ionospheric scatter relative strength (based on background density and range)</span>
+<span class="sd">            * [**cmap**]: colormap used for weighted ionospheric scatter</span>
+<span class="sd">        **Returns**:</span>
+<span class="sd">            * **ax**: matplotlib.axes object containing formatting</span>
+<span class="sd">            * **aax**: matplotlib.axes object containing data</span>
+<span class="sd">            * **cbax**: matplotlib.axes object containing colorbar</span>
+<span class="sd">        **Example**:</span>
+<span class="sd">            ::</span>
+
+<span class="sd">                # Show ionospheric scatter</span>
+<span class="sd">                import datetime as dt</span>
+<span class="sd">                from models import raydarn</span>
+<span class="sd">                sTime = dt.datetime(2012, 11, 18, 5)</span>
+<span class="sd">                rto = raydarn.RtRun(sTime, rCode=&#39;bks&#39;, beam=12)</span>
+<span class="sd">                rto.readRays() # read rays into memory</span>
+<span class="sd">                ax, aax, cbax = rto.rays.plot(sTime, title=True)</span>
+<span class="sd">                rto.readScatter() # read scatter into memory</span>
+<span class="sd">                rto.scatter.plot(sTime, ax=ax, aax=aax)</span>
+<span class="sd">                ax.grid()</span>
+<span class="sd">                </span>
+<span class="sd">        written by Sebastien, 2013-04</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">plotUtils</span>
+        <span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="kn">import</span> <span class="n">LineCollection</span>
+        <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+        <span class="c"># Set up axes</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ax</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">aax</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">,</span> <span class="n">aax</span> <span class="o">=</span> <span class="n">plotUtils</span><span class="o">.</span><span class="n">curvedEarthAxes</span><span class="p">(</span><span class="n">fig</span><span class="o">=</span><span class="n">fig</span><span class="p">,</span> <span class="n">rect</span><span class="o">=</span><span class="n">rect</span><span class="p">,</span> 
+                <span class="n">maxground</span><span class="o">=</span><span class="n">maxground</span><span class="p">,</span> <span class="n">maxalt</span><span class="o">=</span><span class="n">maxalt</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span>
+            <span class="n">aax</span> <span class="o">=</span> <span class="n">aax</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s">&#39;beam&#39;</span><span class="p">):</span>
+                <span class="n">beam</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">beam</span>
+
+        <span class="c"># make sure that the required time and beam are present</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">time</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">isc</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="s">&#39;Unkown time </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">time</span>
+        <span class="k">if</span> <span class="n">beam</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="p">(</span><span class="n">beam</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">isc</span><span class="p">[</span><span class="n">time</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="s">&#39;Unkown beam </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">beam</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">beam</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">isc</span><span class="p">[</span><span class="n">time</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">gscat</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">ir</span><span class="p">,</span> <span class="p">(</span><span class="n">el</span><span class="p">,</span> <span class="n">rays</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gsc</span><span class="p">[</span><span class="n">time</span><span class="p">][</span><span class="n">beam</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="p">):</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rays</span><span class="p">[</span><span class="s">&#39;r&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">continue</span>
+                <span class="n">_</span> <span class="o">=</span> <span class="n">aax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">rays</span><span class="p">[</span><span class="s">&#39;th&#39;</span><span class="p">],</span> <span class="n">ax</span><span class="o">.</span><span class="n">Re</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">rays</span><span class="p">[</span><span class="s">&#39;th&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> 
+                    <span class="n">color</span><span class="o">=</span><span class="s">&#39;0&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="n">zorder</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">iscat</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">weighted</span><span class="p">:</span>
+                <span class="n">wmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span> <span class="p">[</span> <span class="n">r</span><span class="p">[</span><span class="s">&#39;w&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">isc</span><span class="p">[</span><span class="n">time</span><span class="p">][</span><span class="n">beam</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s">&#39;nstp&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+                <span class="n">wmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span> <span class="p">[</span> <span class="n">r</span><span class="p">[</span><span class="s">&#39;w&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">isc</span><span class="p">[</span><span class="n">time</span><span class="p">][</span><span class="n">beam</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s">&#39;nstp&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">ir</span><span class="p">,</span> <span class="p">(</span><span class="n">el</span><span class="p">,</span> <span class="n">rays</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">isc</span><span class="p">[</span><span class="n">time</span><span class="p">][</span><span class="n">beam</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="p">):</span>
+                <span class="k">if</span> <span class="n">rays</span><span class="p">[</span><span class="s">&#39;nstp&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">continue</span>
+                <span class="n">t</span> <span class="o">=</span> <span class="n">rays</span><span class="p">[</span><span class="s">&#39;th&#39;</span><span class="p">]</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">rays</span><span class="p">[</span><span class="s">&#39;r&#39;</span><span class="p">]</span><span class="o">*</span><span class="mf">1e-3</span>
+                <span class="n">spts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">t</span><span class="p">,</span> <span class="n">r</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="n">h</span> <span class="o">=</span> <span class="n">rays</span><span class="p">[</span><span class="s">&#39;h&#39;</span><span class="p">]</span><span class="o">*</span><span class="mf">1e-3</span>
+                <span class="n">rel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="n">rays</span><span class="p">[</span><span class="s">&#39;rel&#39;</span><span class="p">]</span> <span class="p">)</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">r</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">h</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">r</span><span class="o">*</span><span class="n">h</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">rel</span> <span class="p">)</span> <span class="p">)</span>
+                <span class="n">t</span> <span class="o">=</span> <span class="n">t</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(</span> <span class="n">h</span><span class="o">/</span><span class="n">r</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">rel</span> <span class="p">)</span> <span class="p">)</span>
+                <span class="n">epts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">t</span><span class="p">,</span> <span class="n">r</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="n">segments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">spts</span><span class="p">,</span> <span class="n">epts</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">lcol</span> <span class="o">=</span> <span class="n">LineCollection</span><span class="p">(</span> <span class="n">segments</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="n">zorder</span> <span class="p">)</span>
+                <span class="k">if</span> <span class="n">weighted</span><span class="p">:</span>
+                    <span class="n">_</span> <span class="o">=</span> <span class="n">lcol</span><span class="o">.</span><span class="n">set_cmap</span><span class="p">(</span> <span class="n">cmap</span> <span class="p">)</span>
+                    <span class="n">_</span> <span class="o">=</span> <span class="n">lcol</span><span class="o">.</span><span class="n">set_norm</span><span class="p">(</span> <span class="n">plt</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
+                    <span class="n">_</span> <span class="o">=</span> <span class="n">lcol</span><span class="o">.</span><span class="n">set_array</span><span class="p">(</span> <span class="p">(</span> <span class="n">rays</span><span class="p">[</span><span class="s">&#39;w&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">wmin</span> <span class="p">)</span> <span class="o">/</span> <span class="n">wmax</span> <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">_</span> <span class="o">=</span> <span class="n">lcol</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s">&#39;0&#39;</span><span class="p">)</span>
+                <span class="n">_</span> <span class="o">=</span> <span class="n">aax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span> <span class="n">lcol</span> <span class="p">)</span>
+
+            <span class="c"># Plot title with date ut time and local time</span>
+            <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+                <span class="n">stitle</span> <span class="o">=</span> <span class="n">_getTitle</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">beam</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span> <span class="n">stitle</span> <span class="p">)</span>
+
+            <span class="c"># If weighted, plot ionospheric scatter with colormap</span>
+            <span class="k">if</span> <span class="n">weighted</span><span class="p">:</span>
+                <span class="c"># Add a colorbar</span>
+                <span class="n">cbax</span> <span class="o">=</span> <span class="n">plotUtils</span><span class="o">.</span><span class="n">addColorbar</span><span class="p">(</span><span class="n">lcol</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+                <span class="n">_</span> <span class="o">=</span> <span class="n">cbax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">&quot;Ionospheric Scatter&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span> <span class="n">cbax</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">beam</span> <span class="o">=</span> <span class="n">beam</span>
+        <span class="k">return</span> <span class="n">ax</span><span class="p">,</span> <span class="n">aax</span><span class="p">,</span> <span class="n">cbax</span>
+        
+
+<span class="c">#########################################################################</span>
+<span class="c"># Rays</span>
+<span class="c">#########################################################################</span></div></div>
+<div class="viewcode-block" id="Rays"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.Rays">[docs]</a><span class="k">class</span> <span class="nc">Rays</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Store and process individual rays after ray tracing</span>
 
 <span class="sd">    **Args**:</span>
 <span class="sd">        * **readFrom** (str): rays.dat file to read the rays from</span>
-<span class="sd">        * [**site**] (:class:`pydarn.radar.site): </span>
+<span class="sd">        * [**site**] (:class:`pydarn.radar.site): radar site object</span>
+<span class="sd">        * [**radar**] (:class:`pydarn.radar.radar): radar object</span>
+<span class="sd">        * [**saveToAscii**] (str): file name where to output ray positions</span>
+<span class="sd">        * [**debug**] (bool): verbose mode</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">readFrom</span><span class="p">,</span> <span class="n">site</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">saveToAscii</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">readFrom</span><span class="p">,</span> 
+        <span class="n">site</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">radar</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
+        <span class="n">saveToAscii</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">readFrom</span> <span class="o">=</span> <span class="n">readFrom</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">paths</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">radar</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">radar</span><span class="o">.</span><span class="n">code</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
 
         <span class="c"># Read rays</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">readRays</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">site</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
@@ -328,52 +799,37 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">writeToAscii</span><span class="p">(</span><span class="n">saveToAscii</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="rays.readRays"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.rays.readRays">[docs]</a>    <span class="k">def</span> <span class="nf">readRays</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">site</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Rays.readRays"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.Rays.readRays">[docs]</a>    <span class="k">def</span> <span class="nf">readRays</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">site</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Read rays.dat fortran output</span>
 
 <span class="sd">        **Args**:</span>
-<span class="sd">            * [**saveToAscii**] (str): output content to text file</span>
+<span class="sd">            * [**site**] (pydarn.radar.radStrict.site): site object of current radar</span>
 <span class="sd">            * [**debug**] (bool): print some i/o diagnostics</span>
 <span class="sd">        **Returns**:</span>
-<span class="sd">            * Add a new member to :class:`rt.rtRun`: **rays**, of type :class:`rt.rays`</span>
+<span class="sd">            * Populate member paths :class:`rt.Rays`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="n">unpack</span>
         <span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
-        <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
-        <span class="kn">import</span> <span class="nn">os</span>
         <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="nb">round</span><span class="p">,</span> <span class="n">array</span>
 
-        <span class="c"># Declare header parameters</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;nhour&#39;</span><span class="p">,</span> <span class="s">&#39;nazim&#39;</span><span class="p">,</span> <span class="s">&#39;nelev&#39;</span><span class="p">,</span> 
-            <span class="s">&#39;tlat&#39;</span><span class="p">,</span> <span class="s">&#39;tlon&#39;</span><span class="p">,</span> 
-            <span class="s">&#39;saz&#39;</span><span class="p">,</span> <span class="s">&#39;eaz&#39;</span><span class="p">,</span> <span class="s">&#39;daz&#39;</span><span class="p">,</span> 
-            <span class="s">&#39;sel&#39;</span><span class="p">,</span> <span class="s">&#39;eel&#39;</span><span class="p">,</span> <span class="s">&#39;del&#39;</span><span class="p">,</span> 
-            <span class="s">&#39;freq&#39;</span><span class="p">,</span> <span class="s">&#39;nhop&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">,</span> <span class="s">&#39;mmdd&#39;</span><span class="p">,</span> 
-            <span class="s">&#39;shour&#39;</span><span class="p">,</span> <span class="s">&#39;ehour&#39;</span><span class="p">,</span> <span class="s">&#39;dhour&#39;</span><span class="p">,</span> 
-            <span class="s">&#39;hmf2&#39;</span><span class="p">,</span> <span class="s">&#39;nmf2&#39;</span><span class="p">)</span>
         <span class="c"># Read binary file</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">readFrom</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="c"># Read header</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">header</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span> <span class="nb">zip</span><span class="p">(</span> <span class="n">params</span><span class="p">,</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;3i9f3i5f&#39;</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="mi">4</span> <span class="o">+</span> <span class="mi">9</span><span class="o">*</span><span class="mi">4</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="mi">4</span> <span class="o">+</span> <span class="mi">5</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span> <span class="p">)</span> <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s">&#39;fext&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;10s&#39;</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">10</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s">&#39;outdir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;100s&#39;</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">100</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-            <span class="c"># Only print header if in debug mode</span>
+            <span class="c"># read header</span>
             <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
                 <span class="k">print</span> <span class="bp">self</span><span class="o">.</span><span class="n">readFrom</span><span class="o">+</span><span class="s">&#39; header: &#39;</span>
-                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">items</span><span class="p">():</span> <span class="k">print</span> <span class="s">&#39;{:10s} :: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;fext&#39;</span><span class="p">);</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;outdir&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">header</span> <span class="o">=</span> <span class="n">_readHeader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
             <span class="c"># Then read ray data, one ray at a time</span>
             <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
                 <span class="nb">bytes</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
                 <span class="c"># Check for eof</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">bytes</span><span class="p">:</span> <span class="k">break</span>
                 <span class="c"># read number of ray steps, time, azimuth and elevation</span>
-                <span class="n">nrstep</span><span class="p">,</span> <span class="n">rhr</span><span class="p">,</span> <span class="n">raz</span><span class="p">,</span> <span class="n">rel</span> <span class="o">=</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;4f3&#39;</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>
+                <span class="n">nrstep</span><span class="p">,</span> <span class="n">rhr</span><span class="p">,</span> <span class="n">raz</span><span class="p">,</span> <span class="n">rel</span> <span class="o">=</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;4f&#39;</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>
                 <span class="n">nrstep</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nrstep</span><span class="p">)</span>
                 <span class="c"># Convert azimuth to beam number</span>
                 <span class="n">raz</span> <span class="o">=</span> <span class="n">site</span><span class="o">.</span><span class="n">azimToBeam</span><span class="p">(</span><span class="n">raz</span><span class="p">)</span> <span class="k">if</span> <span class="n">site</span> <span class="k">else</span> <span class="nb">round</span><span class="p">(</span><span class="n">raz</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
                 <span class="c"># convert time to python datetime</span>
-                <span class="k">if</span> <span class="n">rhr</span> <span class="o">&gt;=</span> <span class="mf">25.</span><span class="p">:</span> <span class="n">rhr</span> <span class="o">=</span> <span class="n">rhr</span> <span class="o">-</span> <span class="mf">25.</span>
+                <span class="n">rhr</span> <span class="o">=</span> <span class="n">rhr</span> <span class="o">-</span> <span class="mf">25.</span>
                 <span class="n">mm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s">&#39;mmdd&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span>
                 <span class="n">dd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s">&#39;mmdd&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">mm</span><span class="o">*</span><span class="mi">100</span>
                 <span class="n">rtime</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s">&#39;year&#39;</span><span class="p">],</span> <span class="n">mm</span><span class="p">,</span> <span class="n">dd</span><span class="p">)</span> <span class="o">+</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="n">rhr</span><span class="p">)</span>
@@ -381,15 +837,21 @@
                 <span class="k">if</span> <span class="n">rtime</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">rtime</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                 <span class="k">if</span> <span class="n">raz</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">rtime</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-                <span class="c"># Read and write to rays dict</span>
+                <span class="c"># Read to paths dict</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;nrstep&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">nrstep</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;r&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;{}f&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nrstep</span><span class="p">),</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nrstep</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span> <span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;th&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;{}f&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nrstep</span><span class="p">),</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nrstep</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span> <span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;gran&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;{}f&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nrstep</span><span class="p">),</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nrstep</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span> <span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;pran&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;{}f&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nrstep</span><span class="p">),</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nrstep</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span> <span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;nr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;{}f&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nrstep</span><span class="p">),</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nrstep</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span> <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;r&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;{}f&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nrstep</span><span class="p">),</span> 
+                    <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nrstep</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span> <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;th&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;{}f&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nrstep</span><span class="p">),</span> 
+                    <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nrstep</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span> <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;gran&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;{}f&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nrstep</span><span class="p">),</span> 
+                    <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nrstep</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span> <span class="p">)</span>
+                <span class="c"># self.paths[rtime][raz][rel][&#39;pran&#39;] = array( unpack(&#39;{}f&#39;.format(nrstep), </span>
+                <span class="c">#     f.read(nrstep*4)) )</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">rtime</span><span class="p">][</span><span class="n">raz</span><span class="p">][</span><span class="n">rel</span><span class="p">][</span><span class="s">&#39;nr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;{}f&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nrstep</span><span class="p">),</span> 
+                    <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nrstep</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span> <span class="p">)</span>
+
 </div>
-<div class="viewcode-block" id="rays.writeToAscii"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.rays.writeToAscii">[docs]</a>    <span class="k">def</span> <span class="nf">writeToAscii</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">):</span>
+<div class="viewcode-block" id="Rays.writeToAscii"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.Rays.writeToAscii">[docs]</a>    <span class="k">def</span> <span class="nf">writeToAscii</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save rays to ASCII file (limited use)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -418,10 +880,11 @@
                         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="rays.plot"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.rays.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">beam</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">maxground</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">maxalt</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<div class="viewcode-block" id="Rays.plot"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.Rays.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">beam</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
+        <span class="n">maxground</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">maxalt</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">showrefract</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nr_cmap</span><span class="o">=</span><span class="s">&#39;jet_r&#39;</span><span class="p">,</span> <span class="n">nr_lim</span><span class="o">=</span><span class="p">[</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> 
-        <span class="n">raycolor</span><span class="o">=</span><span class="s">&#39;0.4&#39;</span><span class="p">,</span>  
-        <span class="n">fig</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">rect</span><span class="o">=</span><span class="mi">111</span><span class="p">):</span>
+        <span class="n">raycolor</span><span class="o">=</span><span class="s">&#39;0.3&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> 
+        <span class="n">fig</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">rect</span><span class="o">=</span><span class="mi">111</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">aax</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Plot ray paths</span>
 <span class="sd">        </span>
 <span class="sd">        **Args**: </span>
@@ -436,6 +899,9 @@
 <span class="sd">            * [**raycolor**]: color of ray paths</span>
 <span class="sd">            * [**rect**]: subplot spcification</span>
 <span class="sd">            * [**fig**]: A pylab.figure object (default to gcf)</span>
+<span class="sd">            * [**title**]: Show default title</span>
+<span class="sd">            * [**ax**]: Existing main axes</span>
+<span class="sd">            * [**aax**]: Existing auxialary axes</span>
 <span class="sd">        **Returns**:</span>
 <span class="sd">            * **ax**: matplotlib.axes object containing formatting</span>
 <span class="sd">            * **aax**: matplotlib.axes object containing data</span>
@@ -447,21 +913,30 @@
 <span class="sd">                import datetime as dt</span>
 <span class="sd">                from models import raydarn</span>
 <span class="sd">                sTime = dt.datetime(2012, 11, 18, 5)</span>
-<span class="sd">                rto = raydarn.rtRun(sTime, rCode=&#39;bks&#39;, beam=12)</span>
+<span class="sd">                rto = raydarn.RtRun(sTime, rCode=&#39;bks&#39;, beam=12, title=True)</span>
 <span class="sd">                rto.readRays() # read rays into memory</span>
-<span class="sd">                ax, aax, cbax = rto.rays.plot(sTime, step=2, showrefract=True, nr_lim=[.85,1])</span>
+<span class="sd">                ax, aax, cbax = rto.rays.plot(sTime, step=10, showrefract=True, nr_lim=[.85,1])</span>
 <span class="sd">                ax.grid()</span>
 <span class="sd">                </span>
 <span class="sd">        written by Sebastien, 2013-04</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">plotUtils</span>
-        <span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1</span> <span class="kn">import</span> <span class="n">make_axes_locatable</span>
         <span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="kn">import</span> <span class="n">LineCollection</span>
         <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
         <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+        <span class="kn">from</span> <span class="nn">types</span> <span class="kn">import</span> <span class="n">MethodType</span>
 
-        <span class="n">ax</span><span class="p">,</span> <span class="n">aax</span> <span class="o">=</span> <span class="n">plotUtils</span><span class="o">.</span><span class="n">curvedEarthAxes</span><span class="p">(</span><span class="n">fig</span><span class="o">=</span><span class="n">fig</span><span class="p">,</span> <span class="n">rect</span><span class="o">=</span><span class="n">rect</span><span class="p">,</span> 
-            <span class="n">maxground</span><span class="o">=</span><span class="n">maxground</span><span class="p">,</span> <span class="n">maxalt</span><span class="o">=</span><span class="n">maxalt</span><span class="p">)</span>
+        <span class="c"># Set up axes</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ax</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">aax</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">,</span> <span class="n">aax</span> <span class="o">=</span> <span class="n">plotUtils</span><span class="o">.</span><span class="n">curvedEarthAxes</span><span class="p">(</span><span class="n">fig</span><span class="o">=</span><span class="n">fig</span><span class="p">,</span> <span class="n">rect</span><span class="o">=</span><span class="n">rect</span><span class="p">,</span> 
+                <span class="n">maxground</span><span class="o">=</span><span class="n">maxground</span><span class="p">,</span> <span class="n">maxalt</span><span class="o">=</span><span class="n">maxalt</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span>
+            <span class="n">aax</span> <span class="o">=</span> <span class="n">aax</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s">&#39;time&#39;</span><span class="p">):</span>
+                <span class="n">time</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">time</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s">&#39;beam&#39;</span><span class="p">):</span>
+                <span class="n">beam</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">beam</span>
 
         <span class="c"># make sure that the required time and beam are present</span>
         <span class="k">assert</span> <span class="p">(</span><span class="n">time</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="s">&#39;Unkown time </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">time</span>
@@ -478,42 +953,130 @@
                     <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">rays</span><span class="p">[</span><span class="s">&#39;th&#39;</span><span class="p">],</span> <span class="n">rays</span><span class="p">[</span><span class="s">&#39;r&#39;</span><span class="p">]</span><span class="o">*</span><span class="mf">1e-3</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
                     <span class="n">segments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">points</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">:]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
                     <span class="n">lcol</span> <span class="o">=</span> <span class="n">LineCollection</span><span class="p">(</span> <span class="n">segments</span> <span class="p">)</span>
-                    <span class="n">lcol</span><span class="o">.</span><span class="n">set_cmap</span><span class="p">(</span> <span class="n">nr_cmap</span> <span class="p">)</span>
-                    <span class="n">lcol</span><span class="o">.</span><span class="n">set_norm</span><span class="p">(</span> <span class="n">plt</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="o">*</span><span class="n">nr_lim</span><span class="p">)</span> <span class="p">)</span>
-                    <span class="n">lcol</span><span class="o">.</span><span class="n">set_array</span><span class="p">(</span> <span class="n">rays</span><span class="p">[</span><span class="s">&#39;nr&#39;</span><span class="p">]</span> <span class="p">)</span>
-                    <span class="n">aax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span> <span class="n">lcol</span> <span class="p">)</span>
+                    <span class="n">_</span> <span class="o">=</span> <span class="n">lcol</span><span class="o">.</span><span class="n">set_cmap</span><span class="p">(</span> <span class="n">nr_cmap</span> <span class="p">)</span>
+                    <span class="n">_</span> <span class="o">=</span> <span class="n">lcol</span><span class="o">.</span><span class="n">set_norm</span><span class="p">(</span> <span class="n">plt</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="o">*</span><span class="n">nr_lim</span><span class="p">)</span> <span class="p">)</span>
+                    <span class="n">_</span> <span class="o">=</span> <span class="n">lcol</span><span class="o">.</span><span class="n">set_array</span><span class="p">(</span> <span class="n">rays</span><span class="p">[</span><span class="s">&#39;nr&#39;</span><span class="p">]</span> <span class="p">)</span>
+                    <span class="n">_</span> <span class="o">=</span> <span class="n">aax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span> <span class="n">lcol</span> <span class="p">)</span>
+
+        <span class="c"># Plot title with date ut time and local time</span>
+        <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+            <span class="n">stitle</span> <span class="o">=</span> <span class="n">_getTitle</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">beam</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span> <span class="n">stitle</span> <span class="p">)</span>
+
         <span class="c"># Add a colorbar when plotting refractive index</span>
         <span class="k">if</span> <span class="n">showrefract</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1</span> <span class="kn">import</span> <span class="n">SubplotDivider</span><span class="p">,</span> <span class="n">LocatableAxes</span><span class="p">,</span> <span class="n">Size</span>
+            <span class="n">cbax</span> <span class="o">=</span> <span class="n">plotUtils</span><span class="o">.</span><span class="n">addColorbar</span><span class="p">(</span><span class="n">lcol</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+            <span class="n">_</span> <span class="o">=</span> <span class="n">cbax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">&quot;refractive index&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span> <span class="n">cbax</span> <span class="o">=</span> <span class="bp">None</span>
 
-            <span class="n">fig1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span>
-            <span class="n">divider</span> <span class="o">=</span> <span class="n">SubplotDivider</span><span class="p">(</span><span class="n">fig1</span><span class="p">,</span> <span class="o">*</span><span class="n">ax</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">(),</span> <span class="n">aspect</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="c"># Declare a new method to show range markers</span>
+        <span class="c"># This method is only available after rays have been plotted</span>
+        <span class="c"># This ensures that the markers match the plotted rays</span>
+        <span class="k">def</span> <span class="nf">showRange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">markers</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
+            <span class="n">color</span><span class="o">=</span><span class="s">&#39;.8&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Plot ray paths</span>
+<span class="sd">            </span>
+<span class="sd">            **Args**: </span>
+<span class="sd">                * [**markers**]: range markers. Defaults to every 250 km</span>
+<span class="sd">                * All other keywords are borrowed from :func:`matplotlib.pyplot.scatter`</span>
+<span class="sd">            **Returns**:</span>
+<span class="sd">                * **coll**: a collection of range markers</span>
+<span class="sd">            **Example**:</span>
+<span class="sd">                ::</span>
 
-            <span class="c"># axes for colorbar</span>
-            <span class="n">cbax</span> <span class="o">=</span> <span class="n">LocatableAxes</span><span class="p">(</span><span class="n">fig1</span><span class="p">,</span> <span class="n">divider</span><span class="o">.</span><span class="n">get_position</span><span class="p">())</span>
+<span class="sd">                    # Add range markers to an existing ray plot</span>
+<span class="sd">                    ax, aax, cbax = rto.rays.plot(sTime, step=10)</span>
+<span class="sd">                    rto.rays.showRange()</span>
+<span class="sd">                    </span>
+<span class="sd">            written by Sebastien, 2013-04</span>
+<span class="sd">            &quot;&quot;&quot;</span>
 
-            <span class="n">h</span> <span class="o">=</span> <span class="p">[</span><span class="n">Size</span><span class="o">.</span><span class="n">AxesX</span><span class="p">(</span><span class="n">ax</span><span class="p">),</span> <span class="c"># main axes</span>
-                 <span class="n">Size</span><span class="o">.</span><span class="n">Fixed</span><span class="p">(</span><span class="mf">0.1</span><span class="p">),</span> <span class="c"># padding</span>
-                 <span class="n">Size</span><span class="o">.</span><span class="n">Fixed</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)]</span> <span class="c"># colorbar</span>
-            <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="n">Size</span><span class="o">.</span><span class="n">AxesY</span><span class="p">(</span><span class="n">ax</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">markers</span><span class="p">:</span>
+                <span class="n">markers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span>
+            
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">el</span><span class="p">,</span> <span class="n">rays</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">time</span><span class="p">][</span><span class="n">beam</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">rm</span> <span class="ow">in</span> <span class="n">markers</span><span class="p">:</span>
+                    <span class="n">inds</span> <span class="o">=</span> <span class="p">(</span><span class="n">rays</span><span class="p">[</span><span class="s">&#39;gran&#39;</span><span class="p">]</span><span class="o">*</span><span class="mf">1e-3</span> <span class="o">&gt;=</span> <span class="n">rm</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">inds</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+                        <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">rays</span><span class="p">[</span><span class="s">&#39;th&#39;</span><span class="p">][</span><span class="n">inds</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+                        <span class="n">y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">rays</span><span class="p">[</span><span class="s">&#39;r&#39;</span><span class="p">][</span><span class="n">inds</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">1e-3</span> <span class="p">)</span>
+            <span class="n">coll</span> <span class="o">=</span> <span class="n">aax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> 
+                <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="n">zorder</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-            <span class="n">divider</span><span class="o">.</span><span class="n">set_horizontal</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
-            <span class="n">divider</span><span class="o">.</span><span class="n">set_vertical</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">coll</span>
+        <span class="c"># End of new method</span>
 
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_axes_locator</span><span class="p">(</span><span class="n">divider</span><span class="o">.</span><span class="n">new_locator</span><span class="p">(</span><span class="n">nx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ny</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
-            <span class="n">cbax</span><span class="o">.</span><span class="n">set_axes_locator</span><span class="p">(</span><span class="n">divider</span><span class="o">.</span><span class="n">new_locator</span><span class="p">(</span><span class="n">nx</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ny</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+        <span class="c"># Assign new method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">showRange</span> <span class="o">=</span> <span class="n">MethodType</span><span class="p">(</span><span class="n">showRange</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
 
-            <span class="n">fig1</span><span class="o">.</span><span class="n">add_axes</span><span class="p">(</span><span class="n">cbax</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">beam</span> <span class="o">=</span> <span class="n">beam</span>
+        <span class="k">return</span> <span class="n">ax</span><span class="p">,</span> <span class="n">aax</span><span class="p">,</span> <span class="n">cbax</span>
 
-            <span class="n">cbax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;left&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">toggle</span><span class="p">(</span><span class="nb">all</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-            <span class="n">cbax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;top&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">toggle</span><span class="p">(</span><span class="nb">all</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-            <span class="n">cbax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;bottom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">toggle</span><span class="p">(</span><span class="nb">all</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-            <span class="n">cbax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;right&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">toggle</span><span class="p">(</span><span class="n">ticklabels</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-            <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">lcol</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cbax</span><span class="p">)</span>
-            <span class="n">cbax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">&quot;refractive index&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">ax</span><span class="p">,</span> <span class="n">aax</span><span class="p">,</span> <span class="n">cbax</span></div></div>
+<span class="c">#########################################################################</span>
+<span class="c"># Misc.</span>
+<span class="c">#########################################################################</span></div></div>
+<span class="k">def</span> <span class="nf">_readHeader</span><span class="p">(</span><span class="n">fObj</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read the header part of ray-tracing *.dat files</span>
+
+<span class="sd">    **Args**:</span>
+<span class="sd">        * **fObj**: file object</span>
+<span class="sd">        * [**debug**] (bool): print some i/o diagnostics</span>
+<span class="sd">    **Returns**:</span>
+<span class="sd">        * **header**: a dictionary of header values</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="n">unpack</span>
+    <span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+    <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+
+    <span class="c"># Declare header parameters</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;nhour&#39;</span><span class="p">,</span> <span class="s">&#39;nazim&#39;</span><span class="p">,</span> <span class="s">&#39;nelev&#39;</span><span class="p">,</span> 
+        <span class="s">&#39;tlat&#39;</span><span class="p">,</span> <span class="s">&#39;tlon&#39;</span><span class="p">,</span> 
+        <span class="s">&#39;saz&#39;</span><span class="p">,</span> <span class="s">&#39;eaz&#39;</span><span class="p">,</span> <span class="s">&#39;daz&#39;</span><span class="p">,</span> 
+        <span class="s">&#39;sel&#39;</span><span class="p">,</span> <span class="s">&#39;eel&#39;</span><span class="p">,</span> <span class="s">&#39;del&#39;</span><span class="p">,</span> 
+        <span class="s">&#39;freq&#39;</span><span class="p">,</span> <span class="s">&#39;nhop&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">,</span> <span class="s">&#39;mmdd&#39;</span><span class="p">,</span> 
+        <span class="s">&#39;shour&#39;</span><span class="p">,</span> <span class="s">&#39;ehour&#39;</span><span class="p">,</span> <span class="s">&#39;dhour&#39;</span><span class="p">,</span> 
+        <span class="s">&#39;hmf2&#39;</span><span class="p">,</span> <span class="s">&#39;nmf2&#39;</span><span class="p">)</span>
+    <span class="c"># Read header</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span> <span class="nb">zip</span><span class="p">(</span> <span class="n">params</span><span class="p">,</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;3i9f3i5f&#39;</span><span class="p">,</span> <span class="n">fObj</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="mi">4</span> <span class="o">+</span> <span class="mi">9</span><span class="o">*</span><span class="mi">4</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="mi">4</span> <span class="o">+</span> <span class="mi">5</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="n">header</span><span class="p">[</span><span class="s">&#39;fext&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;10s&#39;</span><span class="p">,</span> <span class="n">fObj</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">10</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">header</span><span class="p">[</span><span class="s">&#39;outdir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unpack</span><span class="p">(</span><span class="s">&#39;100s&#39;</span><span class="p">,</span> <span class="n">fObj</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">100</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="c"># Only print header if in debug mode</span>
+    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">header</span><span class="o">.</span><span class="n">items</span><span class="p">():</span> <span class="k">print</span> <span class="s">&#39;{:10s} :: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
+    <span class="n">header</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;fext&#39;</span><span class="p">);</span> <span class="n">header</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;outdir&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">header</span>
+
+
+<span class="k">def</span> <span class="nf">_getTitle</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">beam</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a title for ground/altitude plots</span>
+
+<span class="sd">    **Args**:</span>
+<span class="sd">        * **time** (datetime.datetime): time shown in plot</span>
+<span class="sd">        * **beam**: beam shown in plot</span>
+<span class="sd">        * **header** (dict): header of fortran uotput file</span>
+<span class="sd">        * **name** (str): radar name</span>
+<span class="sd">    **Returns**:</span>
+<span class="sd">        * **title** (str): a title string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">floor</span><span class="p">,</span> <span class="nb">round</span>
+
+    <span class="n">utdec</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">hour</span> <span class="o">+</span> <span class="n">time</span><span class="o">.</span><span class="n">minute</span><span class="o">/</span><span class="mf">60.</span>
+    <span class="n">tlon</span> <span class="o">=</span> <span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s">&#39;tlon&#39;</span><span class="p">]</span> <span class="o">%</span> <span class="mf">360.</span><span class="p">)</span>
+    <span class="n">ctlon</span> <span class="o">=</span> <span class="n">tlon</span> <span class="k">if</span> <span class="n">tlon</span> <span class="o">&lt;=</span><span class="mf">180.</span> <span class="k">else</span> <span class="n">tlon</span> <span class="o">-</span> <span class="mf">360.</span>
+    <span class="n">ltdec</span> <span class="o">=</span> <span class="p">(</span> <span class="n">utdec</span> <span class="o">+</span> <span class="p">(</span> <span class="n">ctlon</span><span class="o">/</span><span class="mf">360.</span><span class="o">*</span><span class="mf">24.</span><span class="p">)</span> <span class="p">)</span> <span class="o">%</span> <span class="mf">24.</span>
+    <span class="n">lthr</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">ltdec</span><span class="p">)</span>
+    <span class="n">ltmn</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span> <span class="p">(</span><span class="n">ltdec</span> <span class="o">-</span> <span class="n">lthr</span><span class="p">)</span><span class="o">*</span><span class="mi">60</span> <span class="p">)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="s">&#39;{:%Y-%b-</span><span class="si">%d</span><span class="s"> at %H:%M} UT (~{:02.0f}:{:02.0f} LT)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">time</span><span class="p">,</span> <span class="n">lthr</span><span class="p">,</span> <span class="n">ltmn</span><span class="p">)</span>
+    <span class="n">title</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">(IRI-2011) {} beam {}; freq {:.1f}MHz&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">beam</span><span class="p">,</span> <span class="n">header</span><span class="p">[</span><span class="s">&#39;freq&#39;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">title</span>
 </pre></div>
 
           </div>
@@ -560,10 +1123,22 @@
     </div>
     </div>
 
+
     <div class="footer">
         &copy; Copyright 2013, VT SuperDARN Lab and Friends.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
     <!-- cloud_sptheme 1.4 -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-40150576-2', 'vt.edu');
+  ga('send', 'pageview');
+
+</script>
+
   </body>
 </html>

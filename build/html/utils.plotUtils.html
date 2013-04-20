@@ -78,14 +78,40 @@
 <dl class="docutils">
 <dt><strong>Functions</strong>:</dt>
 <dd><ul class="first last simple">
-<li><tt class="xref py py-func docutils literal"><span class="pre">plotUtils.map()</span></tt>: Create empty map</li>
-<li><tt class="xref py py-func docutils literal"><span class="pre">plotUtils.genCmap()</span></tt>:</li>
+<li><a class="reference internal" href="#utils.plotUtils.mapObj" title="utils.plotUtils.mapObj"><tt class="xref py py-func docutils literal"><span class="pre">utils.plotUtils.mapObj()</span></tt></a>: Create empty map</li>
+<li><a class="reference internal" href="#utils.plotUtils.genCmap" title="utils.plotUtils.genCmap"><tt class="xref py py-func docutils literal"><span class="pre">utils.plotUtils.genCmap()</span></tt></a>:</li>
+<li><a class="reference internal" href="#utils.plotUtils.curvedEarthAxes" title="utils.plotUtils.curvedEarthAxes"><tt class="xref py py-func docutils literal"><span class="pre">utils.plotUtils.curvedEarthAxes()</span></tt></a>: Plot axes in (R, Theta) coordinates with lower limit at R = Earth radius</li>
+<li><a class="reference internal" href="#utils.plotUtils.addColorbar" title="utils.plotUtils.addColorbar"><tt class="xref py py-func docutils literal"><span class="pre">utils.plotUtils.addColorbar()</span></tt></a>: Colorbar for <a class="reference internal" href="#utils.plotUtils.curvedEarthAxes" title="utils.plotUtils.curvedEarthAxes"><tt class="xref py py-func docutils literal"><span class="pre">curvedEarthAxes()</span></tt></a></li>
 </ul>
 </dd>
 </dl>
 <dl class="function">
+<dt id="utils.plotUtils.addColorbar">
+<tt class="descclassname">utils.plotUtils.</tt><tt class="descname">addColorbar</tt><big>(</big><em>mappable</em>, <em>ax</em><big>)</big><a class="reference internal" href="_modules/utils/plotUtils.html#addColorbar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.plotUtils.addColorbar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append colorbar to axes</p>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>mappable</strong>: a mappable object</li>
+<li><strong>ax</strong>: an axes object</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>cbax</strong>: colorbar axes object</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is mostly useful for axes created with <a class="reference internal" href="#utils.plotUtils.curvedEarthAxes" title="utils.plotUtils.curvedEarthAxes"><tt class="xref py py-func docutils literal"><span class="pre">curvedEarthAxes()</span></tt></a>.</p>
+</div>
+<p>written by Sebastien, 2013-04</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="utils.plotUtils.curvedEarthAxes">
-<tt class="descclassname">utils.plotUtils.</tt><tt class="descname">curvedEarthAxes</tt><big>(</big><em>rect=111</em>, <em>fig=None</em>, <em>maxground=2000</em>, <em>minalt=0</em>, <em>maxalt=500</em>, <em>Re=6371.0</em><big>)</big><a class="reference internal" href="_modules/utils/plotUtils.html#curvedEarthAxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.plotUtils.curvedEarthAxes" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">utils.plotUtils.</tt><tt class="descname">curvedEarthAxes</tt><big>(</big><em>rect=111</em>, <em>fig=None</em>, <em>minground=0.0</em>, <em>maxground=2000</em>, <em>minalt=0</em>, <em>maxalt=500</em>, <em>Re=6371.0</em>, <em>nyticks=5</em>, <em>nxticks=4</em><big>)</big><a class="reference internal" href="_modules/utils/plotUtils.html#curvedEarthAxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.plotUtils.curvedEarthAxes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create curved axes in ground-range and altitude</p>
 <dl class="docutils">
 <dt><strong>Args</strong>: </dt>
@@ -122,32 +148,35 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="utils.plotUtils.drawCB">
+<tt class="descclassname">utils.plotUtils.</tt><tt class="descname">drawCB</tt><big>(</big><em>fig, coll, cmap, norm, map=0, pos=[0, 0, 1, 1]</em><big>)</big><a class="reference internal" href="_modules/utils/plotUtils.html#drawCB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.plotUtils.drawCB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw a colorbar I guess... AJ?</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="utils.plotUtils.genCmap">
 <tt class="descclassname">utils.plotUtils.</tt><tt class="descname">genCmap</tt><big>(</big><em>param</em>, <em>scale</em>, <em>colors='lasse'</em>, <em>lowGray=False</em><big>)</big><a class="reference internal" href="_modules/utils/plotUtils.html#genCmap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.plotUtils.genCmap" title="Permalink to this definition">¶</a></dt>
-<dd><p>genCmap(fig,coll,param,scale,pos,[colors]):</p>
-<p>generates a colormap and plots a colorbar</p>
+<dd><p>Generates a colormap and plots a colorbar</p>
 <dl class="docutils">
-<dt>INPUTS:</dt>
-<dd><p class="first">fig: the parent figure
-coll: the collection of items (e.g. polygons) being mapped</p>
-<blockquote>
-<div>to this colormap</div></blockquote>
-<dl class="docutils">
-<dt>param: the parameter being plotted, valid for &#8216;velocity&#8217;,</dt>
-<dd>&#8216;power&#8217;, &#8216;width&#8217;, &#8216;elevation&#8217;, &#8216;phi0&#8217;</dd>
-</dl>
-<p>scale: the max and min values of the color scale in list form
-pos: the position of the parent plot, NOT of the COLORBAR
-[colors]: a string indicating which colorbar to use, valid</p>
-<blockquote class="last">
-<div>inputs are &#8216;lasse&#8217;, &#8216;aj&#8217;
-default: &#8216;lasse&#8217;</div></blockquote>
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>fig</strong>: the parent figure</li>
+<li><strong>coll</strong>: the collection of items (e.g. polygons) being mapped to this colormap</li>
+<li><strong>param</strong>: the parameter being plotted, valid for &#8216;velocity&#8217;, &#8216;power&#8217;, &#8216;width&#8217;, &#8216;elevation&#8217;, &#8216;phi0&#8217;</li>
+<li><strong>scale</strong>: the max and min values of the color scale in list form</li>
+<li><strong>pos</strong>: the position of the parent plot, NOT of the COLORBAR</li>
+<li><strong>[colors]</strong>: a string indicating which colorbar to use, valid inputs are &#8216;lasse&#8217;, &#8216;aj&#8217;</li>
+</ul>
 </dd>
 </dl>
-<p>OUTPUTS:</p>
+<p><strong>Returns</strong>:</p>
 <dl class="docutils">
-<dt>EXAMPLE:</dt>
-<dd>genCmap(myFig,polyCollection,&#8217;velocity&#8217;,[-200,200],pos)</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">myFig</span> <span class="o">=</span> <span class="n">figure</span><span class="p">()</span>
+<span class="n">genCmap</span><span class="p">(</span><span class="n">myFig</span><span class="p">,</span> <span class="n">polyCollection</span><span class="p">,</span> <span class="s">&#39;velocity&#39;</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">200</span><span class="p">,</span><span class="mi">200</span><span class="p">],</span> <span class="n">pos</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
 </dl>
 <p>Written by AJ 20120820</p>
 </dd></dl>
@@ -270,10 +299,22 @@ default: &#8216;lasse&#8217;</div></blockquote>
     </div>
     </div>
 
+
     <div class="footer">
         &copy; Copyright 2013, VT SuperDARN Lab and Friends.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
     <!-- cloud_sptheme 1.4 -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-40150576-2', 'vt.edu');
+  ga('send', 'pageview');
+
+</script>
+
   </body>
 </html>

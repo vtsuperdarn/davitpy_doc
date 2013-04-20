@@ -79,8 +79,10 @@
 <dl class="docutils">
 <dt><strong>Class</strong>:</dt>
 <dd><ul class="first last simple">
-<li><tt class="xref py py-class docutils literal"><span class="pre">rt.rtRun</span></tt>: run the code</li>
-<li><tt class="xref py py-class docutils literal"><span class="pre">rt.rays</span></tt>: store and process individual rays</li>
+<li><tt class="xref py py-class docutils literal"><span class="pre">rt.RtRun</span></tt>: run the code</li>
+<li><tt class="xref py py-class docutils literal"><span class="pre">rt.Scatter</span></tt>: store and process modeled backscatter</li>
+<li><tt class="xref py py-class docutils literal"><span class="pre">rt.Edens</span></tt>: store and process electron density profiles</li>
+<li><tt class="xref py py-class docutils literal"><span class="pre">rt.Rays</span></tt>: store and process individual rays</li>
 </ul>
 </dd>
 </dl>
@@ -89,20 +91,101 @@
 <p class="last">The ray tracing requires mpi to run. You can adjust the number of processors, but be wise about it and do not assign more than you have</p>
 </div>
 <dl class="class">
-<dt id="models.raydarn.rt.rays">
-<em class="property">class </em><tt class="descclassname">models.raydarn.rt.</tt><tt class="descname">rays</tt><big>(</big><em>readFrom</em>, <em>site=None</em>, <em>saveToAscii=None</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#rays"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.rays" title="Permalink to this definition">¶</a></dt>
+<dt id="models.raydarn.rt.Edens">
+<em class="property">class </em><tt class="descclassname">models.raydarn.rt.</tt><tt class="descname">Edens</tt><big>(</big><em>readFrom</em>, <em>site=None</em>, <em>radar=None</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#Edens"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.Edens" title="Permalink to this definition">¶</a></dt>
+<dd><p>Store and process electron density profiles after ray tracing</p>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>readFrom</strong> (str): edens.dat file to read the rays from</li>
+<li>[<strong>site</strong>] (:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>pydarn.radar.site): radar site object</li>
+<li>[<strong>radar</strong>] (:class:<a href="#id3"><span class="problematic" id="id4">`</span></a>pydarn.radar.radar): radar object</li>
+<li>[<strong>debug</strong>] (bool): verbose mode</li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="models.raydarn.rt.Edens.plot">
+<tt class="descname">plot</tt><big>(</big><em>time, beam=None, maxground=2000, maxalt=500, nel_cmap='jet', nel_lim=[10, 12], title=False, fig=None, rect=111, ax=None, aax=None</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#Edens.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.Edens.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot electron density profile</p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>time</strong> (datetime.datetime): time of profile</li>
+<li>[<strong>beam</strong>]: beam number</li>
+<li>[<strong>maxground</strong>]: maximum ground range [km]</li>
+<li>[<strong>maxalt</strong>]: highest altitude limit [km]</li>
+<li>[<strong>nel_cmap</strong>]: color map name for electron density index coloring</li>
+<li>[<strong>nel_lim</strong>]: electron density index plotting limits</li>
+<li>[<strong>rect</strong>]: subplot spcification</li>
+<li>[<strong>fig</strong>]: A pylab.figure object (default to gcf)</li>
+<li>[<strong>ax</strong>]: Existing main axes</li>
+<li>[<strong>aax</strong>]: Existing auxialary axes</li>
+<li>[<strong>title</strong>]: Show default title</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>ax</strong>: matplotlib.axes object containing formatting</li>
+<li><strong>aax</strong>: matplotlib.axes object containing data</li>
+<li><strong>cbax</strong>: matplotlib.axes object containing colorbar</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="c"># Show electron density profile</span>
+<span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">raydarn</span>
+<span class="n">sTime</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">rto</span> <span class="o">=</span> <span class="n">raydarn</span><span class="o">.</span><span class="n">RtRun</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span> <span class="n">rCode</span><span class="o">=</span><span class="s">&#39;bks&#39;</span><span class="p">,</span> <span class="n">beam</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">rto</span><span class="o">.</span><span class="n">readEdens</span><span class="p">()</span> <span class="c"># read electron density into memory</span>
+<span class="n">ax</span><span class="p">,</span> <span class="n">aax</span><span class="p">,</span> <span class="n">cbax</span> <span class="o">=</span> <span class="n">rto</span><span class="o">.</span><span class="n">ionos</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by Sebastien, 2013-04</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="models.raydarn.rt.Edens.readEdens">
+<tt class="descname">readEdens</tt><big>(</big><em>site=None</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#Edens.readEdens"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.Edens.readEdens" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read edens.dat fortran output</p>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li>[<strong>site</strong>] (pydarn.radar.radStrict.site): site object of current radar</li>
+<li>[<strong>debug</strong>] (bool): print some i/o diagnostics</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Populate member edens <tt class="xref py py-class docutils literal"><span class="pre">rt.Edens</span></tt></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="models.raydarn.rt.Rays">
+<em class="property">class </em><tt class="descclassname">models.raydarn.rt.</tt><tt class="descname">Rays</tt><big>(</big><em>readFrom</em>, <em>site=None</em>, <em>radar=None</em>, <em>saveToAscii=None</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#Rays"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.Rays" title="Permalink to this definition">¶</a></dt>
 <dd><p>Store and process individual rays after ray tracing</p>
 <dl class="docutils">
 <dt><strong>Args</strong>:</dt>
 <dd><ul class="first last simple">
 <li><strong>readFrom</strong> (str): rays.dat file to read the rays from</li>
-<li>[<strong>site</strong>] (:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>pydarn.radar.site):</li>
+<li>[<strong>site</strong>] (:class:<a href="#id5"><span class="problematic" id="id6">`</span></a>pydarn.radar.site): radar site object</li>
+<li>[<strong>radar</strong>] (:class:<a href="#id7"><span class="problematic" id="id8">`</span></a>pydarn.radar.radar): radar object</li>
+<li>[<strong>saveToAscii</strong>] (str): file name where to output ray positions</li>
+<li>[<strong>debug</strong>] (bool): verbose mode</li>
 </ul>
 </dd>
 </dl>
 <dl class="method">
-<dt id="models.raydarn.rt.rays.plot">
-<tt class="descname">plot</tt><big>(</big><em>time, beam=None, maxground=2000, maxalt=500, step=1, showrefract=False, nr_cmap='jet_r', nr_lim=[0.8, 1.0], raycolor='0.4', fig=None, rect=111</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#rays.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.rays.plot" title="Permalink to this definition">¶</a></dt>
+<dt id="models.raydarn.rt.Rays.plot">
+<tt class="descname">plot</tt><big>(</big><em>time, beam=None, maxground=2000, maxalt=500, step=1, showrefract=False, nr_cmap='jet_r', nr_lim=[0.8, 1.0], raycolor='0.3', title=False, fig=None, rect=111, ax=None, aax=None</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#Rays.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.Rays.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot ray paths</p>
 <dl class="docutils">
 <dt><strong>Args</strong>: </dt>
@@ -118,6 +201,9 @@
 <li>[<strong>raycolor</strong>]: color of ray paths</li>
 <li>[<strong>rect</strong>]: subplot spcification</li>
 <li>[<strong>fig</strong>]: A pylab.figure object (default to gcf)</li>
+<li>[<strong>title</strong>]: Show default title</li>
+<li>[<strong>ax</strong>]: Existing main axes</li>
+<li>[<strong>aax</strong>]: Existing auxialary axes</li>
 </ul>
 </dd>
 <dt><strong>Returns</strong>:</dt>
@@ -132,9 +218,9 @@
 <span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
 <span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">raydarn</span>
 <span class="n">sTime</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">rto</span> <span class="o">=</span> <span class="n">raydarn</span><span class="o">.</span><span class="n">rtRun</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span> <span class="n">rCode</span><span class="o">=</span><span class="s">&#39;bks&#39;</span><span class="p">,</span> <span class="n">beam</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">rto</span> <span class="o">=</span> <span class="n">raydarn</span><span class="o">.</span><span class="n">RtRun</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span> <span class="n">rCode</span><span class="o">=</span><span class="s">&#39;bks&#39;</span><span class="p">,</span> <span class="n">beam</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="n">rto</span><span class="o">.</span><span class="n">readRays</span><span class="p">()</span> <span class="c"># read rays into memory</span>
-<span class="n">ax</span><span class="p">,</span> <span class="n">aax</span><span class="p">,</span> <span class="n">cbax</span> <span class="o">=</span> <span class="n">rto</span><span class="o">.</span><span class="n">rays</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">showrefract</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">nr_lim</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">85</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">,</span> <span class="n">aax</span><span class="p">,</span> <span class="n">cbax</span> <span class="o">=</span> <span class="n">rto</span><span class="o">.</span><span class="n">rays</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">showrefract</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">nr_lim</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">85</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -144,45 +230,44 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="models.raydarn.rt.rays.readRays">
-<tt class="descname">readRays</tt><big>(</big><em>site=None</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#rays.readRays"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.rays.readRays" title="Permalink to this definition">¶</a></dt>
+<dt id="models.raydarn.rt.Rays.readRays">
+<tt class="descname">readRays</tt><big>(</big><em>site=None</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#Rays.readRays"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.Rays.readRays" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read rays.dat fortran output</p>
 <dl class="docutils">
 <dt><strong>Args</strong>:</dt>
 <dd><ul class="first last simple">
-<li>[<strong>saveToAscii</strong>] (str): output content to text file</li>
+<li>[<strong>site</strong>] (pydarn.radar.radStrict.site): site object of current radar</li>
 <li>[<strong>debug</strong>] (bool): print some i/o diagnostics</li>
 </ul>
 </dd>
 <dt><strong>Returns</strong>:</dt>
 <dd><ul class="first last simple">
-<li>Add a new member to <tt class="xref py py-class docutils literal"><span class="pre">rt.rtRun</span></tt>: <strong>rays</strong>, of type <tt class="xref py py-class docutils literal"><span class="pre">rt.rays</span></tt></li>
+<li>Populate member paths <tt class="xref py py-class docutils literal"><span class="pre">rt.Rays</span></tt></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="models.raydarn.rt.rays.writeToAscii">
-<tt class="descname">writeToAscii</tt><big>(</big><em>fname</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#rays.writeToAscii"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.rays.writeToAscii" title="Permalink to this definition">¶</a></dt>
+<dt id="models.raydarn.rt.Rays.writeToAscii">
+<tt class="descname">writeToAscii</tt><big>(</big><em>fname</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#Rays.writeToAscii"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.Rays.writeToAscii" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save rays to ASCII file (limited use)</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="models.raydarn.rt.rtRun">
-<em class="property">class </em><tt class="descclassname">models.raydarn.rt.</tt><tt class="descname">rtRun</tt><big>(</big><em>sTime=None</em>, <em>eTime=None</em>, <em>rCode=None</em>, <em>radarObj=None</em>, <em>dTime=0.5</em>, <em>ut=True</em>, <em>freq=11</em>, <em>beam=None</em>, <em>nhops=1</em>, <em>elev=(5</em>, <em>60</em>, <em>0.5)</em>, <em>azim=None</em>, <em>hmf2=None</em>, <em>nmf2=None</em>, <em>outDir=None</em>, <em>debug=False</em>, <em>fext=None</em>, <em>loadFrom=None</em>, <em>nprocs=4</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#rtRun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.rtRun" title="Permalink to this definition">¶</a></dt>
+<dt id="models.raydarn.rt.RtRun">
+<em class="property">class </em><tt class="descclassname">models.raydarn.rt.</tt><tt class="descname">RtRun</tt><big>(</big><em>sTime=None</em>, <em>eTime=None</em>, <em>rCode=None</em>, <em>radarObj=None</em>, <em>dTime=0.5</em>, <em>freq=11</em>, <em>beam=None</em>, <em>nhops=1</em>, <em>elev=(5</em>, <em>60</em>, <em>0.1)</em>, <em>azim=None</em>, <em>hmf2=None</em>, <em>nmf2=None</em>, <em>outDir=None</em>, <em>debug=False</em>, <em>fext=None</em>, <em>loadFrom=None</em>, <em>nprocs=4</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#RtRun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.RtRun" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class runs the raytracing code and processes the output</p>
 <dl class="docutils">
 <dt><strong>Args</strong>: </dt>
 <dd><ul class="first last simple">
-<li>[<strong>sTime</strong>] (datetime.datetime): start time</li>
-<li>[<strong>eTime</strong>] (datetime.datetime): end time (if not provided run for a single time sTime)</li>
+<li>[<strong>sTime</strong>] (datetime.datetime): start time UT</li>
+<li>[<strong>eTime</strong>] (datetime.datetime): end time UT (if not provided run for a single time sTime)</li>
 <li>[<strong>rCode</strong>] (str): radar 3-letter code</li>
 <li>[<strong>radarObj</strong>] (<tt class="xref py py-class docutils literal"><span class="pre">pydarn.radar.radar</span></tt>): radar object (overrides rCode)</li>
 <li>[<strong>dTime</strong>] (float): time step in Hours</li>
-<li>[<strong>ut</strong>] (bool): specify it time is in UT</li>
 <li>[<strong>freq</strong>] (float): operating frequency [MHz]</li>
 <li>[<strong>beam</strong>] (int): beam number (if None run all beams)</li>
 <li>[<strong>nhops</strong>] (int): number of hops</li>
@@ -192,13 +277,13 @@
 <li>[<strong>nmf2</strong>] (float): F2 peak electron density [log10(m^-3)] (default: use IRI)</li>
 <li>[<strong>debug</strong>] (bool): print some diagnostics of the fortran run and output processing</li>
 <li>[<strong>fext</strong>] (str): output file id, max 10 character long (mostly used for multiple users environments, like a website)</li>
-<li>[<strong>loadFrom</strong>] (str): file name where a pickled instance of rtRun was saved (supersedes all other args)</li>
+<li>[<strong>loadFrom</strong>] (str): file name where a pickled instance of RtRun was saved (supersedes all other args)</li>
 <li>[<strong>nprocs</strong>] (int): number of processes to use with MPI</li>
 </ul>
 </dd>
 <dt><strong>Returns</strong>:</dt>
 <dd><ul class="first last simple">
-<li><strong>rtRun</strong> (<a class="reference internal" href="#models.raydarn.rt.rtRun" title="models.raydarn.rt.rtRun"><tt class="xref py py-class docutils literal"><span class="pre">rtRun</span></tt></a>)</li>
+<li><strong>RtRun</strong> (<a class="reference internal" href="#models.raydarn.rt.RtRun" title="models.raydarn.rt.RtRun"><tt class="xref py py-class docutils literal"><span class="pre">RtRun</span></tt></a>)</li>
 </ul>
 </dd>
 <dt><strong>Example</strong>:</dt>
@@ -207,26 +292,45 @@
 <span class="n">eTime</span> <span class="o">=</span> <span class="n">sTime</span> <span class="o">+</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">radar</span> <span class="o">=</span> <span class="s">&#39;bks&#39;</span>
 <span class="c"># Save the results to your /tmp directory</span>
-<span class="n">rto</span> <span class="o">=</span> <span class="n">raydarn</span><span class="o">.</span><span class="n">rtRun</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span> <span class="n">eTime</span><span class="p">,</span> <span class="n">rCode</span><span class="o">=</span><span class="n">radar</span><span class="p">,</span> <span class="n">outDir</span><span class="o">=</span><span class="s">&#39;/tmp&#39;</span><span class="p">)</span>
+<span class="n">rto</span> <span class="o">=</span> <span class="n">raydarn</span><span class="o">.</span><span class="n">RtRun</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span> <span class="n">eTime</span><span class="p">,</span> <span class="n">rCode</span><span class="o">=</span><span class="n">radar</span><span class="p">,</span> <span class="n">outDir</span><span class="o">=</span><span class="s">&#39;/tmp&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd>
 </dl>
 <dl class="method">
-<dt id="models.raydarn.rt.rtRun.clean">
-<tt class="descname">clean</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#rtRun.clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.rtRun.clean" title="Permalink to this definition">¶</a></dt>
+<dt id="models.raydarn.rt.RtRun.clean">
+<tt class="descname">clean</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#RtRun.clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.RtRun.clean" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clean-up files</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="models.raydarn.rt.rtRun.load">
-<tt class="descname">load</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#rtRun.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.rtRun.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load <tt class="xref py py-class docutils literal"><span class="pre">rt.rtRun</span></tt> from a file</p>
+<dt id="models.raydarn.rt.RtRun.load">
+<tt class="descname">load</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#RtRun.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.RtRun.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load <tt class="xref py py-class docutils literal"><span class="pre">rt.RtRun</span></tt> from a file</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="models.raydarn.rt.rtRun.readRays">
-<tt class="descname">readRays</tt><big>(</big><em>saveToAscii=None</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#rtRun.readRays"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.rtRun.readRays" title="Permalink to this definition">¶</a></dt>
+<dt id="models.raydarn.rt.RtRun.readEdens">
+<tt class="descname">readEdens</tt><big>(</big><em>debug=False</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#RtRun.readEdens"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.RtRun.readEdens" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read edens.dat fortran output</p>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li>[<strong>site</strong>] (pydarn.radar.radStrict.site): site object of current radar</li>
+<li>[<strong>debug</strong>] (bool): print some i/o diagnostics</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Add a new member to <tt class="xref py py-class docutils literal"><span class="pre">rt.RtRun</span></tt>: <strong>rays</strong>, of type <tt class="xref py py-class docutils literal"><span class="pre">rt.rays</span></tt></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="models.raydarn.rt.RtRun.readRays">
+<tt class="descname">readRays</tt><big>(</big><em>saveToAscii=None</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#RtRun.readRays"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.RtRun.readRays" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read rays.dat fortran output into dictionnary</p>
 <dl class="docutils">
 <dt><strong>Args</strong>:</dt>
@@ -237,16 +341,136 @@
 </dd>
 <dt><strong>Returns</strong>:</dt>
 <dd><ul class="first last simple">
-<li>Add a new member to <tt class="xref py py-class docutils literal"><span class="pre">rt.rtRun</span></tt>: <strong>rays</strong>, of type <tt class="xref py py-class docutils literal"><span class="pre">rt.rays</span></tt></li>
+<li>Add a new member to <tt class="xref py py-class docutils literal"><span class="pre">rt.RtRun</span></tt>: <strong>rays</strong>, of type <tt class="xref py py-class docutils literal"><span class="pre">rt.rays</span></tt></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="models.raydarn.rt.rtRun.save">
-<tt class="descname">save</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#rtRun.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.rtRun.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save <tt class="xref py py-class docutils literal"><span class="pre">rt.rtRun</span></tt> to a file</p>
+<dt id="models.raydarn.rt.RtRun.readScatter">
+<tt class="descname">readScatter</tt><big>(</big><em>debug=False</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#RtRun.readScatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.RtRun.readScatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read edens.dat fortran output</p>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li>[<strong>site</strong>] (pydarn.radar.radStrict.site): site object of current radar</li>
+<li>[<strong>debug</strong>] (bool): print some i/o diagnostics</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Add a new member to <tt class="xref py py-class docutils literal"><span class="pre">rt.RtRun</span></tt>: <strong>rays</strong>, of type <tt class="xref py py-class docutils literal"><span class="pre">rt.rays</span></tt></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="models.raydarn.rt.RtRun.save">
+<tt class="descname">save</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#RtRun.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.RtRun.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save <tt class="xref py py-class docutils literal"><span class="pre">rt.RtRun</span></tt> to a file</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="models.raydarn.rt.Scatter">
+<em class="property">class </em><tt class="descclassname">models.raydarn.rt.</tt><tt class="descname">Scatter</tt><big>(</big><em>readGSFrom=None</em>, <em>readISFrom=None</em>, <em>site=None</em>, <em>radar=None</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#Scatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.Scatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores and process ground and ionospheric scatter</p>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>readISFrom</strong> (str): iscat.dat file to read the ionospheric scatter from</li>
+<li><strong>readGSFrom</strong> (str): gscat.dat file to read the ground scatter from</li>
+<li>[<strong>site</strong>] (:class:<a href="#id9"><span class="problematic" id="id10">`</span></a>pydarn.radar.site): radar site object</li>
+<li>[<strong>debug</strong>] (bool): verbose mode</li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="models.raydarn.rt.Scatter.plot">
+<tt class="descname">plot</tt><big>(</big><em>time</em>, <em>beam=None</em>, <em>maxground=2000</em>, <em>maxalt=500</em>, <em>iscat=True</em>, <em>gscat=True</em>, <em>title=False</em>, <em>weighted=False</em>, <em>cmap='hot_r'</em>, <em>fig=None</em>, <em>rect=111</em>, <em>ax=None</em>, <em>aax=None</em>, <em>zorder=4</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#Scatter.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.Scatter.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot scatter on ground/altitude profile</p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>time</strong> (datetime.datetime): time of profile</li>
+<li>[<strong>beam</strong>]: beam number</li>
+<li>[<strong>iscat</strong>] (bool): show ionospheric scatter</li>
+<li>[<strong>gscat</strong>] (bool): show ground scatter</li>
+<li>[<strong>maxground</strong>]: maximum ground range [km]</li>
+<li>[<strong>maxalt</strong>]: highest altitude limit [km]</li>
+<li>[<strong>rect</strong>]: subplot spcification</li>
+<li>[<strong>fig</strong>]: A pylab.figure object (default to gcf)</li>
+<li>[<strong>ax</strong>]: Existing main axes</li>
+<li>[<strong>aax</strong>]: Existing auxialary axes</li>
+<li>[<strong>title</strong>]: Show default title</li>
+<li>[<strong>weighted</strong>] (bool): plot ionospheric scatter relative strength (based on background density and range)</li>
+<li>[<strong>cmap</strong>]: colormap used for weighted ionospheric scatter</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>ax</strong>: matplotlib.axes object containing formatting</li>
+<li><strong>aax</strong>: matplotlib.axes object containing data</li>
+<li><strong>cbax</strong>: matplotlib.axes object containing colorbar</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="c"># Show ionospheric scatter</span>
+<span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">raydarn</span>
+<span class="n">sTime</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">rto</span> <span class="o">=</span> <span class="n">raydarn</span><span class="o">.</span><span class="n">RtRun</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span> <span class="n">rCode</span><span class="o">=</span><span class="s">&#39;bks&#39;</span><span class="p">,</span> <span class="n">beam</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">rto</span><span class="o">.</span><span class="n">readRays</span><span class="p">()</span> <span class="c"># read rays into memory</span>
+<span class="n">ax</span><span class="p">,</span> <span class="n">aax</span><span class="p">,</span> <span class="n">cbax</span> <span class="o">=</span> <span class="n">rto</span><span class="o">.</span><span class="n">rays</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">rto</span><span class="o">.</span><span class="n">readScatter</span><span class="p">()</span> <span class="c"># read scatter into memory</span>
+<span class="n">rto</span><span class="o">.</span><span class="n">scatter</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">aax</span><span class="o">=</span><span class="n">aax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by Sebastien, 2013-04</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="models.raydarn.rt.Scatter.readGS">
+<tt class="descname">readGS</tt><big>(</big><em>site=None</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#Scatter.readGS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.Scatter.readGS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read gscat.dat fortran output</p>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li>[<strong>site</strong>] (pydarn.radar.radStrict.site): site object of current radar</li>
+<li>[<strong>debug</strong>] (bool): print some i/o diagnostics</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Populate member isc <tt class="xref py py-class docutils literal"><span class="pre">rt.Scatter</span></tt></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="models.raydarn.rt.Scatter.readIS">
+<tt class="descname">readIS</tt><big>(</big><em>site=None</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#Scatter.readIS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.Scatter.readIS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read iscat.dat fortran output</p>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li>[<strong>site</strong>] (pydarn.radar.radStrict.site): site object of current radar</li>
+<li>[<strong>debug</strong>] (bool): print some i/o diagnostics</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Populate member isc <tt class="xref py py-class docutils literal"><span class="pre">rt.Scatter</span></tt></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -332,10 +556,22 @@
     </div>
     </div>
 
+
     <div class="footer">
         &copy; Copyright 2013, VT SuperDARN Lab and Friends.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
     <!-- cloud_sptheme 1.4 -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-40150576-2', 'vt.edu');
+  ga('send', 'pageview');
+
+</script>
+
   </body>
 </html>

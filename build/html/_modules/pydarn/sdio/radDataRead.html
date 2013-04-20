@@ -330,7 +330,12 @@
       <span class="k">print</span> <span class="s">&#39;fitexfilter &#39;</span><span class="o">+</span><span class="n">tmpName</span><span class="o">+</span><span class="s">&#39; &gt; &#39;</span><span class="o">+</span><span class="n">tmpName</span><span class="o">+</span><span class="s">&#39;f&#39;</span>
       <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s">&#39;fitexfilter &#39;</span><span class="o">+</span><span class="n">tmpName</span><span class="o">+</span><span class="s">&#39; &gt; &#39;</span><span class="o">+</span><span class="n">tmpName</span><span class="o">+</span><span class="s">&#39;f&#39;</span><span class="p">)</span>
       <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s">&#39;rm &#39;</span><span class="o">+</span><span class="n">tmpName</span><span class="p">)</span>
-      <span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmpName</span><span class="o">+</span><span class="s">&#39;f&#39;</span><span class="p">,</span><span class="s">&#39;r&#39;</span><span class="p">)</span>
+      <span class="k">try</span><span class="p">:</span>
+        <span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmpName</span><span class="o">+</span><span class="s">&#39;f&#39;</span><span class="p">,</span><span class="s">&#39;r&#39;</span><span class="p">)</span>
+      <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&#39;problem opening file&#39;</span>
+        <span class="k">print</span> <span class="n">e</span>
+        <span class="k">return</span> <span class="bp">None</span>
       
   <span class="k">if</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span> 
     <span class="k">if</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">dType</span> <span class="o">==</span> <span class="bp">None</span><span class="p">):</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">dType</span> <span class="o">=</span> <span class="s">&#39;dmap&#39;</span>
@@ -417,7 +422,7 @@
       <span class="k">else</span><span class="p">:</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">[</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;channel&#39;</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
       <span class="k">if</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">sTime</span> <span class="ow">and</span> \
           <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">eTime</span> <span class="ow">and</span> \
-          <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">stid</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">stid</span> <span class="o">==</span> <span class="n">dfile</span><span class="p">[</span><span class="s">&#39;stid&#39;</span><span class="p">])</span> <span class="ow">and</span>
+          <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">stid</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">dfile</span><span class="p">[</span><span class="s">&#39;stid&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">stid</span> <span class="o">==</span> <span class="n">dfile</span><span class="p">[</span><span class="s">&#39;stid&#39;</span><span class="p">])</span> <span class="ow">and</span>
           <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">channel</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">channel</span> <span class="o">==</span> <span class="n">channel</span><span class="p">)</span> <span class="ow">and</span>
           <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">bmnum</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">bmnum</span> <span class="o">==</span> <span class="n">dfile</span><span class="p">[</span><span class="s">&#39;bmnum&#39;</span><span class="p">])</span> <span class="ow">and</span>
           <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">cp</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">cp</span> <span class="o">==</span> <span class="n">dfile</span><span class="p">[</span><span class="s">&#39;cp&#39;</span><span class="p">])):</span>
@@ -597,10 +602,22 @@
     </div>
     </div>
 
+
     <div class="footer">
         &copy; Copyright 2013, VT SuperDARN Lab and Friends.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
     <!-- cloud_sptheme 1.4 -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-40150576-2', 'vt.edu');
+  ga('send', 'pageview');
+
+</script>
+
   </body>
 </html>

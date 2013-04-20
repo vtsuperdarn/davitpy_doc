@@ -110,7 +110,7 @@
 
 <div class="viewcode-block" id="plotRti"><a class="viewcode-back" href="../../../pydarn.plotting.rti.html#pydarn.plotting.rti.plotRti">[docs]</a><span class="k">def</span> <span class="nf">plotRti</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span><span class="n">rad</span><span class="p">,</span><span class="n">eTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">bmnum</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span><span class="n">fileType</span><span class="o">=</span><span class="s">&#39;fitex&#39;</span><span class="p">,</span><span class="n">params</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;velocity&#39;</span><span class="p">,</span><span class="s">&#39;power&#39;</span><span class="p">,</span><span class="s">&#39;width&#39;</span><span class="p">],</span> \
               <span class="n">scales</span><span class="o">=</span><span class="p">[],</span><span class="n">channel</span><span class="o">=</span><span class="s">&#39;a&#39;</span><span class="p">,</span><span class="n">coords</span><span class="o">=</span><span class="s">&#39;gate&#39;</span><span class="p">,</span><span class="n">colors</span><span class="o">=</span><span class="s">&#39;lasse&#39;</span><span class="p">,</span><span class="n">yrng</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span><span class="n">gsct</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">lowGray</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> \
-              <span class="n">svg</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">png</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">filtered</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">fileName</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">custType</span><span class="o">=</span><span class="s">&#39;fitex&#39;</span><span class="p">):</span>
+              <span class="n">svg</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">png</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">filtered</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">fileName</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">custType</span><span class="o">=</span><span class="s">&#39;fitex&#39;</span><span class="p">,</span><span class="n">overlayMask</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
   <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">  *******************************</span>
 <span class="sd">  </span>
@@ -219,7 +219,6 @@
     <span class="n">myFile</span> <span class="o">=</span> <span class="n">radDataOpen</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span><span class="n">rad</span><span class="p">,</span><span class="n">eTime</span><span class="p">,</span><span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span><span class="n">bmnum</span><span class="o">=</span><span class="n">bmnum</span><span class="p">,</span><span class="n">filtered</span><span class="o">=</span><span class="n">filtered</span><span class="p">,</span> 
                           <span class="n">fileName</span><span class="o">=</span><span class="n">fileName</span><span class="p">,</span><span class="n">custType</span><span class="o">=</span><span class="n">custType</span><span class="p">)</span>
 
-  <span class="k">print</span> <span class="n">channel</span><span class="p">,</span><span class="n">bmnum</span><span class="p">,</span><span class="n">filtered</span><span class="p">,</span> <span class="n">fileName</span><span class="p">,</span> <span class="n">custType</span>
   <span class="k">if</span> <span class="n">myFile</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
     <span class="k">print</span> <span class="s">&#39;error, no files available for the requested time/radar/filetype combination&#39;</span>
     <span class="k">return</span> <span class="bp">None</span>
@@ -227,7 +226,31 @@
   <span class="k">if</span> <span class="n">myBeam</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
     <span class="k">print</span> <span class="s">&#39;error, no data available for the requested time/radar/filetype combination&#39;</span>
     <span class="k">return</span> <span class="bp">None</span>
-  
+
+  <span class="k">if</span> <span class="n">overlayMask</span><span class="p">:</span>
+    <span class="n">rtfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;/data/fit/rtmask/</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">.rt.mask&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sTime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y%m</span><span class="si">%d</span><span class="s">&quot;</span><span class="p">),</span><span class="nb">str</span><span class="p">(</span><span class="n">pydarn</span><span class="o">.</span><span class="n">radar</span><span class="o">.</span><span class="n">radar</span><span class="p">(</span><span class="n">rad</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">)))</span>
+    <span class="k">print</span> <span class="s">&#39;/data/fit/rtmask/</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">.rt.mask&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sTime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y%m</span><span class="si">%d</span><span class="s">&quot;</span><span class="p">),</span><span class="nb">str</span><span class="p">(</span><span class="n">pydarn</span><span class="o">.</span><span class="n">radar</span><span class="o">.</span><span class="n">radar</span><span class="p">(</span><span class="n">rad</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+    <span class="n">masks</span><span class="p">,</span><span class="n">rttimes</span><span class="p">,</span><span class="n">maskarr</span> <span class="o">=</span> <span class="p">[],[],[]</span>
+    <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">rtbm</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">rtfile</span><span class="p">:</span>
+      <span class="n">cols</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+      <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">cnt</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+          <span class="k">if</span> <span class="n">maskarr</span> <span class="o">!=</span> <span class="p">[]:</span>
+            <span class="n">masks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">maskarr</span><span class="p">)</span>
+            <span class="n">rttimes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rtt</span><span class="p">)</span>
+          <span class="n">rtt</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">timeUtils</span><span class="o">.</span><span class="n">julToDatetime</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+          <span class="n">maskarr</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">elif</span> <span class="n">cnt</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+          <span class="n">rtbm</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">rtbm</span> <span class="o">==</span> <span class="n">bmnum</span><span class="p">:</span>
+          <span class="n">maskarr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+
+
   <span class="n">vel</span><span class="p">,</span><span class="nb">pow</span><span class="p">,</span><span class="n">wid</span><span class="p">,</span><span class="n">elev</span><span class="p">,</span><span class="n">phi0</span><span class="p">,</span><span class="n">times</span><span class="p">,</span><span class="n">freq</span><span class="p">,</span><span class="n">cpid</span><span class="p">,</span><span class="n">nave</span><span class="p">,</span><span class="n">nsky</span><span class="p">,</span><span class="n">nsch</span><span class="p">,</span><span class="n">slist</span><span class="p">,</span><span class="n">mode</span><span class="p">,</span><span class="n">rsep</span><span class="p">,</span><span class="n">nrang</span><span class="p">,</span><span class="n">frang</span><span class="p">,</span><span class="n">gsflg</span> <span class="o">=</span> \
         <span class="p">[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]</span>
   
@@ -282,6 +305,7 @@
     
     <span class="n">rmax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">nrang</span><span class="p">)</span>
     <span class="n">data</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span><span class="n">rmax</span><span class="p">))</span><span class="o">+</span><span class="mi">100000</span>
+    <span class="k">if</span> <span class="n">gsct</span><span class="p">:</span> <span class="n">gsdata</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span><span class="n">rmax</span><span class="p">))</span><span class="o">+</span><span class="mi">100000</span>
     <span class="n">x</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">tcnt</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="c">#x = matplotlib.dates.date2num(times)</span>
@@ -298,6 +322,9 @@
       <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">slist</span><span class="p">[</span><span class="n">i</span><span class="p">])):</span>
         <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">gsct</span> <span class="ow">or</span> <span class="n">gsflg</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
           <span class="n">data</span><span class="p">[</span><span class="n">tcnt</span><span class="p">][</span><span class="n">slist</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]]</span> <span class="o">=</span> <span class="n">pArr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">gsct</span> <span class="ow">and</span> <span class="n">gsflg</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+          <span class="n">data</span><span class="p">[</span><span class="n">tcnt</span><span class="p">][</span><span class="n">slist</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">100000.</span>
+
         
     <span class="k">if</span><span class="p">(</span><span class="n">coords</span> <span class="o">==</span> <span class="s">&#39;gate&#39;</span><span class="p">):</span> <span class="n">y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">rmax</span><span class="p">,</span><span class="n">rmax</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">elif</span><span class="p">(</span><span class="n">coords</span> <span class="o">==</span> <span class="s">&#39;rng&#39;</span><span class="p">):</span> <span class="n">y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">frang</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">rmax</span><span class="o">*</span><span class="n">rsep</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">rmax</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
@@ -308,12 +335,36 @@
       
     <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="n">tcnt</span><span class="p">],</span> <span class="n">y</span><span class="p">)</span>
     
-
     <span class="n">cmap</span><span class="p">,</span><span class="n">norm</span><span class="p">,</span><span class="n">bounds</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">plotUtils</span><span class="o">.</span><span class="n">genCmap</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">p</span><span class="p">],</span><span class="n">scales</span><span class="p">[</span><span class="n">p</span><span class="p">],</span><span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span><span class="n">lowGray</span><span class="o">=</span><span class="n">lowGray</span><span class="p">)</span>
     
     <span class="c">#data = numpy.ma.masked_where(data == 100000., data)</span>
     <span class="n">pcoll</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">data</span><span class="p">[:</span><span class="n">tcnt</span><span class="p">][:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span><span class="n">edgecolors</span><span class="o">=</span><span class="s">&#39;None&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">lod</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span><span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
     
+
+    <span class="k">if</span> <span class="n">overlayMask</span><span class="p">:</span>
+      <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">rttimes</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span><span class="n">rmax</span><span class="p">))</span>
+
+      <span class="n">rmax</span> <span class="o">=</span> <span class="mi">70</span>
+      <span class="n">x</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rttimes</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
+      <span class="n">tcnt</span> <span class="o">=</span> <span class="mi">0</span>      
+      <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rttimes</span><span class="p">)):</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">tcnt</span><span class="p">]</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">rttimes</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">rttimes</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+          <span class="k">if</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">rttimes</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="n">tcnt</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">35.</span><span class="o">/</span><span class="mf">1440.</span><span class="p">):</span>
+            <span class="n">tcnt</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">x</span><span class="p">[</span><span class="n">tcnt</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">tcnt</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mf">30.</span><span class="o">/</span><span class="mf">1440.</span>
+        <span class="n">tcnt</span> <span class="o">+=</span> <span class="mi">1</span>
+            
+        <span class="k">if</span><span class="p">(</span><span class="n">pArr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="p">[]):</span> <span class="k">continue</span>
+        
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">masks</span><span class="p">[</span><span class="n">i</span><span class="p">])):</span>
+          <span class="n">data</span><span class="p">[</span><span class="n">tcnt</span><span class="p">][</span><span class="n">j</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">masks</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+        
+      <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="n">tcnt</span><span class="p">],</span> <span class="n">y</span><span class="p">)</span>
+
+      <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="n">data</span> <span class="o">==</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+      <span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">data</span><span class="p">[:</span><span class="n">tcnt</span><span class="p">][:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s">&#39;None&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span><span class="n">facecolors</span><span class="o">=</span><span class="s">&#39;b&#39;</span><span class="p">)</span>
+
     <span class="n">cb</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">drawCB</span><span class="p">(</span><span class="n">rtiFig</span><span class="p">,</span><span class="n">pcoll</span><span class="p">,</span><span class="n">cmap</span><span class="p">,</span><span class="n">norm</span><span class="p">,</span><span class="nb">map</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">)</span>
     
     <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
@@ -802,10 +853,22 @@
     </div>
     </div>
 
+
     <div class="footer">
         &copy; Copyright 2013, VT SuperDARN Lab and Friends.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
     <!-- cloud_sptheme 1.4 -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-40150576-2', 'vt.edu');
+  ga('send', 'pageview');
+
+</script>
+
   </body>
 </html>
