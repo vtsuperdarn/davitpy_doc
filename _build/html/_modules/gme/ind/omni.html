@@ -1,0 +1,521 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gme.ind.omni &mdash; davitpy</title>
+    
+    <link rel="stylesheet" href="../../../_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../../_static/cloud.js"></script>
+    <link rel="top" title="davitpy" href="../../../index.html" />
+    <link rel="up" title="gme.ind" href="../ind.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+    <li><a href="../../../index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../ind.html" accesskey="U">gme.ind</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for gme.ind.omni</h1><div class="highlight"><pre>
+<span class="c"># Copyright (C) 2012  VT SuperDARN Lab</span>
+<span class="c"># Full license can be found in LICENSE.txt</span>
+<span class="c"># </span>
+<span class="c"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c"># it under the terms of the GNU General Public License as published by</span>
+<span class="c"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c"># (at your option) any later version.</span>
+<span class="c"># </span>
+<span class="c"># This program is distributed in the hope that it will be useful,</span>
+<span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c"># GNU General Public License for more details.</span>
+<span class="c"># </span>
+<span class="c"># You should have received a copy of the GNU General Public License</span>
+<span class="c"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. module:: omni</span>
+<span class="sd">   :synopsis: A module for reading, writing, and storing omni Data</span>
+
+<span class="sd">.. moduleauthor:: AJ, 20130128</span>
+
+<span class="sd">**Module**: gme.ind.omni</span>
+<span class="sd">*************************</span>
+<span class="sd">**Classes**:</span>
+<span class="sd">	* :class:`omniRec`</span>
+<span class="sd">**Functions**:</span>
+<span class="sd">	* :func:`readOmni`</span>
+<span class="sd">	* :func:`readOmniFtp`</span>
+<span class="sd">	* :func:`mapOmniMongo`</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">gme</span>
+<div class="viewcode-block" id="omniRec"><a class="viewcode-back" href="../../../gme.ind.omni.html#gme.ind.omni.omniRec">[docs]</a><span class="k">class</span> <span class="nc">omniRec</span><span class="p">(</span><span class="n">gme</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">gmeBase</span><span class="o">.</span><span class="n">gmeData</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;a class to represent a record of omni data.  Extends :class:`gmeBase.gmeData`.  Insight on the class members can be obtained from `the NASA SPDF site &lt;ftp://spdf.gsfc.nasa.gov/pub/data/omni/high_res_omni/hroformat.txt&gt;`_.  note that Omni data is available from 1995-present day (or whatever the latest NASA has uploaded is), in 1 and 5 minute resolution.</span>
+<span class="sd">	</span>
+<span class="sd">	.. warning::</span>
+<span class="sd">		AE,AL,AU,SYM/H,SYM/D,ASYM/H,and ASYM/D are included in the omni files and thus are read into this class.  I cannot verify the quality of these indices distributed with Omni data.  For quality assurance on these indices, use the functions in the gme.mag.indices module.</span>
+<span class="sd">		</span>
+<span class="sd">	**Members**: </span>
+<span class="sd">		* **time** (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_): an object identifying which time these data are for</span>
+<span class="sd">		* **dataSet** (str): the name of the data set</span>
+<span class="sd">		* **res** (int): the time resolution of the data, in minutes</span>
+<span class="sd">		* **timeshift** (int): timeshift from ACE to bowshock</span>
+<span class="sd">		* **bMagAvg** (float): average IMF B magnitude, nT</span>
+<span class="sd">		* **bx** (float): IMF Bx, nT</span>
+<span class="sd">		* **bye** (float): IMF By (GSE), nT</span>
+<span class="sd">		* **bze** (float): IMF Bz (GSE), nT</span>
+<span class="sd">		* **bym** (float): IMF By (GSM), nT</span>
+<span class="sd">		* **bzm** (float): IMF Bz (GSM), nT</span>
+<span class="sd">		* **flowSpeed** (float): plasma flow speed, km/s</span>
+<span class="sd">		* **vxe** (float): velocity in x direction (GSE), km/s</span>
+<span class="sd">		* **vye** (float): velocity in y direction (GSE), km/s</span>
+<span class="sd">		* **vze** (float): velocity in z direction (GSE), km/s</span>
+<span class="sd">		* **np** (float): proton density, n/cc</span>
+<span class="sd">		* **temp** (float): temperature in K</span>
+<span class="sd">		* **pDyn** (float): Flow pressure nPa</span>
+<span class="sd">		* **e** (float): Electric field, mV/m</span>
+<span class="sd">		* **beta** (float): Plasma Beta</span>
+<span class="sd">		* **machNum** (float): Alfven mach number</span>
+<span class="sd">		* **ae** (float): AE index, nT</span>
+<span class="sd">		* **al** (float): AL index, nT</span>
+<span class="sd">		* **au** (float): AU index, nT</span>
+<span class="sd">		* **symd** (float): SYM/D index, nT</span>
+<span class="sd">		* **symh** (float): SYM/H index, nT</span>
+<span class="sd">		* **asyd** (float): ASY/D index, nT</span>
+<span class="sd">		* **asyh** (float): ASY/H index, nT</span>
+<span class="sd">		* **info** (str): information about where the data come from.  *Please be courteous and give credit to data providers when credit is due.*</span>
+<span class="sd">		</span>
+<span class="sd">	.. note::</span>
+<span class="sd">		If any of the members have a value of None, this means that they could not be read for that specific time</span>
+<span class="sd">   </span>
+<span class="sd">	**Methods**:</span>
+<span class="sd">		* :func:`parseFtp`</span>
+<span class="sd">	**Example**:</span>
+<span class="sd">		::</span>
+<span class="sd">		</span>
+<span class="sd">			emptyOmniObj = gme.ind.omniRec()</span>
+<span class="sd">		</span>
+<span class="sd">	written by AJ, 20130128</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+		
+<div class="viewcode-block" id="omniRec.parseFtp"><a class="viewcode-back" href="../../../gme.ind.omni.html#gme.ind.omni.omniRec.parseFtp">[docs]</a>	<span class="k">def</span> <span class="nf">parseFtp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">line</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;This method is used to convert a line of omni data read from the NASA SPDF FTP site into a :class:`omniRec` object.</span>
+<span class="sd">		</span>
+<span class="sd">		.. note::</span>
+<span class="sd">			In general, users will not need to worry about this.</span>
+<span class="sd">		</span>
+<span class="sd">		**Belongs to**: :class:`omniRec`</span>
+<span class="sd">		</span>
+<span class="sd">		**Args**: </span>
+<span class="sd">			* **line** (str): the ASCII line from the FTP server</span>
+<span class="sd">		**Returns**:</span>
+<span class="sd">			* Nothing.</span>
+<span class="sd">		**Example**:</span>
+<span class="sd">			::</span>
+<span class="sd">			</span>
+<span class="sd">				myOmniObj.parseFtp(ftpLine)</span>
+<span class="sd">			</span>
+<span class="sd">		written by AJ, 20130123</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+		
+		<span class="c">#a dict to map from the column number in the line to attribute name</span>
+		<span class="n">mappingdict</span> <span class="o">=</span> <span class="p">{</span><span class="mi">9</span><span class="p">:</span><span class="s">&#39;timeshift&#39;</span><span class="p">,</span><span class="mi">13</span><span class="p">:</span><span class="s">&#39;bMagAvg&#39;</span><span class="p">,</span><span class="mi">14</span><span class="p">:</span><span class="s">&#39;bx&#39;</span><span class="p">,</span><span class="mi">15</span><span class="p">:</span><span class="s">&#39;bye&#39;</span><span class="p">,</span><span class="mi">16</span><span class="p">:</span><span class="s">&#39;bze&#39;</span><span class="p">,</span><span class="mi">17</span><span class="p">:</span><span class="s">&#39;bym&#39;</span><span class="p">,</span> \
+										<span class="mi">18</span><span class="p">:</span><span class="s">&#39;bzm&#39;</span><span class="p">,</span><span class="mi">21</span><span class="p">:</span><span class="s">&#39;flowSpeed&#39;</span><span class="p">,</span><span class="mi">22</span><span class="p">:</span><span class="s">&#39;vxe&#39;</span><span class="p">,</span><span class="mi">23</span><span class="p">:</span><span class="s">&#39;vye&#39;</span><span class="p">,</span><span class="mi">24</span><span class="p">:</span><span class="s">&#39;vze&#39;</span><span class="p">,</span><span class="mi">25</span><span class="p">:</span><span class="s">&#39;np&#39;</span><span class="p">,</span> \
+										<span class="mi">26</span><span class="p">:</span><span class="s">&#39;temp&#39;</span><span class="p">,</span><span class="mi">27</span><span class="p">:</span><span class="s">&#39;pDyn&#39;</span><span class="p">,</span><span class="mi">28</span><span class="p">:</span><span class="s">&#39;e&#39;</span><span class="p">,</span><span class="mi">29</span><span class="p">:</span><span class="s">&#39;beta&#39;</span><span class="p">,</span><span class="mi">30</span><span class="p">:</span><span class="s">&#39;machNum&#39;</span><span class="p">,</span><span class="mi">37</span><span class="p">:</span><span class="s">&#39;ae&#39;</span><span class="p">,</span> \
+										<span class="mi">38</span><span class="p">:</span><span class="s">&#39;al&#39;</span><span class="p">,</span><span class="mi">39</span><span class="p">:</span><span class="s">&#39;au&#39;</span><span class="p">,</span><span class="mi">40</span><span class="p">:</span><span class="s">&#39;symd&#39;</span><span class="p">,</span><span class="mi">41</span><span class="p">:</span><span class="s">&#39;symh&#39;</span><span class="p">,</span><span class="mi">42</span><span class="p">:</span><span class="s">&#39;asyd&#39;</span><span class="p">,</span><span class="mi">43</span><span class="p">:</span><span class="s">&#39;asyh&#39;</span><span class="p">}</span>
+										
+		<span class="c">#split the line into cols</span>
+		<span class="n">cols</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span> <span class="o">+</span> \
+									<span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+									
+		<span class="c">#go through the columns and assign the attribute values </span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">cols</span><span class="p">)):</span>
+			<span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">mappingdict</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">i</span><span class="p">)):</span> <span class="k">continue</span>
+			<span class="n">temp</span> <span class="o">=</span> <span class="n">cols</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+			<span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+			<span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;9&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">temp</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">):</span> <span class="k">continue</span>
+			<span class="k">try</span><span class="p">:</span> <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">mappingdict</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="nb">float</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+			<span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span>
+				<span class="k">print</span> <span class="n">e</span>
+				<span class="k">print</span> <span class="s">&#39;problem assigning value to&#39;</span><span class="p">,</span><span class="n">mappingdict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+			</div>
+<div class="viewcode-block" id="omniRec.__init__"><a class="viewcode-back" href="../../../gme.ind.omni.html#gme.ind.omni.omniRec.__init__">[docs]</a>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ftpLine</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">res</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dbDict</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;the intialization fucntion for a :class:`omniRec` object.  </span>
+<span class="sd">		</span>
+<span class="sd">		.. note::</span>
+<span class="sd">			In general, users will not need to worry about this.</span>
+<span class="sd">		</span>
+<span class="sd">		**Belongs to**: :class:`omniRec`</span>
+<span class="sd">		</span>
+<span class="sd">		**Args**: </span>
+<span class="sd">			* [**ftpLine**] (str): an ASCII line from the FTP server. if this is provided, the object is initialized from it.  default=None</span>
+<span class="sd">			* [**dbDict**] (dict): a dictionary read from the mongodb.  if this is provided, the object is initialized from it.  default = None</span>
+<span class="sd">			* [**res**] (int): the time resolution of the data.  default=None</span>
+<span class="sd">		**Returns**:</span>
+<span class="sd">			* Nothing.</span>
+<span class="sd">		**Example**:</span>
+<span class="sd">			::</span>
+<span class="sd">			</span>
+<span class="sd">				myOmniObj = omniRec(ftpLine=aftpLine)</span>
+<span class="sd">			</span>
+<span class="sd">		written by AJ, 20130128</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c">#initialize the attributes</span>
+		<span class="c">#note about where data came from</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">dataSet</span> <span class="o">=</span> <span class="s">&#39;Omni&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="s">&#39;These data were downloaded from NASA SPDF.  *Please be courteous and give credit to data providers when credit is due.*&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">res</span> <span class="o">=</span> <span class="n">res</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">timeshift</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">bMagAvg</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">bx</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">bye</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">bze</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">bym</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">bzm</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">flowSpeed</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">vxe</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">vye</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">vze</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">np</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">pDyn</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">e</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">machNum</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ae</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">al</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">au</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">symd</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">symh</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">asyd</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">asyh</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="c">#if we&#39;re initializing from an object, do it!</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">ftpLine</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">parseFtp</span><span class="p">(</span><span class="n">ftpLine</span><span class="p">)</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">dbDict</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">parseDb</span><span class="p">(</span><span class="n">dbDict</span><span class="p">)</span>
+	</div></div>
+<div class="viewcode-block" id="readOmni"><a class="viewcode-back" href="../../../gme.ind.omni.html#gme.ind.omni.readOmni">[docs]</a><span class="k">def</span> <span class="nf">readOmni</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span><span class="n">eTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">res</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">bx</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">bye</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">bze</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">bym</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">bzm</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">pDyn</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">ae</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">symh</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;This function reads omni data.  First, it will try to get it from the mongodb, and if it can&#39;t find it, it will look on the NASA SPDF FTP server using :func:`readOmniFtp`</span>
+<span class="sd">	</span>
+<span class="sd">	**Args**: </span>
+<span class="sd">		* **sTime** (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_ or None): the earliest time you want data for</span>
+<span class="sd">		* [**eTime**] (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_ or None): the latest time you want data for.  if this is None, end Time will be 1 day after sTime.  default = None</span>
+<span class="sd">		* [**res**] (int): the time reolution of data desired.  This can be either 1 or 5. default = 5</span>
+<span class="sd">		* [**bx**] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with bx values in the range [a,b] will be returned.  default = None</span>
+<span class="sd">		* [**bx**] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with bx values in the range [a,b] will be returned.  default = None</span>
+<span class="sd">		* [**bye**] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with bye values in the range [a,b] will be returned.  default = None</span>
+<span class="sd">		* [**bze**] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with bze values in the range [a,b] will be returned.  default = None</span>
+<span class="sd">		* [**bym**] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with bym values in the range [a,b] will be returned.  default = None</span>
+<span class="sd">		* [**bzm**] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with bzm values in the range [a,b] will be returned.  default = None</span>
+<span class="sd">		* [**pDyn**] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with pDyn values in the range [a,b] will be returned.  default = None</span>
+<span class="sd">		* [**ae**] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with ae values in the range [a,b] will be returned.  default = None</span>
+<span class="sd">		* [**symh**] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with symh values in the range [a,b] will be returned.  default = None</span>
+<span class="sd">	**Returns**:</span>
+<span class="sd">		* **omniList** (list or None): if data is found, a list of :class:`omniRec` objects matching the input parameters is returned.  If no data is found, None is returned.</span>
+<span class="sd">	**Example**:</span>
+<span class="sd">		::</span>
+<span class="sd">		</span>
+<span class="sd">			import datetime as dt</span>
+<span class="sd">			omniList = gme.ind.readOmni(sTime=dt.datetime(2011,1,1),eTime=dt.datetime(2011,6,1),bx=[0,5.5],bye=[-1,3.5],bze=[-10,0],ae=[0,56.3])</span>
+<span class="sd">		</span>
+<span class="sd">	written by AJ, 20130128</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	
+	<span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+	<span class="kn">import</span> <span class="nn">pydarn.sdio.dbUtils</span> <span class="kn">as</span> <span class="nn">db</span>
+	
+	<span class="c">#check all the inputs for validity</span>
+	<span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">)),</span> \
+		<span class="s">&#39;error, sTime must be a datetime object&#39;</span>
+	<span class="k">assert</span><span class="p">(</span><span class="n">eTime</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">eTime</span><span class="p">,</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">)),</span> \
+		<span class="s">&#39;error, eTime must be either None or a datetime object&#39;</span>
+	<span class="k">assert</span><span class="p">(</span><span class="n">res</span><span class="o">==</span><span class="mi">5</span> <span class="ow">or</span> <span class="n">res</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span> <span class="s">&#39;error, res must be either 1 or 5&#39;</span>
+	<span class="n">var</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;bx&#39;</span><span class="p">,</span><span class="s">&#39;bye&#39;</span><span class="p">,</span><span class="s">&#39;bze&#39;</span><span class="p">,</span><span class="s">&#39;bym&#39;</span><span class="p">,</span><span class="s">&#39;bzm&#39;</span><span class="p">,</span><span class="s">&#39;pDyn&#39;</span><span class="p">,</span><span class="s">&#39;ae&#39;</span><span class="p">,</span><span class="s">&#39;symh&#39;</span><span class="p">]:</span>
+		<span class="k">assert</span><span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="n">name</span><span class="p">],</span><span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> \
+			<span class="nb">isinstance</span><span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="mi">0</span><span class="p">],(</span><span class="nb">int</span><span class="p">,</span><span class="nb">float</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="mi">1</span><span class="p">],(</span><span class="nb">int</span><span class="p">,</span><span class="nb">float</span><span class="p">)))),</span> \
+			<span class="s">&#39;error,&#39;</span><span class="o">+</span><span class="n">name</span><span class="o">+</span><span class="s">&#39; must None or a list of 2 numbers&#39;</span>
+		
+	<span class="k">if</span><span class="p">(</span><span class="n">eTime</span> <span class="o">==</span> <span class="bp">None</span><span class="p">):</span> <span class="n">eTime</span> <span class="o">=</span> <span class="n">sTime</span><span class="o">+</span><span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+	<span class="n">qryList</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="c">#if arguments are provided, query for those</span>
+	<span class="n">qryList</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;time&#39;</span><span class="p">:{</span><span class="s">&#39;$gte&#39;</span><span class="p">:</span><span class="n">sTime</span><span class="p">}})</span>
+	<span class="n">qryList</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;res&#39;</span><span class="p">:</span><span class="n">res</span><span class="p">})</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">eTime</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span> <span class="n">qryList</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;time&#39;</span><span class="p">:{</span><span class="s">&#39;$lte&#39;</span><span class="p">:</span><span class="n">eTime</span><span class="p">}})</span>
+	<span class="n">var</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;bx&#39;</span><span class="p">,</span><span class="s">&#39;bye&#39;</span><span class="p">,</span><span class="s">&#39;bze&#39;</span><span class="p">,</span><span class="s">&#39;bym&#39;</span><span class="p">,</span><span class="s">&#39;bzm&#39;</span><span class="p">,</span><span class="s">&#39;pDyn&#39;</span><span class="p">,</span><span class="s">&#39;ae&#39;</span><span class="p">,</span><span class="s">&#39;symh&#39;</span><span class="p">]:</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span> 
+			<span class="n">qryList</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">name</span><span class="p">:{</span><span class="s">&#39;$gte&#39;</span><span class="p">:</span><span class="nb">min</span><span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="n">name</span><span class="p">])}})</span>
+			<span class="n">qryList</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">name</span><span class="p">:{</span><span class="s">&#39;$lte&#39;</span><span class="p">:</span><span class="nb">max</span><span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="n">name</span><span class="p">])}})</span>
+			
+	<span class="c">#construct the final query definition</span>
+	<span class="n">qryDict</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;$and&#39;</span><span class="p">:</span> <span class="n">qryList</span><span class="p">}</span>
+	<span class="c">#connect to the database</span>
+	<span class="n">omniData</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">getDataConn</span><span class="p">(</span><span class="n">dbName</span><span class="o">=</span><span class="s">&#39;gme&#39;</span><span class="p">,</span><span class="n">collName</span><span class="o">=</span><span class="s">&#39;omni&#39;</span><span class="p">)</span>
+	
+	<span class="c">#do the query</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">qryList</span> <span class="o">!=</span> <span class="p">[]):</span> <span class="n">qry</span> <span class="o">=</span> <span class="n">omniData</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">qryDict</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span> <span class="n">qry</span> <span class="o">=</span> <span class="n">omniData</span><span class="o">.</span><span class="n">find</span><span class="p">()</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+		<span class="n">omniList</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">qry</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s">&#39;time&#39;</span><span class="p">):</span>
+			<span class="n">omniList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">omniRec</span><span class="p">(</span><span class="n">dbDict</span><span class="o">=</span><span class="n">rec</span><span class="p">))</span>
+		<span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">returning a list with&#39;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">omniList</span><span class="p">),</span><span class="s">&#39;records of omni data&#39;</span>
+		<span class="k">return</span> <span class="n">omniList</span>
+	<span class="c">#if we didn&#39;t find anything on the mongodb</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">could not find requested data in the mongodb&#39;</span>
+		<span class="k">print</span> <span class="s">&#39;we will look on the ftp server, but your conditions will be (mostly) ignored&#39;</span>
+		
+		<span class="c">#read from ftp server</span>
+		<span class="n">omniList</span> <span class="o">=</span> <span class="n">readOmniFtp</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span> <span class="n">eTime</span><span class="p">)</span>
+		
+		<span class="k">if</span><span class="p">(</span><span class="n">omniList</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span>
+			<span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">returning a list with&#39;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">omniList</span><span class="p">),</span><span class="s">&#39;recs of omni data&#39;</span>
+			<span class="k">return</span> <span class="n">omniList</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s"> no data found on FTP server, returning None...&#39;</span>
+			<span class="k">return</span> <span class="bp">None</span>
+			</div>
+<div class="viewcode-block" id="readOmniFtp"><a class="viewcode-back" href="../../../gme.ind.omni.html#gme.ind.omni.readOmniFtp">[docs]</a><span class="k">def</span> <span class="nf">readOmniFtp</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span><span class="n">eTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">res</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;This function reads omni data from the NASA SPDF server via anonymous FTP connection.</span>
+<span class="sd">	</span>
+<span class="sd">	.. warning::</span>
+<span class="sd">		You should not use this. Use the general function :func:`readOmni` instead.</span>
+<span class="sd">	</span>
+<span class="sd">	**Args**: </span>
+<span class="sd">		* **sTime** (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_): the earliest time you want data for</span>
+<span class="sd">		* [**eTime**] (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_ or None): the latest time you want data for.  if this is None, eTime will be equal to sTime.  default = None</span>
+<span class="sd">		* [**res**] (int): the time resolution of the data you want.  Must be either 1 or 5.  default=5</span>
+<span class="sd">	**Returns**:</span>
+<span class="sd">		* **omniList** (list or None): if data is found, a list of :class:`omniRec` objects matching the input parameters is returned.  If no data is found, None is returned.</span>
+<span class="sd">	**Example**:</span>
+<span class="sd">		::</span>
+<span class="sd">		</span>
+<span class="sd">			import datetime as dt</span>
+<span class="sd">			omniList = gme.ind.readOmniFtp(dt.datetime(2011,1,1,1,50),eTime=dt.datetime(2011,1,1,10,0),res=5)</span>
+<span class="sd">		</span>
+<span class="sd">	written by AJ, 20130128</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	
+	<span class="kn">from</span> <span class="nn">ftplib</span> <span class="kn">import</span> <span class="n">FTP</span>
+	<span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+	
+	<span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">)),</span><span class="s">&#39;error, sTime must be datetime&#39;</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">eTime</span> <span class="o">==</span> <span class="bp">None</span><span class="p">):</span> <span class="n">eTime</span><span class="o">=</span><span class="n">sTime</span>
+	<span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">eTime</span><span class="p">,</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">)),</span><span class="s">&#39;error, eTime must be datetime&#39;</span>
+	<span class="k">assert</span><span class="p">(</span><span class="n">eTime</span> <span class="o">&gt;=</span> <span class="n">sTime</span><span class="p">),</span> <span class="s">&#39;error, end time greater than start time&#39;</span>
+	<span class="k">assert</span><span class="p">(</span><span class="n">res</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">res</span> <span class="o">==</span> <span class="mi">5</span><span class="p">),</span> <span class="s">&#39;error, res must be 1 or 5&#39;</span>
+	
+	<span class="c">#connect to the server</span>
+	<span class="k">try</span><span class="p">:</span> <span class="n">ftp</span> <span class="o">=</span> <span class="n">FTP</span><span class="p">(</span><span class="s">&#39;spdf.gsfc.nasa.gov&#39;</span><span class="p">)</span>	
+	<span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span>
+		<span class="k">print</span> <span class="n">e</span>
+		<span class="k">print</span> <span class="s">&#39;problem connecting to SPDF server&#39;</span>
+		
+	<span class="c">#login as anonymous</span>
+	<span class="k">try</span><span class="p">:</span> <span class="n">l</span><span class="o">=</span><span class="n">ftp</span><span class="o">.</span><span class="n">login</span><span class="p">()</span>
+	<span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span>
+		<span class="k">print</span> <span class="n">e</span>
+		<span class="k">print</span> <span class="s">&#39;problem logging in to SPDF server&#39;</span>
+	
+	<span class="c">#go to the omni directory</span>
+	<span class="k">try</span><span class="p">:</span> <span class="n">ftp</span><span class="o">.</span><span class="n">cwd</span><span class="p">(</span><span class="s">&#39;/pub/data/omni/high_res_omni/&#39;</span><span class="p">)</span>
+	<span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span>
+		<span class="k">print</span> <span class="n">e</span>
+		<span class="k">print</span> <span class="s">&#39;error getting to data directory&#39;</span>
+	
+	<span class="c">#list to hold the lines</span>
+	<span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="c">#get the omni data</span>
+	<span class="k">for</span> <span class="n">yr</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sTime</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">eTime</span><span class="o">.</span><span class="n">year</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">res</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span> <span class="n">fname</span> <span class="o">=</span> <span class="s">&#39;omni_min&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">yr</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;.asc&#39;</span>
+		<span class="k">else</span><span class="p">:</span> <span class="n">fname</span> <span class="o">=</span> <span class="s">&#39;omni_5min&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">yr</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;.asc&#39;</span>
+		<span class="k">print</span> <span class="s">&#39;omni: RETR &#39;</span><span class="o">+</span><span class="n">fname</span>
+		<span class="k">try</span><span class="p">:</span> <span class="n">ftp</span><span class="o">.</span><span class="n">retrlines</span><span class="p">(</span><span class="s">&#39;RETR &#39;</span><span class="o">+</span><span class="n">fname</span><span class="p">,</span><span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">)</span>
+		<span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span>
+			<span class="k">print</span> <span class="n">e</span>
+			<span class="k">print</span> <span class="s">&#39;error retrieving&#39;</span><span class="p">,</span><span class="n">fname</span>
+	
+	<span class="c">#convert the ascii lines into a list of omniRec objects</span>
+	<span class="n">myOmni</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+		<span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+			<span class="n">linedate</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="mi">8</span><span class="p">:</span><span class="mi">11</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="mi">11</span><span class="p">:</span><span class="mi">14</span><span class="p">]))</span> <span class="o">+</span> \
+									<span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">8</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">sTime</span> <span class="o">&lt;=</span> <span class="n">linedate</span> <span class="o">&lt;=</span> <span class="n">eTime</span><span class="p">):</span>
+				<span class="n">myOmni</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">omniRec</span><span class="p">(</span><span class="n">ftpLine</span><span class="o">=</span><span class="n">l</span><span class="p">,</span><span class="n">res</span><span class="o">=</span><span class="n">res</span><span class="p">))</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">linedate</span> <span class="o">&gt;</span> <span class="n">eTime</span><span class="p">):</span> <span class="k">break</span>
+		<span class="k">return</span> <span class="n">myOmni</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">None</span>
+		</div>
+<div class="viewcode-block" id="mapOmniMongo"><a class="viewcode-back" href="../../../gme.ind.omni.html#gme.ind.omni.mapOmniMongo">[docs]</a><span class="k">def</span> <span class="nf">mapOmniMongo</span><span class="p">(</span><span class="n">sYear</span><span class="p">,</span><span class="n">eYear</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">res</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;This function reads omni data from the NASA SPDF FTP server via anonymous FTP connection and maps it to the mongodb.  </span>
+<span class="sd">	</span>
+<span class="sd">	.. warning::</span>
+<span class="sd">		In general, nobody except the database admins will need to use this function</span>
+<span class="sd">	</span>
+<span class="sd">	**Args**: </span>
+<span class="sd">		* **sYear** (int): the year to begin mapping data</span>
+<span class="sd">		* [**eYear**] (int or None): the end year for mapping data.  if this is None, eYear will be sYear</span>
+<span class="sd">		* [**res**] (int): the time resolution for mapping data.  Can be either 1 or 5.  default=5</span>
+<span class="sd">	**Returns**:</span>
+<span class="sd">		* Nothing.</span>
+<span class="sd">	**Example**:</span>
+<span class="sd">		::</span>
+<span class="sd">		</span>
+<span class="sd">			gme.ind.mapOmniMongo(1997,res=1)</span>
+<span class="sd">		</span>
+<span class="sd">	written by AJ, 20130123</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	
+	<span class="kn">import</span> <span class="nn">pydarn.sdio.dbUtils</span> <span class="kn">as</span> <span class="nn">db</span>
+	<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+	
+	<span class="c">#check inputs</span>
+	<span class="k">assert</span><span class="p">(</span><span class="n">res</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">res</span> <span class="o">==</span> <span class="mi">5</span><span class="p">),</span><span class="s">&#39;error, res must be either 1 or 5&#39;</span>
+	<span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">sYear</span><span class="p">,</span><span class="nb">int</span><span class="p">)),</span><span class="s">&#39;error, sYear must be int&#39;</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">eYear</span> <span class="o">==</span> <span class="bp">None</span><span class="p">):</span> <span class="n">eYear</span><span class="o">=</span><span class="n">sYear</span>
+	<span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">eYear</span><span class="p">,</span><span class="nb">int</span><span class="p">)),</span><span class="s">&#39;error, sYear must be None or int&#39;</span>
+	<span class="k">assert</span><span class="p">(</span><span class="n">eYear</span> <span class="o">&gt;=</span> <span class="n">sYear</span><span class="p">),</span> <span class="s">&#39;error, end year greater than start year&#39;</span>
+	
+	<span class="c">#get data connection</span>
+	<span class="n">mongoData</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">getDataConn</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;DBWRITEUSER&#39;</span><span class="p">],</span><span class="n">password</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;DBWRITEPASS&#39;</span><span class="p">],</span>\
+								<span class="n">dbAddress</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;SDDB&#39;</span><span class="p">],</span><span class="n">dbName</span><span class="o">=</span><span class="s">&#39;gme&#39;</span><span class="p">,</span><span class="n">collName</span><span class="o">=</span><span class="s">&#39;omni&#39;</span><span class="p">)</span>
+	
+	<span class="c">#set up all of the indices</span>
+	<span class="n">mongoData</span><span class="o">.</span><span class="n">ensure_index</span><span class="p">(</span><span class="s">&#39;time&#39;</span><span class="p">)</span>
+	<span class="n">mongoData</span><span class="o">.</span><span class="n">ensure_index</span><span class="p">(</span><span class="s">&#39;res&#39;</span><span class="p">)</span>
+	<span class="n">mongoData</span><span class="o">.</span><span class="n">ensure_index</span><span class="p">(</span><span class="s">&#39;bx&#39;</span><span class="p">)</span>
+	<span class="n">mongoData</span><span class="o">.</span><span class="n">ensure_index</span><span class="p">(</span><span class="s">&#39;bye&#39;</span><span class="p">)</span>
+	<span class="n">mongoData</span><span class="o">.</span><span class="n">ensure_index</span><span class="p">(</span><span class="s">&#39;bze&#39;</span><span class="p">)</span>
+	<span class="n">mongoData</span><span class="o">.</span><span class="n">ensure_index</span><span class="p">(</span><span class="s">&#39;bym&#39;</span><span class="p">)</span>
+	<span class="n">mongoData</span><span class="o">.</span><span class="n">ensure_index</span><span class="p">(</span><span class="s">&#39;bzm&#39;</span><span class="p">)</span>
+	<span class="n">mongoData</span><span class="o">.</span><span class="n">ensure_index</span><span class="p">(</span><span class="s">&#39;pDyn&#39;</span><span class="p">)</span>
+	<span class="n">mongoData</span><span class="o">.</span><span class="n">ensure_index</span><span class="p">(</span><span class="s">&#39;ae&#39;</span><span class="p">)</span>
+	<span class="n">mongoData</span><span class="o">.</span><span class="n">ensure_index</span><span class="p">(</span><span class="s">&#39;symh&#39;</span><span class="p">)</span>
+		
+	<span class="c">#read the omni data from the FTP server</span>
+	<span class="k">for</span> <span class="n">yr</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sYear</span><span class="p">,</span><span class="n">eYear</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+		<span class="k">for</span> <span class="n">mon</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">13</span><span class="p">):</span>
+			<span class="n">templist</span> <span class="o">=</span> <span class="n">readOmniFtp</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">yr</span><span class="p">,</span><span class="n">mon</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">yr</span><span class="p">,</span><span class="n">mon</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">31</span><span class="p">),</span><span class="n">res</span><span class="o">=</span><span class="n">res</span><span class="p">)</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">templist</span> <span class="o">==</span> <span class="bp">None</span><span class="p">):</span> <span class="k">continue</span>
+			<span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">templist</span><span class="p">:</span>
+				<span class="c">#check if a duplicate record exists</span>
+				<span class="n">qry</span> <span class="o">=</span> <span class="n">mongoData</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s">&#39;$and&#39;</span><span class="p">:[{</span><span class="s">&#39;time&#39;</span><span class="p">:</span><span class="n">rec</span><span class="o">.</span><span class="n">time</span><span class="p">},{</span><span class="s">&#39;res&#39;</span><span class="p">:</span><span class="n">rec</span><span class="o">.</span><span class="n">res</span><span class="p">}]})</span>
+				<span class="k">print</span> <span class="n">rec</span><span class="o">.</span><span class="n">time</span>
+				<span class="n">tempRec</span> <span class="o">=</span> <span class="n">rec</span><span class="o">.</span><span class="n">toDbDict</span><span class="p">()</span>
+				<span class="n">cnt</span> <span class="o">=</span> <span class="n">qry</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+				<span class="c">#if this is a new record, insert it</span>
+				<span class="k">if</span><span class="p">(</span><span class="n">cnt</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span> <span class="n">mongoData</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">tempRec</span><span class="p">)</span>
+				<span class="c">#if this is an existing record, update it</span>
+				<span class="k">elif</span><span class="p">(</span><span class="n">cnt</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+					<span class="k">print</span> <span class="s">&#39;foundone!!&#39;</span>
+					<span class="n">dbDict</span> <span class="o">=</span> <span class="n">qry</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+					<span class="n">temp</span> <span class="o">=</span> <span class="n">dbDict</span><span class="p">[</span><span class="s">&#39;_id&#39;</span><span class="p">]</span>
+					<span class="n">dbDict</span> <span class="o">=</span> <span class="n">tempRec</span>
+					<span class="n">dbDict</span><span class="p">[</span><span class="s">&#39;_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span>
+					<span class="n">mongoData</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">dbDict</span><span class="p">)</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="k">print</span> <span class="s">&#39;strange, there is more than 1 record for&#39;</span><span class="p">,</span><span class="n">rec</span><span class="o">.</span><span class="n">time</span>
+	
+	</div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../../../index.html">
+          <img class="logo" src="../../../_static/davitpy.svg" alt="Logo" style="width: 80%;"/>
+        </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+    <li><a href="../../../index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../ind.html" >gme.ind</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, VT SuperDARN Lab and Friends.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

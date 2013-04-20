@@ -1,0 +1,268 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gme.base.gmeBase &mdash; davitpy</title>
+    
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="top" title="davitpy" href="index.html" />
+    <link rel="up" title="gme.base" href="gme.base.html" />
+    <link rel="next" title="gme.base.fillGmedb" href="gme.base.fillGmedb.html" />
+    <link rel="prev" title="gme.base" href="gme.base.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.base.fillGmedb.html" title="gme.base.fillGmedb"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.base.html" title="gme.base"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="gme.html" >gme</a> &raquo;</li>
+          <li><a href="gme.base.html" accesskey="U">gme.base</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="gme-base-gmebase">
+<h1>gme.base.gmeBase<a class="headerlink" href="#gme-base-gmebase" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<span class="target" id="module-gme.base.gmeBase"></span><span class="target" id="module-gmeBase"></span><div class="section" id="module-gmebase">
+<h2><strong>Module</strong>: gmeBase<a class="headerlink" href="#module-gmebase" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><strong>Classes</strong>:</dt>
+<dd><ul class="first last simple">
+<li><tt class="xref py py-class docutils literal"><span class="pre">gmeData</span></tt></li>
+</ul>
+</dd>
+</dl>
+<dl class="class">
+<dt id="gme.base.gmeBase.gmeData">
+<em class="property">class </em><tt class="descclassname">gme.base.gmeBase.</tt><tt class="descname">gmeData</tt><a class="reference internal" href="_modules/gme/base/gmeBase.html#gmeData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.base.gmeBase.gmeData" title="Permalink to this definition">¶</a></dt>
+<dd><p>a class to represent a a record of gme data.  Other classes will extend this class</p>
+<dl class="docutils">
+<dt><strong>Members</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>time</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): an object identifying which time these data are for</li>
+<li><strong>dataSet</strong> (str): a string indicating the dataset</li>
+<li><strong>info</strong> (str): information about where the data come from.  <em>Please be courteous and give credit to data providers when credit is due.</em></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If any of the members have a value of None, this means that they could not be read for that specific time</p>
+</div>
+<dl class="docutils">
+<dt><strong>Methods</strong>:</dt>
+<dd><ul class="first last simple">
+<li><tt class="xref py py-func docutils literal"><span class="pre">parseDb()</span></tt></li>
+<li><tt class="xref py py-func docutils literal"><span class="pre">toDbDict()</span></tt></li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">emptyObj</span> <span class="o">=</span> <span class="n">gme</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">gmeData</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130131</p>
+<dl class="method">
+<dt id="gme.base.gmeBase.gmeData.__init__">
+<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gme/base/gmeBase.html#gmeData.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.base.gmeBase.gmeData.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gme.base.gmeBase.gmeData.parseDb">
+<tt class="descname">parseDb</tt><big>(</big><em>dbDict</em><big>)</big><a class="reference internal" href="_modules/gme/base/gmeBase.html#gmeData.parseDb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.base.gmeBase.gmeData.parseDb" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is used to parse a dictionary of gme data from the mongodb into a <tt class="xref py py-class docutils literal"><span class="pre">gmeData</span></tt> object.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In general, users will not need to use this.</p>
+</div>
+<p><strong>Belongs to</strong>: <tt class="xref py py-class docutils literal"><span class="pre">gmeData</span></tt></p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>dbDict</strong> (dict): the dictionary from the mongodb</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Nothing.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">myObj</span><span class="o">.</span><span class="n">parseDb</span><span class="p">(</span><span class="n">mongoDbDict</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130129</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gme.base.gmeBase.gmeData.toDbDict">
+<tt class="descname">toDbDict</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gme/base/gmeBase.html#gmeData.toDbDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.base.gmeBase.gmeData.toDbDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is used to convert a <tt class="xref py py-class docutils literal"><span class="pre">gmeData</span></tt> object into a mongodb data dictionary.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In general, users will not need to worry about this</p>
+</div>
+<p><strong>Belongs to</strong>: <tt class="xref py py-class docutils literal"><span class="pre">gmeData</span></tt></p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li>Nothing.</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>dbDict</strong> (dict): a dictionary in the correct format for writing to the mongodb</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">mongoDbDict</span> <span class="o">=</span> <span class="n">myObj</span><span class="o">.</span><span class="n">todbDict</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130129</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<dl class="attribute">
+<dt id="gme.base.gmeBase">
+<tt class="descclassname">gme.base.</tt><tt class="descname">gmeBase</tt><a class="headerlink" href="#gme.base.gmeBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#gme.base.gmeBase" title="gme.base.gmeBase"><tt class="xref py py-class docutils literal"><span class="pre">gme.base.gmeBase</span></tt></a></p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html">
+          <img class="logo" src="_static/davitpy.svg" alt="Logo" style="width: 80%;"/>
+        </a></p>
+  <div class="sphinxlocaltoc">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">gme.base.gmeBase</a><ul>
+<li><a class="reference internal" href="#module-gmebase"><strong>Module</strong>: gmeBase</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="gme.base.html"
+                        title="previous chapter">gme.base</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="gme.base.fillGmedb.html"
+                        title="next chapter">gme.base.fillGmedb</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/gme.base.gmeBase.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.base.fillGmedb.html" title="gme.base.fillGmedb"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.base.html" title="gme.base"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="gme.html" >gme</a> &raquo;</li>
+          <li><a href="gme.base.html" >gme.base</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, VT SuperDARN Lab and Friends.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

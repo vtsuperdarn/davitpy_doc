@@ -1,0 +1,358 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gme.ind.symasy &mdash; davitpy</title>
+    
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="top" title="davitpy" href="index.html" />
+    <link rel="up" title="gme.ind" href="gme.ind.html" />
+    <link rel="next" title="gme.ind.ae" href="gme.ind.ae.html" />
+    <link rel="prev" title="gme.ind" href="gme.ind.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.ind.ae.html" title="gme.ind.ae"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.ind.html" title="gme.ind"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="gme.html" >gme</a> &raquo;</li>
+          <li><a href="gme.ind.html" accesskey="U">gme.ind</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="gme-ind-symasy">
+<h1>gme.ind.symasy<a class="headerlink" href="#gme-ind-symasy" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<span class="target" id="module-gme.ind.symasy"></span><span class="target" id="module-symasy"></span><div class="section" id="module-gme-ind-symasy">
+<h2><strong>Module</strong>: gme.ind.symasy<a class="headerlink" href="#module-gme-ind-symasy" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><strong>Classes</strong>:</dt>
+<dd><ul class="first last simple">
+<li><tt class="xref py py-class docutils literal"><span class="pre">symAsyRec</span></tt></li>
+</ul>
+</dd>
+<dt><strong>Functions</strong>:</dt>
+<dd><ul class="first last simple">
+<li><tt class="xref py py-func docutils literal"><span class="pre">readSymAsy()</span></tt></li>
+<li><tt class="xref py py-func docutils literal"><span class="pre">readSymAsyWeb()</span></tt></li>
+<li><tt class="xref py py-func docutils literal"><span class="pre">mapSymAsyMongo()</span></tt></li>
+</ul>
+</dd>
+</dl>
+<dl class="function">
+<dt id="gme.ind.symasy.mapSymAsyMongo">
+<tt class="descclassname">gme.ind.symasy.</tt><tt class="descname">mapSymAsyMongo</tt><big>(</big><em>sYear</em>, <em>eYear=None</em><big>)</big><a class="reference internal" href="_modules/gme/ind/symasy.html#mapSymAsyMongo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.symasy.mapSymAsyMongo" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads sym/asy data from wdc and puts it in mongodb</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">In general, nobody except the database admins will need to use this function</p>
+</div>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>sYear</strong> (int): the year to begin mapping data</li>
+<li>[<strong>eYear</strong>] (int or None): the end year for mapping data.  if this is None, eYear will be sYear</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Nothing.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">gme</span><span class="o">.</span><span class="n">ind</span><span class="o">.</span><span class="n">mapSymAsyMongo</span><span class="p">(</span><span class="mi">2001</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130123</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gme.ind.symasy.readSymAsy">
+<tt class="descclassname">gme.ind.symasy.</tt><tt class="descname">readSymAsy</tt><big>(</big><em>sTime=None</em>, <em>eTime=None</em>, <em>symh=None</em>, <em>symd=None</em>, <em>asyh=None</em>, <em>asyd=None</em><big>)</big><a class="reference internal" href="_modules/gme/ind/symasy.html#readSymAsy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.symasy.readSymAsy" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads sym/asy data from the mongodb.</p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li>[<strong>sTime</strong>] (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the earliest time you want data for, default=None</li>
+<li>[<strong>eTime</strong>] (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the latest time you want data for.  if this is None, end Time will be 1 day after sTime.  default = None</li>
+<li>[<strong>symh</strong>] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with symh values in the range [a,b] will be returned.  default = None</li>
+<li>[<strong>symd</strong>] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with symd values in the range [a,b] will be returned.  default = None</li>
+<li>[<strong>asyh</strong>] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with asyh values in the range [a,b] will be returned.  default = None</li>
+<li>[<strong>asyd</strong>] (list or None): if this is not None, it must be a 2-element list of numbers, [a,b].  In this case, only data with asyd values in the range [a,b] will be returned.  default = None</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>symList</strong> (list or None): if data is found, a list of <tt class="xref py py-class docutils literal"><span class="pre">symAsyRec</span></tt> objects matching the input parameters is returned.  If no data is found, None is returned.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+<span class="n">symList</span> <span class="o">=</span> <span class="n">gme</span><span class="o">.</span><span class="n">ind</span><span class="o">.</span><span class="n">readSymAsy</span><span class="p">(</span><span class="n">sTime</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">eTime</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">symh</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">50</span><span class="p">],</span><span class="n">asyd</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130131</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gme.ind.symasy.readSymAsyWeb">
+<tt class="descclassname">gme.ind.symasy.</tt><tt class="descname">readSymAsyWeb</tt><big>(</big><em>sTime</em>, <em>eTime=None</em><big>)</big><a class="reference internal" href="_modules/gme/ind/symasy.html#readSymAsyWeb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.symasy.readSymAsyWeb" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads sym/asy data from the WDC kyoto website</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You should not use this. Use the general function <tt class="xref py py-func docutils literal"><span class="pre">readSymAsy()</span></tt> instead.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>sTime</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): the earliest time you want data for</li>
+<li>[<strong>eTime</strong>] (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the latest time you want data for.  if this is None, eTime will be equal 1 day after sTime.  This must not be more than 366 days after sTime.  default = None</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+<span class="n">symList</span> <span class="o">=</span> <span class="n">gme</span><span class="o">.</span><span class="n">ind</span><span class="o">.</span><span class="n">readSymAsyWeb</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">eTime</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130131</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="gme.ind.symasy.symAsyRec">
+<em class="property">class </em><tt class="descclassname">gme.ind.symasy.</tt><tt class="descname">symAsyRec</tt><big>(</big><em>webLine=None</em>, <em>dbDict=None</em><big>)</big><a class="reference internal" href="_modules/gme/ind/symasy.html#symAsyRec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.symasy.symAsyRec" title="Permalink to this definition">¶</a></dt>
+<dd><p>a class to represent a record of sym/asy data.  Extends <tt class="xref py py-class docutils literal"><span class="pre">gmeBase.gmeData</span></tt>. Note that sym/asym data is available from 1980-present day (or whatever the latest WDC has uploaded is).  <strong>The data are 1-minute values.</strong>  More info on sym/asy can be found <a class="reference external" href="http://wdc.kugi.kyoto-u.ac.jp/aeasy/asy.pdf">here</a></p>
+<dl class="docutils">
+<dt><strong>Members</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>time</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): an object identifying which time these data are for</li>
+<li><strong>dataSet</strong> (str): a string indicating the dataset this is from</li>
+<li><strong>info</strong> (str): information about where the data come from.  <em>Please be courteous and give credit to data providers when credit is due.</em></li>
+<li><strong>symh</strong> (float): the symh value</li>
+<li><strong>symd</strong> (float): the symd value</li>
+<li><strong>asyh</strong> (float): the asyh value</li>
+<li><strong>asyd</strong> (float): the asyd value</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If any of the members have a value of None, this means that they could not be read for that specific time</p>
+</div>
+<dl class="docutils">
+<dt><strong>Methods</strong>:</dt>
+<dd><ul class="first last simple">
+<li><tt class="xref py py-func docutils literal"><span class="pre">parseWeb()</span></tt></li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">emptySymAsyObj</span> <span class="o">=</span> <span class="n">gme</span><span class="o">.</span><span class="n">ind</span><span class="o">.</span><span class="n">symAsyRec</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130131</p>
+<dl class="method">
+<dt id="gme.ind.symasy.symAsyRec.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>webLine=None</em>, <em>dbDict=None</em><big>)</big><a class="reference internal" href="_modules/gme/ind/symasy.html#symAsyRec.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.symasy.symAsyRec.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>the intialization fucntion for a <tt class="xref py py-class docutils literal"><span class="pre">symAsyRec</span></tt> object.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In general, users will not need to worry about this.</p>
+</div>
+<p><strong>Belongs to</strong>: <tt class="xref py py-class docutils literal"><span class="pre">symAsyRec</span></tt></p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li>[<strong>webLine</strong>] (str): an ASCII line from the datafile from WDC. if this is provided, the object is initialized from it.  default=None</li>
+<li>[<strong>dbDict</strong>] (dict): a dictionary read from the mongodb.  if this is provided, the object is initialized from it.  default = None</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Nothing.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">myDstObj</span> <span class="o">=</span> <span class="n">symAsyRec</span><span class="p">(</span><span class="n">webLine</span><span class="o">=</span><span class="n">awebLine</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130131</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gme.ind.symasy.symAsyRec.parseWeb">
+<tt class="descname">parseWeb</tt><big>(</big><em>line</em><big>)</big><a class="reference internal" href="_modules/gme/ind/symasy.html#symAsyRec.parseWeb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.symasy.symAsyRec.parseWeb" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is used to convert a line of sym/asy data from the WDC to a symAsyRec object</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In general, users will not need to worry about this.</p>
+</div>
+<p><strong>Belongs to</strong>: <tt class="xref py py-class docutils literal"><span class="pre">symAsyRec</span></tt></p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>line</strong> (str): the ASCII line from the WDC data file</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Nothing.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">mysymAsyObj</span><span class="o">.</span><span class="n">parseWeb</span><span class="p">(</span><span class="n">webLine</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130131</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<dl class="attribute">
+<dt id="gme.ind.symasy">
+<tt class="descclassname">gme.ind.</tt><tt class="descname">symasy</tt><a class="headerlink" href="#gme.ind.symasy" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#gme.ind.symasy" title="gme.ind.symasy"><tt class="xref py py-class docutils literal"><span class="pre">gme.ind.symasy</span></tt></a></p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html">
+          <img class="logo" src="_static/davitpy.svg" alt="Logo" style="width: 80%;"/>
+        </a></p>
+  <div class="sphinxlocaltoc">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">gme.ind.symasy</a><ul>
+<li><a class="reference internal" href="#module-gme-ind-symasy"><strong>Module</strong>: gme.ind.symasy</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="gme.ind.html"
+                        title="previous chapter">gme.ind</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="gme.ind.ae.html"
+                        title="next chapter">gme.ind.ae</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/gme.ind.symasy.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.ind.ae.html" title="gme.ind.ae"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.ind.html" title="gme.ind"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="gme.html" >gme</a> &raquo;</li>
+          <li><a href="gme.ind.html" >gme.ind</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, VT SuperDARN Lab and Friends.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

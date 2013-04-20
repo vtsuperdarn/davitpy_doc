@@ -1,0 +1,360 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gme.ind.kp &mdash; davitpy</title>
+    
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="top" title="davitpy" href="index.html" />
+    <link rel="up" title="gme.ind" href="gme.ind.html" />
+    <link rel="next" title="gme.ind.omni" href="gme.ind.omni.html" />
+    <link rel="prev" title="gme.ind.ae" href="gme.ind.ae.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.ind.omni.html" title="gme.ind.omni"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.ind.ae.html" title="gme.ind.ae"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="gme.html" >gme</a> &raquo;</li>
+          <li><a href="gme.ind.html" accesskey="U">gme.ind</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="gme-ind-kp">
+<h1>gme.ind.kp<a class="headerlink" href="#gme-ind-kp" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<span class="target" id="module-gme.ind.kp"></span><span class="target" id="module-kp"></span><div class="section" id="module-gme-ind-kp">
+<h2><strong>Module</strong>: gme.ind.kp<a class="headerlink" href="#module-gme-ind-kp" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><strong>Classes</strong>:</dt>
+<dd><ul class="first last simple">
+<li><tt class="xref py py-class docutils literal"><span class="pre">kpDay</span></tt></li>
+</ul>
+</dd>
+<dt><strong>Functions</strong>:</dt>
+<dd><ul class="first last simple">
+<li><tt class="xref py py-func docutils literal"><span class="pre">readKp()</span></tt></li>
+<li><tt class="xref py py-func docutils literal"><span class="pre">readKpFtp()</span></tt></li>
+<li><tt class="xref py py-func docutils literal"><span class="pre">mapKpMongo()</span></tt></li>
+</ul>
+</dd>
+</dl>
+<dl class="class">
+<dt id="gme.ind.kp.kpDay">
+<em class="property">class </em><tt class="descclassname">gme.ind.kp.</tt><tt class="descname">kpDay</tt><big>(</big><em>ftpLine=None</em>, <em>year=None</em>, <em>dbDict=None</em><big>)</big><a class="reference internal" href="_modules/gme/ind/kp.html#kpDay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.kp.kpDay" title="Permalink to this definition">¶</a></dt>
+<dd><p>a class to represent a day of kp data. Extends <tt class="xref py py-class docutils literal"><span class="pre">gmeBase.gmeData</span></tt>  Insight on the class members can be obtained from <a class="reference external" href="ftp://ftp.ngdc.noaa.gov/STP/GEOMAGNETIC_DATA/INDICES/KP_AP/kp_ap.fmt">the NOAA FTP site</a></p>
+<dl class="docutils">
+<dt><strong>Members</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>time</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): an object identifying which day these data are for</li>
+<li><strong>kp</strong> (list): a list of the 8 3-hour kp values fora single day.  The values are in string form, e.g. &#8216;3-&#8216;, &#8216;7+&#8217;, etc.</li>
+<li><strong>kpSum</strong> (int): the sum of the 8 3-hour kp averages</li>
+<li><strong>ap</strong> (list): a list of the 8 3-hour ap values fora single day.</li>
+<li><strong>apMean</strong> (int): the mean of the 8 3-hour ap averages</li>
+<li><strong>sunspot</strong> (int): the international sunspot number</li>
+<li><strong>info</strong> (str): information about where the data come from.  <em>Please be courteous and give credit to data providers when credit is due.</em></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If any of the members have a value of None, this means that they could not be read for that specific date</p>
+</div>
+<dl class="docutils">
+<dt><strong>Methods</strong>:</dt>
+<dd><ul class="first last simple">
+<li><tt class="xref py py-func docutils literal"><span class="pre">parseDb()</span></tt></li>
+<li><tt class="xref py py-func docutils literal"><span class="pre">toDbDict()</span></tt></li>
+<li><tt class="xref py py-func docutils literal"><span class="pre">parseFtp()</span></tt></li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">emptyKpObj</span> <span class="o">=</span> <span class="n">gme</span><span class="o">.</span><span class="n">ind</span><span class="o">.</span><span class="n">kpDay</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130123</p>
+<dl class="method">
+<dt id="gme.ind.kp.kpDay.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>ftpLine=None</em>, <em>year=None</em>, <em>dbDict=None</em><big>)</big><a class="reference internal" href="_modules/gme/ind/kp.html#kpDay.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.kp.kpDay.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>the intialization fucntion for a <tt class="xref py py-class docutils literal"><span class="pre">kpDay</span></tt> object.  In general, users will not need to worry about this.</p>
+<p><strong>Belongs to</strong>: <tt class="xref py py-class docutils literal"><span class="pre">kpDay</span></tt></p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li>[<strong>ftpLine</strong>] (str): an ASCII line from the FTP server, must be provided in conjunction with year.  if this is provided, the object is initialized from it.  default=None</li>
+<li>[<strong>year</strong>]: (int) the year which the data are from.  this is needed because the FTP server uses only 2 digits for their year.  default=None</li>
+<li>[<strong>dbDict</strong>] (dict): a dictionary read from the mongodb.  if this is provided, the object is initialized from it.  default=None</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Nothing.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">myKpDayObj</span> <span class="o">=</span> <span class="n">kpDay</span><span class="p">(</span><span class="n">ftpLine</span><span class="o">=</span><span class="n">aftpLine</span><span class="p">,</span><span class="n">year</span><span class="o">=</span><span class="mi">2009</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130123</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gme.ind.kp.kpDay.parseFtp">
+<tt class="descname">parseFtp</tt><big>(</big><em>line</em>, <em>yr</em><big>)</big><a class="reference internal" href="_modules/gme/ind/kp.html#kpDay.parseFtp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.kp.kpDay.parseFtp" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is used to convert a line of kp data read from the GFZ-Potsdam FTP site into a <tt class="xref py py-class docutils literal"><span class="pre">kpDay</span></tt> object.  In general, users will not need to worry about this.</p>
+<p><strong>Belongs to</strong>: <tt class="xref py py-class docutils literal"><span class="pre">kpDay</span></tt></p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>line</strong> (str): the ASCII line from the FTP server</li>
+<li><strong>yr</strong>: (int) the year which the data are from.  this is needed because the FTP server uses only 2 digits for their year.  y2k much?</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Nothing.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">myKpDayObj</span><span class="o">.</span><span class="n">parseFtp</span><span class="p">(</span><span class="n">ftpLine</span><span class="p">,</span><span class="mi">2009</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130123</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="gme.ind.kp.mapKpMongo">
+<tt class="descclassname">gme.ind.kp.</tt><tt class="descname">mapKpMongo</tt><big>(</big><em>sYear</em>, <em>eYear=None</em><big>)</big><a class="reference internal" href="_modules/gme/ind/kp.html#mapKpMongo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.kp.mapKpMongo" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads kp data from the GFZ Potsdam FTP server via anonymous FTP connection and maps it to the mongodb.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">In general, nobody except the database admins will need to use this function</p>
+</div>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>sYear</strong> (int): the year to begin mapping data</li>
+<li>[<strong>eYear</strong>] (int or None): the end year for mapping data.  if this is None, eYear will be sYear.  default=None</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Nothing.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">gme</span><span class="o">.</span><span class="n">ind</span><span class="o">.</span><span class="n">mapKpMongo</span><span class="p">(</span><span class="mi">1985</span><span class="p">,</span><span class="n">eTime</span><span class="o">=</span><span class="mi">1986</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130123</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gme.ind.kp.readKp">
+<tt class="descclassname">gme.ind.kp.</tt><tt class="descname">readKp</tt><big>(</big><em>sTime=None</em>, <em>eTime=None</em>, <em>kpMin=None</em>, <em>apMin=None</em>, <em>kpSum=None</em>, <em>apMean=None</em>, <em>sunspot=None</em><big>)</big><a class="reference internal" href="_modules/gme/ind/kp.html#readKp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.kp.readKp" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads kp data.  First, it will try to get it from the mongodb, and if it can&#8217;t find it, it will look on the GFZ ftp server using <tt class="xref py py-func docutils literal"><span class="pre">readKpFtp()</span></tt></p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li>[<strong>sTime</strong>] (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the earliest time you want data for.  if this is None, start time will be the earliest record found.  default=None</li>
+<li>[<strong>eTime</strong>] (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the latest time you want data for.  if this is None, end Time will be latest record found.  default=None</li>
+<li>[<strong>kpMin</strong>] (int or None): specify this to only return data from dates with a 3-hour kp value of minimum kpMin.  if this is none, it will be ignored.  default=None</li>
+<li>[<strong>apMin</strong>] (int or None): specify this to only return data from dates with a 3-hour ap value of minimum apMin.  if this is none, it will be ignored.  default=None</li>
+<li>[<strong>kpSum</strong>] (list or None): this must be a 2 element list of integers.  if this is specified, only dates with kpSum values in the range [a,b] will be returned.  if this is None, it will be ignored.  default=None</li>
+<li>[<strong>apMean</strong>] (list or None): this must be a 2 element list of integers.  if this is specified, only dates with apMean values in the range [a,b] will be returned.  if this is None, it will be ignored.  default=None</li>
+<li>[<strong>sunspot</strong>] (list or None): this must be a 2 element list of integers.  if this is specified, only dates with sunspot values in the range [a,b] will be returned.  if this is None, it will be ignored.  default=None</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>kpList</strong> (list or None): if data is found, a list of <tt class="xref py py-class docutils literal"><span class="pre">kpDay</span></tt> objects matching the input parameters is returned.  If not data is found, None is returned.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+<span class="n">kpList</span> <span class="o">=</span> <span class="n">gme</span><span class="o">.</span><span class="n">ind</span><span class="o">.</span><span class="n">readKp</span><span class="p">(</span><span class="n">sTime</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">eTime</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">kpMin</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">apMin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">kpSum</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span><span class="n">apMean</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">],</span><span class="n">sunspot</span><span class="o">=</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="mi">100</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130123</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gme.ind.kp.readKpFtp">
+<tt class="descclassname">gme.ind.kp.</tt><tt class="descname">readKpFtp</tt><big>(</big><em>sTime</em>, <em>eTime=None</em><big>)</big><a class="reference internal" href="_modules/gme/ind/kp.html#readKpFtp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.ind.kp.readKpFtp" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads kp data from the GFZ Potsdam FTP server via anonymous FTP connection.  This cannot read across year boundaries.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You should not be using this function.  use readKp instead.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>sTime</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): the earliest time you want data for</li>
+<li>[<strong>eTime</strong>] (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the latest time you want data for.  if this is None, eTime will be the end of the year of sTime.  default=None</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>kpList</strong> (list or None): if data is found, a list of <tt class="xref py py-class docutils literal"><span class="pre">kpDay</span></tt> objects matching the input parameters is returned.  If not data is found, None is returned.  default=None</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+<span class="n">kpList</span> <span class="o">=</span> <span class="n">gme</span><span class="o">.</span><span class="n">ind</span><span class="o">.</span><span class="n">readKpFtp</span><span class="p">(</span><span class="n">sTime</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">eTime</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130123</p>
+</dd></dl>
+
+</div>
+<dl class="attribute">
+<dt id="gme.ind.kp">
+<tt class="descclassname">gme.ind.</tt><tt class="descname">kp</tt><a class="headerlink" href="#gme.ind.kp" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#gme.ind.kp" title="gme.ind.kp"><tt class="xref py py-class docutils literal"><span class="pre">gme.ind.kp</span></tt></a></p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html">
+          <img class="logo" src="_static/davitpy.svg" alt="Logo" style="width: 80%;"/>
+        </a></p>
+  <div class="sphinxlocaltoc">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">gme.ind.kp</a><ul>
+<li><a class="reference internal" href="#module-gme-ind-kp"><strong>Module</strong>: gme.ind.kp</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="gme.ind.ae.html"
+                        title="previous chapter">gme.ind.ae</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="gme.ind.omni.html"
+                        title="next chapter">gme.ind.omni</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/gme.ind.kp.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.ind.omni.html" title="gme.ind.omni"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gme.ind.ae.html" title="gme.ind.ae"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="gme.html" >gme</a> &raquo;</li>
+          <li><a href="gme.ind.html" >gme.ind</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, VT SuperDARN Lab and Friends.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>
