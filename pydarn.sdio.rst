@@ -10,5 +10,3 @@ pydarn.sdio
    pydarn.sdio.fitexfilter
 
    pydarn.sdio.dbUtils
-
-   pydarn.sdio.pygridIo

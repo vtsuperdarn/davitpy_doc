@@ -32,7 +32,11 @@
     <link rel="top" title="davitpy" href="index.html" />
     <link rel="up" title="utils" href="utils.html" />
     <link rel="prev" title="utils.geoPack" href="utils.geoPack.html" /> 
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="py_16.png" />  
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
+    <link rel=”apple-touch-icon” href=”py_57.png” />
+
   </head>
   <body>
     <div class="relbar-top">
@@ -68,58 +72,146 @@
 <ul class="simple">
 </ul>
 </div>
-<span class="target" id="module-utils.calcSun"></span><div class="section" id="calcsun">
-<h2>calcSun<a class="headerlink" href="#calcsun" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-utils.calcSun"></span><div class="section" id="module-utils-calcsun">
+<h2><strong>Module</strong>: utils.calcSun<a class="headerlink" href="#module-utils-calcsun" title="Permalink to this headline">¶</a></h2>
 <p>This subpackage contains def to calculate sunrise/sunset</p>
 <dl class="docutils">
 <dt>This includes the following defs:</dt>
-<dd><dl class="first last docutils">
-<dt>getJD( date )</dt>
-<dd>calculate the julian date from a python datetime object</dd>
-<dt>calcTimeJulianCent( jd )</dt>
-<dd>convert Julian Day to centuries since J2000.0.</dd>
-<dt>calcGeomMeanLongSun( t )</dt>
-<dd>calculate the Geometric Mean Longitude of the Sun (in degrees)</dd>
-<dt>calcGeomMeanAnomalySun( t )</dt>
-<dd>calculate the Geometric Mean Anomaly of the Sun (in degrees)</dd>
-<dt>calcEccentricityEarthOrbit( t )</dt>
-<dd>calculate the eccentricity of earth&#8217;s orbit (unitless)</dd>
-<dt>calcSunEqOfCenter( t )</dt>
-<dd>calculate the equation of center for the sun (in degrees)</dd>
-<dt>calcSunTrueLong( t )</dt>
-<dd>calculate the true longitude of the sun (in degrees)</dd>
-<dt>calcSunTrueAnomaly( t )</dt>
-<dd>calculate the true anamoly of the sun (in degrees)</dd>
-<dt>calcSunRadVector( t )</dt>
-<dd>calculate the distance to the sun in AU (in degrees)</dd>
-<dt>calcSunApparentLong( t )</dt>
-<dd>calculate the apparent longitude of the sun (in degrees)</dd>
-<dt>calcMeanObliquityOfEcliptic( t )</dt>
-<dd>calculate the mean obliquity of the ecliptic (in degrees)</dd>
-<dt>calcObliquityCorrection( t )</dt>
-<dd>calculate the corrected obliquity of the ecliptic (in degrees)</dd>
-<dt>calcSunRtAscension( t )</dt>
-<dd>calculate the right ascension of the sun (in degrees)</dd>
-<dt>calcSunDeclination( t )</dt>
-<dd>calculate the declination of the sun (in degrees)</dd>
-<dt>calcEquationOfTime( t )</dt>
-<dd>calculate the difference between true solar time and mean solar time (output: equation of time in minutes of time)</dd>
-<dt>calcHourAngleSunrise( lat, solarDec )</dt>
-<dd>calculate the hour angle of the sun at sunrise for the latitude (in radians)</dd>
-<dt>calcAzEl( output, t, localtime, latitude, longitude, zone )</dt>
-<dd>calculate sun azimuth and zenith angle</dd>
-<dt>calcSolNoonUTC( jd, longitude )</dt>
-<dd>calculate time of solar noon the given day at the given location on earth (in minutes since 0 UTC)</dd>
-<dt>calcSolNoon( jd, longitude, timezone, dst )</dt>
-<dd>calculate time of solar noon the given day at the given location on earth (in minutes)</dd>
-<dt>calcSunRiseSetUTC( jd, latitude, longitude )</dt>
-<dd>calculate sunrise/sunset the given day at the given location on earth (in minutes since 0 UTC)</dd>
-<dt>calcSunRiseSet( jd, latitude, longitude, timezone, dst )</dt>
-<dd>calculate sunrise/sunset the given day at the given location on earth (in minutes)</dd>
-<dt>calcTerminator( jd, latitudes, longitudes )</dt>
-<dd>calculate terminator position and solar zenith angle for a given julian date-time within latitude/longitude limits
-note that for plotting only, basemap has a built-in terminator</dd>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.calcSun.getJD" title="utils.calcSun.getJD"><tt class="xref py py-func docutils literal"><span class="pre">utils.calcSun.getJD()</span></tt></a>: </dt>
+<dd><p class="first last">calculate the julian date from a python datetime object</p>
+</dd>
 </dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.calcSun.calcTimeJulianCent" title="utils.calcSun.calcTimeJulianCent"><tt class="xref py py-func docutils literal"><span class="pre">utils.calcSun.calcTimeJulianCent()</span></tt></a>: </dt>
+<dd><p class="first last">convert Julian Day to centuries since J2000.0.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.calcSun.calcGeomMeanLongSun" title="utils.calcSun.calcGeomMeanLongSun"><tt class="xref py py-func docutils literal"><span class="pre">utils.calcSun.calcGeomMeanLongSun()</span></tt></a>: </dt>
+<dd><p class="first last">calculate the Geometric Mean Longitude of the Sun (in degrees)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.calcSun.calcGeomMeanAnomalySun" title="utils.calcSun.calcGeomMeanAnomalySun"><tt class="xref py py-func docutils literal"><span class="pre">utils.calcSun.calcGeomMeanAnomalySun()</span></tt></a>: </dt>
+<dd><p class="first last">calculate the Geometric Mean Anomaly of the Sun (in degrees)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.calcSun.calcEccentricityEarthOrbit" title="utils.calcSun.calcEccentricityEarthOrbit"><tt class="xref py py-func docutils literal"><span class="pre">utils.calcSun.calcEccentricityEarthOrbit()</span></tt></a>: </dt>
+<dd><p class="first last">calculate the eccentricity of earth&#8217;s orbit (unitless)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.calcSun.calcSunEqOfCenter" title="utils.calcSun.calcSunEqOfCenter"><tt class="xref py py-func docutils literal"><span class="pre">utils.calcSun.calcSunEqOfCenter()</span></tt></a>: </dt>
+<dd><p class="first last">calculate the equation of center for the sun (in degrees)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.calcSun.calcSunTrueLong" title="utils.calcSun.calcSunTrueLong"><tt class="xref py py-func docutils literal"><span class="pre">utils.calcSun.calcSunTrueLong()</span></tt></a>: </dt>
+<dd><p class="first last">calculate the true longitude of the sun (in degrees)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.calcSun.calcSunTrueAnomaly" title="utils.calcSun.calcSunTrueAnomaly"><tt class="xref py py-func docutils literal"><span class="pre">utils.calcSun.calcSunTrueAnomaly()</span></tt></a>: </dt>
+<dd><p class="first last">calculate the true anamoly of the sun (in degrees)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.calcSun.calcSunRadVector" title="utils.calcSun.calcSunRadVector"><tt class="xref py py-func docutils literal"><span class="pre">utils.calcSun.calcSunRadVector()</span></tt></a>: </dt>
+<dd><p class="first last">calculate the distance to the sun in AU (in degrees)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.calcSun.calcSunApparentLong" title="utils.calcSun.calcSunApparentLong"><tt class="xref py py-func docutils literal"><span class="pre">utils.calcSun.calcSunApparentLong()</span></tt></a>: </dt>
+<dd><p class="first last">calculate the apparent longitude of the sun (in degrees)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.calcSun.calcMeanObliquityOfEcliptic" title="utils.calcSun.calcMeanObliquityOfEcliptic"><tt class="xref py py-func docutils literal"><span class="pre">utils.calcSun.calcMeanObliquityOfEcliptic()</span></tt></a>: </dt>
+<dd><p class="first last">calculate the mean obliquity of the ecliptic (in degrees)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.calcSun.calcObliquityCorrection" title="utils.calcSun.calcObliquityCorrection"><tt class="xref py py-func docutils literal"><span class="pre">utils.calcSun.calcObliquityCorrection()</span></tt></a>: </dt>
+<dd><p class="first last">calculate the corrected obliquity of the ecliptic (in degrees)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.calcSun.calcSunRtAscension" title="utils.calcSun.calcSunRtAscension"><tt class="xref py py-func docutils literal"><span class="pre">utils.calcSun.calcSunRtAscension()</span></tt></a>: </dt>
+<dd><p class="first last">calculate the right ascension of the sun (in degrees)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.calcSun.calcSunDeclination" title="utils.calcSun.calcSunDeclination"><tt class="xref py py-func docutils literal"><span class="pre">utils.calcSun.calcSunDeclination()</span></tt></a>: </dt>
+<dd><p class="first last">calculate the declination of the sun (in degrees)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.calcSun.calcEquationOfTime" title="utils.calcSun.calcEquationOfTime"><tt class="xref py py-func docutils literal"><span class="pre">utils.calcSun.calcEquationOfTime()</span></tt></a>: </dt>
+<dd><p class="first last">calculate the difference between true solar time and mean solar time (output: equation of time in minutes of time)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.calcSun.calcHourAngleSunrise" title="utils.calcSun.calcHourAngleSunrise"><tt class="xref py py-func docutils literal"><span class="pre">utils.calcSun.calcHourAngleSunrise()</span></tt></a>: </dt>
+<dd><p class="first last">calculate the hour angle of the sun at sunrise for the latitude (in radians)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.calcSun.calcAzEl" title="utils.calcSun.calcAzEl"><tt class="xref py py-func docutils literal"><span class="pre">utils.calcSun.calcAzEl()</span></tt></a>: </dt>
+<dd><p class="first last">calculate sun azimuth and zenith angle</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.calcSun.calcSolNoonUTC" title="utils.calcSun.calcSolNoonUTC"><tt class="xref py py-func docutils literal"><span class="pre">utils.calcSun.calcSolNoonUTC()</span></tt></a>: </dt>
+<dd><p class="first last">calculate time of solar noon the given day at the given location on earth (in minutes since 0 UTC)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.calcSun.calcSolNoon" title="utils.calcSun.calcSolNoon"><tt class="xref py py-func docutils literal"><span class="pre">utils.calcSun.calcSolNoon()</span></tt></a>: </dt>
+<dd><p class="first last">calculate time of solar noon the given day at the given location on earth (in minutes)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.calcSun.calcSunRiseSetUTC" title="utils.calcSun.calcSunRiseSetUTC"><tt class="xref py py-func docutils literal"><span class="pre">utils.calcSun.calcSunRiseSetUTC()</span></tt></a>: </dt>
+<dd><p class="first last">calculate sunrise/sunset the given day at the given location on earth (in minutes since 0 UTC)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.calcSun.calcSunRiseSet" title="utils.calcSun.calcSunRiseSet"><tt class="xref py py-func docutils literal"><span class="pre">utils.calcSun.calcSunRiseSet()</span></tt></a>: </dt>
+<dd><p class="first last">calculate sunrise/sunset the given day at the given location on earth (in minutes)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.calcSun.calcTerminator" title="utils.calcSun.calcTerminator"><tt class="xref py py-func docutils literal"><span class="pre">utils.calcSun.calcTerminator()</span></tt></a>: </dt>
+<dd><p class="first last">calculate terminator position and solar zenith angle for a given julian date-time within latitude/longitude limits
+note that for plotting only, basemap has a built-in terminator</p>
+</dd>
+</dl>
+</li>
+</ul>
 </dd>
 </dl>
 <p>Source: <a class="reference external" href="http://www.esrl.noaa.gov/gmd/grad/solcalc/">http://www.esrl.noaa.gov/gmd/grad/solcalc/</a>
@@ -280,7 +372,7 @@ Note that for plotting only, basemap has a built-in terminator</p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">utils.calcSun</a><ul>
-<li><a class="reference internal" href="#calcsun">calcSun</a></li>
+<li><a class="reference internal" href="#module-utils-calcsun"><strong>Module</strong>: utils.calcSun</a></li>
 </ul>
 </li>
 </ul>

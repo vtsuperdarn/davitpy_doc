@@ -31,7 +31,11 @@
     <script type="text/javascript" src="../../_static/cloud.js"></script>
     <link rel="top" title="davitpy" href="../../index.html" />
     <link rel="up" title="utils" href="../utils.html" /> 
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="py_16.png" />  
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
+    <link rel=”apple-touch-icon” href=”py_57.png” />
+
   </head>
   <body>
     <div class="relbar-top">
@@ -62,55 +66,55 @@
   <h1>Source code for utils.calcSun</h1><div class="highlight"><pre>
 <span class="c"># UTILS/calcSun</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">*******************************</span>
-<span class="sd">            calcSun</span>
-<span class="sd">*******************************</span>
+<span class="sd">*********************</span>
+<span class="sd">**Module**: utils.calcSun</span>
+<span class="sd">*********************</span>
 <span class="sd">This subpackage contains def to calculate sunrise/sunset</span>
 
 <span class="sd">This includes the following defs:</span>
-<span class="sd">    getJD( date )</span>
+<span class="sd">    * :func:`utils.calcSun.getJD`: </span>
 <span class="sd">        calculate the julian date from a python datetime object</span>
-<span class="sd">    calcTimeJulianCent( jd )</span>
+<span class="sd">    * :func:`utils.calcSun.calcTimeJulianCent`: </span>
 <span class="sd">        convert Julian Day to centuries since J2000.0.</span>
-<span class="sd">    calcGeomMeanLongSun( t )</span>
+<span class="sd">    * :func:`utils.calcSun.calcGeomMeanLongSun`: </span>
 <span class="sd">        calculate the Geometric Mean Longitude of the Sun (in degrees)</span>
-<span class="sd">    calcGeomMeanAnomalySun( t )</span>
+<span class="sd">    * :func:`utils.calcSun.calcGeomMeanAnomalySun`: </span>
 <span class="sd">        calculate the Geometric Mean Anomaly of the Sun (in degrees)</span>
-<span class="sd">    calcEccentricityEarthOrbit( t )</span>
+<span class="sd">    * :func:`utils.calcSun.calcEccentricityEarthOrbit`: </span>
 <span class="sd">        calculate the eccentricity of earth&#39;s orbit (unitless)</span>
-<span class="sd">    calcSunEqOfCenter( t )</span>
+<span class="sd">    * :func:`utils.calcSun.calcSunEqOfCenter`: </span>
 <span class="sd">        calculate the equation of center for the sun (in degrees)</span>
-<span class="sd">    calcSunTrueLong( t )</span>
+<span class="sd">    * :func:`utils.calcSun.calcSunTrueLong`: </span>
 <span class="sd">        calculate the true longitude of the sun (in degrees)</span>
-<span class="sd">    calcSunTrueAnomaly( t )</span>
+<span class="sd">    * :func:`utils.calcSun.calcSunTrueAnomaly`: </span>
 <span class="sd">        calculate the true anamoly of the sun (in degrees)</span>
-<span class="sd">    calcSunRadVector( t )</span>
+<span class="sd">    * :func:`utils.calcSun.calcSunRadVector`: </span>
 <span class="sd">        calculate the distance to the sun in AU (in degrees)</span>
-<span class="sd">    calcSunApparentLong( t )</span>
+<span class="sd">    * :func:`utils.calcSun.calcSunApparentLong`: </span>
 <span class="sd">        calculate the apparent longitude of the sun (in degrees)</span>
-<span class="sd">    calcMeanObliquityOfEcliptic( t )</span>
+<span class="sd">    * :func:`utils.calcSun.calcMeanObliquityOfEcliptic`: </span>
 <span class="sd">        calculate the mean obliquity of the ecliptic (in degrees)</span>
-<span class="sd">    calcObliquityCorrection( t )</span>
+<span class="sd">    * :func:`utils.calcSun.calcObliquityCorrection`: </span>
 <span class="sd">        calculate the corrected obliquity of the ecliptic (in degrees)</span>
-<span class="sd">    calcSunRtAscension( t )</span>
+<span class="sd">    * :func:`utils.calcSun.calcSunRtAscension`: </span>
 <span class="sd">        calculate the right ascension of the sun (in degrees)</span>
-<span class="sd">    calcSunDeclination( t )</span>
+<span class="sd">    * :func:`utils.calcSun.calcSunDeclination`: </span>
 <span class="sd">        calculate the declination of the sun (in degrees)</span>
-<span class="sd">    calcEquationOfTime( t )</span>
+<span class="sd">    * :func:`utils.calcSun.calcEquationOfTime`: </span>
 <span class="sd">        calculate the difference between true solar time and mean solar time (output: equation of time in minutes of time)</span>
-<span class="sd">    calcHourAngleSunrise( lat, solarDec )</span>
+<span class="sd">    * :func:`utils.calcSun.calcHourAngleSunrise`: </span>
 <span class="sd">        calculate the hour angle of the sun at sunrise for the latitude (in radians)</span>
-<span class="sd">    calcAzEl( output, t, localtime, latitude, longitude, zone )</span>
+<span class="sd">    * :func:`utils.calcSun.calcAzEl`: </span>
 <span class="sd">        calculate sun azimuth and zenith angle</span>
-<span class="sd">    calcSolNoonUTC( jd, longitude )</span>
+<span class="sd">    * :func:`utils.calcSun.calcSolNoonUTC`: </span>
 <span class="sd">        calculate time of solar noon the given day at the given location on earth (in minutes since 0 UTC)</span>
-<span class="sd">    calcSolNoon( jd, longitude, timezone, dst )</span>
+<span class="sd">    * :func:`utils.calcSun.calcSolNoon`: </span>
 <span class="sd">        calculate time of solar noon the given day at the given location on earth (in minutes)</span>
-<span class="sd">    calcSunRiseSetUTC( jd, latitude, longitude )</span>
+<span class="sd">    * :func:`utils.calcSun.calcSunRiseSetUTC`: </span>
 <span class="sd">        calculate sunrise/sunset the given day at the given location on earth (in minutes since 0 UTC)</span>
-<span class="sd">    calcSunRiseSet( jd, latitude, longitude, timezone, dst )</span>
+<span class="sd">    * :func:`utils.calcSun.calcSunRiseSet`: </span>
 <span class="sd">        calculate sunrise/sunset the given day at the given location on earth (in minutes)</span>
-<span class="sd">    calcTerminator( jd, latitudes, longitudes )</span>
+<span class="sd">    * :func:`utils.calcSun.calcTerminator`: </span>
 <span class="sd">        calculate terminator position and solar zenith angle for a given julian date-time within latitude/longitude limits</span>
 <span class="sd">        note that for plotting only, basemap has a built-in terminator</span>
 

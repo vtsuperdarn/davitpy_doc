@@ -33,7 +33,11 @@
     <link rel="up" title="utils" href="utils.html" />
     <link rel="next" title="utils.calcSun" href="utils.calcSun.html" />
     <link rel="prev" title="utils.plotUtils" href="utils.plotUtils.html" /> 
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="py_16.png" />  
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
+    <link rel=”apple-touch-icon” href=”py_57.png” />
+
   </head>
   <body>
     <div class="relbar-top">
@@ -72,64 +76,92 @@
 <ul class="simple">
 </ul>
 </div>
-<span class="target" id="module-utils.geoPack"></span><div class="section" id="geopack">
-<h2>geoPack<a class="headerlink" href="#geopack" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-utils.geoPack"></span><div class="section" id="module-utils-geopack">
+<h2><strong>Module</strong>: utils.geoPack<a class="headerlink" href="#module-utils-geopack" title="Permalink to this headline">¶</a></h2>
 <dl class="docutils">
-<dt>This module contains the following functions</dt>
-<dd><dl class="first last docutils">
-<dt>geodToGeoc</dt>
-<dd>converts from geodetic to geocentric (and vice-versa)</dd>
-<dt>geodToGeocAzEl</dt>
-<dd>converts azimuth and elevation from geodetic to geocentric (and vice-versa)</dd>
-<dt>gspToGcar</dt>
-<dd>converts global spherical coordinates to global cartesian coordinates (and vice-versa)</dd>
-<dt>gcarToLcar</dt>
-<dd>converts from global cartesian coordinates to local cartesian coordinates (and vice-versa)</dd>
-<dt>lspToLcar</dt>
-<dd>converts from local spherical coordinates to local cartesian coordinates (and vice-versa)</dd>
-<dt>calcDistPnt</dt>
-<dd>calculates the coordines|distance,elevation,azimuth of a point given a point of origin and distance,elevation,azimuth|distant point coordinates</dd>
+<dt>This module contains the following functions:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.geoPack.geodToGeoc" title="utils.geoPack.geodToGeoc"><tt class="xref py py-func docutils literal"><span class="pre">utils.geoPack.geodToGeoc()</span></tt></a>: </dt>
+<dd><p class="first last">converts from geodetic to geocentric (and vice-versa)</p>
+</dd>
 </dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.geoPack.geodToGeocAzEl" title="utils.geoPack.geodToGeocAzEl"><tt class="xref py py-func docutils literal"><span class="pre">utils.geoPack.geodToGeocAzEl()</span></tt></a>: </dt>
+<dd><p class="first last">converts azimuth and elevation from geodetic to geocentric (and vice-versa)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.geoPack.gspToGcar" title="utils.geoPack.gspToGcar"><tt class="xref py py-func docutils literal"><span class="pre">utils.geoPack.gspToGcar()</span></tt></a>: </dt>
+<dd><p class="first last">converts global spherical coordinates to global cartesian coordinates (and vice-versa)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.geoPack.gcarToLcar" title="utils.geoPack.gcarToLcar"><tt class="xref py py-func docutils literal"><span class="pre">utils.geoPack.gcarToLcar()</span></tt></a>: </dt>
+<dd><p class="first last">converts from global cartesian coordinates to local cartesian coordinates (and vice-versa)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.geoPack.lspToLcar" title="utils.geoPack.lspToLcar"><tt class="xref py py-func docutils literal"><span class="pre">utils.geoPack.lspToLcar()</span></tt></a>: </dt>
+<dd><p class="first last">converts from local spherical coordinates to local cartesian coordinates (and vice-versa)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#utils.geoPack.calcDistPnt" title="utils.geoPack.calcDistPnt"><tt class="xref py py-func docutils literal"><span class="pre">utils.geoPack.calcDistPnt()</span></tt></a>: </dt>
+<dd><p class="first last">calculates the coordines|distance,elevation,azimuth of a point given a point of origin and 
+distance,elevation,azimuth|distant point coordinates</p>
+</dd>
+</dl>
+</li>
+</ul>
 </dd>
 </dl>
 <p>Based on J.M. Ruohoniemi&#8217;s geopack
-Based on R.J. Barnes radar.pro
-Created by Sebastien</p>
-<hr class="docutils" />
+Based on R.J. Barnes radar.pro</p>
 <dl class="function">
 <dt id="utils.geoPack.calcDistPnt">
 <tt class="descclassname">utils.geoPack.</tt><tt class="descname">calcDistPnt</tt><big>(</big><em>origLat</em>, <em>origLon</em>, <em>origAlt</em>, <em>dist=None</em>, <em>el=None</em>, <em>az=None</em>, <em>distLat=None</em>, <em>distLon=None</em>, <em>distAlt=None</em><big>)</big><a class="reference internal" href="_modules/utils/geoPack.html#calcDistPnt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.geoPack.calcDistPnt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate 
-- the coordinates and altitude of a distant point given a point of origin, distance, 
-azimuth and elevation, or 
-- the coordinates and distance of a distant point given a point of origin, altitude, 
-azimuth and elevation, or 
-- the distance, azimuth and elevation between a point of origin and a 
-distant point or 
-- the distance, azimuth between a point of origin and a distant point and the altitude
-of said distant point given a point of origin, distant point and elevation angle.
-Input/output is in geodetic coordinates, distances are in km and angles in degrees.</p>
-<dl class="docutils">
-<dt>INPUTS:</dt>
-<dd><p class="first">origLat: geographic latitude of point of origin [degree]
-origLon: geographic longitude of point of origin [degree]
-origAlt: altitude of point of origin [km]
-dist, el, az: distance [km], azimuth [degree] and elevation [degree].</p>
+<dd><p>Calculate: 
+- the coordinates and altitude of a distant point given a point of origin, distance, azimuth and elevation, or</p>
 <blockquote>
-<div>Must be set together.</div></blockquote>
-<dl class="last docutils">
-<dt>distLat, distLon, distAlt: latitude [degree], longitude [degree] and </dt>
-<dd>altitide [km] of distant point. Must be set together.</dd>
-</dl>
+<div><ul class="simple">
+<li>the coordinates and distance of a distant point given a point of origin, altitude, azimuth and elevation, or</li>
+<li>the distance, azimuth and elevation between a point of origin and a distant point or</li>
+<li>the distance, azimuth between a point of origin and a distant point and the altitude of said distant point given</li>
+</ul>
+<p>a point of origin, distant point and elevation angle.</p>
+</div></blockquote>
+<p>Input/output is in geodetic coordinates, distances are in km and angles in degrees.</p>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>origLat</strong>: geographic latitude of point of origin [degree]</li>
+<li><strong>origLon</strong>: geographic longitude of point of origin [degree]</li>
+<li><strong>origAlt</strong>: altitude of point of origin [km]</li>
+<li><strong>[dist]</strong>: distance to point [km]</li>
+<li><strong>[el]</strong>: azimuth [degree]</li>
+<li><strong>[az]</strong>: elevation [degree]</li>
+<li><strong>[distLat]</strong>: latitude [degree] of distant point</li>
+<li><strong>[distLon]</strong>: longitude [degree] of distant point</li>
+<li><strong>[distAlt]</strong>: altitide [km] of distant point</li>
+</ul>
 </dd>
-<dt>OUTPUTS:</dt>
-<dd>dict: a dictionary containing all the information about origin and distant              points and their relative positions</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>dict</strong>: a dictionary containing all the information about origin and distant points and their relative positions</li>
+</ul>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="utils.geoPack.gcarToLcar">
-<tt class="descclassname">utils.geoPack.</tt><tt class="descname">gcarToLcar</tt><big>(</big><em>X</em>, <em>Y</em>, <em>Z</em>, <em>lat</em>, <em>lon</em>, <em>rho</em>, <em>into='lcar'</em><big>)</big><a class="reference internal" href="_modules/utils/geoPack.html#gcarToLcar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.geoPack.gcarToLcar" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">utils.geoPack.</tt><tt class="descname">gcarToLcar</tt><big>(</big><em>X</em>, <em>Y</em>, <em>Z</em>, <em>lat</em>, <em>lon</em>, <em>rho</em>, <em>inverse=False</em><big>)</big><a class="reference internal" href="_modules/utils/geoPack.html#gcarToLcar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.geoPack.gcarToLcar" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts a position from global cartesian to local cartesian (and vice-versa).
 The global cartesian coordinate system is defined as:</p>
 <blockquote>
@@ -152,66 +184,81 @@ The global cartesian coordinate system is defined as:</p>
 <p>The meaning of the input (X,Y,Z) depends on the direction of the conversion 
 (to global cartesian or to global spherical).</p>
 <dl class="docutils">
-<dt>INPUTS:</dt>
-<dd><p class="first">X: global cartesian X [km] or local cartesian X [km]
-Y: global cartesian Y [km] or local cartesian Y [km]
-Z: global cartesian Z [km] or local cartesian Z [km]
-lat: geocentric latitude [degree] of local cartesian system origin
-lon: geocentric longitude [degree] of local cartesian system origin
-rho: distance from center of the Earth [km] of local cartesian system origin
-into: &#8216;lcar&#8217; (local cartesian, default) or &#8216;gcar&#8217; (global cartesian) specifies</p>
-<blockquote class="last">
-<div>the system to convert into</div></blockquote>
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>X</strong>: global cartesian X [km] or local cartesian X [km]</li>
+<li><strong>Y</strong>: global cartesian Y [km] or local cartesian Y [km]</li>
+<li><strong>Z</strong>: global cartesian Z [km] or local cartesian Z [km]</li>
+<li><strong>lat</strong>: geocentric latitude [degree] of local cartesian system origin</li>
+<li><strong>lon</strong>: geocentric longitude [degree] of local cartesian system origin</li>
+<li><strong>rho</strong>: distance from center of the Earth [km] of local cartesian system origin</li>
+<li><strong>[inverse]</strong>: inverse conversion</li>
+</ul>
 </dd>
-<dt>OUTPUTS</dt>
-<dd>X: local cartesian X [km] or global cartesian X [km]
-Y: local cartesian Y [km] or global cartesian Y [km]
-Z: local cartesian Z [km] or global cartesian Z [km]</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>X</strong>: local cartesian X [km] or global cartesian X [km]</li>
+<li><strong>Y</strong>: local cartesian Y [km] or global cartesian Y [km]</li>
+<li><strong>Z</strong>: local cartesian Z [km] or global cartesian Z [km]</li>
+</ul>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="utils.geoPack.geodToGeoc">
-<tt class="descclassname">utils.geoPack.</tt><tt class="descname">geodToGeoc</tt><big>(</big><em>lat</em>, <em>lon</em>, <em>into='geoc'</em><big>)</big><a class="reference internal" href="_modules/utils/geoPack.html#geodToGeoc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.geoPack.geodToGeoc" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">utils.geoPack.</tt><tt class="descname">geodToGeoc</tt><big>(</big><em>lat</em>, <em>lon</em>, <em>inverse=False</em><big>)</big><a class="reference internal" href="_modules/utils/geoPack.html#geodToGeoc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.geoPack.geodToGeoc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts position from geodetic to geocentric and vice-versa.
 Based on the IAU 1964 oblate spheroid model of the Earth.</p>
 <dl class="docutils">
-<dt>INPUTS:</dt>
-<dd>lat: latitude [degree]
-lon: longitude [degree]
-into: &#8216;geoc&#8217; (default) or &#8216;geod&#8217; specifies the system to convert into</dd>
-<dt>OUTPUTS</dt>
-<dd>lat: latitude [degree]
-lon: longitude [degree]
-Re: Earth radius [km]</dd>
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>lat</strong>: latitude [degree]</li>
+<li><strong>lon</strong>: longitude [degree]</li>
+<li><strong>[inverse]</strong>: inverse conversion</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>lat</strong>: latitude [degree]</li>
+<li><strong>lon</strong>: longitude [degree]</li>
+<li><strong>Re</strong>: Earth radius [km]</li>
+</ul>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="utils.geoPack.geodToGeocAzEl">
-<tt class="descclassname">utils.geoPack.</tt><tt class="descname">geodToGeocAzEl</tt><big>(</big><em>lat</em>, <em>lon</em>, <em>az</em>, <em>el</em>, <em>into='geoc'</em><big>)</big><a class="reference internal" href="_modules/utils/geoPack.html#geodToGeocAzEl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.geoPack.geodToGeocAzEl" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">utils.geoPack.</tt><tt class="descname">geodToGeocAzEl</tt><big>(</big><em>lat</em>, <em>lon</em>, <em>az</em>, <em>el</em>, <em>inverse=False</em><big>)</big><a class="reference internal" href="_modules/utils/geoPack.html#geodToGeocAzEl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.geoPack.geodToGeocAzEl" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts pointing azimuth and elevation measured with respect to the local horizon 
 to azimuth and elevation with respect to the horizon defined by the plane perpendicular 
 to the Earth-centered radial vector drawn through a user defined point.</p>
 <dl class="docutils">
-<dt>INPUTS:</dt>
-<dd>lat: latitude [degree]
-lon: longitude [degree]
-az: azimuth [degree, N]
-el: elevation [degree]
-into: &#8216;geoc&#8217; (default) or &#8216;geod&#8217; specifies the system to convert into</dd>
-<dt>OUTPUTS</dt>
-<dd>lat: latitude [degree]
-lon: longitude [degree]
-Re: Earth radius [km]
-az: azimuth [degree, N]
-el: elevation [degree]</dd>
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>lat</strong>: latitude [degree]</li>
+<li><strong>lon</strong>: longitude [degree]</li>
+<li><strong>az</strong>: azimuth [degree, N]</li>
+<li><strong>el</strong>: elevation [degree]</li>
+<li><strong>[inverse]</strong>: inverse conversion</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>lat</strong>: latitude [degree]</li>
+<li><strong>lon</strong>: longitude [degree]</li>
+<li><strong>Re</strong>: Earth radius [km]</li>
+<li><strong>az</strong>: azimuth [degree, N]</li>
+<li><strong>el</strong>: elevation [degree]</li>
+</ul>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="utils.geoPack.gspToGcar">
-<tt class="descclassname">utils.geoPack.</tt><tt class="descname">gspToGcar</tt><big>(</big><em>X</em>, <em>Y</em>, <em>Z</em>, <em>into='gcar'</em><big>)</big><a class="reference internal" href="_modules/utils/geoPack.html#gspToGcar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.geoPack.gspToGcar" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">utils.geoPack.</tt><tt class="descname">gspToGcar</tt><big>(</big><em>X</em>, <em>Y</em>, <em>Z</em>, <em>inverse=False</em><big>)</big><a class="reference internal" href="_modules/utils/geoPack.html#gspToGcar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.geoPack.gspToGcar" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts a position from global spherical (geocentric) to global cartesian (and vice-versa).
 The global cartesian coordinate system is defined as:</p>
 <blockquote>
@@ -221,27 +268,30 @@ The global cartesian coordinate system is defined as:</p>
 <li>Z axis in the direction of the rotational axis and through the North pole</li>
 </ul>
 </div></blockquote>
-<p>The meaning of the input (X,Y,Z) depends on the direction of the conversion (to global 
-cartesian or to global spherical).</p>
+<p>The meaning of the input (X,Y,Z) depends on the direction of the conversion 
+(to global cartesian or to global spherical).</p>
 <dl class="docutils">
-<dt>INPUTS:</dt>
-<dd><p class="first">X: latitude [degree] or global cartesian X [km]
-Y: longitude [degree] or global cartesian Y [km]
-Z: distance from center of the Earth [km] or global cartesian Z [km]
-into: &#8216;gcar&#8217; (global cartesian, default) or &#8216;gsp&#8217; (global spherical)</p>
-<blockquote class="last">
-<div>specifies the system to convert into</div></blockquote>
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>X</strong>: latitude [degree] or global cartesian X [km]</li>
+<li><strong>Y</strong>: longitude [degree] or global cartesian Y [km]</li>
+<li><strong>Z</strong>: distance from center of the Earth [km] or global cartesian Z [km]</li>
+<li><strong>[inverse]</strong>: inverse conversion</li>
+</ul>
 </dd>
-<dt>OUTPUTS</dt>
-<dd>X: global cartesian X [km] or latitude [degree]
-Y: global cartesian Y [km] or longitude [degree]
-Z: global cartesian Z [km] or distance from center of the Earth [km]</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>X</strong>: global cartesian X [km] or latitude [degree]</li>
+<li><strong>Y</strong>: global cartesian Y [km] or longitude [degree]</li>
+<li><strong>Z</strong>: global cartesian Z [km] or distance from center of the Earth [km]</li>
+</ul>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="utils.geoPack.lspToLcar">
-<tt class="descclassname">utils.geoPack.</tt><tt class="descname">lspToLcar</tt><big>(</big><em>X</em>, <em>Y</em>, <em>Z</em>, <em>into='lcar'</em><big>)</big><a class="reference internal" href="_modules/utils/geoPack.html#lspToLcar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.geoPack.lspToLcar" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">utils.geoPack.</tt><tt class="descname">lspToLcar</tt><big>(</big><em>X</em>, <em>Y</em>, <em>Z</em>, <em>inverse=False</em><big>)</big><a class="reference internal" href="_modules/utils/geoPack.html#lspToLcar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.geoPack.lspToLcar" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts a position from local spherical to local cartesian (and vice-versa).
 The local spherical coordinate system is defined as:</p>
 <blockquote>
@@ -265,18 +315,21 @@ The local spherical coordinate system is defined as:</p>
 <p>The meaning of the input (X,Y,Z) depends on the direction of the conversion 
 (to global cartesian or to global spherical).</p>
 <dl class="docutils">
-<dt>INPUTS:</dt>
-<dd><p class="first">X: azimuth [degree, N] or local cartesian X [km]
-Y: elevation [degree] or local cartesian Y [km]
-Z: distance origin [km] or local cartesian Z [km]
-into: &#8216;lcar&#8217; (local cartesian, default) or &#8216;lsp&#8217; (local spherical) specifies</p>
-<blockquote class="last">
-<div>the system to convert into</div></blockquote>
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>X</strong>: azimuth [degree, N] or local cartesian X [km]</li>
+<li><strong>Y</strong>: elevation [degree] or local cartesian Y [km]</li>
+<li><strong>Z</strong>: distance origin [km] or local cartesian Z [km]</li>
+<li><strong>[inverse]</strong>: inverse conversion</li>
+</ul>
 </dd>
-<dt>OUTPUTS</dt>
-<dd>X: local cartesian X [km] or azimuth [degree, N]
-Y: local cartesian Y [km] or elevation [degree]
-Z: local cartesian Z [km] or distance from origin [km]</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>X</strong>: local cartesian X [km] or azimuth [degree, N]</li>
+<li><strong>Y</strong>: local cartesian Y [km] or elevation [degree]</li>
+<li><strong>Z</strong>: local cartesian Z [km] or distance from origin [km]</li>
+</ul>
+</dd>
 </dl>
 </dd></dl>
 
@@ -302,7 +355,7 @@ Z: local cartesian Z [km] or distance from origin [km]</dd>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">utils.geoPack</a><ul>
-<li><a class="reference internal" href="#geopack">geoPack</a></li>
+<li><a class="reference internal" href="#module-utils-geopack"><strong>Module</strong>: utils.geoPack</a></li>
 </ul>
 </li>
 </ul>

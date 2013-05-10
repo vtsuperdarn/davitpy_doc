@@ -33,7 +33,11 @@
     <link rel="up" title="gme.sat" href="gme.sat.html" />
     <link rel="next" title="gme.isr" href="gme.isr.html" />
     <link rel="prev" title="gme.sat.rbsp" href="gme.sat.rbsp.html" /> 
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="py_16.png" />  
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
+    <link rel=”apple-touch-icon” href=”py_57.png” />
+
   </head>
   <body>
     <div class="relbar-top">
@@ -123,14 +127,30 @@
 <dt id="gme.sat.poes.overlayPoesBnd">
 <tt class="descclassname">gme.sat.poes.</tt><tt class="descname">overlayPoesBnd</tt><big>(</big><em>baseMapObj</em>, <em>axisHandle</em>, <em>startTime</em>, <em>coords='geo'</em>, <em>hemi=1</em>, <em>equBnd=True</em>, <em>polBnd=False</em><big>)</big><a class="reference internal" href="_modules/gme/sat/poes.html#overlayPoesBnd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.sat.poes.overlayPoesBnd" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function reads POES TED data with in +/- 45min of the given time, fits the auroral oval boundaries and overlays them on a map object. The poleward boundary is not accurate all the times due to lesser number of satellite passes identifying it.</p>
-<p><strong>Args</strong>: 
-* <strong>baseMapObj</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the map object you want data to be overlayed on.
-* <strong>axisHandle</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the Axis Handle used.
-* <strong>startTime</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the starttime you want data for. If endTime is not given overlays data from satellites with in +/- 45 min of the startTime
-* [<strong>coords</strong>] (list or None): Coordinates of the map object on which you want data to be overlayed on. Default &#8216;geo&#8217;
-* [<strong>hemi</strong>] (list or None): Hemisphere of the map object on which you want data to be overlayed on. Value is 1 for northern hemisphere and -1 for the southern hemisphere.Default 1
-* [<strong>equBnd</strong>] (list or None): If this is True the equatorward auroral oval boundary fit from the TED data is overlayed on the map object. Default True
-* [<strong>polBnd</strong>] (list or None): If this is True the poleward auroral oval boundary fit from the TED data is overlayed on the map object. Default False</p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>baseMapObj</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the map object you want data to be overlayed on.</li>
+<li><strong>axisHandle</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the Axis Handle used.</li>
+</ul>
+</dd>
+</dl>
+<ul>
+<li><p class="first"><strong>startTime</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the starttime you want data for. If endTime is not given overlays data from satellites with in +/- 45 min of the startTime</p>
+</li>
+<li><p class="first">[<strong>coords</strong>] (list or None): Coordinates of the map object on which you want data to be overlayed on. Default &#8216;geo&#8217;</p>
+</li>
+<li><p class="first">[<strong>hemi</strong>] (list or None): Hemisphere of the map object on which you want data to be overlayed on. Value is 1 for northern hemisphere and -1 for the southern hemisphere.Default 1</p>
+</li>
+<li><dl class="first docutils">
+<dt>[<strong>equBnd</strong>] (list or None): If this is True the equatorward auroral oval boundary fit from the TED data is overlayed on the map object. Default True</dt>
+<dd><ul class="first last simple">
+<li>[<strong>polBnd</strong>] (list or None): If this is True the poleward auroral oval boundary fit from the TED data is overlayed on the map object. Default False</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
 <dl class="docutils">
 <dt><strong>Returns</strong>:</dt>
 <dd>POES TED data is overlayed on the map object. If no data is found, None is returned.</dd>
@@ -156,7 +176,7 @@
 <li><strong>startTime</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the starttime you want data for. If endTime is not given overlays data from satellites with in +/- 45 min of the startTime</li>
 <li>[<strong>endTime</strong>] (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a> or None): the latest time you want data for.  if this is None, data from satellites with in +/- 45 min of the startTime is overlayed.  default = None</li>
 <li>[<strong>satnum</strong>] (int): the satellite you want data for.  eg 17 for noaa17.  if this is None, data for all satellites will be returned.  default = None</li>
-<li>[<strong>coords</strong>] (list or None): Coordinates of the map object on which you want data to be overlayed on. Default &#8216;geo&#8217;</li>
+<li>[<strong>coords</strong>] (str): Coordinates of the map object on which you want data to be overlayed on, &#8216;geo&#8217;, &#8216;mag&#8217;, &#8216;mlt&#8217;. Default &#8216;geo&#8217;</li>
 <li>[<strong>hemi</strong>] (list or None): Hemisphere of the map object on which you want data to be overlayed on. Value is 1 for northern hemisphere and -1 for the southern hemisphere.Default 1</li>
 </ul>
 <blockquote>
