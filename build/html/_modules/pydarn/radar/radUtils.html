@@ -31,10 +31,13 @@
     <script type="text/javascript" src="../../../_static/cloud.js"></script>
     <link rel="top" title="davitpy" href="../../../index.html" />
     <link rel="up" title="pydarn.radar" href="../radar.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -73,6 +76,7 @@
 <span class="sd">		</span>
 <span class="sd">**Functions**:</span>
 <span class="sd">	* :func:`getCpName`: get the name of a control program from cp id number</span>
+<span class="sd">	* :func:`getParamDict`: Get information about a parameter, including units, default ranges, and axis labels.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -103,7 +107,67 @@
 	<span class="k">if</span><span class="p">(</span><span class="n">fabs</span><span class="p">(</span><span class="n">cpid</span><span class="p">)</span> <span class="o">==</span> <span class="mi">503</span><span class="p">):</span> <span class="k">return</span> <span class="s">&#39;tauscan&#39;</span>
 	<span class="k">if</span><span class="p">(</span><span class="n">fabs</span><span class="p">(</span><span class="n">cpid</span><span class="p">)</span> <span class="o">==</span> <span class="mi">9213</span><span class="p">):</span> <span class="k">return</span> <span class="s">&#39;pcpscan&#39;</span>
 	<span class="k">if</span><span class="p">(</span><span class="n">fabs</span><span class="p">(</span><span class="n">cpid</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span> <span class="k">return</span> <span class="s">&#39;normalscan&#39;</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">fabs</span><span class="p">(</span><span class="n">cpid</span><span class="p">)</span> <span class="o">==</span> <span class="mi">210</span><span class="p">):</span> <span class="k">return</span> <span class="s">&#39;rbsp-tau&#39;</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">fabs</span><span class="p">(</span><span class="n">cpid</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3501</span><span class="p">):</span> <span class="k">return</span> <span class="s">&#39;twofsound&#39;</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">fabs</span><span class="p">(</span><span class="n">cpid</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1200</span><span class="p">):</span> <span class="k">return</span> <span class="s">&#39;icescan&#39;</span>
 	<span class="k">return</span> <span class="s">&#39;&#39;</span>
+</div>
+<div class="viewcode-block" id="getParamDict"><a class="viewcode-back" href="../../../pydarn.radar.radUtils.html#pydarn.radar.radUtils.getParamDict">[docs]</a><span class="k">def</span> <span class="nf">getParamDict</span><span class="p">(</span><span class="n">param</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Get information about a parameter, including units, default ranges, and axis labels.</span>
+<span class="sd">  </span>
+<span class="sd">  **Args**: </span>
+<span class="sd">          * **param** (str): name of parameter</span>
+<span class="sd">  **Returns**:</span>
+<span class="sd">          * **paramDict** (str): dictionary containing information about the chosen parameter</span>
+<span class="sd">  **Example**:</span>
+<span class="sd">          ::</span>
+
+<span class="sd">                paramDict = getParamDict(&#39;w_l&#39;)</span>
+<span class="sd">                  </span>
+<span class="sd">  written by Nathaniel Frissell, 2013-07</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+  <span class="c">#Create empty dictionary.</span>
+  <span class="n">paramDict</span> <span class="o">=</span> <span class="p">{}</span>
+
+  <span class="k">if</span>    <span class="n">param</span> <span class="o">==</span> <span class="s">&#39;p_l&#39;</span> <span class="ow">or</span> <span class="n">param</span> <span class="o">==</span> <span class="s">&#39;power&#39;</span><span class="p">:</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;param&#39;</span><span class="p">]</span>  <span class="o">=</span>  <span class="s">&#39;power&#39;</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;label&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="s">r&#39;$\lambda$ Power [dB]&#39;</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;unit&#39;</span><span class="p">]</span>   <span class="o">=</span>  <span class="s">&#39;dB&#39;</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;range&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span>
+  <span class="k">elif</span>  <span class="n">param</span> <span class="o">==</span> <span class="s">&#39;p_s&#39;</span>  <span class="p">:</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;param&#39;</span><span class="p">]</span>  <span class="o">=</span>  <span class="s">&#39;power&#39;</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;label&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="s">r&#39;$\sigma$ Power [dB]&#39;</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;unit&#39;</span><span class="p">]</span>   <span class="o">=</span>  <span class="s">&#39;dB&#39;</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;range&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span>
+  <span class="k">elif</span>  <span class="n">param</span> <span class="o">==</span> <span class="s">&#39;v&#39;</span> <span class="ow">or</span> <span class="n">param</span> <span class="o">==</span> <span class="s">&#39;velocity&#39;</span><span class="p">:</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;param&#39;</span><span class="p">]</span>  <span class="o">=</span>  <span class="s">&#39;velocity&#39;</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;label&#39;</span><span class="p">]</span>  <span class="o">=</span>  <span class="s">&#39;Velocity [m/s]&#39;</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;unit&#39;</span><span class="p">]</span>   <span class="o">=</span>  <span class="s">&#39;m/s&#39;</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;range&#39;</span><span class="p">]</span>  <span class="o">=</span>  <span class="p">(</span><span class="o">-</span><span class="mi">500</span><span class="p">,</span><span class="mi">500</span><span class="p">)</span>
+  <span class="k">elif</span>  <span class="n">param</span> <span class="o">==</span> <span class="s">&#39;w_l&#39;</span> <span class="ow">or</span> <span class="n">param</span> <span class="o">==</span> <span class="s">&#39;width&#39;</span><span class="p">:</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;param&#39;</span><span class="p">]</span>  <span class="o">=</span>  <span class="s">&#39;width&#39;</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;label&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="s">r&#39;$\lambda$ Spectral Width [m/s]&#39;</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;unit&#39;</span><span class="p">]</span>   <span class="o">=</span>  <span class="s">&#39;m/s&#39;</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;range&#39;</span><span class="p">]</span>  <span class="o">=</span>  <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+  <span class="k">elif</span>  <span class="n">param</span> <span class="o">==</span> <span class="s">&#39;w_s&#39;</span>  <span class="p">:</span> 
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;param&#39;</span><span class="p">]</span>  <span class="o">=</span>  <span class="s">&#39;width&#39;</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;label&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="s">r&#39;$\sigma$ Spectral Width [m/s]&#39;</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;unit&#39;</span><span class="p">]</span>   <span class="o">=</span>  <span class="s">&#39;m/s&#39;</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;range&#39;</span><span class="p">]</span>  <span class="o">=</span>  <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+  <span class="k">elif</span>  <span class="n">param</span> <span class="o">==</span> <span class="s">&#39;elv&#39;</span>  <span class="p">:</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;param&#39;</span><span class="p">]</span>  <span class="o">=</span>  <span class="s">&#39;elevation&#39;</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;label&#39;</span><span class="p">]</span>  <span class="o">=</span>  <span class="s">&#39;Elevation [deg]&#39;</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;unit&#39;</span><span class="p">]</span>   <span class="o">=</span>  <span class="s">&#39;deg&#39;</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;range&#39;</span><span class="p">]</span>  <span class="o">=</span>  <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span>
+  <span class="k">elif</span>  <span class="n">param</span> <span class="o">==</span> <span class="s">&#39;phi0&#39;</span> <span class="p">:</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;param&#39;</span><span class="p">]</span>  <span class="o">=</span>  <span class="s">&#39;phi&#39;</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;label&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="s">r&#39;$\phi_0$&#39;</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;unit&#39;</span><span class="p">]</span>   <span class="o">=</span>  <span class="s">&#39;rad&#39;</span>
+    <span class="n">paramDict</span><span class="p">[</span><span class="s">&#39;range&#39;</span><span class="p">]</span>  <span class="o">=</span>  <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+
+  <span class="k">return</span> <span class="n">paramDict</span>
 </pre></div></div>
 
           </div>

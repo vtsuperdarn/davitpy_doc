@@ -31,12 +31,15 @@
     <script type="text/javascript" src="_static/cloud.js"></script>
     <link rel="top" title="davitpy" href="index.html" />
     <link rel="up" title="pydarn.sdio" href="pydarn.sdio.html" />
-    <link rel="next" title="pydarn.sdio.radDataTypes" href="pydarn.sdio.radDataTypes.html" />
+    <link rel="next" title="pydarn.sdio.sdDataRead" href="pydarn.sdio.sdDataRead.html" />
     <link rel="prev" title="pydarn.sdio" href="pydarn.sdio.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -52,7 +55,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
         <li class="right" >
-          <a href="pydarn.sdio.radDataTypes.html" title="pydarn.sdio.radDataTypes"
+          <a href="pydarn.sdio.sdDataRead.html" title="pydarn.sdio.sdDataRead"
              accesskey="N">next</a> &nbsp; &nbsp;</li>
         <li class="right" >
           <a href="pydarn.sdio.html" title="pydarn.sdio"
@@ -82,15 +85,16 @@
 <dl class="docutils">
 <dt><strong>Functions</strong>:</dt>
 <dd><ul class="first last simple">
-<li><tt class="xref py py-func docutils literal"><span class="pre">radDataOpen()</span></tt></li>
-<li><tt class="xref py py-func docutils literal"><span class="pre">radDataReadRec()</span></tt></li>
-<li><tt class="xref py py-func docutils literal"><span class="pre">radDataReadScan()</span></tt></li>
+<li><a class="reference internal" href="#pydarn.sdio.radDataRead.radDataOpen" title="pydarn.sdio.radDataRead.radDataOpen"><tt class="xref py py-func docutils literal"><span class="pre">pydarn.sdio.radDataRead.radDataOpen()</span></tt></a></li>
+<li><a class="reference internal" href="#pydarn.sdio.radDataRead.radDataReadRec" title="pydarn.sdio.radDataRead.radDataReadRec"><tt class="xref py py-func docutils literal"><span class="pre">pydarn.sdio.radDataRead.radDataReadRec()</span></tt></a></li>
+<li><a class="reference internal" href="#pydarn.sdio.radDataRead.radDataReadScan" title="pydarn.sdio.radDataRead.radDataReadScan"><tt class="xref py py-func docutils literal"><span class="pre">pydarn.sdio.radDataRead.radDataReadScan()</span></tt></a></li>
+<li><a class="reference internal" href="#pydarn.sdio.radDataRead.radDataReadAll" title="pydarn.sdio.radDataRead.radDataReadAll"><tt class="xref py py-func docutils literal"><span class="pre">pydarn.sdio.radDataRead.radDataReadAll()</span></tt></a></li>
 </ul>
 </dd>
 </dl>
 <dl class="function">
 <dt id="pydarn.sdio.radDataRead.radDataOpen">
-<tt class="descclassname">pydarn.sdio.radDataRead.</tt><tt class="descname">radDataOpen</tt><big>(</big><em>sTime</em>, <em>rad</em>, <em>eTime=None</em>, <em>channel=None</em>, <em>bmnum=None</em>, <em>cp=None</em>, <em>fileType='fitex'</em>, <em>filtered=False</em>, <em>src=None</em>, <em>fileName=None</em>, <em>custType='fitex'</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/radDataRead.html#radDataOpen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.radDataRead.radDataOpen" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pydarn.sdio.radDataRead.</tt><tt class="descname">radDataOpen</tt><big>(</big><em>sTime</em>, <em>rad</em>, <em>eTime=None</em>, <em>channel=None</em>, <em>bmnum=None</em>, <em>cp=None</em>, <em>fileType='fitex'</em>, <em>filtered=False</em>, <em>src=None</em>, <em>fileName=None</em>, <em>custType='fitex'</em>, <em>noCache=False</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/radDataRead.html#radDataOpen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.radDataRead.radDataOpen" title="Permalink to this definition">¶</a></dt>
 <dd><p>A function to establish a pipeline through which we can read radar data.  first it tries the mongodb, then it tries to find local files, and lastly it sftp&#8217;s over to the VT data server.</p>
 <dl class="docutils">
 <dt><strong>Args</strong>:</dt>
@@ -103,14 +107,15 @@
 <li><strong>[cp]</strong> (int): the control program which you want data for.  If this is set to None, data from all cp&#8217;s will be read.  default = None</li>
 <li><strong>[fileType]</strong> (str):  The type of data you want to read.  valid inputs are: &#8216;fitex&#8217;,&#8217;fitacf&#8217;,&#8217;lmfit&#8217;,&#8217;rawacf&#8217;,&#8217;iqdat&#8217;.   if you choose a fit file format and the specified one isn&#8217;t found, we will search for one of the others.  Beware: if you ask for rawacf/iq data, these files are large and the data transfer might take a long time.  default = &#8216;fitex&#8217;</li>
 <li><strong>[filtered]</strong> (boolean): a boolean specifying whether you want the fit data to be boxcar filtered.  ONLY VALID FOR FIT.  default = False</li>
-<li><strong>[src]</strong> (str): the source of the data.  valid inputs are &#8216;mongo&#8217; &#8216;local&#8217; &#8216;sftp&#8217;.  if this is set to None, it will try all possibilites sequentially.  default = None</li>
+<li><strong>[src]</strong> (str): the source of the data.  valid inputs are &#8216;local&#8217; &#8216;sftp&#8217;.  if this is set to None, it will try all possibilites sequentially.  default = None</li>
 <li><strong>[fileName]</strong> (str): the name of a specific file which you want to open.  default=None</li>
 <li><strong>[custType]</strong> (str): if fileName is specified, the filetype of the file.  default=&#8217;fitex&#8217;</li>
+<li><strong>[noCache]</strong> (boolean): flag to indicate that you do not want to check first for cached files.  default = False.</li>
 </ul>
 </dd>
 <dt><strong>Returns</strong>:</dt>
 <dd><ul class="first last simple">
-<li><strong>myPtr</strong> (<tt class="xref py py-class docutils literal"><span class="pre">radDataTypes.radDataPtr</span></tt>): a radDataPtr object which contains a link to the data to be read.  this can then be passed to radDataReadRec in order to actually read the data.</li>
+<li><strong>myPtr</strong> (<a class="reference internal" href="pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.radDataPtr" title="pydarn.sdio.radDataTypes.radDataPtr"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.radDataPtr</span></tt></a>): a radDataPtr object which contains a link to the data to be read.  this can then be passed to radDataReadRec in order to actually read the data.</li>
 </ul>
 </dd>
 <dt><strong>Example</strong>:</dt>
@@ -123,22 +128,51 @@ myPtr = radDataOpen(dt.datetime(2011,1,1),'bks',eTime=dt.datetime(2011,1,1,2),ch
 </dd></dl>
 
 <dl class="function">
-<dt id="pydarn.sdio.radDataRead.radDataReadRec">
-<tt class="descclassname">pydarn.sdio.radDataRead.</tt><tt class="descname">radDataReadRec</tt><big>(</big><em>myPtr</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/radDataRead.html#radDataReadRec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.radDataRead.radDataReadRec" title="Permalink to this definition">¶</a></dt>
-<dd><p>A function to read a single record of radar data from a <tt class="xref py py-class docutils literal"><span class="pre">radDataTypes.radDataPtr</span></tt> object</p>
+<dt id="pydarn.sdio.radDataRead.radDataReadAll">
+<tt class="descclassname">pydarn.sdio.radDataRead.</tt><tt class="descname">radDataReadAll</tt><big>(</big><em>myPtr</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/radDataRead.html#radDataReadAll"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.radDataRead.radDataReadAll" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to read a large amount (to the end of the request) of radar data into a list from a <a class="reference internal" href="pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.radDataPtr" title="pydarn.sdio.radDataTypes.radDataPtr"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.radDataPtr</span></tt></a> object</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">to use this, you must first create a <tt class="xref py py-class docutils literal"><span class="pre">radDataTypes.radDataPtr</span></tt> object with <tt class="xref py py-func docutils literal"><span class="pre">radDataOpen()</span></tt></p>
+<p class="last">to use this, you must first create a <a class="reference internal" href="pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.radDataPtr" title="pydarn.sdio.radDataTypes.radDataPtr"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.radDataPtr</span></tt></a> object with <tt class="xref py py-func docutils literal"><span class="pre">radDataOpen()</span></tt></p>
 </div>
 <dl class="docutils">
 <dt><strong>Args</strong>:</dt>
 <dd><ul class="first last simple">
-<li><strong>myPtr</strong> (<tt class="xref py py-class docutils literal"><span class="pre">radDataTypes.radDataPtr</span></tt>): contains the pipeline to the data we are after</li>
+<li><strong>myPtr</strong> (<a class="reference internal" href="pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.radDataPtr" title="pydarn.sdio.radDataTypes.radDataPtr"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.radDataPtr</span></tt></a>): contains the pipeline to the data we are after</li>
 </ul>
 </dd>
 <dt><strong>Returns</strong>:</dt>
 <dd><ul class="first last simple">
-<li><strong>myBeam</strong> (<tt class="xref py py-class docutils literal"><span class="pre">radDataTypes.beamData</span></tt>): an object filled with the data we are after.  <em>will return None when finished reading</em></li>
+<li><strong>myList</strong> (list): a list filled with <a class="reference internal" href="pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.scanData" title="pydarn.sdio.radDataTypes.scanData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.scanData</span></tt></a> objects holding the data we are after.  <em>will return None if nothing is found</em></li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><pre>import datetime as dt
+myPtr = radDataOpen(dt.datetime(2011,1,1),'bks',eTime=dt.datetime(2011,1,1,2),channel='a', bmnum=7,cp=153,fileType='fitex',filtered=False, src=None):
+myList = radDataReadAll(myPtr)</pre>
+</div>
+</dd>
+</dl>
+<p>Written by AJ 20130606</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydarn.sdio.radDataRead.radDataReadRec">
+<tt class="descclassname">pydarn.sdio.radDataRead.</tt><tt class="descname">radDataReadRec</tt><big>(</big><em>myPtr</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/radDataRead.html#radDataReadRec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.radDataRead.radDataReadRec" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to read a single record of radar data from a <a class="reference internal" href="pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.radDataPtr" title="pydarn.sdio.radDataTypes.radDataPtr"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.radDataPtr</span></tt></a> object</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">to use this, you must first create a <a class="reference internal" href="pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.radDataPtr" title="pydarn.sdio.radDataTypes.radDataPtr"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.radDataPtr</span></tt></a> object with <tt class="xref py py-func docutils literal"><span class="pre">radDataOpen()</span></tt></p>
+</div>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>myPtr</strong> (<a class="reference internal" href="pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.radDataPtr" title="pydarn.sdio.radDataTypes.radDataPtr"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.radDataPtr</span></tt></a>): contains the pipeline to the data we are after</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>myBeam</strong> (<a class="reference internal" href="pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.beamData" title="pydarn.sdio.radDataTypes.beamData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.beamData</span></tt></a>): an object filled with the data we are after.  <em>will return None when finished reading</em></li>
 </ul>
 </dd>
 <dt><strong>Example</strong>:</dt>
@@ -154,10 +188,10 @@ myBeam = radDataReadRec(myPtr)</pre>
 <dl class="function">
 <dt id="pydarn.sdio.radDataRead.radDataReadScan">
 <tt class="descclassname">pydarn.sdio.radDataRead.</tt><tt class="descname">radDataReadScan</tt><big>(</big><em>myPtr</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/radDataRead.html#radDataReadScan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.radDataRead.radDataReadScan" title="Permalink to this definition">¶</a></dt>
-<dd><p>A function to read a full scan of data from a <tt class="xref py py-class docutils literal"><span class="pre">radDataTypes.radDataPtr</span></tt> object</p>
+<dd><p>A function to read a full scan of data from a <a class="reference internal" href="pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.radDataPtr" title="pydarn.sdio.radDataTypes.radDataPtr"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.radDataPtr</span></tt></a> object</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">to use this, you must first create a <tt class="xref py py-class docutils literal"><span class="pre">radDataTypes.radDataPtr</span></tt> object with <tt class="xref py py-func docutils literal"><span class="pre">radDataOpen()</span></tt></p>
+<p class="last">to use this, you must first create a <a class="reference internal" href="pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.radDataPtr" title="pydarn.sdio.radDataTypes.radDataPtr"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.radDataPtr</span></tt></a> object with <tt class="xref py py-func docutils literal"><span class="pre">radDataOpen()</span></tt></p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -166,12 +200,12 @@ myBeam = radDataReadRec(myPtr)</pre>
 <dl class="docutils">
 <dt><strong>Args</strong>:</dt>
 <dd><ul class="first last simple">
-<li><strong>myPtr</strong> (<tt class="xref py py-class docutils literal"><span class="pre">radDataTypes.radDataPtr</span></tt>): contains the pipeline to the data we are after</li>
+<li><strong>myPtr</strong> (<a class="reference internal" href="pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.radDataPtr" title="pydarn.sdio.radDataTypes.radDataPtr"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.radDataPtr</span></tt></a>): contains the pipeline to the data we are after</li>
 </ul>
 </dd>
 <dt><strong>Returns</strong>:</dt>
 <dd><ul class="first last simple">
-<li><strong>myScan</strong> (:class:<a href="#id2"><span class="problematic" id="id3">`</span></a>radDataTypes.scanData): an object filled with the data we are after.  <em>will return None when finished reading</em></li>
+<li><strong>myScan</strong> (<a class="reference internal" href="pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.scanData" title="pydarn.sdio.radDataTypes.scanData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.scanData</span></tt></a>): an object filled with the data we are after.  <em>will return None when finished reading</em></li>
 </ul>
 </dd>
 <dt><strong>Example</strong>:</dt>
@@ -216,8 +250,8 @@ myBeam = radDataReadScan(myPtr)</pre>
   <p class="topless"><a href="pydarn.sdio.html"
                         title="previous chapter">pydarn.sdio</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="pydarn.sdio.radDataTypes.html"
-                        title="next chapter">pydarn.sdio.radDataTypes</a></p>
+  <p class="topless"><a href="pydarn.sdio.sdDataRead.html"
+                        title="next chapter">pydarn.sdio.sdDataRead</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/pydarn.sdio.radDataRead.txt"
@@ -252,7 +286,7 @@ myBeam = radDataReadScan(myPtr)</pre>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
         <li class="right" >
-          <a href="pydarn.sdio.radDataTypes.html" title="pydarn.sdio.radDataTypes"
+          <a href="pydarn.sdio.sdDataRead.html" title="pydarn.sdio.sdDataRead"
              >next</a> &nbsp; &nbsp;</li>
         <li class="right" >
           <a href="pydarn.sdio.html" title="pydarn.sdio"

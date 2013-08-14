@@ -31,10 +31,13 @@
     <script type="text/javascript" src="../../../_static/cloud.js"></script>
     <link rel="top" title="davitpy" href="../../../index.html" />
     <link rel="up" title="pydarn.plotting" href="../plotting.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -68,7 +71,7 @@
 <span class="c"># Full license can be found in LICENSE.txt</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">*********************</span>
-<span class="sd">**Module**: pydarn.plot.mapOverlay</span>
+<span class="sd">**Module**: pydarn.plotting.mapOverlay</span>
 <span class="sd">*********************</span>
 <span class="sd">Overlay information on maps</span>
 
@@ -82,7 +85,8 @@
 <span class="c"># *************************************************************</span>
 <div class="viewcode-block" id="overlayRadar"><a class="viewcode-back" href="../../../pydarn.plotting.mapOverlay.html#pydarn.plotting.mapOverlay.overlayRadar">[docs]</a><span class="k">def</span> <span class="nf">overlayRadar</span><span class="p">(</span><span class="n">Basemap</span><span class="p">,</span> <span class="n">codes</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">ids</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dateTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
 				<span class="n">annotate</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="nb">all</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">hemi</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-				<span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">markerColor</span><span class="o">=</span><span class="s">&#39;k&#39;</span><span class="p">,</span> <span class="n">markerSize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fontSize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">xOffset</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+				<span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">markerColor</span><span class="o">=</span><span class="s">&#39;k&#39;</span><span class="p">,</span> <span class="n">markerSize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> 
+				<span class="n">fontSize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">xOffset</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;Overlay radar position(s) and name(s) on map </span>
 <span class="sd">	</span>
 <span class="sd">	**Args**: </span>
@@ -98,7 +102,7 @@
 <span class="sd">		* **[markerColor]**:     </span>
 <span class="sd">		* **[markerSize]**: [point]    </span>
 <span class="sd">		* **[fontSize]**: [point]    </span>
-<span class="sd">		* **[xOffset]**: x-Offset of the annotation in map projection coordinates  </span>
+<span class="sd">		* **[xOffset]**: x-Offset of the annotation in points  </span>
 <span class="sd">	**Returns**:</span>
 <span class="sd">		* None</span>
 <span class="sd">	**Example**:</span>
@@ -113,7 +117,7 @@
 	<span class="kn">from</span> <span class="nn">pydarn.radar</span> <span class="kn">import</span> <span class="n">network</span>
 	<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span> <span class="k">as</span> <span class="n">dt</span>
 	<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
-	<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+	<span class="kn">from</span> <span class="nn">utils.plotUtils</span> <span class="kn">import</span> <span class="n">textHighlighted</span>
 	
 	<span class="c"># Set default date/time to now</span>
 	<span class="k">if</span> <span class="ow">not</span> <span class="n">dateTime</span><span class="p">:</span>
@@ -165,22 +169,22 @@
 		<span class="k">if</span> <span class="ow">not</span> <span class="n">Basemap</span><span class="o">.</span><span class="n">xmin</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">Basemap</span><span class="o">.</span><span class="n">xmax</span><span class="p">:</span> <span class="k">continue</span>
 		<span class="k">if</span> <span class="ow">not</span> <span class="n">Basemap</span><span class="o">.</span><span class="n">ymin</span> <span class="o">&lt;=</span> <span class="n">y</span> <span class="o">&lt;=</span> <span class="n">Basemap</span><span class="o">.</span><span class="n">ymax</span><span class="p">:</span> <span class="k">continue</span>
 		<span class="c"># Plot radar position</span>
-		<span class="n">Basemap</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">markerSize</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">markerColor</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+		<span class="n">Basemap</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">markerSize</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">markerColor</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="n">zorder</span><span class="p">)</span>
 		<span class="c"># Now add radar name</span>
 		<span class="k">if</span> <span class="n">annotate</span><span class="p">:</span>
 			<span class="c"># If any of the other radar is too close...</span>
-			<span class="k">if</span> <span class="n">rad</span><span class="o">.</span><span class="n">code</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;adw&#39;</span><span class="p">,</span> <span class="s">&#39;kod&#39;</span><span class="p">,</span> <span class="s">&#39;cve&#39;</span><span class="p">,</span> <span class="s">&#39;fhe&#39;</span><span class="p">,</span> <span class="s">&#39;wal&#39;</span><span class="p">,</span> <span class="s">&#39;gbr&#39;</span><span class="p">,</span> <span class="s">&#39;pyk&#39;</span><span class="p">,</span> <span class="s">&#39;aze&#39;</span><span class="p">]:</span>
-				<span class="n">xOff</span> <span class="o">=</span> <span class="n">width</span><span class="o">*.</span><span class="mo">005</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">xOffset</span> <span class="k">else</span> <span class="n">xOffset</span>
-				<span class="n">ha</span> <span class="o">=</span> <span class="s">&#39;left&#39;</span>
-			<span class="k">elif</span> <span class="n">rad</span><span class="o">.</span><span class="n">code</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;ade&#39;</span><span class="p">,</span> <span class="s">&#39;ksr&#39;</span><span class="p">,</span> <span class="s">&#39;cvw&#39;</span><span class="p">,</span> <span class="s">&#39;fhw&#39;</span><span class="p">,</span> <span class="s">&#39;bks&#39;</span><span class="p">,</span> <span class="s">&#39;sch&#39;</span><span class="p">,</span> <span class="s">&#39;sto&#39;</span><span class="p">,</span> <span class="s">&#39;azw&#39;</span><span class="p">]:</span>
-				<span class="n">xOff</span> <span class="o">=</span> <span class="o">-</span><span class="n">width</span><span class="o">*.</span><span class="mo">005</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">xOffset</span> <span class="k">else</span> <span class="n">xOffset</span>
-				<span class="n">ha</span> <span class="o">=</span> <span class="s">&#39;right&#39;</span>
+			<span class="k">if</span> <span class="n">rad</span><span class="o">.</span><span class="n">code</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;adw&#39;</span><span class="p">,</span> <span class="s">&#39;kod&#39;</span><span class="p">,</span> <span class="s">&#39;cve&#39;</span><span class="p">,</span> <span class="s">&#39;fhe&#39;</span><span class="p">,</span> <span class="s">&#39;wal&#39;</span><span class="p">,</span> <span class="s">&#39;gbr&#39;</span><span class="p">,</span> <span class="s">&#39;pyk&#39;</span><span class="p">,</span> <span class="s">&#39;aze&#39;</span><span class="p">,</span> <span class="s">&#39;sys&#39;</span><span class="p">]:</span>
+				<span class="n">xOff</span> <span class="o">=</span> <span class="mi">5</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">xOffset</span> <span class="k">else</span> <span class="n">xOffset</span>
+				<span class="n">ha</span> <span class="o">=</span> <span class="mi">0</span>
+			<span class="k">elif</span> <span class="n">rad</span><span class="o">.</span><span class="n">code</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;ade&#39;</span><span class="p">,</span> <span class="s">&#39;ksr&#39;</span><span class="p">,</span> <span class="s">&#39;cvw&#39;</span><span class="p">,</span> <span class="s">&#39;fhw&#39;</span><span class="p">,</span> <span class="s">&#39;bks&#39;</span><span class="p">,</span> <span class="s">&#39;sch&#39;</span><span class="p">,</span> <span class="s">&#39;sto&#39;</span><span class="p">,</span> <span class="s">&#39;azw&#39;</span><span class="p">,</span> <span class="s">&#39;sye&#39;</span><span class="p">]:</span>
+				<span class="n">xOff</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">xOffset</span> <span class="k">else</span> <span class="n">xOffset</span>
+				<span class="n">ha</span> <span class="o">=</span> <span class="mi">1</span>
 			<span class="k">else</span><span class="p">:</span> 
 				<span class="n">xOff</span> <span class="o">=</span> <span class="mf">0.0</span>
-				<span class="n">ha</span> <span class="o">=</span> <span class="s">&#39;center&#39;</span>
+				<span class="n">ha</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span>
 			<span class="c"># Plot radar name</span>
-			<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">xOff</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="n">height</span><span class="o">*.</span><span class="mo">01</span><span class="p">,</span> <span class="n">rad</span><span class="o">.</span><span class="n">code</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> 
-				<span class="n">ha</span><span class="o">=</span><span class="n">ha</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">&#39;top&#39;</span><span class="p">,</span> <span class="n">variant</span><span class="o">=</span><span class="s">&#39;small-caps&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fontSize</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="n">zorder</span><span class="p">)</span>
+			<span class="n">textHighlighted</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">rad</span><span class="o">.</span><span class="n">code</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="n">xOff</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">),</span> 
+				<span class="n">text_alignment</span><span class="o">=</span><span class="p">(</span><span class="n">ha</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">variant</span><span class="o">=</span><span class="s">&#39;small-caps&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fontSize</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="n">zorder</span><span class="p">)</span>
 
 	<span class="k">return</span>
 
@@ -189,7 +193,7 @@
 <div class="viewcode-block" id="overlayFov"><a class="viewcode-back" href="../../../pydarn.plotting.mapOverlay.html#pydarn.plotting.mapOverlay.overlayFov">[docs]</a><span class="k">def</span> <span class="nf">overlayFov</span><span class="p">(</span><span class="n">Basemap</span><span class="p">,</span> <span class="n">codes</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">ids</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
 				<span class="n">dateTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="nb">all</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> 
 				<span class="n">maxGate</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">fovColor</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">fovAlpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> 
-				<span class="n">beams</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">hemi</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">fovObj</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
+				<span class="n">beams</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">beamsColors</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">hemi</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">fovObj</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
 				<span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">lineColor</span><span class="o">=</span><span class="s">&#39;k&#39;</span><span class="p">,</span> <span class="n">lineWidth</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;Overlay FoV position(s) on map</span>
 <span class="sd">	</span>
@@ -208,7 +212,8 @@
 <span class="sd">		* **[fovAlpha]**: field of view fill color transparency</span>
 <span class="sd">		* **[fovObj]**: a fov object. See pydarn.radar.radFov.fov</span>
 <span class="sd">		* **[hemi]**: &#39;north&#39; or &#39;south&#39;, ignore radars from the other hemisphere</span>
-<span class="sd">		* **[beam]**: hightlight specified beams </span>
+<span class="sd">		* **[beams]**: hightlight specified beams </span>
+<span class="sd">		* **[beamsColors]**: colors of the hightlighted beams </span>
 <span class="sd">	**Returns**:</span>
 <span class="sd">		* None</span>
 <span class="sd">	**Example**:</span>
@@ -245,25 +250,19 @@
 	
 	<span class="c"># Define how the radars to be plotted are identified (code, id or name)</span>
 	<span class="k">if</span> <span class="n">codes</span><span class="p">:</span>
-		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">codes</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span> <span class="n">codes</span> <span class="o">=</span> <span class="p">[</span><span class="n">codes</span><span class="p">]</span>
-		<span class="n">nradars</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">codes</span><span class="p">)</span>
 		<span class="nb">input</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;meth&#39;</span><span class="p">:</span> <span class="s">&#39;code&#39;</span><span class="p">,</span> <span class="s">&#39;vals&#39;</span><span class="p">:</span> <span class="n">codes</span><span class="p">}</span>
 	<span class="k">elif</span> <span class="n">ids</span><span class="p">:</span>
-		<span class="k">try</span><span class="p">:</span>
-			<span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">]</span>
-		<span class="k">except</span><span class="p">:</span>
-			<span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">ids</span><span class="p">]</span>
-		<span class="k">finally</span><span class="p">:</span>
-			<span class="n">nradars</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
-			<span class="nb">input</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;meth&#39;</span><span class="p">:</span> <span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="s">&#39;vals&#39;</span><span class="p">:</span> <span class="n">ids</span><span class="p">}</span>
+		<span class="nb">input</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;meth&#39;</span><span class="p">:</span> <span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="s">&#39;vals&#39;</span><span class="p">:</span> <span class="n">ids</span><span class="p">}</span>
 	<span class="k">elif</span> <span class="n">names</span><span class="p">:</span>
-		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span> <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">names</span><span class="p">]</span>
-		<span class="n">nradars</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
 		<span class="nb">input</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;meth&#39;</span><span class="p">:</span> <span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;vals&#39;</span><span class="p">:</span> <span class="n">names</span><span class="p">}</span>
-	<span class="k">elif</span> <span class="n">fovObj</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-		<span class="k">print</span> <span class="s">&#39;overlayRadar: no radars to plot&#39;</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">print</span> <span class="s">&#39;overlayFov: no radars to plot&#39;</span>
 		<span class="k">return</span>
-	<span class="k">else</span><span class="p">:</span> <span class="n">nradars</span> <span class="o">=</span> <span class="mi">1</span>
+	
+	<span class="c"># Check if radars is given as a list</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">[</span><span class="s">&#39;vals&#39;</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span> <span class="nb">input</span><span class="p">[</span><span class="s">&#39;vals&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">input</span><span class="p">[</span><span class="s">&#39;vals&#39;</span><span class="p">]]</span>
+
+	<span class="n">nradars</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">input</span><span class="p">[</span><span class="s">&#39;vals&#39;</span><span class="p">])</span>
 	
 	<span class="c"># iterates through radars to be plotted</span>
 	<span class="k">for</span> <span class="n">ir</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">nradars</span><span class="p">):</span>
@@ -299,11 +298,11 @@
 								 <span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span> <span class="p">)</span>
 		<span class="c"># Plot contour</span>
 		<span class="n">Basemap</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">contourX</span><span class="p">,</span> <span class="n">contourY</span><span class="p">,</span> 
-			<span class="n">color</span><span class="o">=</span><span class="n">lineColor</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">lineWidth</span><span class="p">)</span>
+			<span class="n">color</span><span class="o">=</span><span class="n">lineColor</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="n">zorder</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">lineWidth</span><span class="p">)</span>
 		<span class="c"># Field of view fill</span>
 		<span class="k">if</span> <span class="n">fovColor</span><span class="p">:</span>
 			<span class="n">contour</span> <span class="o">=</span> <span class="n">transpose</span><span class="p">(</span> <span class="n">vstack</span><span class="p">((</span><span class="n">contourX</span><span class="p">,</span><span class="n">contourY</span><span class="p">))</span> <span class="p">)</span>
-			<span class="n">patch</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span> <span class="n">contour</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">fovColor</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">fovAlpha</span><span class="p">)</span>
+			<span class="n">patch</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span> <span class="n">contour</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">fovColor</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">fovAlpha</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="n">zorder</span><span class="p">)</span>
 			<span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">patch</span><span class="p">)</span>
 		<span class="c"># Beams fill</span>
 		<span class="k">if</span> <span class="n">beams</span><span class="p">:</span>
@@ -313,7 +312,11 @@
 				<span class="n">beams</span> <span class="o">=</span> <span class="p">[</span><span class="n">beams</span><span class="p">]</span>
 			<span class="k">for</span> <span class="n">ib</span> <span class="ow">in</span> <span class="n">beams</span><span class="p">:</span>
 				<span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">ib</span> <span class="o">&lt;=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span> <span class="k">continue</span>
-				<span class="n">bCol</span> <span class="o">=</span> <span class="n">ib</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+				<span class="k">if</span> <span class="ow">not</span> <span class="n">beamsColors</span><span class="p">:</span>
+					<span class="n">bColRGB</span> <span class="o">=</span> <span class="n">ib</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+					<span class="n">bCol</span> <span class="o">=</span> <span class="p">(</span><span class="n">bColRGB</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span><span class="n">bColRGB</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">bCol</span> <span class="o">=</span> <span class="n">beamsColors</span><span class="p">[</span><span class="n">beams</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">ib</span><span class="p">)]</span>
 				<span class="n">contourX</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">(</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">ib</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="n">eGate</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> 
 										 <span class="n">x</span><span class="p">[</span><span class="n">ib</span><span class="p">:</span><span class="n">ib</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span><span class="n">eGate</span><span class="p">],</span>
 										 <span class="n">x</span><span class="p">[</span><span class="n">ib</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">eGate</span><span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
@@ -323,7 +326,7 @@
 										 <span class="n">y</span><span class="p">[</span><span class="n">ib</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">eGate</span><span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
 										 <span class="n">y</span><span class="p">[</span><span class="n">ib</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">ib</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span> <span class="p">)</span>
 				<span class="n">contour</span> <span class="o">=</span> <span class="n">transpose</span><span class="p">(</span> <span class="n">vstack</span><span class="p">((</span><span class="n">contourX</span><span class="p">,</span><span class="n">contourY</span><span class="p">))</span> <span class="p">)</span>
-				<span class="n">patch</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span> <span class="n">contour</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="n">bCol</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span><span class="n">bCol</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">4</span><span class="p">)</span>
+				<span class="n">patch</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span> <span class="n">contour</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">bCol</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">4</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="n">zorder</span><span class="p">)</span>
 				<span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">patch</span><span class="p">)</span>
 	
 	<span class="k">return</span></div>

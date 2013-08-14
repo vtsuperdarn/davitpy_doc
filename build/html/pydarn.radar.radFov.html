@@ -33,10 +33,13 @@
     <link rel="up" title="pydarn.radar" href="pydarn.radar.html" />
     <link rel="next" title="pydarn.radar.radUtils" href="pydarn.radar.radUtils.html" />
     <link rel="prev" title="pydarn.radar.radStruct" href="pydarn.radar.radStruct.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -212,6 +215,28 @@ upper-right, upper-left.</p>
 </li>
 <li><p class="first"><strong>coords</strong>: &#8216;geo&#8217;, &#8216;mag&#8217;</p>
 </li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydarn.radar.radFov.gsMapSlantRange">
+<tt class="descclassname">pydarn.radar.radFov.</tt><tt class="descname">gsMapSlantRange</tt><big>(</big><em>slantRange</em>, <em>altitude=None</em>, <em>elevation=None</em><big>)</big><a class="reference internal" href="_modules/pydarn/radar/radFov.html#gsMapSlantRange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.radar.radFov.gsMapSlantRange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the ground scatter mapped slant range. See Bristow et al. [1994] for more details.</p>
+<dl class="docutils">
+<dt><strong>INPUTS</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>slantRange</strong>: normal slant range [km]</li>
+<li><strong>altitude</strong>:   altitude [km] (defaults to 300 km)</li>
+<li><strong>elevation</strong>:  elevation angle [degree]</li>
+</ul>
+</dd>
+<dt><strong>OUTPUT</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>gsSlantRange</strong>: ground scatter mapped slant range [km] (typically slightly less than 0.5*slantRange.
+Will return -1 if (slantRange**2/4. - altitude**2 &gt;= 0). This occurs when the scatter is too close and
+this model breaks down.</li>
 </ul>
 </dd>
 </dl>

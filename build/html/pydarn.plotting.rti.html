@@ -33,10 +33,13 @@
     <link rel="up" title="pydarn.plotting" href="pydarn.plotting.html" />
     <link rel="next" title="pydarn.plotting.printRec" href="pydarn.plotting.printRec.html" />
     <link rel="prev" title="pydarn.plotting.fan" href="pydarn.plotting.fan.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -77,46 +80,51 @@
 <ul class="simple">
 </ul>
 </div>
-<span class="target" id="module-pydarn.plotting.rti"></span><div class="section" id="module-pydarn-plot-rti">
-<h2>MODULE: pydarn.plot.rti<a class="headerlink" href="#module-pydarn-plot-rti" title="Permalink to this headline">¶</a></h2>
-<p>This module contains the following functions:</p>
-<blockquote>
-<div><p>plotRti</p>
-<p>plotFreq</p>
-<p>plotNoise</p>
-<p>plotCpid</p>
-<p>rtiTitle</p>
-<p>drawAxes</p>
-</div></blockquote>
-<hr class="docutils" />
+<span class="target" id="module-pydarn.plotting.rti"></span><span class="target" id="module-rti"></span><div class="section" id="module-pydarn-plotting-rti">
+<h2><strong>Module</strong>: pydarn.plotting.rti<a class="headerlink" href="#module-pydarn-plotting-rti" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><strong>Functions</strong>:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="#pydarn.plotting.rti.plotRti" title="pydarn.plotting.rti.plotRti"><tt class="xref py py-func docutils literal"><span class="pre">pydarn.plotting.rti.plotRti()</span></tt></a></li>
+<li><a class="reference internal" href="#pydarn.plotting.rti.plotFreq" title="pydarn.plotting.rti.plotFreq"><tt class="xref py py-func docutils literal"><span class="pre">pydarn.plotting.rti.plotFreq()</span></tt></a></li>
+<li><a class="reference internal" href="#pydarn.plotting.rti.plotNoise" title="pydarn.plotting.rti.plotNoise"><tt class="xref py py-func docutils literal"><span class="pre">pydarn.plotting.rti.plotNoise()</span></tt></a></li>
+<li><a class="reference internal" href="#pydarn.plotting.rti.plotCpid" title="pydarn.plotting.rti.plotCpid"><tt class="xref py py-func docutils literal"><span class="pre">pydarn.plotting.rti.plotCpid()</span></tt></a></li>
+<li><a class="reference internal" href="#pydarn.plotting.rti.rtiTitle" title="pydarn.plotting.rti.rtiTitle"><tt class="xref py py-func docutils literal"><span class="pre">pydarn.plotting.rti.rtiTitle()</span></tt></a></li>
+<li><a class="reference internal" href="#pydarn.plotting.rti.drawAxes" title="pydarn.plotting.rti.drawAxes"><tt class="xref py py-func docutils literal"><span class="pre">pydarn.plotting.rti.drawAxes()</span></tt></a></li>
+</ul>
+</dd>
+</dl>
 <dl class="function">
 <dt id="pydarn.plotting.rti.drawAxes">
 <tt class="descclassname">pydarn.plotting.rti.</tt><tt class="descname">drawAxes</tt><big>(</big><em>myFig, times, rad, cpid, bmnum, nrang, frang, rsep, bottom, yrng=-1, coords='gate', pos=[0.1, 0.05, 0.76, 0.72]</em><big>)</big><a class="reference internal" href="_modules/pydarn/plotting/rti.html#drawAxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.plotting.rti.drawAxes" title="Permalink to this definition">¶</a></dt>
-<dd><p>PACKAGE: pydarn.plot.rti</p>
-<p>FUNCTION: drawAxes(myFig,times,rad,cpid,bmnum,nrang,frang,rsep,bottom,yrng=-1,coords=&#8217;gate&#8217;,pos=[.1,.05,.76,.72])</p>
-<p>PURPOSE: draws empty axes for an rti plot</p>
+<dd><p>draws empty axes for an rti plot</p>
 <dl class="docutils">
-<dt>INPUTS:</dt>
-<dd><p class="first">myFig: the MPL figure we are plotting to
-times: a list of datetime objects referencing the beam soundings
-rad: 3 letter radar code
-cpid: list of the cpids or the beam soundings
-bmnum: beam number being plotted
-nrang: list of nrang for the beam soundings
-frang: list of frang of the beam soundings
-cpid: list of cpids of the beam soundings
-rsep: list of rsep of the beam soundings
-bottom: flag indicating if we are at the bottom of the page
-[yrng]: range of y axis, -1=autoscale (default)
-[coords]: y axis coordinate system, acceptable values are</p>
-<blockquote>
-<div>&#8216;geo&#8217;, &#8216;mag&#8217;, &#8216;gate&#8217;, &#8216;rng&#8217;</div></blockquote>
-<p class="last">[pos]: position of the plot</p>
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>myFig</strong>: the MPL figure we are plotting to</li>
+<li><strong>times</strong>: a list of datetime objects referencing the beam soundings</li>
+<li><strong>rad</strong>: 3 letter radar code</li>
+<li><strong>cpid</strong>: list of the cpids or the beam soundings</li>
+<li><strong>bmnum</strong>: beam number being plotted</li>
+<li><strong>nrang</strong>: list of nrang for the beam soundings</li>
+<li><strong>frang</strong>: list of frang of the beam soundings</li>
+<li><strong>rsep</strong>: list of rsep of the beam soundings</li>
+<li><strong>bottom</strong>: flag indicating if we are at the bottom of the page</li>
+<li><strong>[yrng]</strong>: range of y axis, -1=autoscale (default)</li>
+<li><strong>[coords]</strong>: y axis coordinate system, acceptable values are &#8216;geo&#8217;, &#8216;mag&#8217;, &#8216;gate&#8217;, &#8216;rng&#8217;</li>
+<li><strong>[pos]</strong>: position of the plot</li>
+</ul>
 </dd>
-<dt>OUTPUTS:</dt>
-<dd>ax: an axes object</dd>
-<dt>EXAMPLES:</dt>
-<dd>ax = drawAxes(rtiFig,times,rad,cpid,beam,nrang,frang,rsep,p==len(params)-1,yrng=yrng,coords=coords,      pos=pos)</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>ax</strong>: an axes object</li>
+</ul>
+</dd>
+<dt><a href="#id1"><span class="problematic" id="id2">**</span></a>Example:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">ax</span> <span class="o">=</span> <span class="n">drawAxes</span><span class="p">(</span><span class="n">aFig</span><span class="p">,</span><span class="n">times</span><span class="p">,</span><span class="n">rad</span><span class="p">,</span><span class="n">cpid</span><span class="p">,</span><span class="n">beam</span><span class="p">,</span><span class="n">nrang</span><span class="p">,</span><span class="n">frang</span><span class="p">,</span><span class="n">rsep</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
 </dl>
 <p>Written by AJ 20121002</p>
 </dd></dl>
@@ -124,20 +132,27 @@ bottom: flag indicating if we are at the bottom of the page
 <dl class="function">
 <dt id="pydarn.plotting.rti.plotCpid">
 <tt class="descclassname">pydarn.plotting.rti.</tt><tt class="descname">plotCpid</tt><big>(</big><em>myFig, times, cpid, mode, pos=[0.1, 0.77, 0.76, 0.05]</em><big>)</big><a class="reference internal" href="_modules/pydarn/plotting/rti.html#plotCpid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.plotting.rti.plotCpid" title="Permalink to this definition">¶</a></dt>
-<dd><p>PACKAGE: pydarn.plot.rti</p>
-<p>FUNCTION: plotCpid(myFig,times,cpid,mode,pos=[.1,.77,.76,.05])</p>
-<p>PURPOSE: plots cpid panel as position pos</p>
+<dd><p>plots cpid panel at position pos</p>
 <dl class="docutils">
-<dt>INPUTS:</dt>
-<dd>myFig: the MPL figure we are plotting on
-times: a list of the times of the beam soundings
-cpid: a lsit of the cpids of th beam soundings
-mode: a list of the ifmode param
-[pos]: position of the panel</dd>
-<dt>OUTPUTS:</dt>
-<dd>NONE</dd>
-<dt>EXAMPLES:</dt>
-<dd>plotCpid(rtiFig,times,cpid,mode)</dd>
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>myFig</strong>: the MPL figure we are plotting on</li>
+<li><strong>times</strong>: a list of the times of the beam soundings</li>
+<li><strong>cpid</strong>: a lsit of the cpids of th beam soundings</li>
+<li><strong>mode</strong>: a list of the ifmode param</li>
+<li><strong>[pos]</strong>: position of the panel</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Nothing.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">plotCpid</span><span class="p">(</span><span class="n">rtiFig</span><span class="p">,</span><span class="n">times</span><span class="p">,</span><span class="n">cpid</span><span class="p">,</span><span class="n">mode</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
 </dl>
 <p>Written by AJ 20121002</p>
 </dd></dl>
@@ -145,20 +160,24 @@ mode: a list of the ifmode param
 <dl class="function">
 <dt id="pydarn.plotting.rti.plotFreq">
 <tt class="descclassname">pydarn.plotting.rti.</tt><tt class="descname">plotFreq</tt><big>(</big><em>myFig, times, freq, nave, pos=[0.1, 0.82, 0.76, 0.06]</em><big>)</big><a class="reference internal" href="_modules/pydarn/plotting/rti.html#plotFreq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.plotting.rti.plotFreq" title="Permalink to this definition">¶</a></dt>
-<dd><p>PACKAGE: pydarn.plot.rti</p>
-<p>FUNCTION: plotFreq(myFig,times,freq,nave,pos=[.1,.82,.76,.06])</p>
-<p>PURPOSE: plots a frequency panel at position pos</p>
+<dd><p>plots a frequency panel at position pos</p>
 <dl class="docutils">
-<dt>INPUTS:</dt>
-<dd>myFig: the MPL figure we are plotting on
-times: a list of the times of the beam soundings
-freq: a lsit of the tfreq of the beam soundings
-search: a list of the nave param
-[pos]: position of the panel</dd>
-<dt>OUTPUTS:</dt>
-<dd>NONE</dd>
-<dt>EXAMPLES:</dt>
-<dd>plotNoise(rtiFig,times,tfreq,nave)</dd>
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>myFig</strong>: the MPL figure we are plotting on</li>
+<li><strong>times</strong>: a list of the times of the beam soundings</li>
+<li><strong>freq</strong>: a lsit of the tfreq of the beam soundings</li>
+<li><strong>search</strong>: a list of the nave param</li>
+<li><strong>[pos]</strong>: position of the panel</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><a href="#id3"><span class="problematic" id="id4">*</span></a>Nothing.</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">plotNoise</span><span class="p">(</span><span class="n">rtiFig</span><span class="p">,</span><span class="n">times</span><span class="p">,</span><span class="n">tfreq</span><span class="p">,</span><span class="n">nave</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
 </dl>
 <p>Written by AJ 20121002</p>
 </dd></dl>
@@ -166,105 +185,103 @@ search: a list of the nave param
 <dl class="function">
 <dt id="pydarn.plotting.rti.plotNoise">
 <tt class="descclassname">pydarn.plotting.rti.</tt><tt class="descname">plotNoise</tt><big>(</big><em>myFig, times, sky, search, pos=[0.1, 0.88, 0.76, 0.06]</em><big>)</big><a class="reference internal" href="_modules/pydarn/plotting/rti.html#plotNoise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.plotting.rti.plotNoise" title="Permalink to this definition">¶</a></dt>
-<dd><p>PACKAGE: pydarn.plot.rti</p>
-<p>FUNCTION: plotNoise(myFig,times,sky,search,pos=[.1,.88,.76,.06])</p>
-<p>PURPOSE: plots a noise panel at position pos</p>
+<dd><p>plots a noise panel at position pos</p>
 <dl class="docutils">
-<dt>INPUTS:</dt>
-<dd>myFig: the MPL figure we are plotting on
-times: a list of the times of the beam soundings
-sky: a lsit of the noise.sky of the beam soundings
-search: a list of the noise.search param
-[pos]: position of the panel</dd>
-<dt>OUTPUTS:</dt>
-<dd>NONE</dd>
-<dt>EXAMPLES:</dt>
-<dd>plotNoise(rtiFig,times,nsky,nsch)</dd>
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>myFig</strong>: the MPL figure we are plotting on</li>
+<li><strong>times</strong>: a list of the times of the beam soundings</li>
+<li><strong>sky</strong>: a lsit of the noise.sky of the beam soundings</li>
+<li><strong>search</strong>: a list of the noise.search param</li>
+<li><strong>[pos]</strong>: position of the panel</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Nothing</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">plotNoise</span><span class="p">(</span><span class="n">rtiFig</span><span class="p">,</span><span class="n">times</span><span class="p">,</span><span class="n">nsky</span><span class="p">,</span><span class="n">nsch</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
 </dl>
 <p>Written by AJ 20121002</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="pydarn.plotting.rti.plotRti">
-<tt class="descclassname">pydarn.plotting.rti.</tt><tt class="descname">plotRti</tt><big>(</big><em>sTime, rad, eTime=None, bmnum=7, fileType='fitex', params=['velocity', 'power', 'width'], scales=[], channel='a', coords='gate', colors='lasse', yrng=-1, gsct=False, lowGray=False, svg=0, png=0, filtered=False, fileName=None, custType='fitex', overlayMask=False</em><big>)</big><a class="reference internal" href="_modules/pydarn/plotting/rti.html#plotRti"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.plotting.rti.plotRti" title="Permalink to this definition">¶</a></dt>
-<dd><p>PACKAGE: pydarn.plot.rti</p>
-<p>FUNCTION: plotRti(dateStr,rad,beam=7,time=[0,2400],fileType=&#8217;fitex&#8217;,params=[&#8216;velocity&#8217;,&#8217;power&#8217;,&#8217;width&#8217;],     scales=[],channel=&#8217;a&#8217;,coords=&#8217;gate&#8217;,colors=&#8217;lasse&#8217;,yrng=-1,gsct=0,pdf=0,filter=0,gflg=0)</p>
-<p>PURPOSE: create an rti plot for a secified radar and time period</p>
+<tt class="descclassname">pydarn.plotting.rti.</tt><tt class="descname">plotRti</tt><big>(</big><em>sTime, rad, eTime=None, bmnum=7, fileType='fitex', params=['velocity', 'power', 'width'], scales=[], channel='a', coords='gate', colors='lasse', yrng=-1, gsct=False, lowGray=False, pdf=False, png=False, dpi=500, show=True, retfig=False, filtered=False, fileName=None, custType='fitex'</em><big>)</big><a class="reference internal" href="_modules/pydarn/plotting/rti.html#plotRti"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.plotting.rti.plotRti" title="Permalink to this definition">¶</a></dt>
+<dd><p>create an rti plot for a secified radar and time period</p>
 <dl class="docutils">
-<dt>INPUTS:</dt>
-<dd><p class="first">dateStr: a string containing the target date in yyyymmdd format
-rad: the 3 letter radar code, e.g. &#8216;bks&#8217;
-[beam]: the beam to plot</p>
-<blockquote>
-<div>default: 7</div></blockquote>
-<dl class="last docutils">
-<dt>[times]: the range of times for which the file should be read,</dt>
-<dd>in SIMPLIFIED [hhmm,hhmm] format, eg [29,156], 
-instead of [0029,0156]
-note that an end time of 2400 will read to the end of the file
-default = [0,2400]</dd>
-<dt>[fileType]: one of [&#8216;fitex&#8217;,&#8217;fitacf&#8217;,&#8217;lmfit&#8217;]</dt>
-<dd>default = &#8216;fitex&#8217;</dd>
-<dt>[params]: a list of the fit parameters to plot, allowable values are:</dt>
-<dd>[&#8216;velocity&#8217;,&#8217;power&#8217;,&#8217;width&#8217;,&#8217;elevation&#8217;,&#8217;phi0&#8217;]
-default: [&#8216;velocity&#8217;,&#8217;power&#8217;,&#8217;width&#8217;]</dd>
-<dt>[scales]: a list of the min/max values for the color scale for</dt>
-<dd>each param.  If omitted, default scales will be used.  If present,
-the list should be n x 2 where n is the number of
-elements in the params list.  Use an empty list for default range,
-e.g. [[-250,300],[],[]]
-default: [[-200,200],[0,30],[0,150]]</dd>
-<dt>[channel]: the channel you wish to plot, the allowable values are</dt>
-<dd>&#8216;a&#8217; and &#8216;b&#8217;
-default: &#8216;a&#8217;</dd>
-<dt>[coords]: the coordinates to use for the y axis.  The allowable values are</dt>
-<dd>&#8216;gate&#8217;,&#8217;rng&#8217;,&#8217;geo&#8217;
-default: &#8216;gate&#8217;</dd>
-<dt>[colors]: a string indicating what color bar to use, valid inputs are</dt>
-<dd>[&#8216;lasse&#8217;,&#8217;aj&#8217;]
-default: &#8216;lasse&#8217;</dd>
-<dt>[yrng]: a list indicating the min and max values for the y axis in the</dt>
-<dd>chosen coordinate system, or a -1 indicating to plot everything
-default: -1</dd>
-<dt>[gsct]: a flag indicating whether to plot ground scatter as transparent</dt>
-<dd>default: 0 (ground scatter plotted normally)</dd>
-<dt>[pdf]: a flag indicating whether to output to a file</dt>
-<dd>default = 0 ( on screen output)</dd>
-<dt>[filter]: a flag indicating whether to boxcar filter the data</dt>
-<dd>default = 0 (no filter)</dd>
-<dt>[gflg]: a flag indicating whether to plot low velocities in gray</dt>
-<dd>default = 0</dd>
-</dl>
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>sTime</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): a datetime object indicating the start time which you would like to plot</li>
+<li><strong>rad</strong> (str): the 3 letter radar code, e.g. &#8216;bks&#8217;</li>
+<li><strong>[eTime]</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): a datetime object indicating th end time you would like plotted.  If this is None, 24 hours will be plotted.  default = None.</li>
+<li><strong>[bmnum] (int)</strong>: The beam to plot.  default: 7</li>
+<li><strong>[fileType]</strong> (str): The file type to be plotted, one of [&#8216;fitex&#8217;,&#8217;fitacf&#8217;,&#8217;lmfit&#8217;].  default = &#8216;fitex&#8217;.</li>
+<li><strong>[params]</strong> (list): a list of the fit parameters to plot, allowable values are: [&#8216;velocity&#8217;, &#8216;power&#8217;, &#8216;width&#8217;, &#8216;elevation&#8217;, &#8216;phi0&#8217;].  default: [&#8216;velocity&#8217;, &#8216;power&#8217;, &#8216;width&#8217;]</li>
+<li><strong>[scales]</strong> (list): a list of the min/max values for the color scale for each param.  If omitted, default scales will be used.  If present, the list should be n x 2 where n is the number of elements in the params list.  Use an empty list for default range, e.g. [[-250,300],[],[]].  default: [[-200,200],[0,30],[0,150]]</li>
+<li><strong>[channel]</strong> (char): the channel you wish to plot, e.g. &#8216;a&#8217;, &#8216;b&#8217;, &#8216;c&#8217;, ...  default: &#8216;a&#8217;</li>
+<li><strong>[coords]</strong> (str): the coordinates to use for the y axis.  The allowable values are &#8216;gate&#8217;, &#8216;rng&#8217;, &#8216;geo&#8217;, &#8216;mag&#8217; default: &#8216;gate&#8217;</li>
+<li><strong>[colors]</strong> (str): a string indicating what color bar to use, valid inputs are [&#8216;lasse&#8217;,&#8217;aj&#8217;].  default: &#8216;lasse&#8217;</li>
+<li><strong>[yrng]</strong> (list or -1): a list indicating the min and max values for the y axis in the chosen coordinate system, or a -1 indicating to plot everything.  default: -1.</li>
+<li><strong>[gsct]</strong> (boolean): a flag indicating whether to plot ground scatter as gray. default: False (ground scatter plotted normally)</li>
+<li><strong>[lowGray]</strong> (boolean): a flag indicating whether to plot low velocity scatter as gray. default: False (low velocity scatter plotted normally)</li>
+<li><strong>[pdf]</strong> (boolean): a flag indicating whether to output to a pdf file.  default = False.  WARNING: saving as pdf is slow.</li>
+<li><strong>[png]</strong> (boolean): a flag indicating whether to output to a png file.  default = False</li>
+<li><strong>[dpi]</strong> (int): dots per inch if saving as png.  default = 300</li>
+<li><strong>[show]</strong> (boolean): a flag indicating whether to display the figure on the screen.  This can cause problems over ssh.  default = True</li>
+<li><strong>[retfig]</strong> (boolean):  a flag indicating that you want the figure to be returned from the function.  default = False</li>
+<li><strong>[filtered]</strong> (boolean): a flag indicating whether to boxcar filter the data.  default = False (no filter)</li>
+<li><strong>[fileName]</strong> (string): If you want to plot for a specific file, indicate the name of the file as fileName.  Include the type of the file in custType.</li>
+<li><strong>[custType]</strong> (string): the type (fitacf, lmfit, fitex) of file indicated by fileName</li>
+</ul>
 </dd>
-</dl>
-<p>OUTPUTS:</p>
-<dl class="docutils">
-<dt>EXAMPLE:</dt>
-<dd>plotRti(&#8216;20120101&#8217;,&#8217;bks&#8217;,beam=12,time=[10,1453],fileType=&#8217;fitex&#8217;,
-params=[&#8216;vel&#8217;,&#8217;power&#8217;],scales=[[-200,200],[]],channel=&#8217;b&#8217;,
-coords=&#8217;mag&#8217;):</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Possibly a figure, depending on the <strong>retfig</strong> keyword</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+<span class="n">pydarn</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">rti</span><span class="o">.</span><span class="n">plotRti</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">16</span><span class="p">),</span> <span class="s">&#39;bks&#39;</span><span class="p">,</span> <span class="n">eTime</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">14</span><span class="p">,</span><span class="mi">30</span><span class="p">),</span> <span class="n">bmnum</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">fileType</span><span class="o">=</span><span class="s">&#39;fitacf&#39;</span><span class="p">,</span> <span class="n">scales</span><span class="o">=</span><span class="p">[[</span><span class="o">-</span><span class="mi">500</span><span class="p">,</span><span class="mi">500</span><span class="p">],[],[]],</span> <span class="n">coords</span><span class="o">=</span><span class="s">&#39;geo&#39;</span><span class="p">,</span><span class="n">colors</span><span class="o">=</span><span class="s">&#39;aj&#39;</span><span class="p">,</span> <span class="n">filtered</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
 </dl>
 <p>Written by AJ 20121002</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="pydarn.plotting.rti.rtiTitle">
-<tt class="descclassname">pydarn.plotting.rti.</tt><tt class="descname">rtiTitle</tt><big>(</big><em>d</em>, <em>rad</em>, <em>fileType</em>, <em>beam</em>, <em>xmin=0.1</em>, <em>xmax=0.86</em><big>)</big><a class="reference internal" href="_modules/pydarn/plotting/rti.html#rtiTitle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.plotting.rti.rtiTitle" title="Permalink to this definition">¶</a></dt>
-<dd><p>PACKAGE: pydarn.plot.rti</p>
-<p>FUNCTION: rtiTitle(dateStr,rad,fileType,beam,xmin=.1,xmax=.86)</p>
-<p>PURPOSE: draws title for an rti plot</p>
+<tt class="descclassname">pydarn.plotting.rti.</tt><tt class="descname">rtiTitle</tt><big>(</big><em>fig</em>, <em>d</em>, <em>rad</em>, <em>fileType</em>, <em>beam</em>, <em>xmin=0.1</em>, <em>xmax=0.86</em><big>)</big><a class="reference internal" href="_modules/pydarn/plotting/rti.html#rtiTitle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.plotting.rti.rtiTitle" title="Permalink to this definition">¶</a></dt>
+<dd><p>draws title for an rti plot</p>
 <dl class="docutils">
-<dt>INPUTS:</dt>
-<dd>dateStr: the date being plotted in &#8216;yyyymmdd&#8217; format
-rad: the 3 letter radar code
-fileType: the file type being plotted
-beam: the beam number being plotted
-[xmin]: minimum x value o the plot in page coords
-[xmax]: maximum x value o the plot in page coords</dd>
-<dt>OUTPUTS:</dt>
-<dd>NONE</dd>
-<dt>EXAMPLES:</dt>
-<dd>rtiTitle(dateStr,rad,fileType,beam)</dd>
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>d</strong>: the date being plotted as a datetime object</li>
+<li><strong>rad</strong>: the 3 letter radar code</li>
+<li><strong>fileType</strong>: the file type being plotted</li>
+<li><strong>beam</strong>: the beam number being plotted</li>
+<li><strong>[xmin]</strong>: minimum x value o the plot in page coords</li>
+<li><strong>[xmax]</strong>: maximum x value o the plot in page coords</li>
+</ul>
+</dd>
+</dl>
+<ul class="simple">
+<li><strong>Returns</strong>:
+<a href="#id6"><span class="problematic" id="id7">*</span></a>Nothing.</li>
+</ul>
+<dl class="docutils">
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+<span class="n">rtiTitle</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="s">&#39;bks&#39;</span><span class="p">,</span><span class="s">&#39;fitex&#39;</span><span class="p">,</span><span class="mi">7</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
 </dl>
 <p>Written by AJ 20121002</p>
 </dd></dl>
@@ -291,7 +308,7 @@ beam: the beam number being plotted
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">pydarn.plotting.rti</a><ul>
-<li><a class="reference internal" href="#module-pydarn-plot-rti">MODULE: pydarn.plot.rti</a></li>
+<li><a class="reference internal" href="#module-pydarn-plotting-rti"><strong>Module</strong>: pydarn.plotting.rti</a></li>
 </ul>
 </li>
 </ul>

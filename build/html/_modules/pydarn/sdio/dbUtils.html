@@ -31,10 +31,13 @@
     <script type="text/javascript" src="../../../_static/cloud.js"></script>
     <link rel="top" title="davitpy" href="../../../index.html" />
     <link rel="up" title="pydarn.sdio" href="../sdio.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -367,31 +370,29 @@
     <span class="k">return</span> <span class="bp">None</span>
     </div>
 <div class="viewcode-block" id="mapDbFit"><a class="viewcode-back" href="../../../pydarn.sdio.dbUtils.html#pydarn.sdio.dbUtils.mapDbFit">[docs]</a><span class="k">def</span> <span class="nf">mapDbFit</span><span class="p">(</span><span class="n">dateStr</span><span class="p">,</span> <span class="n">rad</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2400</span><span class="p">],</span> <span class="n">fileType</span><span class="o">=</span><span class="s">&#39;fitex&#39;</span><span class="p">,</span> <span class="n">vb</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-  <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">| **PACKAGE**: pydarn.sdio.dbUtils</span>
-<span class="sd">| **FUNCTION**: mapDbFit(dateStr, rad, [time], [fileType], [vb]):</span>
-<span class="sd">| **PURPOSE**: put dmap data into the mongodb database</span>
-<span class="sd">|</span>
-<span class="sd">| **NOTE**: this is a write operation, so you must have DBWRITEUSER</span>
-<span class="sd">|   and DBWRITEPASS defined in your ~/.bashrc.  these can be obtained</span>
-<span class="sd">|   from the VT crew, as needed.  most people will not need this capability</span>
-<span class="sd">|</span>
-<span class="sd">| **INPUTS**:</span>
-<span class="sd">|   **dateStr**: the target date in &#39;yyymmdd&#39; format</span>
-<span class="sd">|   **rad**: the three letter radar code, e.g. &#39;bks&#39;</span>
-<span class="sd">|   **[time]**: the time range to perform the operation in REDUCED</span>
-<span class="sd">|     hhmm format, ie [28,652] instead of [0028,0652].  default = [0,2400]</span>
-<span class="sd">|   **[fileType]**: the file type for which to perform the operation.</span>
-<span class="sd">|     valid inputs are &#39;fitex&#39; [default], &#39;fitacf&#39;, &#39;lmfit&#39;, &#39;rawacf&#39; , &#39;iqdat&#39;</span>
-<span class="sd">|   **[vb]**: a flag for verbose output.  default = 0</span>
-<span class="sd">|</span>
-<span class="sd">| **OUTPUTS**:</span>
-<span class="sd">|   NONE</span>
-<span class="sd">| </span>
-<span class="sd">| **EXAMPLES**:</span>
-<span class="sd">|   mapDbFit(&#39;20110710&#39;, &#39;bks&#39;, time=[0,240], fileType=&#39;fitacf&#39;, vb=1):</span>
-<span class="sd">|   </span>
-<span class="sd">| Written by AJ 20130108</span>
+  <span class="sd">&quot;&quot;&quot;put dmap data into the mongodb database</span>
+<span class="sd"> </span>
+<span class="sd">  **NOTE**: this is a write operation, so you must have DBWRITEUSER</span>
+<span class="sd">    and DBWRITEPASS defined in your ~/.bashrc.  these can be obtained</span>
+<span class="sd">    from the VT crew, as needed.  most people will not need this capability</span>
+<span class="sd"> </span>
+<span class="sd">  **Args**:</span>
+<span class="sd">    * **dateStr**: the target date in &#39;yyymmdd&#39; format</span>
+<span class="sd">    * **rad**: the three letter radar code, e.g. &#39;bks&#39;</span>
+<span class="sd">    * **[time]**: the time range to perform the operation in REDUCED</span>
+<span class="sd">      hhmm format, ie [28,652] instead of [0028,0652].  default = [0,2400]</span>
+<span class="sd">    * **[fileType]**: the file type for which to perform the operation.</span>
+<span class="sd">      valid inputs are &#39;fitex&#39; [default], &#39;fitacf&#39;, &#39;lmfit&#39;, &#39;rawacf&#39; , &#39;iqdat&#39;</span>
+<span class="sd">    * **[vb]**: a flag for verbose output.  default = 0</span>
+<span class="sd">  **Returns**:</span>
+<span class="sd">    * Nothing</span>
+<span class="sd">  </span>
+<span class="sd">  **Example**:</span>
+<span class="sd">    ::</span>
+
+<span class="sd">      mapDbFit(&#39;20110710&#39;, &#39;bks&#39;, time=[0,240], fileType=&#39;fitacf&#39;, vb=1):</span>
+<span class="sd">    </span>
+<span class="sd">  Written by AJ 20130108</span>
 <span class="sd">  &quot;&quot;&quot;</span>
   <span class="kn">import</span> <span class="nn">utils</span>
   <span class="kn">import</span> <span class="nn">math</span>

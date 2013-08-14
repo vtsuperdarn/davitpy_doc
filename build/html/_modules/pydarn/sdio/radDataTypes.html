@@ -31,10 +31,13 @@
     <script type="text/javascript" src="../../../_static/cloud.js"></script>
     <link rel="top" title="davitpy" href="../../../index.html" />
     <link rel="up" title="pydarn.sdio" href="../sdio.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -64,21 +67,38 @@
           <div class="body">
             
   <h1>Source code for pydarn.sdio.radDataTypes</h1><div class="highlight"><pre>
+<span class="c"># Copyright (C) 2012  VT SuperDARN Lab</span>
+<span class="c"># Full license can be found in LICENSE.txt</span>
+<span class="c"># </span>
+<span class="c"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c"># it under the terms of the GNU General Public License as published by</span>
+<span class="c"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c"># (at your option) any later version.</span>
+<span class="c"># </span>
+<span class="c"># This program is distributed in the hope that it will be useful,</span>
+<span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c"># GNU General Public License for more details.</span>
+<span class="c"># </span>
+<span class="c"># You should have received a copy of the GNU General Public License</span>
+<span class="c"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">.. module:: radDataTypes</span>
-<span class="sd">   :synopsis: the classes needed for reading, writing, and storing radar data</span>
+<span class="sd">   :synopsis: the classes needed for reading, writing, and storing fundamental radar data (iq,raw,fit)</span>
 <span class="sd">.. moduleauthor:: AJ, 20130108</span>
 <span class="sd">*********************</span>
 <span class="sd">**Module**: pydarn.sdio.radDataTypes</span>
 <span class="sd">*********************</span>
 <span class="sd">**Classes**:</span>
-<span class="sd">  * :class:`radDataPtr`</span>
-<span class="sd">  * :class:`baseData`</span>
-<span class="sd">  * :class:`beamData`</span>
-<span class="sd">  * :class:`prmData`</span>
-<span class="sd">  * :class:`fitData`</span>
-<span class="sd">  * :class:`rawData`</span>
-<span class="sd">  * :class:`iqData`</span>
+<span class="sd">  * :class:`pydarn.sdio.radDataTypes.radDataPtr`</span>
+<span class="sd">  * :class:`pydarn.sdio.radDataTypes.radBaseData`</span>
+<span class="sd">  * :class:`pydarn.sdio.radDataTypes.scanData`</span>
+<span class="sd">  * :class:`pydarn.sdio.radDataTypes.beamData`</span>
+<span class="sd">  * :class:`pydarn.sdio.radDataTypes.prmData`</span>
+<span class="sd">  * :class:`pydarn.sdio.radDataTypes.fitData`</span>
+<span class="sd">  * :class:`pydarn.sdio.radDataTypes.rawData`</span>
+<span class="sd">  * :class:`pydarn.sdio.radDataTypes.iqData`</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 
@@ -86,23 +106,6 @@
 <span class="n">alpha</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">,</span><span class="s">&#39;b&#39;</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">,</span><span class="s">&#39;d&#39;</span><span class="p">,</span><span class="s">&#39;e&#39;</span><span class="p">,</span><span class="s">&#39;f&#39;</span><span class="p">,</span><span class="s">&#39;g&#39;</span><span class="p">,</span><span class="s">&#39;h&#39;</span><span class="p">,</span><span class="s">&#39;i&#39;</span><span class="p">,</span><span class="s">&#39;j&#39;</span><span class="p">,</span><span class="s">&#39;k&#39;</span><span class="p">,</span><span class="s">&#39;l&#39;</span><span class="p">,</span><span class="s">&#39;m&#39;</span><span class="p">,</span> \
           <span class="s">&#39;n&#39;</span><span class="p">,</span><span class="s">&#39;o&#39;</span><span class="p">,</span><span class="s">&#39;p&#39;</span><span class="p">,</span><span class="s">&#39;q&#39;</span><span class="p">,</span><span class="s">&#39;r&#39;</span><span class="p">,</span><span class="s">&#39;s&#39;</span><span class="p">,</span><span class="s">&#39;t&#39;</span><span class="p">,</span><span class="s">&#39;u&#39;</span><span class="p">,</span><span class="s">&#39;v&#39;</span><span class="p">,</span><span class="s">&#39;w&#39;</span><span class="p">,</span><span class="s">&#39;x&#39;</span><span class="p">,</span><span class="s">&#39;y&#39;</span><span class="p">,</span><span class="s">&#39;z&#39;</span><span class="p">]</span>
 
-<span class="c">#we need to use this cipher in order to shorten variable names on the DB</span>
-<span class="c">#this allows us to save space as well as reduce transfer time</span>
-<span class="n">cipher</span><span class="o">=</span><span class="n">twoWayDict</span><span class="p">({</span><span class="s">&#39;cp&#39;</span><span class="p">:</span><span class="s">&#39;c&#39;</span><span class="p">,</span><span class="s">&#39;stid&#39;</span><span class="p">:</span><span class="s">&#39;s&#39;</span><span class="p">,</span><span class="s">&#39;time&#39;</span><span class="p">:</span><span class="s">&#39;t&#39;</span><span class="p">,</span><span class="s">&#39;bmnum&#39;</span><span class="p">:</span><span class="s">&#39;b&#39;</span><span class="p">,</span><span class="s">&#39;channel&#39;</span><span class="p">:</span><span class="s">&#39;ch&#39;</span><span class="p">,</span> \
-  <span class="s">&#39;exflg&#39;</span><span class="p">:</span><span class="s">&#39;ef&#39;</span><span class="p">,</span><span class="s">&#39;lmflg&#39;</span><span class="p">:</span><span class="s">&#39;lf&#39;</span><span class="p">,</span><span class="s">&#39;acflg&#39;</span><span class="p">:</span><span class="s">&#39;af&#39;</span><span class="p">,</span><span class="s">&#39;fitex&#39;</span><span class="p">:</span><span class="s">&#39;ex&#39;</span><span class="p">,</span><span class="s">&#39;fitacf&#39;</span><span class="p">:</span><span class="s">&#39;fa&#39;</span><span class="p">,</span><span class="s">&#39;lmfit&#39;</span><span class="p">:</span><span class="s">&#39;lm&#39;</span><span class="p">,</span> \
-  <span class="s">&#39;rawacf&#39;</span><span class="p">:</span><span class="s">&#39;r&#39;</span><span class="p">,</span><span class="s">&#39;iqdat&#39;</span><span class="p">:</span><span class="s">&#39;iq&#39;</span><span class="p">,</span><span class="s">&#39;prm&#39;</span><span class="p">:</span><span class="s">&#39;p&#39;</span><span class="p">,</span><span class="s">&#39;nave&#39;</span><span class="p">:</span><span class="s">&#39;n&#39;</span><span class="p">,</span><span class="s">&#39;lagfr&#39;</span><span class="p">:</span><span class="s">&#39;l&#39;</span><span class="p">,</span><span class="s">&#39;smsep&#39;</span><span class="p">:</span><span class="s">&#39;s&#39;</span><span class="p">,</span><span class="s">&#39;bmazm&#39;</span><span class="p">:</span><span class="s">&#39;ba&#39;</span><span class="p">,</span> \
-  <span class="s">&#39;scan&#39;</span><span class="p">:</span><span class="s">&#39;sc&#39;</span><span class="p">,</span><span class="s">&#39;rxrise&#39;</span><span class="p">:</span><span class="s">&#39;rx&#39;</span><span class="p">,</span><span class="s">&#39;inttsc&#39;</span><span class="p">:</span><span class="s">&#39;is&#39;</span><span class="p">,</span><span class="s">&#39;inttus&#39;</span><span class="p">:</span><span class="s">&#39;iu&#39;</span><span class="p">,</span><span class="s">&#39;mpinc&#39;</span><span class="p">:</span><span class="s">&#39;mi&#39;</span><span class="p">,</span><span class="s">&#39;mppul&#39;</span><span class="p">:</span><span class="s">&#39;mp&#39;</span><span class="p">,</span> \
-  <span class="s">&#39;mplgs&#39;</span><span class="p">:</span><span class="s">&#39;ms&#39;</span><span class="p">,</span><span class="s">&#39;mplgexs&#39;</span><span class="p">:</span><span class="s">&#39;mx&#39;</span><span class="p">,</span><span class="s">&#39;nrang&#39;</span><span class="p">:</span><span class="s">&#39;nr&#39;</span><span class="p">,</span><span class="s">&#39;frang&#39;</span><span class="p">:</span><span class="s">&#39;fr&#39;</span><span class="p">,</span><span class="s">&#39;rsep&#39;</span><span class="p">:</span><span class="s">&#39;rs&#39;</span><span class="p">,</span><span class="s">&#39;xcf&#39;</span><span class="p">:</span><span class="s">&#39;x&#39;</span><span class="p">,</span> \
-  <span class="s">&#39;tfreq&#39;</span><span class="p">:</span><span class="s">&#39;tf&#39;</span><span class="p">,</span><span class="s">&#39;ifmode&#39;</span><span class="p">:</span><span class="s">&#39;if&#39;</span><span class="p">,</span><span class="s">&#39;ptab&#39;</span><span class="p">:</span><span class="s">&#39;pt&#39;</span><span class="p">,</span><span class="s">&#39;ltab&#39;</span><span class="p">:</span><span class="s">&#39;lt&#39;</span><span class="p">,</span><span class="s">&#39;noisemean&#39;</span><span class="p">:</span><span class="s">&#39;nm&#39;</span><span class="p">,</span><span class="s">&#39;noisesky&#39;</span><span class="p">:</span><span class="s">&#39;ns&#39;</span><span class="p">,</span> \
-  <span class="s">&#39;noisesearch&#39;</span><span class="p">:</span><span class="s">&#39;nc&#39;</span><span class="p">,</span><span class="s">&#39;pwr0&#39;</span><span class="p">:</span><span class="s">&#39;p0&#39;</span><span class="p">,</span><span class="s">&#39;slist&#39;</span><span class="p">:</span><span class="s">&#39;sl&#39;</span><span class="p">,</span><span class="s">&#39;npnts&#39;</span><span class="p">:</span><span class="s">&#39;np&#39;</span><span class="p">,</span><span class="s">&#39;nlag&#39;</span><span class="p">:</span><span class="s">&#39;nl&#39;</span><span class="p">,</span><span class="s">&#39;qflg&#39;</span><span class="p">:</span><span class="s">&#39;q&#39;</span><span class="p">,</span> \
-  <span class="s">&#39;gflg&#39;</span><span class="p">:</span><span class="s">&#39;g&#39;</span><span class="p">,</span><span class="s">&#39;p_l&#39;</span><span class="p">:</span><span class="s">&#39;pl&#39;</span><span class="p">,</span><span class="s">&#39;p_l_e&#39;</span><span class="p">:</span><span class="s">&#39;ple&#39;</span><span class="p">,</span><span class="s">&#39;p_s&#39;</span><span class="p">:</span><span class="s">&#39;ps&#39;</span><span class="p">,</span><span class="s">&#39;p_s_e&#39;</span><span class="p">:</span><span class="s">&#39;pse&#39;</span><span class="p">,</span><span class="s">&#39;v&#39;</span><span class="p">:</span><span class="s">&#39;v&#39;</span><span class="p">,</span><span class="s">&#39;v_e&#39;</span><span class="p">:</span><span class="s">&#39;ve&#39;</span><span class="p">,</span> \
-  <span class="s">&#39;w_l&#39;</span><span class="p">:</span><span class="s">&#39;wl&#39;</span><span class="p">,</span><span class="s">&#39;w_l_e&#39;</span><span class="p">:</span><span class="s">&#39;wle&#39;</span><span class="p">,</span><span class="s">&#39;w_s&#39;</span><span class="p">:</span><span class="s">&#39;ws&#39;</span><span class="p">,</span><span class="s">&#39;w_s_e&#39;</span><span class="p">:</span><span class="s">&#39;wse&#39;</span><span class="p">,</span><span class="s">&#39;phi0&#39;</span><span class="p">:</span><span class="s">&#39;i0&#39;</span><span class="p">,</span><span class="s">&#39;phi0_e&#39;</span><span class="p">:</span><span class="s">&#39;i0e&#39;</span><span class="p">,</span><span class="s">&#39;elv&#39;</span><span class="p">:</span><span class="s">&#39;e&#39;</span><span class="p">,</span> \
-  <span class="s">&#39;acfd&#39;</span><span class="p">:</span><span class="s">&#39;ad&#39;</span><span class="p">,</span><span class="s">&#39;xcfd&#39;</span><span class="p">:</span><span class="s">&#39;xd&#39;</span><span class="p">,</span><span class="s">&#39;rawflg&#39;</span><span class="p">:</span><span class="s">&#39;rf&#39;</span><span class="p">,</span><span class="s">&#39;iqflg&#39;</span><span class="p">:</span><span class="s">&#39;iqf&#39;</span><span class="p">,</span><span class="s">&#39;seqnum&#39;</span><span class="p">:</span><span class="s">&#39;sq&#39;</span><span class="p">,</span><span class="s">&#39;chnnum&#39;</span><span class="p">:</span><span class="s">&#39;cm&#39;</span><span class="p">,</span> \
-  <span class="s">&#39;smpnum&#39;</span><span class="p">:</span><span class="s">&#39;sp&#39;</span><span class="p">,</span><span class="s">&#39;btnum&#39;</span><span class="p">:</span><span class="s">&#39;bt&#39;</span><span class="p">,</span><span class="s">&#39;tatten&#39;</span><span class="p">:</span><span class="s">&#39;ta&#39;</span><span class="p">,</span><span class="s">&#39;tnoise&#39;</span><span class="p">:</span><span class="s">&#39;tn&#39;</span><span class="p">,</span><span class="s">&#39;toff&#39;</span><span class="p">:</span><span class="s">&#39;to&#39;</span><span class="p">,</span><span class="s">&#39;tsze&#39;</span><span class="p">:</span><span class="s">&#39;ts&#39;</span><span class="p">,</span> \
-  <span class="s">&#39;tbadtr&#39;</span><span class="p">:</span><span class="s">&#39;tbr&#39;</span><span class="p">,</span><span class="s">&#39;badtr&#39;</span><span class="p">:</span><span class="s">&#39;br&#39;</span><span class="p">,</span><span class="s">&#39;mainData&#39;</span><span class="p">:</span><span class="s">&#39;md&#39;</span><span class="p">,</span><span class="s">&#39;intData&#39;</span><span class="p">:</span><span class="s">&#39;id&#39;</span><span class="p">,</span><span class="s">&#39;skpnum&#39;</span><span class="p">:</span><span class="s">&#39;sk&#39;</span><span class="p">})</span>
-
-<span class="n">refArr</span> <span class="o">=</span> <span class="n">twoWayDict</span><span class="p">({</span><span class="s">&#39;exflg&#39;</span><span class="p">:</span><span class="s">&#39;fitex&#39;</span><span class="p">,</span><span class="s">&#39;acflg&#39;</span><span class="p">:</span><span class="s">&#39;fitacf&#39;</span><span class="p">,</span><span class="s">&#39;lmflg&#39;</span><span class="p">:</span><span class="s">&#39;lmfit&#39;</span><span class="p">,</span> \
-                      <span class="s">&#39;rawflg&#39;</span><span class="p">:</span><span class="s">&#39;rawacf&#39;</span><span class="p">,</span><span class="s">&#39;iqflg&#39;</span><span class="p">:</span><span class="s">&#39;iqdat&#39;</span><span class="p">})</span>
 
 <div class="viewcode-block" id="radDataPtr"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.radDataPtr">[docs]</a><span class="k">class</span> <span class="nc">radDataPtr</span><span class="p">():</span>
   <span class="sd">&quot;&quot;&quot;A class which contains a pipeline to a data source</span>
@@ -115,9 +118,8 @@
 <span class="sd">    * **channel** (str): channel of the request</span>
 <span class="sd">    * **bmnum** (int): beam number of the request</span>
 <span class="sd">    * **cp** (int): control prog id of the request</span>
-<span class="sd">    * **dType** (str): the data type, &#39;mongo&#39; or &#39;dmap&#39;</span>
 <span class="sd">    * **fType** (str): the file type, &#39;fitacf&#39;, &#39;rawacf&#39;, &#39;iqdat&#39;, &#39;fitex&#39;, &#39;lmfit&#39;</span>
-<span class="sd">    * **fBeam** (:class:`beamData`): the first beam of the next scan, useful for when reading into scan objects</span>
+<span class="sd">    * **fBeam** (:class:`pydarn.sdio.radDataTypes.beamData`): the first beam of the next scan, useful for when reading into scan objects</span>
 <span class="sd">  **Methods**:</span>
 <span class="sd">    * Nothing.</span>
 <span class="sd">    </span>
@@ -131,7 +133,6 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">channel</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">bmnum</span> <span class="o">=</span> <span class="n">bmnum</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">cp</span> <span class="o">=</span> <span class="n">cp</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">dType</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">fType</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">fBeam</span> <span class="o">=</span> <span class="bp">None</span>
     
@@ -141,110 +142,42 @@
       <span class="n">myStr</span> <span class="o">+=</span> <span class="n">key</span><span class="o">+</span><span class="s">&#39; = &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">var</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
     <span class="k">return</span> <span class="n">myStr</span>
 </div>
-<div class="viewcode-block" id="baseData"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.baseData">[docs]</a><span class="k">class</span> <span class="nc">baseData</span><span class="p">():</span>
+<div class="viewcode-block" id="radBaseData"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.radBaseData">[docs]</a><span class="k">class</span> <span class="nc">radBaseData</span><span class="p">():</span>
   <span class="sd">&quot;&quot;&quot;a base class for the radar data types.  This allows for single definition of common routines</span>
 <span class="sd">  </span>
 <span class="sd">  **ATTRS**:</span>
 <span class="sd">    * Nothing.</span>
 <span class="sd">  **METHODS**:</span>
-<span class="sd">    * :func:`dbDictToObj`: converts a mongodb dictionary to a baseData object</span>
-<span class="sd">    * :func:`toDbDict`: converts a baseData object to a mongodb dictionaty</span>
-<span class="sd">    * :func:`updateValsFromDict`: converts a dict from a dmap file to baseData</span>
+<span class="sd">    * :func:`updateValsFromDict`: converts a dict from a dmap file to radBaseData</span>
 <span class="sd">    </span>
 <span class="sd">  Written by AJ 20130108</span>
 <span class="sd">  &quot;&quot;&quot;</span>
   
-<div class="viewcode-block" id="baseData.copyData"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.baseData.copyData">[docs]</a>  <span class="k">def</span> <span class="nf">copyData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">obj</span><span class="p">):</span>
+<div class="viewcode-block" id="radBaseData.copyData"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.radBaseData.copyData">[docs]</a>  <span class="k">def</span> <span class="nf">copyData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">obj</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;This method is used to recursively copy all of the contents from ont object to self</span>
 <span class="sd">    </span>
 <span class="sd">    .. note::</span>
 <span class="sd">      In general, users will not need to use this.</span>
 <span class="sd">      </span>
 <span class="sd">    **Args**: </span>
-<span class="sd">      * **obj** (:class:`baseData`): the object to be copied</span>
+<span class="sd">      * **obj** (:class:`pydarn.sdio.radDataTypes.radBaseData`): the object to be copied</span>
 <span class="sd">    **Returns**:</span>
 <span class="sd">      * Nothing.</span>
 <span class="sd">    **Example**:</span>
 <span class="sd">      ::</span>
 <span class="sd">      </span>
-<span class="sd">        myBaseData.copyData(baseDataObj)</span>
+<span class="sd">        myradBaseData.copyData(radBaseDataObj)</span>
 <span class="sd">      </span>
 <span class="sd">    written by AJ, 20130402</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
-      <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">baseData</span><span class="p">):</span>
+      <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">radBaseData</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">copyData</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span> <span class="k">pass</span>
       <span class="k">else</span><span class="p">:</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">key</span><span class="p">,</span><span class="n">val</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="baseData.dbDictToObj"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.baseData.dbDictToObj">[docs]</a>  <span class="k">def</span> <span class="nf">dbDictToObj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">aDict</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This method is used to parse a dictionary of radar data from the mongodb into a :class:`baseData` object.  </span>
-<span class="sd">    </span>
-<span class="sd">    .. note::</span>
-<span class="sd">      In general, users will not need to use this.</span>
-<span class="sd">      </span>
-<span class="sd">    **Args**: </span>
-<span class="sd">      * **aDict** (dict): the dictionary from the mongodb</span>
-<span class="sd">    **Returns**:</span>
-<span class="sd">      * Nothing.</span>
-<span class="sd">    **Example**:</span>
-<span class="sd">      ::</span>
-<span class="sd">      </span>
-<span class="sd">        myBaseData.dbDictToObj(mongoDbDict)</span>
-<span class="sd">      </span>
-<span class="sd">    written by AJ, 20130123</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">aDict</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
-      <span class="k">if</span><span class="p">(</span><span class="n">key</span> <span class="o">==</span> <span class="s">&#39;_id&#39;</span><span class="p">):</span> <span class="k">continue</span>
-      <span class="k">elif</span><span class="p">(</span><span class="n">key</span> <span class="o">==</span> <span class="s">&#39;it&#39;</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">inttsc</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">inttus</span> <span class="o">=</span> <span class="n">val</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-      <span class="k">elif</span><span class="p">(</span><span class="n">key</span> <span class="o">==</span> <span class="s">&#39;tt&#39;</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tsc</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tus</span> <span class="o">=</span> <span class="n">val</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-      <span class="c">#if the value is a dictionary, make a recursive call</span>
-      <span class="k">elif</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span><span class="nb">dict</span><span class="p">)):</span> 
-        <span class="k">if</span><span class="p">(</span><span class="n">cipher</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;fitex&#39;</span> <span class="ow">or</span> <span class="n">cipher</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;lmfit&#39;</span> <span class="ow">or</span> <span class="n">cipher</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;fitacf&#39;</span><span class="p">):</span>
-          <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">dictToObj</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cipher</span><span class="p">[</span><span class="n">key</span><span class="p">])</span><span class="o">.</span><span class="n">dbDictToObj</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-      <span class="c">#otherwise, copy the value</span>
-      <span class="k">else</span><span class="p">:</span> <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">cipher</span><span class="p">[</span><span class="n">key</span><span class="p">],</span><span class="n">val</span><span class="p">)</span>
-      </div>
-<div class="viewcode-block" id="baseData.toDbDict"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.baseData.toDbDict">[docs]</a>  <span class="k">def</span> <span class="nf">toDbDict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This method is used to convert a :class:`baseData` object into a mongodb radData data dictionary.  </span>
-<span class="sd">    </span>
-<span class="sd">    .. note::</span>
-<span class="sd">      In general, users will not need to worry about this.</span>
-<span class="sd">      </span>
-<span class="sd">    **Args**: </span>
-<span class="sd">      * Nothing.</span>
-<span class="sd">    **Returns**:</span>
-<span class="sd">      * **aDict** (dict): a dictionary in the correct format for writing to the radData mongodb</span>
-<span class="sd">    **Example**:</span>
-<span class="sd">      ::</span>
-<span class="sd">      </span>
-<span class="sd">        mongoDbDict = aBaseDataObj.todbDict()</span>
-<span class="sd">      </span>
-<span class="sd">    written by AJ, 20130123</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">aDict</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
-      <span class="c">#check for things we dont want to save</span>
-      <span class="k">if</span><span class="p">(</span><span class="n">attr</span><span class="o">==</span><span class="s">&#39;inttus&#39;</span> <span class="ow">or</span> <span class="n">attr</span><span class="o">==</span><span class="s">&#39;tus&#39;</span> <span class="ow">or</span> <span class="n">attr</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s">&#39;_s&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span> <span class="k">continue</span>
-      <span class="k">elif</span><span class="p">(</span><span class="n">attr</span> <span class="o">==</span> <span class="s">&#39;inttsc&#39;</span><span class="p">):</span> 
-        <span class="k">try</span><span class="p">:</span> <span class="n">aDict</span><span class="p">[</span><span class="s">&#39;it&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inttsc</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">inttus</span><span class="o">*</span><span class="mf">1e-6</span>
-        <span class="k">except</span><span class="p">:</span> <span class="n">aDict</span><span class="p">[</span><span class="s">&#39;it&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
-      <span class="k">elif</span><span class="p">(</span><span class="n">attr</span> <span class="o">==</span> <span class="s">&#39;tsc&#39;</span><span class="p">):</span> 
-        <span class="k">try</span><span class="p">:</span> <span class="n">aDict</span><span class="p">[</span><span class="s">&#39;tt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tsc</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">tus</span><span class="o">*</span><span class="mf">1e-6</span>
-        <span class="k">except</span><span class="p">:</span> <span class="n">aDict</span><span class="p">[</span><span class="s">&#39;tt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
-      <span class="c">#if the value is a class, recursively convert to dict</span>
-      <span class="k">elif</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span><span class="n">baseData</span><span class="p">)):</span> <span class="n">aDict</span><span class="p">[</span><span class="n">cipher</span><span class="p">[</span><span class="n">attr</span><span class="p">]]</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">toDbDict</span><span class="p">()</span>
-      <span class="c">#otherwise, copy the value</span>
-      <span class="k">else</span><span class="p">:</span> <span class="n">aDict</span><span class="p">[</span><span class="n">cipher</span><span class="p">[</span><span class="n">attr</span><span class="p">]]</span> <span class="o">=</span> <span class="n">val</span>
-    <span class="k">return</span> <span class="n">aDict</span>
-      </div>
-<div class="viewcode-block" id="baseData.updateValsFromDict"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.baseData.updateValsFromDict">[docs]</a>  <span class="k">def</span> <span class="nf">updateValsFromDict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aDict</span><span class="p">):</span>
+<div class="viewcode-block" id="radBaseData.updateValsFromDict"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.radBaseData.updateValsFromDict">[docs]</a>  <span class="k">def</span> <span class="nf">updateValsFromDict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aDict</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A function to to fill a radar params structure with the data in a dictionary that is returned from the reading of a dmap file</span>
 <span class="sd">    </span>
 <span class="sd">    .. note::</span>
@@ -343,13 +276,13 @@
         <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">attr</span><span class="p">,</span><span class="n">aDict</span><span class="p">[</span><span class="n">attr</span><span class="p">])</span>
       <span class="k">except</span><span class="p">:</span>
         <span class="c">#put in a default value if not another object</span>
-        <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">attr</span><span class="p">),</span><span class="n">baseData</span><span class="p">)):</span>
+        <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">attr</span><span class="p">),</span><span class="n">radBaseData</span><span class="p">)):</span>
           <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">attr</span><span class="p">,</span><span class="bp">None</span><span class="p">)</span>
           
   <span class="c">#def __repr__(self):</span>
     <span class="c">#myStr = &#39;&#39;</span>
     <span class="c">#for key,var in self.__dict__.iteritems():</span>
-      <span class="c">#if(isinstance(var,baseData) and key != &#39;parent&#39;):</span>
+      <span class="c">#if(isinstance(var,radBaseData) and key != &#39;parent&#39;):</span>
         <span class="c">#print key</span>
         <span class="c">#myStr += key+&#39;\n&#39;</span>
         <span class="c">#myStr += str(var)</span>
@@ -358,7 +291,7 @@
     <span class="c">#return myStr</span>
     </div></div>
 <div class="viewcode-block" id="scanData"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.scanData">[docs]</a><span class="k">class</span> <span class="nc">scanData</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
-  <span class="sd">&quot;&quot;&quot;a class to contain a radar scan.  Extends list.  Basically just a list of :class:`beamData` objects</span>
+  <span class="sd">&quot;&quot;&quot;a class to contain a radar scan.  Extends list.  Just a list of :class:`pydarn.sdio.radDataTypes.beamData` objects</span>
 <span class="sd">  </span>
 <span class="sd">  **Attrs**:</span>
 <span class="sd">    Nothing.</span>
@@ -373,8 +306,8 @@
   <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="k">pass</span>
   </div>
-<div class="viewcode-block" id="beamData"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.beamData">[docs]</a><span class="k">class</span> <span class="nc">beamData</span><span class="p">(</span><span class="n">baseData</span><span class="p">):</span>
-  <span class="sd">&quot;&quot;&quot;a class to contain the data from a radar beam sounding, extends class :class:`baseData`</span>
+<div class="viewcode-block" id="beamData"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.beamData">[docs]</a><span class="k">class</span> <span class="nc">beamData</span><span class="p">(</span><span class="n">radBaseData</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;a class to contain the data from a radar beam sounding, extends class :class:`pydarn.sdio.radDataTypes.radBaseData`</span>
 <span class="sd">  </span>
 <span class="sd">  **Attrs**:</span>
 <span class="sd">    * **cp** (int): radar control program id number</span>
@@ -382,18 +315,10 @@
 <span class="sd">    * **time** (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_): timestamp of beam sounding</span>
 <span class="sd">    * **channel** (str): radar operating channel, eg &#39;a&#39;, &#39;b&#39;, ...</span>
 <span class="sd">    * **bmnum** (int): beam number</span>
-<span class="sd">    * **prm** (:class:`prmData`): operating params</span>
-<span class="sd">    * **fit** (:class:`fitData`): fitted params</span>
-<span class="sd">    * **rawacf** (:class:`rawData`): rawacf data</span>
-<span class="sd">    * **iqdat** (:class:`iqData`): iqdat data</span>
-<span class="sd">    * **fitex** (:class:`fitData`): fitted params from fitex file.  this is useful for mongodb interface.  Users can ignore this, just use at the fit attribute.</span>
-<span class="sd">    * **fitacf** (:class:`fitData`): fitted params from fitacf file.  this is useful for mongodb interface.  Users can ignore this, just use at the fit attribute.</span>
-<span class="sd">    * **lmfit** (:class:`fitData`): fitted params from lmfit file.  this is useful for mongodb interface.  Users can ignore this, just use at the fit attribute.</span>
-<span class="sd">    * **exflg** (int): a flag indicating the presence of fitex data. this is useful for database operation, can enerally be ignored by users</span>
-<span class="sd">    * **acflg** (int): a flag indicating the presence of acflg data. this is useful for database operation, can generally be ignored by users</span>
-<span class="sd">    * **lmflg** (int): a flag indicating the presence of lmfit data. this is useful for database operation, can generally be ignored by users</span>
-<span class="sd">    * **rawflg** (int): a flag indicating the presence of rawacf data. this is useful for database operation, can generally be ignored by users</span>
-<span class="sd">    * **iqflg** (int): a flag indicating the presence of iqdat data. this is useful for database operation, can generally be ignored by users</span>
+<span class="sd">    * **prm** (:class:`pydarn.sdio.radDataTypes.prmData`): operating params</span>
+<span class="sd">    * **fit** (:class:`pydarn.sdio.radDataTypes.fitData`): fitted params</span>
+<span class="sd">    * **rawacf** (:class:`pydarn.sdio.radDataTypes.rawData`): rawacf data</span>
+<span class="sd">    * **iqdat** (:class:`pydarn.sdio.radDataTypes.iqData`): iqdat data</span>
 <span class="sd">    * **fType** (str): the file type, &#39;fitacf&#39;, &#39;rawacf&#39;, &#39;iqdat&#39;, &#39;fitex&#39;, &#39;lmfit&#39;</span>
 
 <span class="sd">  **Example**: </span>
@@ -431,11 +356,14 @@
     <span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
     <span class="n">myStr</span> <span class="o">=</span> <span class="s">&#39;Beam record FROM: &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">var</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
-      <span class="n">myStr</span> <span class="o">+=</span> <span class="n">key</span><span class="o">+</span><span class="s">&#39; = &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">var</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+      <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="n">radBaseData</span><span class="p">):</span>
+        <span class="n">myStr</span> <span class="o">+=</span> <span class="n">key</span><span class="o">+</span><span class="s">&#39; = &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">var</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">myStr</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s"> = </span><span class="si">%s</span><span class="s"> </span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="s">&#39;object&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">myStr</span>
     </div>
-<div class="viewcode-block" id="prmData"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.prmData">[docs]</a><span class="k">class</span> <span class="nc">prmData</span><span class="p">(</span><span class="n">baseData</span><span class="p">):</span>
-  <span class="sd">&quot;&quot;&quot;A class to represent radar operating parameters, extends :class:`baseData`</span>
+<div class="viewcode-block" id="prmData"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.prmData">[docs]</a><span class="k">class</span> <span class="nc">prmData</span><span class="p">(</span><span class="n">radBaseData</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;A class to represent radar operating parameters, extends :class:`pydarn.sdio.radDataTypes.radBaseData`</span>
 
 <span class="sd">  **Attrs**:</span>
 <span class="sd">    * **nave**  (int): number of averages</span>
@@ -494,9 +422,16 @@
     
     <span class="c">#if we are copying a structure, do that</span>
     <span class="k">if</span><span class="p">(</span><span class="n">prmDict</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">prmDict</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+    <span class="n">myStr</span> <span class="o">=</span> <span class="s">&#39;Prm data: </span><span class="se">\n</span><span class="s">&#39;</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">var</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+      <span class="n">myStr</span> <span class="o">+=</span> <span class="n">key</span><span class="o">+</span><span class="s">&#39; = &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">var</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+    <span class="k">return</span> <span class="n">myStr</span>
 </div>
-<div class="viewcode-block" id="fitData"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.fitData">[docs]</a><span class="k">class</span> <span class="nc">fitData</span><span class="p">(</span><span class="n">baseData</span><span class="p">):</span>
-  <span class="sd">&quot;&quot;&quot;a class to contain the fitted params of a radar beam sounding, extends :class:`baseData`</span>
+<div class="viewcode-block" id="fitData"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.fitData">[docs]</a><span class="k">class</span> <span class="nc">fitData</span><span class="p">(</span><span class="n">radBaseData</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;a class to contain the fitted params of a radar beam sounding, extends :class:`pydarn.sdio.radDataTypes.radBaseData`</span>
 <span class="sd">  </span>
 <span class="sd">  **Attrs**:</span>
 <span class="sd">    * **pwr0**  (prm.nrang length list): lag 0 power</span>
@@ -550,9 +485,16 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">elv</span> <span class="o">=</span> <span class="bp">None</span>       <span class="c">#elevation angle</span>
     
     <span class="k">if</span><span class="p">(</span><span class="n">fitDict</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">fitDict</span><span class="p">)</span>
-        </div>
-<div class="viewcode-block" id="rawData"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.rawData">[docs]</a><span class="k">class</span> <span class="nc">rawData</span><span class="p">(</span><span class="n">baseData</span><span class="p">):</span>
-  <span class="sd">&quot;&quot;&quot;a class to contain the rawacf data from a radar beam sounding, extends :class:`baseData`</span>
+
+  <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+    <span class="n">myStr</span> <span class="o">=</span> <span class="s">&#39;Fit data: </span><span class="se">\n</span><span class="s">&#39;</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">var</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+      <span class="n">myStr</span> <span class="o">+=</span> <span class="n">key</span><span class="o">+</span><span class="s">&#39; = &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">var</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+    <span class="k">return</span> <span class="n">myStr</span>
+</div>
+<div class="viewcode-block" id="rawData"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.rawData">[docs]</a><span class="k">class</span> <span class="nc">rawData</span><span class="p">(</span><span class="n">radBaseData</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;a class to contain the rawacf data from a radar beam sounding, extends :class:`pydarn.sdio.radDataTypes.radBaseData`</span>
 <span class="sd">  </span>
 <span class="sd">  **Attrs**:</span>
 <span class="sd">    * **acfd** (nrang x mplgs x 2 length list): acf data</span>
@@ -573,9 +515,16 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span> <span class="c">#reference to parent beam</span>
     
     <span class="k">if</span><span class="p">(</span><span class="n">rawDict</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">rawDict</span><span class="p">)</span>
-    </div>
-<div class="viewcode-block" id="iqData"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.iqData">[docs]</a><span class="k">class</span> <span class="nc">iqData</span><span class="p">(</span><span class="n">baseData</span><span class="p">):</span>
-  <span class="sd">&quot;&quot;&quot; a class to contain the iq data from a radar beam sounding, extends :class:`baseData`</span>
+
+  <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+    <span class="n">myStr</span> <span class="o">=</span> <span class="s">&#39;Raw data: </span><span class="se">\n</span><span class="s">&#39;</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">var</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+      <span class="n">myStr</span> <span class="o">+=</span> <span class="n">key</span><span class="o">+</span><span class="s">&#39; = &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">var</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+    <span class="k">return</span> <span class="n">myStr</span>
+</div>
+<div class="viewcode-block" id="iqData"><a class="viewcode-back" href="../../../pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.iqData">[docs]</a><span class="k">class</span> <span class="nc">iqData</span><span class="p">(</span><span class="n">radBaseData</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot; a class to contain the iq data from a radar beam sounding, extends :class:`pydarn.sdio.radDataTypes.radBaseData`</span>
 <span class="sd">  </span>
 <span class="sd">  .. warning::</span>
 <span class="sd">    I&#39;m not sure what all of the attributes mean.  if somebody knows what these are, please help!</span>
@@ -622,7 +571,13 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">intData</span> <span class="o">=</span> <span class="p">[]</span>
     
     <span class="k">if</span><span class="p">(</span><span class="n">iqDict</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">iqDict</span><span class="p">)</span>
-        </div>
+
+  <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+    <span class="n">myStr</span> <span class="o">=</span> <span class="s">&#39;IQ data: </span><span class="se">\n</span><span class="s">&#39;</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">var</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+      <span class="n">myStr</span> <span class="o">+=</span> <span class="n">key</span><span class="o">+</span><span class="s">&#39; = &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">var</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+    <span class="k">return</span> <span class="n">myStr</span></div>
 </pre></div>
 
           </div>

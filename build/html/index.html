@@ -31,10 +31,13 @@
     <script type="text/javascript" src="_static/cloud.js"></script>
     <link rel="top" title="davitpy" href="#" />
     <link rel="next" title="pydarn" href="pydarn.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -69,6 +72,7 @@
 <p>DaViTpy is the SuperDARN Data Visualization Toolkit in Python. This documentation is as thorough as we could make it, but if you are still looking for more information, consider visiting the following sites.</p>
 <ul class="simple">
 <li><a class="reference external" href="http://vtsuperdarn.github.com/davitpy">Project page</a></li>
+<li><a class="reference external" href="https://github.com/vtsuperdarn/davitpy">Github page</a></li>
 <li><a class="reference external" href="https://github.com/vtsuperdarn/davitpy/wiki">Project wiki</a></li>
 </ul>
 <div class="section" id="contents">
@@ -76,7 +80,7 @@
 <ul class="simple">
 <li><a class="reference internal" href="pydarn.html"><em>pydarn</em></a> : SuperDARN data analysis and visualization. Includes radar data access, radar information and fields-of-view, and standard plotting tools.</li>
 <li><a class="reference internal" href="gme.html"><em>gme</em></a> : Geomagnetic Environement module. Includes access to other space science data-sets (POES, OMNI, TEC, ...).</li>
-<li><a class="reference internal" href="models.html"><em>models</em></a> : Useful models. Incudes empirical models (IRI, MSIS, HWM, ...), coordinate systems (AACGM, MLT), and ray-tracing.</li>
+<li><a class="reference internal" href="models.html"><em>models</em></a> : Useful models. Incudes empirical models (IRI, MSIS, HWM, ...), coordinate systems (AACGM, MLT), and ray-tracing.  Note that most of these routines are in C and Fortran, and do not get auto-documented.  To see documentation and example of their use, see <a class="reference internal" href="notebooks.html"><em>examples</em></a>.</li>
 <li><a class="reference internal" href="utils.html"><em>utils</em></a> : Useful formatting and plotting tools, as well as a solar position calculator.</li>
 <li><a class="reference internal" href="notebooks.html"><em>examples</em></a> : Some examples of how to use DaViTpy (IPython notebooks).</li>
 </ul>
@@ -104,6 +108,22 @@
 <li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
 </ul>
 </div>
+<div class="section" id="install">
+<h2>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h2>
+<p>Install instructions can be found on the <a class="reference external" href="https://github.com/vtsuperdarn/davitpy">github page</a> or in README.md.</p>
+</div>
+<div class="section" id="updates">
+<h2>Updates<a class="headerlink" href="#updates" title="Permalink to this headline">¶</a></h2>
+<p>We will announce stable releases once or twice a year, with instructions on how to get them. However, should you want to, you can get the development version by following these instructions:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nb">cd</span> <span class="nv">$DAVITPY</span>
+<span class="c"># Check if you have any modified files</span>
+git status
+<span class="c"># Pull updates</span>
+git pull origin master
+</pre></div>
+</div>
+<p>If you have any modified filed that you would like to keep, stage or commit your changes before pulling (see the <a class="reference external" href="http://git-scm.com/documentation">git manual</a> for help).</p>
+</div>
 </div>
 
 
@@ -124,6 +144,8 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+<li><a class="reference internal" href="#install">Install</a></li>
+<li><a class="reference internal" href="#updates">Updates</a></li>
 </ul>
 </li>
 </ul>

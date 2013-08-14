@@ -33,10 +33,13 @@
     <link rel="up" title="pydarn.plotting" href="pydarn.plotting.html" />
     <link rel="next" title="pydarn.plotting.fan" href="pydarn.plotting.fan.html" />
     <link rel="prev" title="pydarn.plotting" href="pydarn.plotting.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -77,8 +80,8 @@
 <ul class="simple">
 </ul>
 </div>
-<span class="target" id="module-pydarn.plotting.mapOverlay"></span><div class="section" id="module-pydarn-plot-mapoverlay">
-<h2><strong>Module</strong>: pydarn.plot.mapOverlay<a class="headerlink" href="#module-pydarn-plot-mapoverlay" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-pydarn.plotting.mapOverlay"></span><div class="section" id="module-pydarn-plotting-mapoverlay">
+<h2><strong>Module</strong>: pydarn.plotting.mapOverlay<a class="headerlink" href="#module-pydarn-plotting-mapoverlay" title="Permalink to this headline">¶</a></h2>
 <p>Overlay information on maps</p>
 <dl class="docutils">
 <dt><strong>Functions</strong>:</dt>
@@ -90,7 +93,7 @@
 </dl>
 <dl class="function">
 <dt id="pydarn.plotting.mapOverlay.overlayFov">
-<tt class="descclassname">pydarn.plotting.mapOverlay.</tt><tt class="descname">overlayFov</tt><big>(</big><em>Basemap</em>, <em>codes=None</em>, <em>ids=None</em>, <em>names=None</em>, <em>dateTime=None</em>, <em>all=False</em>, <em>maxGate=None</em>, <em>fovColor=None</em>, <em>fovAlpha=0.2</em>, <em>beams=None</em>, <em>hemi=None</em>, <em>fovObj=None</em>, <em>zorder=2</em>, <em>lineColor='k'</em>, <em>lineWidth=1</em><big>)</big><a class="reference internal" href="_modules/pydarn/plotting/mapOverlay.html#overlayFov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.plotting.mapOverlay.overlayFov" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pydarn.plotting.mapOverlay.</tt><tt class="descname">overlayFov</tt><big>(</big><em>Basemap</em>, <em>codes=None</em>, <em>ids=None</em>, <em>names=None</em>, <em>dateTime=None</em>, <em>all=False</em>, <em>maxGate=None</em>, <em>fovColor=None</em>, <em>fovAlpha=0.2</em>, <em>beams=None</em>, <em>beamsColors=None</em>, <em>hemi=None</em>, <em>fovObj=None</em>, <em>zorder=2</em>, <em>lineColor='k'</em>, <em>lineWidth=1</em><big>)</big><a class="reference internal" href="_modules/pydarn/plotting/mapOverlay.html#overlayFov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.plotting.mapOverlay.overlayFov" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overlay FoV position(s) on map</p>
 <dl class="docutils">
 <dt><strong>Args</strong>: </dt>
@@ -109,7 +112,8 @@
 <li><strong>[fovAlpha]</strong>: field of view fill color transparency</li>
 <li><strong>[fovObj]</strong>: a fov object. See pydarn.radar.radFov.fov</li>
 <li><strong>[hemi]</strong>: &#8216;north&#8217; or &#8216;south&#8217;, ignore radars from the other hemisphere</li>
-<li><strong>[beam]</strong>: hightlight specified beams</li>
+<li><strong>[beams]</strong>: hightlight specified beams</li>
+<li><strong>[beamsColors]</strong>: colors of the hightlighted beams</li>
 </ul>
 </dd>
 <dt><strong>Returns</strong>:</dt>
@@ -151,7 +155,7 @@
 <li><strong>[markerColor]</strong>:</li>
 <li><strong>[markerSize]</strong>: [point]</li>
 <li><strong>[fontSize]</strong>: [point]</li>
-<li><strong>[xOffset]</strong>: x-Offset of the annotation in map projection coordinates</li>
+<li><strong>[xOffset]</strong>: x-Offset of the annotation in points</li>
 </ul>
 </dd>
 <dt><strong>Returns</strong>:</dt>
@@ -192,7 +196,7 @@
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">pydarn.plotting.mapOverlay</a><ul>
-<li><a class="reference internal" href="#module-pydarn-plot-mapoverlay"><strong>Module</strong>: pydarn.plot.mapOverlay</a></li>
+<li><a class="reference internal" href="#module-pydarn-plotting-mapoverlay"><strong>Module</strong>: pydarn.plotting.mapOverlay</a></li>
 </ul>
 </li>
 </ul>

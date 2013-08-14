@@ -33,10 +33,13 @@
     <link rel="up" title="utils" href="utils.html" />
     <link rel="next" title="utils.plotUtils" href="utils.plotUtils.html" />
     <link rel="prev" title="utils" href="utils.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -76,20 +79,42 @@
 <ul class="simple">
 </ul>
 </div>
-<span class="target" id="module-utils.timeUtils"></span><dl class="function">
+<span class="target" id="module-utils.timeUtils"></span><span class="target" id="module-timeUtils"></span><div class="section" id="module-utils-timeutils">
+<h2><strong>Module</strong>: utils.timeUtils<a class="headerlink" href="#module-utils-timeutils" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><strong>Functions</strong>:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="#utils.timeUtils.dateToDecYear" title="utils.timeUtils.dateToDecYear"><tt class="xref py py-func docutils literal"><span class="pre">utils.timeUtils.dateToDecYear()</span></tt></a></li>
+<li><a class="reference internal" href="#utils.timeUtils.dateToYyyymmdd" title="utils.timeUtils.dateToYyyymmdd"><tt class="xref py py-func docutils literal"><span class="pre">utils.timeUtils.dateToYyyymmdd()</span></tt></a></li>
+<li><a class="reference internal" href="#utils.timeUtils.datetimeToEpoch" title="utils.timeUtils.datetimeToEpoch"><tt class="xref py py-func docutils literal"><span class="pre">utils.timeUtils.datetimeToEpoch()</span></tt></a></li>
+<li><a class="reference internal" href="#utils.timeUtils.julToDatetime" title="utils.timeUtils.julToDatetime"><tt class="xref py py-func docutils literal"><span class="pre">utils.timeUtils.julToDatetime()</span></tt></a></li>
+<li><a class="reference internal" href="#utils.timeUtils.parseDate" title="utils.timeUtils.parseDate"><tt class="xref py py-func docutils literal"><span class="pre">utils.timeUtils.parseDate()</span></tt></a></li>
+<li><a class="reference internal" href="#utils.timeUtils.parseTime" title="utils.timeUtils.parseTime"><tt class="xref py py-func docutils literal"><span class="pre">utils.timeUtils.parseTime()</span></tt></a></li>
+<li><a class="reference internal" href="#utils.timeUtils.timeYrsecToDate" title="utils.timeUtils.timeYrsecToDate"><tt class="xref py py-func docutils literal"><span class="pre">utils.timeUtils.timeYrsecToDate()</span></tt></a></li>
+<li><a class="reference internal" href="#utils.timeUtils.yyyymmddToDate" title="utils.timeUtils.yyyymmddToDate"><tt class="xref py py-func docutils literal"><span class="pre">utils.timeUtils.yyyymmddToDate()</span></tt></a></li>
+</ul>
+</dd>
+</dl>
+<dl class="function">
 <dt id="utils.timeUtils.dateToDecYear">
 <tt class="descclassname">utils.timeUtils.</tt><tt class="descname">dateToDecYear</tt><big>(</big><em>date</em><big>)</big><a class="reference internal" href="_modules/utils/timeUtils.html#dateToDecYear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.timeUtils.dateToDecYear" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert <tt class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></tt> object to decimal year</p>
+<dd><p>Convert (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>) object to decimal year</p>
 <dl class="docutils">
 <dt><strong>Args</strong>: </dt>
 <dd><ul class="first last simple">
-<li><strong>date</strong> (datetime.datetime): date and time</li>
+<li><strong>date</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): date and time</li>
 </ul>
 </dd>
 <dt><strong>Returns</strong>:</dt>
 <dd><ul class="first last simple">
 <li><strong>dyear</strong> (float): decimal year</li>
 </ul>
+</dd>
+<dt><strong>Example</strong></dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+<span class="n">decYr</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">timeUtils</span><span class="o">.</span><span class="n">dateToDecYear</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 <p>written by Sebastien, 2013-02</p>
@@ -98,13 +123,24 @@
 <dl class="function">
 <dt id="utils.timeUtils.dateToYyyymmdd">
 <tt class="descclassname">utils.timeUtils.</tt><tt class="descname">dateToYyyymmdd</tt><big>(</big><em>myDate</em><big>)</big><a class="reference internal" href="_modules/utils/timeUtils.html#dateToYyyymmdd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.timeUtils.dateToYyyymmdd" title="Permalink to this definition">¶</a></dt>
-<dd><p>dateStr = dateToYyyymmdd(myDate)</p>
-<p>takes a python datetime object and returns a string in yyyymmdd format</p>
+<dd><p>takes a python datetime object and returns a string in yyyymmdd format</p>
 <dl class="docutils">
-<dt>INPUTS:</dt>
-<dd>myDate : a python date object</dd>
-<dt>OUTPUTS:</dt>
-<dd>dateStr : a string in yyyymmdd format</dd>
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>myDate</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): a python datetime object</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>dateStr</strong> (str): a string in yyyymmdd format</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+<span class="n">dateStr</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">timeUtils</span><span class="o">.</span><span class="n">dateToYyyymmdd</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd>
 </dl>
 <p>Written by AJ 20120718</p>
 </dd></dl>
@@ -112,72 +148,153 @@
 <dl class="function">
 <dt id="utils.timeUtils.datetimeToEpoch">
 <tt class="descclassname">utils.timeUtils.</tt><tt class="descname">datetimeToEpoch</tt><big>(</big><em>myDate</em><big>)</big><a class="reference internal" href="_modules/utils/timeUtils.html#datetimeToEpoch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.timeUtils.datetimeToEpoch" title="Permalink to this definition">¶</a></dt>
-<dd><p>myEpoch = datetimeToEpoch(dateStr)</p>
-<p>reads in a datetime and outputs the equivalent epoch time</p>
+<dd><p>reads in a datetime and outputs the equivalent epoch time</p>
 <dl class="docutils">
-<dt>INPUTS:</dt>
-<dd>myDate : a datetime object</dd>
-<dt>OUTPUTS:</dt>
-<dd>myEpoch : an epoch time equal to the datetime object</dd>
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>myDate</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): a datetime object</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>myEpoch</strong> (float): an epoch time equal to the datetime object</li>
+</ul>
+</dd>
+<dt><strong>Example</strong></dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+<span class="n">epoch</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">timeUtils</span><span class="o">.</span><span class="n">datetimeToEpoch</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd>
 </dl>
+<p>Written by AJ 20120914
+Modified by Nathaniel Frissell 20130729 - Added list support.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="utils.timeUtils.julToDatetime">
 <tt class="descclassname">utils.timeUtils.</tt><tt class="descname">julToDatetime</tt><big>(</big><em>ndarray</em><big>)</big><a class="reference internal" href="_modules/utils/timeUtils.html#julToDatetime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.timeUtils.julToDatetime" title="Permalink to this definition">¶</a></dt>
-<dd><p>adate = julToDatetime( ndarray )
-Convert a julian date to a datetime object.</p>
-<p>INPUT: 
-NDARRAY: single float64 or a numpy array of Julian Dates.</p>
+<dd><p>Convert a julian date to a datetime object.</p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>NDARRAY</strong> (float or list): single float64 or a numpy array of Julian Dates.</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>dt</strong> (list): list of datetime objects</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">myDateList</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">timeUtils</span><span class="o">.</span><span class="n">julToDatetime</span><span class="p">(</span><span class="mf">2456118.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>Created by Nathaniel Frissell 20120810</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="utils.timeUtils.parseDate">
 <tt class="descclassname">utils.timeUtils.</tt><tt class="descname">parseDate</tt><big>(</big><em>date</em><big>)</big><a class="reference internal" href="_modules/utils/timeUtils.html#parseDate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.timeUtils.parseDate" title="Permalink to this definition">¶</a></dt>
-<dd><p>** adate = parseDate( date )
-Parse YYYYMMDD dates in YYYY, MM, DD and vice versa</p>
-<p>INPUT:
-DATE: experiment date in YYYYMMDD or [YYYY,MM,DD]</p>
+<dd><p>Parse YYYYMMDD dates in YYYY, MM, DD and vice versa</p>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>date</strong> (str or list): experiment date in YYYYMMDD or [YYYY,MM,DD]</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>tdate</strong> (list or int): experiment date in [YYYY,MM,DD] or YYYYMMDD</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">tlist</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">timeUtils</span><span class="o">.</span><span class="n">parseDate</span><span class="p">(</span><span class="s">&#39;20120710&#39;</span><span class="p">)</span>
+<span class="n">ttime</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">timeUtils</span><span class="o">.</span><span class="n">parseDate</span><span class="p">([</span><span class="mi">2012</span><span class="p">,</span><span class="mo">07</span><span class="p">,</span><span class="mi">10</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd>
+</dl>
 <p>Created by Sebastien</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="utils.timeUtils.parseTime">
 <tt class="descclassname">utils.timeUtils.</tt><tt class="descname">parseTime</tt><big>(</big><em>time</em><big>)</big><a class="reference internal" href="_modules/utils/timeUtils.html#parseTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.timeUtils.parseTime" title="Permalink to this definition">¶</a></dt>
-<dd><p>** atime = parseTime( time )
-Parse HHMM or HHMMSS dates in HH, MM, SS and vice versa</p>
-<p>INPUT:
-TIME: time in HHMM or HHMMSS or [HH,MM] or [HH,MM,SS]</p>
+<dd><p>Parse HHMM or HHMMSS dates in HH, MM, SS and vice versa</p>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>TIME</strong> (str or list): time in HHMM or HHMMSS OR [HH,MM] or [HH,MM,SS]</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong> </dt>
+<dd><ul class="first last simple">
+<li><strong>ttime</strong> (list or int): time in [HH,MM] or [HH,MM,SS] OR HHMM or HHMMSS</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">tlist</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">timeUtils</span><span class="o">.</span><span class="n">parseDate</span><span class="p">(</span><span class="s">&#39;065022&#39;</span><span class="p">)</span>
+<span class="n">tstr</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">timeUtils</span><span class="o">.</span><span class="n">parseDate</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">22</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd>
+</dl>
 <p>Created by Sebastien</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="utils.timeUtils.timeYrsecToDate">
 <tt class="descclassname">utils.timeUtils.</tt><tt class="descname">timeYrsecToDate</tt><big>(</big><em>yrsec</em>, <em>year</em><big>)</big><a class="reference internal" href="_modules/utils/timeUtils.html#timeYrsecToDate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.timeUtils.timeYrsecToDate" title="Permalink to this definition">¶</a></dt>
-<dd><p>myDate = timeYrsecToDate(yrsec, year)</p>
-<p>Converts time expressed in seconds from start of year to a python DATETIME object</p>
+<dd><p>Converts time expressed in seconds from start of year to a python DATETIME object</p>
 <dl class="docutils">
-<dt>INPUTS:</dt>
-<dd>yrsec : seconds since start of year
-year : year in YYYY</dd>
-<dt>OUTPUTS:</dt>
-<dd>myDate : a python DATETIME object</dd>
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>yrsec</strong> (int): seconds since start of year</li>
+<li><strong>year</strong> (int): year in YYYY</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>myDate</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): a python DATETIME object.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">myDate</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">timeUtils</span><span class="o">.</span><span class="n">timeYrsecToDate</span><span class="p">(</span><span class="mi">1205304</span><span class="p">,</span><span class="mi">2012</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
 </dl>
+<p>Written by Sebastien, Jul. 2012</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="utils.timeUtils.yyyymmddToDate">
 <tt class="descclassname">utils.timeUtils.</tt><tt class="descname">yyyymmddToDate</tt><big>(</big><em>dateStr</em><big>)</big><a class="reference internal" href="_modules/utils/timeUtils.html#yyyymmddToDate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.timeUtils.yyyymmddToDate" title="Permalink to this definition">¶</a></dt>
-<dd><p>myDate = yyyymmddToDate(dateStr)</p>
-<p>takes a string in yyyymmdd format and returns a python date object</p>
+<dd><p>takes a string in yyyymmdd format and returns a python date object</p>
 <dl class="docutils">
-<dt>INPUTS:</dt>
-<dd>dateStr : a string in yyyymmdd format</dd>
-<dt>OUTPUTS:</dt>
-<dd>myDate : a python datetime object</dd>
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>dateStr</strong> (str): a string in yyyymmdd format</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>myDate</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): a python datetime object</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">myDate</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">timeUtils</span><span class="o">.</span><span class="n">yyyymmddToDate</span><span class="p">(</span><span class="s">&#39;20120710&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
 </dl>
+<p>Written by AJ 20120718</p>
 </dd></dl>
 
+</div>
 <dl class="attribute">
 <dt id="utils.timeUtils">
 <tt class="descclassname">utils.</tt><tt class="descname">timeUtils</tt><a class="headerlink" href="#utils.timeUtils" title="Permalink to this definition">¶</a></dt>
@@ -195,6 +312,16 @@ year : year in YYYY</dd>
         <p class="logo"><a href="index.html">
           <img class="logo" src="_static/davitpy.svg" alt="Logo" style="width: 80%;"/>
         </a></p>
+  <div class="sphinxlocaltoc">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">utils.timeUtils</a><ul>
+<li><a class="reference internal" href="#module-utils-timeutils"><strong>Module</strong>: utils.timeUtils</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
   <h4>Previous topic</h4>
   <p class="topless"><a href="utils.html"
                         title="previous chapter">utils</a></p>

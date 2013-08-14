@@ -33,10 +33,13 @@
     <link rel="up" title="pydarn.radar" href="pydarn.radar.html" />
     <link rel="next" title="pydarn.radar.radInfoIo" href="pydarn.radar.radInfoIo.html" />
     <link rel="prev" title="pydarn.radar.radFov" href="pydarn.radar.radFov.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -83,6 +86,7 @@
 <dt><strong>Functions</strong>:</dt>
 <dd><ul class="first last simple">
 <li><a class="reference internal" href="#pydarn.radar.radUtils.getCpName" title="pydarn.radar.radUtils.getCpName"><tt class="xref py py-func docutils literal"><span class="pre">getCpName()</span></tt></a>: get the name of a control program from cp id number</li>
+<li><a class="reference internal" href="#pydarn.radar.radUtils.getParamDict" title="pydarn.radar.radUtils.getParamDict"><tt class="xref py py-func docutils literal"><span class="pre">getParamDict()</span></tt></a>: Get information about a parameter, including units, default ranges, and axis labels.</li>
 </ul>
 </dd>
 </dl>
@@ -108,6 +112,30 @@
 </dd>
 </dl>
 <p>written by AJ, 2012-08</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydarn.radar.radUtils.getParamDict">
+<tt class="descclassname">pydarn.radar.radUtils.</tt><tt class="descname">getParamDict</tt><big>(</big><em>param</em><big>)</big><a class="reference internal" href="_modules/pydarn/radar/radUtils.html#getParamDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.radar.radUtils.getParamDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get information about a parameter, including units, default ranges, and axis labels.</p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>param</strong> (str): name of parameter</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>paramDict</strong> (str): dictionary containing information about the chosen parameter</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">paramDict</span> <span class="o">=</span> <span class="n">getParamDict</span><span class="p">(</span><span class="s">&#39;w_l&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by Nathaniel Frissell, 2013-07</p>
 </dd></dl>
 
 </div>

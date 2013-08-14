@@ -31,10 +31,13 @@
     <script type="text/javascript" src="../../../_static/cloud.js"></script>
     <link rel="top" title="davitpy" href="../../../index.html" />
     <link rel="up" title="gme.plotting" href="../plotting.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -80,122 +83,114 @@
 <span class="c"># You should have received a copy of the GNU General Public License</span>
 <span class="c"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 
+
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">*******************************</span>
-<span class="sd">MODULE: gme.plot.gmeplot</span>
-<span class="sd">*******************************</span>
-
-<span class="sd">This module contains the following functions:</span>
-
-<span class="sd">  plotGMI</span>
-<span class="sd">  </span>
-<span class="sd">*******************************</span>
+<span class="sd">.. module:: gmeplot</span>
+<span class="sd">   :synopsis: A module for reading, writing, and storing kp Data</span>
+<span class="sd">.. moduleauthor:: Nathaniel Frissell</span>
+<span class="sd">*********************</span>
+<span class="sd">**Module**: gme.plotting.gmeplot</span>
+<span class="sd">*********************</span>
+<span class="sd">  * :func:`gme.plotting.plotGME`</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="c">#import pydarn,numpy,math,matplotlib,calendar,datetime,utils,pylab</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">mp</span>
-<span class="kn">import</span> <span class="nn">matplotlib.dates</span> <span class="kn">as</span> <span class="nn">md</span>
-
-<span class="k">def</span> <span class="nf">get_iterable</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">__get_iterable</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
   <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span>
   <span class="k">else</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">x</span>
 
-<div class="viewcode-block" id="plotGMI"><a class="viewcode-back" href="../../../gme.plotting.gmeplot.html#gme.plotting.gmeplot.plotGMI">[docs]</a><span class="k">def</span> <span class="nf">plotGMI</span><span class="p">(</span><span class="n">gmiList</span><span class="p">,</span><span class="n">parameter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">sTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">eTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">ymin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">ymax</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">NoX</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">NoY</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">NoCredit</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">NoLegend</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">legendSize</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	*******************************</span>
 
-<span class="sd">	PACKAGE: gme.plot.gmeplot</span>
+<div class="viewcode-block" id="plotGME"><a class="viewcode-back" href="../../../gme.plotting.gmeplot.html#gme.plotting.gmeplot.plotGME">[docs]</a><span class="k">def</span> <span class="nf">plotGME</span><span class="p">(</span><span class="n">gmiList</span><span class="p">,</span><span class="n">parameter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">sTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">eTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">ymin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">ymax</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">NoX</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">NoY</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">NoCredit</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">NoLegend</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">legendSize</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;plot ground magnetic indicies, including AE, SYMH, ASYMH, and DST.</span>
 
-<span class="sd">	FUNCTION: plotGMI(gmiList,parameter=None,sTime=None,eTime=None,ymin=None,ymax=None,NoX=False,NoY=False,NoCredit=False,NoLegend=False,legendSize=None)</span>
+<span class="sd">  **Args**:</span>
+<span class="sd">    * **gmiList**: gmiList object returned from ae.readAe(), symAsy.readSymAsy(), or dst.readDst()</span>
+<span class="sd">    * **[parameter]**: List of parameters to plot. Valid values are: </span>
 
-<span class="sd">	PURPOSE: plots ground magnetic indicies, including AE,SYMH,ASYMH, and DST.</span>
+<span class="sd">      * aeList:     [&#39;ae&#39;, &#39;al&#39;, &#39;au&#39;, &#39;ao&#39;] (Defaults to &#39;ae&#39;)</span>
+<span class="sd">      * symAsyList: [&#39;symh&#39;, &#39;symd&#39;, &#39;asymh&#39;, &#39;asymd&#39;] (Defaults to &#39;symh&#39;)</span>
+<span class="sd">      * dstList:    [&#39;dst&#39;]</span>
 
-<span class="sd">	INPUTS:</span>
-<span class="sd">                gmiList: gmiList object returned from ae.readAe(), symAsy.readSymAsy(), or dst.readDst()</span>
-<span class="sd">                [parameter]: List of parameters to plot. Valid values are</span>
-<span class="sd">                  aeList:     [&#39;ae&#39;,&#39;al&#39;,&#39;au&#39;,&#39;ao&#39;] (Defaults to &#39;ae&#39;)</span>
-<span class="sd">                  symAsyList: [&#39;symh&#39;,&#39;symd&#39;,&#39;asymh&#39;,&#39;asymd&#39;] (Defaults to &#39;symh&#39;)</span>
-<span class="sd">                  dstList:    [&#39;dst&#39;]</span>
-<span class="sd">                [sTime]: datetime.datetime object for start of plotting.  If not given, earliest data availble from aeList is used.</span>
-<span class="sd">                [eTime]: datetime.datetime object for end of plotting.  If not given, latest data availble from aeList is used.</span>
-<span class="sd">                [ymin]: Y-Axis minimum limit</span>
-<span class="sd">                [ymax]: Y-Axis maximum limit</span>
-<span class="sd">                [NoX]:  Suppress X-Axis Titles and Ticks</span>
-<span class="sd">                [NoY]:  Suppress Y-Axis Titles and Ticks</span>
-<span class="sd">                [NoCredit]: Suppress printing source of data on plot</span>
-<span class="sd">                [NoLegend]: Suppress a legend if more than one parameter is plotted</span>
-<span class="sd">                [legendSize]: Character size of the legend</span>
+<span class="sd">    * **[sTime]**: datetime.datetime object for start of plotting.  If not given, earliest data availble from aeList is used.</span>
+<span class="sd">    * **[eTime]**: datetime.datetime object for end of plotting.  If not given, latest data availble from aeList is used.</span>
+<span class="sd">    * **[ymin]**: Y-Axis minimum limit</span>
+<span class="sd">    * **[ymax]**: Y-Axis maximum limit</span>
+<span class="sd">    * **[NoX]**:  Suppress X-Axis Titles and Ticks</span>
+<span class="sd">    * **[NoY]**:  Suppress Y-Axis Titles and Ticks</span>
+<span class="sd">    * **[NoCredit]**: Suppress printing source of data on plot</span>
+<span class="sd">    * **[NoLegend]**: Suppress a legend if more than one parameter is plotted</span>
+<span class="sd">    * **[legendSize]**: Character size of the legend</span>
 
-<span class="sd">	OUTPUTS:</span>
-<span class="sd">		NONE</span>
+<span class="sd">  **Returns**:</span>
+<span class="sd">    * Nothing.</span>
 
-<span class="sd">        NOTES:  If a matplotlib figure currently exists, it will be modified by this routine.  If not, a new one will be created.</span>
-<span class="sd">		</span>
-<span class="sd">	EXAMPLES:</span>
-<span class="sd">			</span>
-<span class="sd">	Written by Nathaniel Frissell 20130216</span>
+<span class="sd">  .. note::</span>
+<span class="sd">    If a matplotlib figure currently exists, it will be modified by this routine.  If not, a new one will be created.</span>
 
-<span class="sd">	&quot;&quot;&quot;</span>
+<span class="sd">  Written by Nathaniel Frissell 20130216</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="c">#import pydarn,numpy,math,matplotlib,calendar,datetime,utils,pylab</span>
+  <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">mp</span>
+  <span class="kn">import</span> <span class="nn">matplotlib.dates</span> <span class="kn">as</span> <span class="nn">md</span>
         
-        <span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="n">gmiList</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">time</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gmiList</span><span class="p">))]</span>
-        <span class="n">dataSet</span> <span class="o">=</span> <span class="p">(</span><span class="n">gmiList</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">dataSet</span>
-        <span class="k">if</span> <span class="n">dataSet</span> <span class="o">==</span> <span class="s">&#39;AE&#39;</span><span class="p">:</span>
-          <span class="n">ae</span>    <span class="o">=</span> <span class="p">[</span><span class="n">gmiList</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">ae</span>   <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gmiList</span><span class="p">))]</span>
-          <span class="n">al</span>    <span class="o">=</span> <span class="p">[</span><span class="n">gmiList</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">al</span>   <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gmiList</span><span class="p">))]</span>
-          <span class="n">au</span>    <span class="o">=</span> <span class="p">[</span><span class="n">gmiList</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">au</span>   <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gmiList</span><span class="p">))]</span>
-          <span class="n">ao</span>    <span class="o">=</span> <span class="p">[</span><span class="n">gmiList</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">ao</span>   <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gmiList</span><span class="p">))]</span>
-          <span class="n">data</span>  <span class="o">=</span> <span class="p">{</span><span class="s">&#39;ae&#39;</span><span class="p">:</span> <span class="n">ae</span><span class="p">,</span><span class="s">&#39;al&#39;</span><span class="p">:</span><span class="n">al</span><span class="p">,</span><span class="s">&#39;au&#39;</span><span class="p">:</span><span class="n">au</span><span class="p">,</span><span class="s">&#39;ao&#39;</span><span class="p">:</span><span class="n">ao</span><span class="p">}</span>
-          <span class="k">if</span> <span class="n">parameter</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span> <span class="n">parameter</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;ae&#39;</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">dataSet</span> <span class="o">==</span> <span class="s">&#39;Sym/Asy&#39;</span><span class="p">:</span>
-          <span class="n">symh</span>  <span class="o">=</span> <span class="p">[</span><span class="n">gmiList</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">symh</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gmiList</span><span class="p">))]</span>
-          <span class="n">symd</span>  <span class="o">=</span> <span class="p">[</span><span class="n">gmiList</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">symd</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gmiList</span><span class="p">))]</span>
-          <span class="n">asyh</span>  <span class="o">=</span> <span class="p">[</span><span class="n">gmiList</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">asyh</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gmiList</span><span class="p">))]</span>
-          <span class="n">asyd</span>  <span class="o">=</span> <span class="p">[</span><span class="n">gmiList</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">asyd</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gmiList</span><span class="p">))]</span>
-          <span class="n">data</span>  <span class="o">=</span> <span class="p">{</span><span class="s">&#39;symh&#39;</span><span class="p">:</span><span class="n">symh</span><span class="p">,</span> <span class="s">&#39;symd&#39;</span><span class="p">:</span><span class="n">symd</span><span class="p">,</span> <span class="s">&#39;asyh&#39;</span><span class="p">:</span><span class="n">asyh</span><span class="p">,</span> <span class="s">&#39;asyd&#39;</span><span class="p">:</span> <span class="n">asyd</span><span class="p">}</span>
-          <span class="k">if</span> <span class="n">parameter</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span> <span class="n">parameter</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;symh&#39;</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">dataSet</span> <span class="o">==</span> <span class="s">&#39;Dst&#39;</span><span class="p">:</span>
-          <span class="n">dst</span>   <span class="o">=</span> <span class="p">[</span><span class="n">gmiList</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">dst</span>  <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gmiList</span><span class="p">))]</span>
-          <span class="n">data</span>  <span class="o">=</span> <span class="p">{</span><span class="s">&#39;dst&#39;</span><span class="p">:</span><span class="n">dst</span><span class="p">}</span>
-          <span class="k">if</span> <span class="n">parameter</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span> <span class="n">parameter</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;dst&#39;</span><span class="p">]</span>
+  <span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="n">gmiList</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">time</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gmiList</span><span class="p">))]</span>
+  <span class="n">dataSet</span> <span class="o">=</span> <span class="p">(</span><span class="n">gmiList</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">dataSet</span>
+  <span class="k">if</span> <span class="n">dataSet</span> <span class="o">==</span> <span class="s">&#39;AE&#39;</span><span class="p">:</span>
+    <span class="n">ae</span>    <span class="o">=</span> <span class="p">[</span><span class="n">gmiList</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">ae</span>   <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gmiList</span><span class="p">))]</span>
+    <span class="n">al</span>    <span class="o">=</span> <span class="p">[</span><span class="n">gmiList</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">al</span>   <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gmiList</span><span class="p">))]</span>
+    <span class="n">au</span>    <span class="o">=</span> <span class="p">[</span><span class="n">gmiList</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">au</span>   <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gmiList</span><span class="p">))]</span>
+    <span class="n">ao</span>    <span class="o">=</span> <span class="p">[</span><span class="n">gmiList</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">ao</span>   <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gmiList</span><span class="p">))]</span>
+    <span class="n">data</span>  <span class="o">=</span> <span class="p">{</span><span class="s">&#39;ae&#39;</span><span class="p">:</span> <span class="n">ae</span><span class="p">,</span><span class="s">&#39;al&#39;</span><span class="p">:</span><span class="n">al</span><span class="p">,</span><span class="s">&#39;au&#39;</span><span class="p">:</span><span class="n">au</span><span class="p">,</span><span class="s">&#39;ao&#39;</span><span class="p">:</span><span class="n">ao</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">parameter</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span> <span class="n">parameter</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;ae&#39;</span><span class="p">]</span>
+  <span class="k">elif</span> <span class="n">dataSet</span> <span class="o">==</span> <span class="s">&#39;Sym/Asy&#39;</span><span class="p">:</span>
+    <span class="n">symh</span>  <span class="o">=</span> <span class="p">[</span><span class="n">gmiList</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">symh</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gmiList</span><span class="p">))]</span>
+    <span class="n">symd</span>  <span class="o">=</span> <span class="p">[</span><span class="n">gmiList</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">symd</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gmiList</span><span class="p">))]</span>
+    <span class="n">asyh</span>  <span class="o">=</span> <span class="p">[</span><span class="n">gmiList</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">asyh</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gmiList</span><span class="p">))]</span>
+    <span class="n">asyd</span>  <span class="o">=</span> <span class="p">[</span><span class="n">gmiList</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">asyd</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gmiList</span><span class="p">))]</span>
+    <span class="n">data</span>  <span class="o">=</span> <span class="p">{</span><span class="s">&#39;symh&#39;</span><span class="p">:</span><span class="n">symh</span><span class="p">,</span> <span class="s">&#39;symd&#39;</span><span class="p">:</span><span class="n">symd</span><span class="p">,</span> <span class="s">&#39;asyh&#39;</span><span class="p">:</span><span class="n">asyh</span><span class="p">,</span> <span class="s">&#39;asyd&#39;</span><span class="p">:</span> <span class="n">asyd</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">parameter</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span> <span class="n">parameter</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;symh&#39;</span><span class="p">]</span>
+  <span class="k">elif</span> <span class="n">dataSet</span> <span class="o">==</span> <span class="s">&#39;Dst&#39;</span><span class="p">:</span>
+    <span class="n">dst</span>   <span class="o">=</span> <span class="p">[</span><span class="n">gmiList</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">dst</span>  <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gmiList</span><span class="p">))]</span>
+    <span class="n">data</span>  <span class="o">=</span> <span class="p">{</span><span class="s">&#39;dst&#39;</span><span class="p">:</span><span class="n">dst</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">parameter</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span> <span class="n">parameter</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;dst&#39;</span><span class="p">]</span>
 
-        <span class="n">parameter</span> <span class="o">=</span> <span class="n">get_iterable</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span>
+  <span class="n">parameter</span> <span class="o">=</span> <span class="n">__get_iterable</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span>
 
-        <span class="n">figure</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">figure</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span> <span class="n">figure</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+  <span class="n">figure</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
+  <span class="k">if</span> <span class="n">figure</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span> <span class="n">figure</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 
-        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">parameter</span><span class="p">:</span>
-          <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span> <span class="k">continue</span>
-          <span class="n">mp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span><span class="n">data</span><span class="p">[</span><span class="n">param</span><span class="o">.</span><span class="n">lower</span><span class="p">()],</span><span class="n">label</span><span class="o">=</span><span class="n">param</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+  <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">parameter</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span> <span class="k">continue</span>
+    <span class="n">mp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span><span class="n">data</span><span class="p">[</span><span class="n">param</span><span class="o">.</span><span class="n">lower</span><span class="p">()],</span><span class="n">label</span><span class="o">=</span><span class="n">param</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
 
-        <span class="n">mp</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">ymin</span><span class="p">,</span><span class="n">ymax</span><span class="p">)</span>
-        <span class="n">mp</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span><span class="n">eTime</span><span class="p">)</span>
+  <span class="n">mp</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">ymin</span><span class="p">,</span><span class="n">ymax</span><span class="p">)</span>
+  <span class="n">mp</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span><span class="n">eTime</span><span class="p">)</span>
 
-        <span class="n">ax</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+  <span class="n">ax</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="n">NoY</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span>
-          <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">ylabel</span> <span class="o">=</span> <span class="p">(</span><span class="n">parameter</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="s">&#39; [nT]&#39;</span>
-          <span class="k">else</span><span class="p">:</span>
-            <span class="n">ylabel</span> <span class="o">=</span> <span class="s">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">parameter</span><span class="p">])</span> <span class="o">+</span> <span class="s">&#39; [nT]&#39;</span>
-            <span class="k">if</span> <span class="n">NoLegend</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;size&#39;</span><span class="p">:</span><span class="n">legendSize</span><span class="p">})</span>
-          <span class="n">mp</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-          <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([])</span> 
+  <span class="k">if</span> <span class="n">NoY</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+      <span class="n">ylabel</span> <span class="o">=</span> <span class="p">(</span><span class="n">parameter</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="s">&#39; [nT]&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">ylabel</span> <span class="o">=</span> <span class="s">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">parameter</span><span class="p">])</span> <span class="o">+</span> <span class="s">&#39; [nT]&#39;</span>
+      <span class="k">if</span> <span class="n">NoLegend</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;size&#39;</span><span class="p">:</span><span class="n">legendSize</span><span class="p">})</span>
+    <span class="n">mp</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([])</span> 
 
-        <span class="k">if</span> <span class="n">NoX</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span>
-          <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">md</span><span class="o">.</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s">&#39;%H:%M&#39;</span><span class="p">))</span>
-          <span class="n">mp</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;Time [UT]&#39;</span><span class="p">)</span>
-          <span class="n">figure</span><span class="o">.</span><span class="n">autofmt_xdate</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-          <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([])</span> 
+  <span class="k">if</span> <span class="n">NoX</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">md</span><span class="o">.</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s">&#39;%H:%M&#39;</span><span class="p">))</span>
+    <span class="n">mp</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;Time [UT]&#39;</span><span class="p">)</span>
+    <span class="n">figure</span><span class="o">.</span><span class="n">autofmt_xdate</span><span class="p">()</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([])</span> 
 
-        <span class="k">if</span> <span class="n">NoCredit</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span>
-          <span class="n">s</span> <span class="o">=</span> <span class="s">&#39;Source: Kyoto WDC&#39;</span>
-          <span class="n">xpos</span> <span class="o">=</span> <span class="mf">0.01</span>
-          <span class="n">ypos</span> <span class="o">=</span> <span class="mf">0.91</span>
-          <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">xpos</span><span class="p">,</span><span class="n">ypos</span><span class="p">),</span><span class="n">xycoords</span><span class="o">=</span><span class="s">&quot;axes fraction&quot;</span><span class="p">,</span><span class="n">horizontalalignment</span><span class="o">=</span><span class="s">&quot;left&quot;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="s">&#39;x-small&#39;</span><span class="p">)</span></div>
+  <span class="k">if</span> <span class="n">NoCredit</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="s">&#39;Source: Kyoto WDC&#39;</span>
+    <span class="n">xpos</span> <span class="o">=</span> <span class="mf">0.01</span>
+    <span class="n">ypos</span> <span class="o">=</span> <span class="mf">0.91</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">xpos</span><span class="p">,</span><span class="n">ypos</span><span class="p">),</span><span class="n">xycoords</span><span class="o">=</span><span class="s">&quot;axes fraction&quot;</span><span class="p">,</span><span class="n">horizontalalignment</span><span class="o">=</span><span class="s">&quot;left&quot;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="s">&#39;x-small&#39;</span><span class="p">)</span></div>
 </pre></div>
 
           </div>

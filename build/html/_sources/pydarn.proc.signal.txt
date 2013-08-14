@@ -5,8 +5,6 @@ pydarn.proc.signal
 
    pydarn.proc.signal.compare
 
-   pydarn.proc.signal.sigio
-
    pydarn.proc.signal.signalCommon
 
    pydarn.proc.signal.xcor

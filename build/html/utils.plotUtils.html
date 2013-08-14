@@ -33,10 +33,13 @@
     <link rel="up" title="utils" href="utils.html" />
     <link rel="next" title="utils.geoPack" href="utils.geoPack.html" />
     <link rel="prev" title="utils.timeUtils" href="utils.timeUtils.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -76,16 +79,17 @@
 <ul class="simple">
 </ul>
 </div>
-<span class="target" id="module-utils.plotUtils"></span><div class="section" id="module-utils-plotutils">
+<span class="target" id="module-utils.plotUtils"></span><span class="target" id="module-plotUtils"></span><div class="section" id="module-utils-plotutils">
 <h2><strong>Module</strong>: utils.plotUtils<a class="headerlink" href="#module-utils-plotutils" title="Permalink to this headline">¶</a></h2>
 <p>Basic plotting tools</p>
 <dl class="docutils">
 <dt><strong>Functions</strong>:</dt>
 <dd><ul class="first last simple">
 <li><a class="reference internal" href="#utils.plotUtils.mapObj" title="utils.plotUtils.mapObj"><tt class="xref py py-func docutils literal"><span class="pre">utils.plotUtils.mapObj()</span></tt></a>: Create empty map</li>
-<li><a class="reference internal" href="#utils.plotUtils.genCmap" title="utils.plotUtils.genCmap"><tt class="xref py py-func docutils literal"><span class="pre">utils.plotUtils.genCmap()</span></tt></a>:</li>
+<li><a class="reference internal" href="#utils.plotUtils.genCmap" title="utils.plotUtils.genCmap"><tt class="xref py py-func docutils literal"><span class="pre">utils.plotUtils.genCmap()</span></tt></a>: generate a custom colormap</li>
+<li><a class="reference internal" href="#utils.plotUtils.drawCB" title="utils.plotUtils.drawCB"><tt class="xref py py-func docutils literal"><span class="pre">utils.plotUtils.drawCB()</span></tt></a>: draw a colorbar</li>
 <li><a class="reference internal" href="#utils.plotUtils.curvedEarthAxes" title="utils.plotUtils.curvedEarthAxes"><tt class="xref py py-func docutils literal"><span class="pre">utils.plotUtils.curvedEarthAxes()</span></tt></a>: Plot axes in (R, Theta) coordinates with lower limit at R = Earth radius</li>
-<li><a class="reference internal" href="#utils.plotUtils.addColorbar" title="utils.plotUtils.addColorbar"><tt class="xref py py-func docutils literal"><span class="pre">utils.plotUtils.addColorbar()</span></tt></a>: Colorbar for <a class="reference internal" href="#utils.plotUtils.curvedEarthAxes" title="utils.plotUtils.curvedEarthAxes"><tt class="xref py py-func docutils literal"><span class="pre">curvedEarthAxes()</span></tt></a></li>
+<li><a class="reference internal" href="#utils.plotUtils.addColorbar" title="utils.plotUtils.addColorbar"><tt class="xref py py-func docutils literal"><span class="pre">utils.plotUtils.addColorbar()</span></tt></a>: Colorbar for <tt class="xref py py-func docutils literal"><span class="pre">curvedEarthAxes()</span></tt></li>
 </ul>
 </dd>
 </dl>
@@ -108,7 +112,7 @@
 </dl>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This is mostly useful for axes created with <a class="reference internal" href="#utils.plotUtils.curvedEarthAxes" title="utils.plotUtils.curvedEarthAxes"><tt class="xref py py-func docutils literal"><span class="pre">curvedEarthAxes()</span></tt></a>.</p>
+<p class="last">This is mostly useful for axes created with <tt class="xref py py-func docutils literal"><span class="pre">curvedEarthAxes()</span></tt>.</p>
 </div>
 <p>written by Sebastien, 2013-04</p>
 </dd></dl>
@@ -153,31 +157,53 @@
 
 <dl class="function">
 <dt id="utils.plotUtils.drawCB">
-<tt class="descclassname">utils.plotUtils.</tt><tt class="descname">drawCB</tt><big>(</big><em>fig, coll, cmap, norm, map=0, pos=[0, 0, 1, 1]</em><big>)</big><a class="reference internal" href="_modules/utils/plotUtils.html#drawCB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.plotUtils.drawCB" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draw a colorbar I guess... AJ?</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="utils.plotUtils.genCmap">
-<tt class="descclassname">utils.plotUtils.</tt><tt class="descname">genCmap</tt><big>(</big><em>param</em>, <em>scale</em>, <em>colors='lasse'</em>, <em>lowGray=False</em><big>)</big><a class="reference internal" href="_modules/utils/plotUtils.html#genCmap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.plotUtils.genCmap" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates a colormap and plots a colorbar</p>
+<tt class="descclassname">utils.plotUtils.</tt><tt class="descname">drawCB</tt><big>(</big><em>fig, coll, cmap, norm, map=False, pos=[0, 0, 1, 1]</em><big>)</big><a class="reference internal" href="_modules/utils/plotUtils.html#drawCB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.plotUtils.drawCB" title="Permalink to this definition">¶</a></dt>
+<dd><p>manually draws a colorbar on a figure.  This can be used in lieu of the standard mpl colorbar function if you need the colorbar in a specific location.  See <a class="reference internal" href="pydarn.plotting.rti.html#pydarn.plotting.rti.plotRti" title="pydarn.plotting.rti.plotRti"><tt class="xref py py-func docutils literal"><span class="pre">pydarn.plotting.rti.plotRti()</span></tt></a> for an example of its use.</p>
 <dl class="docutils">
 <dt><strong>Args</strong>:</dt>
 <dd><ul class="first last simple">
-<li><strong>fig</strong>: the parent figure</li>
-<li><strong>coll</strong>: the collection of items (e.g. polygons) being mapped to this colormap</li>
-<li><strong>param</strong>: the parameter being plotted, valid for &#8216;velocity&#8217;, &#8216;power&#8217;, &#8216;width&#8217;, &#8216;elevation&#8217;, &#8216;phi0&#8217;</li>
-<li><strong>scale</strong>: the max and min values of the color scale in list form</li>
-<li><strong>pos</strong>: the position of the parent plot, NOT of the COLORBAR</li>
-<li><strong>[colors]</strong>: a string indicating which colorbar to use, valid inputs are &#8216;lasse&#8217;, &#8216;aj&#8217;</li>
+<li><strong>fig</strong> (<a class="reference external" href="http://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure">matplotlib.figure.Figure</a>): the figure being drawn on.</li>
+<li><strong>coll</strong> (<a class="reference external" href="http://matplotlib.org/api/collections_api.html?highlight=collection#matplotlib.collections.Collection">matplotlib.collections.Collection</a>: the collection using this colorbar</li>
+<li><strong>cmap</strong> (<a class="reference external" href="http://matplotlib.org/api/colors_api.html?highlight=listedcolormap#matplotlib.colors.ListedColormap">matplotlib.colors.ListedColormap</a>): the colormap being used</li>
+<li><strong>norm</strong> (<a class="reference external" href="http://matplotlib.org/api/colors_api.html?highlight=matplotlib.colors.boundarynorm#matplotlib.colors.BoundaryNorm">matplotlib.colors.BoundaryNorm</a>): the colormap index being used</li>
+<li><strong>[map]</strong> (boolean): a flag indicating the we are drawing the colorbar on a figure with a map plot</li>
+<li><strong>[pos]</strong> (list): the position of the colorbar.  format = [left,bottom,width,height]</li>
 </ul>
 </dd>
 </dl>
 <p><strong>Returns</strong>:</p>
 <dl class="docutils">
 <dt><strong>Example</strong>:</dt>
-<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">myFig</span> <span class="o">=</span> <span class="n">figure</span><span class="p">()</span>
-<span class="n">genCmap</span><span class="p">(</span><span class="n">myFig</span><span class="p">,</span> <span class="n">polyCollection</span><span class="p">,</span> <span class="s">&#39;velocity&#39;</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">200</span><span class="p">,</span><span class="mi">200</span><span class="p">],</span> <span class="n">pos</span><span class="p">)</span>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">cmap</span><span class="p">,</span><span class="n">norm</span><span class="p">,</span><span class="n">bounds</span> <span class="o">=</span> <span class="n">genCmap</span><span class="p">(</span><span class="s">&#39;velocity&#39;</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">200</span><span class="p">,</span><span class="mi">200</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s">&#39;aj&#39;</span><span class="p">,</span> <span class="n">lowGray</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>Written by AJ 20120820</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.plotUtils.genCmap">
+<tt class="descclassname">utils.plotUtils.</tt><tt class="descname">genCmap</tt><big>(</big><em>param</em>, <em>scale</em>, <em>colors='lasse'</em>, <em>lowGray=False</em><big>)</big><a class="reference internal" href="_modules/utils/plotUtils.html#genCmap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.plotUtils.genCmap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a colormap and returns the necessary components to use it</p>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>param</strong> (str): the parameter being plotted (&#8216;velocity&#8217; and &#8216;phi0&#8217; are special cases, anything else gets the same color scale)</li>
+<li><strong>scale</strong> (list): a list with the [min,max] values of the color scale</li>
+<li><strong>[colors]</strong> (str): a string indicating which colorbar to use, valid inputs are &#8216;lasse&#8217;, &#8216;aj&#8217;.  default = &#8216;lasse&#8217;</li>
+<li><strong>[lowGray]</strong> (boolean): a flag indicating whether to plot low velocities (<a href="#id3"><span class="problematic" id="id4">|v|</span></a> &lt; 15 m/s) in gray.  default = False</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>cmap</strong> (<a class="reference external" href="http://matplotlib.org/api/colors_api.html?highlight=listedcolormap#matplotlib.colors.ListedColormap">matplotlib.colors.ListedColormap</a>): the colormap generated.  This then gets passed to the mpl plotting function (e.g. scatter, plot, LineCollection, etc.)</li>
+<li><strong>norm</strong> (<a class="reference external" href="http://matplotlib.org/api/colors_api.html?highlight=matplotlib.colors.boundarynorm#matplotlib.colors.BoundaryNorm">matplotlib.colors.BoundaryNorm</a>): the colormap index.  This then gets passed to the mpl plotting function (e.g. scatter, plot, LineCollection, etc.)</li>
+<li><strong>bounds</strong> (list): the boundaries of each of the colormap segments.  This can be used to manually label the colorbar, for example.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">cmap</span><span class="p">,</span><span class="n">norm</span><span class="p">,</span><span class="n">bounds</span> <span class="o">=</span> <span class="n">genCmap</span><span class="p">(</span><span class="s">&#39;velocity&#39;</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">200</span><span class="p">,</span><span class="mi">200</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s">&#39;aj&#39;</span><span class="p">,</span> <span class="n">lowGray</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd>
@@ -187,7 +213,7 @@
 
 <dl class="class">
 <dt id="utils.plotUtils.mapObj">
-<em class="property">class </em><tt class="descclassname">utils.plotUtils.</tt><tt class="descname">mapObj</tt><big>(</big><em>datetime=None</em>, <em>coords='geo'</em>, <em>projection='stere'</em>, <em>resolution='l'</em>, <em>dateTime=None</em>, <em>lat_0=None</em>, <em>lon_0=None</em>, <em>boundinglat=None</em>, <em>width=None</em>, <em>height=None</em>, <em>fillContinents='.8'</em>, <em>fillOceans='None'</em>, <em>fillLakes=None</em>, <em>coastLineWidth=0.0</em>, <em>grid=True</em>, <em>gridLabels=True</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/utils/plotUtils.html#mapObj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.plotUtils.mapObj" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">utils.plotUtils.</tt><tt class="descname">mapObj</tt><big>(</big><em>datetime=None</em>, <em>coords='geo'</em>, <em>projection='stere'</em>, <em>resolution='c'</em>, <em>dateTime=None</em>, <em>lat_0=None</em>, <em>lon_0=None</em>, <em>boundinglat=None</em>, <em>width=None</em>, <em>height=None</em>, <em>fillContinents='.8'</em>, <em>fillOceans='None'</em>, <em>fillLakes=None</em>, <em>coastLineWidth=0.0</em>, <em>grid=True</em>, <em>gridLabels=True</em>, <em>showCoords=True</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/utils/plotUtils.html#mapObj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.plotUtils.mapObj" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class wraps arround <tt class="xref py py-class docutils literal"><span class="pre">mpl_toolkits.basemap.Basemap</span></tt> (&lt;<a class="reference external" href="http://tinyurl.com/d4rzmfo">http://tinyurl.com/d4rzmfo</a>&gt;)</p>
 <dl class="docutils">
 <dt><strong>Members</strong>: </dt>
@@ -221,6 +247,27 @@
 <p class="first admonition-title">Note</p>
 <p class="last">Once the map is created, all plotting calls will be assumed to already be in the map&#8217;s declared coordinate system given by <strong>coords</strong>.</p>
 </div>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.plotUtils.textHighlighted">
+<tt class="descclassname">utils.plotUtils.</tt><tt class="descname">textHighlighted</tt><big>(</big><em>xy</em>, <em>text</em>, <em>color='k'</em>, <em>fontsize=None</em>, <em>xytext=(0</em>, <em>0)</em>, <em>zorder=None</em>, <em>text_alignment=(0</em>, <em>0)</em>, <em>xycoords='data'</em>, <em>textcoords='offset points'</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/utils/plotUtils.html#textHighlighted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.plotUtils.textHighlighted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot highlighted annotation (with a white lining)</p>
+<p><strong>Belongs to</strong>: <tt class="xref py py-class docutils literal"><span class="pre">rbspFp</span></tt></p>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>xy</strong>: position of point to annotate</li>
+<li><strong>text</strong>: text to show</li>
+<li><strong>[xytext]</strong>: text position</li>
+<li><strong>[zorder]</strong>: text zorder</li>
+<li><strong>[color]</strong>: text color</li>
+<li><strong>[fontsize]</strong>: text font size</li>
+<li><strong>[xycoords]</strong>: xy coordinate (see <cite>matplotlib.pyplot.annotate&lt;http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.annotate&gt;</cite>)</li>
+<li><strong>[textcoords]</strong>: text coordinate (see <cite>matplotlib.pyplot.annotate&lt;http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.annotate&gt;</cite>)</li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </div>

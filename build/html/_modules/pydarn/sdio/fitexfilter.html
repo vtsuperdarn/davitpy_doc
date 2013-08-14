@@ -31,10 +31,13 @@
     <script type="text/javascript" src="../../../_static/cloud.js"></script>
     <link rel="top" title="davitpy" href="../../../index.html" />
     <link rel="up" title="pydarn.sdio" href="../sdio.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -64,11 +67,66 @@
           <div class="body">
             
   <h1>Source code for pydarn.sdio.fitexfilter</h1><div class="highlight"><pre>
+<span class="c"># Copyright (C) 2012  VT SuperDARN Lab</span>
+<span class="c"># Full license can be found in LICENSE.txt</span>
+<span class="c"># </span>
+<span class="c"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c"># it under the terms of the GNU General Public License as published by</span>
+<span class="c"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c"># (at your option) any later version.</span>
+<span class="c"># </span>
+<span class="c"># This program is distributed in the hope that it will be useful,</span>
+<span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c"># GNU General Public License for more details.</span>
+<span class="c"># </span>
+<span class="c"># You should have received a copy of the GNU General Public License</span>
+<span class="c"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">*************************************</span>
+<span class="sd">**Module**: pydarn.sdio.fitexfilter</span>
+<span class="sd">*************************************</span>
+<span class="sd">Filter fitexfiles natively in python</span>
+
+<span class="sd">.. warning::</span>
+<span class="sd">  This is very SLOW.  We are currently working on this.  We recommend using the c version which is folded into :func:`pydarn.sdio.radDataRead.radDataOpen` </span>
+<span class="sd">**Functions**:</span>
+<span class="sd">  * :func:`pydarn.sdio.fitexfilter.combBeams`</span>
+<span class="sd">  * :func:`pydarn.sdio.fitexfilter.fitFilter`</span>
+<span class="sd">  * :func:`pydarn.sdio.fitexfilter.doFilter`</span>
+<span class="sd">**Classes**:</span>
+<span class="sd">  * :class:`pydarn.sdio.fitexfilter.Gate`</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">pydarn</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
 <span class="kn">import</span> <span class="nn">utils</span>
 
+
+<div class="viewcode-block" id="Gate"><a class="viewcode-back" href="../../../pydarn.sdio.fitexfilter.html#pydarn.sdio.fitexfilter.Gate">[docs]</a><span class="k">class</span> <span class="nc">Gate</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;A class to represent a single range gate</span>
+<span class="sd">    </span>
+<span class="sd">  **Attrs**: </span>
+<span class="sd">    * **v** (float): velocity</span>
+<span class="sd">    * **w_l** (float): spectral width</span>
+<span class="sd">    * **p_l** (float): power</span>
+<span class="sd">    * **elv** (float): elevation angle</span>
+<span class="sd">    * **phi0** (float): phase difference between front and back array</span>
+
+<span class="sd">  written by AJ, 20130402</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">fit</span><span class="p">,</span><span class="n">i</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">w_l</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">w_l</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">p_l</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">p_l</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">pwr0</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">pwr0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">fit</span><span class="o">.</span><span class="n">elv</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">elv</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">elv</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">elv</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">if</span> <span class="n">fit</span><span class="o">.</span><span class="n">phi0</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi0</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">phi0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi0</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
 <div class="viewcode-block" id="combBeams"><a class="viewcode-back" href="../../../pydarn.sdio.fitexfilter.html#pydarn.sdio.fitexfilter.combBeams">[docs]</a><span class="k">def</span> <span class="nf">combBeams</span><span class="p">(</span><span class="n">scan</span><span class="p">):</span>
   <span class="sd">&quot;&quot;&quot;This function combines all repeated beams within a scan into an averaged beam</span>
 <span class="sd">    </span>
@@ -136,19 +194,29 @@
   <span class="nb">sorted</span><span class="p">(</span><span class="n">outScan</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">beam</span><span class="p">:</span> <span class="n">beam</span><span class="o">.</span><span class="n">bmnum</span><span class="p">)</span>
 
   <span class="k">return</span> <span class="n">outScan</span>
-</div>
-<span class="k">class</span> <span class="nc">Gate</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">fit</span><span class="p">,</span><span class="n">i</span><span class="p">):</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">w_l</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">w_l</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">p_l</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">p_l</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">pwr0</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">pwr0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">fit</span><span class="o">.</span><span class="n">elv</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">elv</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">elv</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">elv</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="k">if</span> <span class="n">fit</span><span class="o">.</span><span class="n">phi0</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi0</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">phi0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi0</span> <span class="o">=</span> <span class="bp">None</span>
 
-<span class="k">def</span> <span class="nf">fitFilter</span><span class="p">(</span><span class="n">inFile</span><span class="p">,</span><span class="n">outFile</span><span class="p">,</span><span class="n">thresh</span><span class="o">=</span><span class="mf">0.4</span><span class="p">):</span>
+</div>
+<div class="viewcode-block" id="fitFilter"><a class="viewcode-back" href="../../../pydarn.sdio.fitexfilter.html#pydarn.sdio.fitexfilter.fitFilter">[docs]</a><span class="k">def</span> <span class="nf">fitFilter</span><span class="p">(</span><span class="n">inFile</span><span class="p">,</span><span class="n">outFile</span><span class="p">,</span><span class="n">thresh</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span><span class="n">vb</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;This function applies a boxcar filter to a fitacf file</span>
+<span class="sd">    </span>
+<span class="sd">  .. warning::</span>
+<span class="sd">    This is **VERY** slow.  We are currently working on improving this.</span>
+
+<span class="sd">  **Args**: </span>
+<span class="sd">    * **infile** (str): the name of the input fitacf-format file</span>
+<span class="sd">    * **outfile** (str): the name of the output file</span>
+<span class="sd">    * **[thresh]** (float): the filter threshold for turning on a R-B cell.  default = 0.4</span>
+<span class="sd">    * **[vb]** (boolean): a flag indicating verbose output.  default = False</span>
+<span class="sd">  **Returns**:</span>
+<span class="sd">    * Nothing.</span>
+
+<span class="sd">  **Example**:</span>
+<span class="sd">    ::</span>
+<span class="sd">    </span>
+<span class="sd">      pydarn.sdio.fitexfilter.fitFilter(&#39;input.fitacf&#39;,&#39;output.fitacf&#39;,thresh=0.5,vb=True)</span>
+<span class="sd">    </span>
+<span class="sd">  written by AJ, 20130402</span>
+<span class="sd">  &quot;&quot;&quot;</span>
   <span class="n">inp</span> <span class="o">=</span> <span class="n">pydarn</span><span class="o">.</span><span class="n">sdio</span><span class="o">.</span><span class="n">radDataOpen</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="s">&#39;bks&#39;</span><span class="p">,</span><span class="n">fileName</span><span class="o">=</span><span class="n">inFile</span><span class="p">)</span>
 
   <span class="n">outp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">outFile</span><span class="p">,</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
@@ -165,9 +233,9 @@
 
     <span class="n">tsc</span> <span class="o">=</span> <span class="n">doFilter</span><span class="p">(</span><span class="n">scans</span><span class="p">,</span><span class="n">thresh</span><span class="o">=</span><span class="n">thresh</span><span class="p">)</span>
 
-    <span class="c"># for b in tsc:</span>
-    <span class="c">#   print b</span>
-    <span class="c">#   pydarn.dmapio.writeFitRec(b,utils.datetimeToEpoch(b.time),outp)</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">tsc</span><span class="p">:</span>
+      <span class="k">print</span> <span class="n">b</span>
+      <span class="n">pydarn</span><span class="o">.</span><span class="n">dmapio</span><span class="o">.</span><span class="n">writeFitRec</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="n">utils</span><span class="o">.</span><span class="n">datetimeToEpoch</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">time</span><span class="p">),</span><span class="n">outp</span><span class="p">)</span>
 
     <span class="n">sc</span> <span class="o">=</span> <span class="n">pydarn</span><span class="o">.</span><span class="n">sdio</span><span class="o">.</span><span class="n">radDataReadScan</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
     
@@ -177,14 +245,31 @@
 
   <span class="n">tsc</span> <span class="o">=</span> <span class="n">doFilter</span><span class="p">(</span><span class="n">scans</span><span class="p">,</span><span class="n">thresh</span><span class="o">=</span><span class="n">thresh</span><span class="p">)</span>
   <span class="k">print</span> <span class="n">tsc</span><span class="o">.</span><span class="n">time</span>
-  <span class="c"># for b in tsc:</span>
-  <span class="c">#   pydarn.dmapio.writeFitRec(b,utils.datetimeToEpoch(b.time),outp)</span>
+  <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">tsc</span><span class="p">:</span>
+    <span class="n">pydarn</span><span class="o">.</span><span class="n">dmapio</span><span class="o">.</span><span class="n">writeFitRec</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="n">utils</span><span class="o">.</span><span class="n">datetimeToEpoch</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">time</span><span class="p">),</span><span class="n">outp</span><span class="p">)</span>
 
   <span class="n">outp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
+</div>
+<div class="viewcode-block" id="doFilter"><a class="viewcode-back" href="../../../pydarn.sdio.fitexfilter.html#pydarn.sdio.fitexfilter.doFilter">[docs]</a><span class="k">def</span> <span class="nf">doFilter</span><span class="p">(</span><span class="n">scans</span><span class="p">,</span><span class="n">thresh</span><span class="o">=.</span><span class="mi">4</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;This function applies a boxcar filter to consecutive scans</span>
+<span class="sd">    </span>
+<span class="sd">  .. warning::</span>
+<span class="sd">    This is **VERY** slow.  We are currently working on improving this.</span>
 
-<span class="k">def</span> <span class="nf">doFilter</span><span class="p">(</span><span class="n">scans</span><span class="p">,</span><span class="n">thresh</span><span class="o">=.</span><span class="mi">4</span><span class="p">):</span>
+<span class="sd">  **Args**: </span>
+<span class="sd">    * **scans** (list): a list of 3 consecutive scans in time.</span>
+<span class="sd">    * **[thresh]** (float): the filter threshold for turning on a R-B cell.  default = 0.4</span>
+<span class="sd">  **Returns**:</span>
+<span class="sd">    * outScan** (:class:`pydarn.sdio.radDataTypes.scanData`): the filtered scan</span>
 
+<span class="sd">  **Example**:</span>
+<span class="sd">    ::</span>
+<span class="sd">    </span>
+<span class="sd">      filtScan = pydarn.sdio.fitexfilter.doFilter(scanList,thresh=0.5)</span>
+<span class="sd">    </span>
+<span class="sd">  written by AJ, 20130402</span>
+<span class="sd">  &quot;&quot;&quot;</span>
   <span class="n">myScans</span> <span class="o">=</span> <span class="p">[]</span>
   <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">scans</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
@@ -287,7 +372,7 @@
     <span class="n">outScan</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myBeam</span><span class="p">)</span>
 
   <span class="k">return</span> <span class="n">outScan</span>
-</pre></div>
+</pre></div></div>
 
           </div>
         </div>

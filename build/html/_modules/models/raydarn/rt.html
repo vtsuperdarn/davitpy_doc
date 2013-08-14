@@ -31,10 +31,13 @@
     <script type="text/javascript" src="../../../_static/cloud.js"></script>
     <link rel="top" title="davitpy" href="../../../index.html" />
     <link rel="up" title="models.raydarn" href="../raydarn.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -105,8 +108,13 @@
 <span class="sd">        * [**fext**] (str): output file id, max 10 character long (mostly used for multiple users environments, like a website)</span>
 <span class="sd">        * [**loadFrom**] (str): file name where a pickled instance of RtRun was saved (supersedes all other args)</span>
 <span class="sd">        * [**nprocs**] (int): number of processes to use with MPI</span>
-<span class="sd">    **Returns**:</span>
-<span class="sd">        * **RtRun** (:class:`RtRun`)</span>
+<span class="sd">    **Methods**:</span>
+<span class="sd">        * :func:`RtRun.readRays`</span>
+<span class="sd">        * :func:`RtRun.readEdens`</span>
+<span class="sd">        * :func:`RtRun.readScatter`</span>
+<span class="sd">        * :func:`RtRun.save`</span>
+<span class="sd">        * :func:`RtRun.load`</span>
+
 <span class="sd">    **Example**:</span>
 <span class="sd">        ::</span>
 
@@ -308,7 +316,7 @@
 
 </div>
 <div class="viewcode-block" id="RtRun.readScatter"><a class="viewcode-back" href="../../../models.raydarn.rt.html#models.raydarn.rt.RtRun.readScatter">[docs]</a>    <span class="k">def</span> <span class="nf">readScatter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Read edens.dat fortran output</span>
+        <span class="sd">&quot;&quot;&quot;Read iscat.dat and gscat.dat fortran output</span>
 
 <span class="sd">        **Args**:</span>
 <span class="sd">            * [**site**] (pydarn.radar.radStrict.site): site object of current radar</span>
@@ -388,6 +396,9 @@
 <span class="sd">        * [**site**] (:class:`pydarn.radar.site): radar site object</span>
 <span class="sd">        * [**radar**] (:class:`pydarn.radar.radar): radar object</span>
 <span class="sd">        * [**debug**] (bool): verbose mode</span>
+<span class="sd">    **Methods**:</span>
+<span class="sd">        * :func:`Edens.readEdens`</span>
+<span class="sd">        * :func:`Edens.plot`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">readFrom</span><span class="p">,</span> 
         <span class="n">site</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">radar</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
@@ -536,6 +547,10 @@
 <span class="sd">        * **readGSFrom** (str): gscat.dat file to read the ground scatter from</span>
 <span class="sd">        * [**site**] (:class:`pydarn.radar.site): radar site object</span>
 <span class="sd">        * [**debug**] (bool): verbose mode</span>
+<span class="sd">    **Methods**:</span>
+<span class="sd">        * :func:`Scatter.readGS`</span>
+<span class="sd">        * :func:`Scatter.readIS`</span>
+<span class="sd">        * :func:`Scatter.plot`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">readGSFrom</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">readISFrom</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
         <span class="n">site</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">radar</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
@@ -784,6 +799,10 @@
 <span class="sd">        * [**radar**] (:class:`pydarn.radar.radar): radar object</span>
 <span class="sd">        * [**saveToAscii**] (str): file name where to output ray positions</span>
 <span class="sd">        * [**debug**] (bool): verbose mode</span>
+<span class="sd">    **Methods**:</span>
+<span class="sd">        * :func:`Rays.readRays`</span>
+<span class="sd">        * :func:`Rays.writeToAscii`</span>
+<span class="sd">        * :func:`Rays.plot`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">readFrom</span><span class="p">,</span> 
         <span class="n">site</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">radar</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 

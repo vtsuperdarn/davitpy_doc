@@ -1,0 +1,282 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pydarn.sdio.sdDataRead &mdash; davitpy</title>
+    
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="top" title="davitpy" href="index.html" />
+    <link rel="up" title="pydarn.sdio" href="pydarn.sdio.html" />
+    <link rel="next" title="pydarn.sdio.radDataTypes" href="pydarn.sdio.radDataTypes.html" />
+    <link rel="prev" title="pydarn.sdio.radDataRead" href="pydarn.sdio.radDataRead.html" /> 
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="pydarn.sdio.radDataTypes.html" title="pydarn.sdio.radDataTypes"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="pydarn.sdio.radDataRead.html" title="pydarn.sdio.radDataRead"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="pydarn.html" >pydarn</a> &raquo;</li>
+          <li><a href="pydarn.sdio.html" accesskey="U">pydarn.sdio</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="pydarn-sdio-sddataread">
+<h1>pydarn.sdio.sdDataRead<a class="headerlink" href="#pydarn-sdio-sddataread" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<span class="target" id="module-pydarn.sdio.sdDataRead"></span><span class="target" id="module-sdDataRead"></span><div class="section" id="module-pydarn-sdio-sddataread">
+<h2><strong>Module</strong>: pydarn.sdio.sdDataRead<a class="headerlink" href="#module-pydarn-sdio-sddataread" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><strong>Functions</strong>:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="#pydarn.sdio.sdDataRead.sdDataOpen" title="pydarn.sdio.sdDataRead.sdDataOpen"><tt class="xref py py-func docutils literal"><span class="pre">pydarn.sdio.sdDataRead.sdDataOpen()</span></tt></a></li>
+<li><a class="reference internal" href="#pydarn.sdio.sdDataRead.sdDataReadRec" title="pydarn.sdio.sdDataRead.sdDataReadRec"><tt class="xref py py-func docutils literal"><span class="pre">pydarn.sdio.sdDataRead.sdDataReadRec()</span></tt></a></li>
+<li><a class="reference internal" href="#pydarn.sdio.sdDataRead.sdDataReadAll" title="pydarn.sdio.sdDataRead.sdDataReadAll"><tt class="xref py py-func docutils literal"><span class="pre">pydarn.sdio.sdDataRead.sdDataReadAll()</span></tt></a></li>
+</ul>
+</dd>
+</dl>
+<dl class="function">
+<dt id="pydarn.sdio.sdDataRead.sdDataOpen">
+<tt class="descclassname">pydarn.sdio.sdDataRead.</tt><tt class="descname">sdDataOpen</tt><big>(</big><em>sTime</em>, <em>hemi='north'</em>, <em>eTime=None</em>, <em>fileType='grdex'</em>, <em>src=None</em>, <em>fileName=None</em>, <em>custType='grdex'</em>, <em>noCache=False</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/sdDataRead.html#sdDataOpen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.sdDataRead.sdDataOpen" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to establish a pipeline through which we can read radar data.  first it tries the mongodb, then it tries to find local files, and lastly it sftp&#8217;s over to the VT data server.</p>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>sTime</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): the beginning time for which you want data</li>
+<li><strong>[hemi]</strong> (str): the hemisphere for which you want data, &#8216;north&#8217; or &#8216;south&#8217;.  default = &#8216;north&#8217;</li>
+<li><strong>[eTime]</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): the last time that you want data for.  if this is set to None, it will be set to 1 day after sTime.  default = None</li>
+<li><strong>[fileType]</strong> (str):  The type of data you want to read.  valid inputs are: &#8216;grd&#8217;,&#8217;grdex&#8217;,&#8217;map&#8217;,&#8217;mapex&#8217;.  If you choose a file format and the specified one isn&#8217;t found, we will search for one of the others (eg mapex instead of map). default = &#8216;grdex&#8217;.</li>
+<li><strong>[src]</strong> (str): the source of the data.  valid inputs are &#8216;local&#8217; &#8216;sftp&#8217;.  if this is set to None, it will try all possibilites sequentially.  default = None</li>
+<li><strong>[fileName]</strong> (str): the name of a specific file which you want to open.  If this is set, we will not look for cached files.  default=None</li>
+<li><strong>[custType]</strong> (str): if fileName is specified, the filetype of the file.  default = &#8216;grdex&#8217;</li>
+<li><strong>[noCache]</strong> (boolean): flag to indicate that you do not want to check first for cached files.  default = False.</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>myPtr</strong> (<a class="reference internal" href="pydarn.sdio.sdDataTypes.html#pydarn.sdio.sdDataTypes.sdDataPtr" title="pydarn.sdio.sdDataTypes.sdDataPtr"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataTypes.sdDataPtr</span></tt></a>): a sdDataPtr object which contains a link to the data to be read.  this can then be passed to sdDataReadRec in order to actually read the data.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><pre>import datetime as dt
+myPtr = sdDataOpen(dt.datetime(2011,1,1),hemi='north'):</pre>
+</div>
+</dd>
+</dl>
+<p>Written by AJ 20130607</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydarn.sdio.sdDataRead.sdDataReadAll">
+<tt class="descclassname">pydarn.sdio.sdDataRead.</tt><tt class="descname">sdDataReadAll</tt><big>(</big><em>myPtr</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/sdDataRead.html#sdDataReadAll"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.sdDataRead.sdDataReadAll" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to read a large amount (to the end of the request) of radar data into a list from a <a class="reference internal" href="pydarn.sdio.sdDataTypes.html#pydarn.sdio.sdDataTypes.sdDataPtr" title="pydarn.sdio.sdDataTypes.sdDataPtr"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataTypes.sdDataPtr</span></tt></a> object</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">to use this, you must first create a <a class="reference internal" href="pydarn.sdio.sdDataTypes.html#pydarn.sdio.sdDataTypes.sdDataPtr" title="pydarn.sdio.sdDataTypes.sdDataPtr"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataTypes.sdDataPtr</span></tt></a> object with <tt class="xref py py-func docutils literal"><span class="pre">sdDataOpen()</span></tt></p>
+</div>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>myPtr</strong> (<a class="reference internal" href="pydarn.sdio.sdDataTypes.html#pydarn.sdio.sdDataTypes.sdDataPtr" title="pydarn.sdio.sdDataTypes.sdDataPtr"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataTypes.sdDataPtr</span></tt></a>): contains the pipeline to the data we are after</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>myList</strong> (list): a list filled with <a class="reference internal" href="pydarn.sdio.sdDataTypes.html#pydarn.sdio.sdDataTypes.gridData" title="pydarn.sdio.sdDataTypes.gridData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataTypes.gridData</span></tt></a> or <a class="reference internal" href="pydarn.sdio.sdDataTypes.html#pydarn.sdio.sdDataTypes.mapData" title="pydarn.sdio.sdDataTypes.mapData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataTypes.mapData</span></tt></a> objects holding the data we are after.  <em>will return None if nothing is found</em></li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><pre>import datetime as dt
+myPtr = sdDataOpen(dt.datetime(2011,1,1),'bks',eTime=dt.datetime(2011,1,1,2),channel='a', bmnum=7,cp=153,fileType='fitex',filtered=False, src=None):
+myList = sdDataReadAll(myPtr)</pre>
+</div>
+</dd>
+</dl>
+<p>Written by AJ 20130606</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydarn.sdio.sdDataRead.sdDataReadRec">
+<tt class="descclassname">pydarn.sdio.sdDataRead.</tt><tt class="descname">sdDataReadRec</tt><big>(</big><em>myPtr</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/sdDataRead.html#sdDataReadRec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.sdDataRead.sdDataReadRec" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to read a single record of radar data from a <a class="reference internal" href="pydarn.sdio.sdDataTypes.html#pydarn.sdio.sdDataTypes.sdDataPtr" title="pydarn.sdio.sdDataTypes.sdDataPtr"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataTypes.sdDataPtr</span></tt></a> object</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">to use this, you must first create a <a class="reference internal" href="pydarn.sdio.sdDataTypes.html#pydarn.sdio.sdDataTypes.sdDataPtr" title="pydarn.sdio.sdDataTypes.sdDataPtr"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataTypes.sdDataPtr</span></tt></a> object with <tt class="xref py py-func docutils literal"><span class="pre">sdDataOpen()</span></tt></p>
+</div>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>myPtr</strong> (<a class="reference internal" href="pydarn.sdio.sdDataTypes.html#pydarn.sdio.sdDataTypes.sdDataPtr" title="pydarn.sdio.sdDataTypes.sdDataPtr"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataTypes.sdDataPtr</span></tt></a>): contains the pipeline to the data we are after</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>myData</strong> (<a class="reference internal" href="pydarn.sdio.sdDataTypes.html#pydarn.sdio.sdDataTypes.gridData" title="pydarn.sdio.sdDataTypes.gridData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataTypes.gridData</span></tt></a> or <a class="reference internal" href="pydarn.sdio.sdDataTypes.html#pydarn.sdio.sdDataTypes.mapData" title="pydarn.sdio.sdDataTypes.mapData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataTypes.mapData</span></tt></a>): an object filled with the data we are after.  <em>will return None when finished reading the file</em></li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><pre>import datetime as dt
+myPtr = sdDataOpen(dt.datetime(2011,1,1),'south'):
+myData = sdDataReadRec(myPtr)</pre>
+</div>
+</dd>
+</dl>
+<p>Written by AJ 20130610</p>
+</dd></dl>
+
+</div>
+<dl class="attribute">
+<dt id="pydarn.sdio.sdDataRead">
+<tt class="descclassname">pydarn.sdio.</tt><tt class="descname">sdDataRead</tt><a class="headerlink" href="#pydarn.sdio.sdDataRead" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pydarn.sdio.sdDataRead" title="pydarn.sdio.sdDataRead"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataRead</span></tt></a></p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html">
+          <img class="logo" src="_static/davitpy.svg" alt="Logo" style="width: 80%;"/>
+        </a></p>
+  <div class="sphinxlocaltoc">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">pydarn.sdio.sdDataRead</a><ul>
+<li><a class="reference internal" href="#module-pydarn-sdio-sddataread"><strong>Module</strong>: pydarn.sdio.sdDataRead</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pydarn.sdio.radDataRead.html"
+                        title="previous chapter">pydarn.sdio.radDataRead</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pydarn.sdio.radDataTypes.html"
+                        title="next chapter">pydarn.sdio.radDataTypes</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/pydarn.sdio.sdDataRead.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="pydarn.sdio.radDataTypes.html" title="pydarn.sdio.radDataTypes"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="pydarn.sdio.radDataRead.html" title="pydarn.sdio.radDataRead"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="pydarn.html" >pydarn</a> &raquo;</li>
+          <li><a href="pydarn.sdio.html" >pydarn.sdio</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+
+    <div class="footer">
+        &copy; Copyright 2013, VT SuperDARN Lab and Friends.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-40150576-2', 'vt.edu');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+</html>

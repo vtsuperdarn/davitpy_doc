@@ -15,6 +15,8 @@ The following IPython Notebooks provide examples of the main functions of DaViTp
 
 * `terminator <http://nbviewer.ipython.org/urls/raw.github.com/vtsuperdarn/davitpy/master/docs/notebook/terminator.ipynb>`_
 
+* `signalProcessing <http://nbviewer.ipython.org/urls/raw.github.com/vtsuperdarn/davitpy/master/docs/notebook/signalProcessing.ipynb>`_
+
 * `maps <http://nbviewer.ipython.org/urls/raw.github.com/vtsuperdarn/davitpy/master/docs/notebook/maps.ipynb>`_
 
 * `plotGMagIndices <http://nbviewer.ipython.org/urls/raw.github.com/vtsuperdarn/davitpy/master/docs/notebook/plotGMagIndices.ipynb>`_

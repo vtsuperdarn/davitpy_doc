@@ -33,10 +33,13 @@
     <link rel="up" title="utils" href="utils.html" />
     <link rel="next" title="utils.calcSun" href="utils.calcSun.html" />
     <link rel="prev" title="utils.plotUtils" href="utils.plotUtils.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -117,6 +120,38 @@
 distance,elevation,azimuth|distant point coordinates</p>
 </dd>
 </dl>
+</li>
+<li><table class="first docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">func:</th><td class="field-body"><cite>utils.geoPack.greatCircleMove</cite>:
+Calculates the coordinates of an end point along a great circle path 
+given the original coordinates, distance, azimuth, and altitude.</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><table class="first docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">func:</th><td class="field-body"><cite>utils.geoPack.greatCircleAzm</cite>:
+Calculates the azimuth from the coordinates of a start point to and end point
+along a great circle path.</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><table class="first docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">func:</th><td class="field-body"><cite>utils.geoPack.greatCircleDist</cite>:
+Calculates the distance in radians along a great circle path between two points.</td>
+</tr>
+</tbody>
+</table>
 </li>
 </ul>
 </dd>
@@ -251,6 +286,72 @@ to the Earth-centered radial vector drawn through a user defined point.</p>
 <li><strong>Re</strong>: Earth radius [km]</li>
 <li><strong>az</strong>: azimuth [degree, N]</li>
 <li><strong>el</strong>: elevation [degree]</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.geoPack.greatCircleAzm">
+<tt class="descclassname">utils.geoPack.</tt><tt class="descname">greatCircleAzm</tt><big>(</big><em>lat1</em>, <em>lon1</em>, <em>lat2</em>, <em>lon2</em><big>)</big><a class="reference internal" href="_modules/utils/geoPack.html#greatCircleAzm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.geoPack.greatCircleAzm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the azimuth from the coordinates of a start point to and end point
+along a great circle path.</p>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>lat1</strong>:  latitude [deg]</li>
+<li><strong>lon1</strong>:  longitude [deg]</li>
+<li><strong>lat2</strong>:  latitude [deg]</li>
+<li><strong>lon2</strong>:  longitude [deg]</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>azm</strong>:   azimuth [deg]</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.geoPack.greatCircleDist">
+<tt class="descclassname">utils.geoPack.</tt><tt class="descname">greatCircleDist</tt><big>(</big><em>lat1</em>, <em>lon1</em>, <em>lat2</em>, <em>lon2</em><big>)</big><a class="reference internal" href="_modules/utils/geoPack.html#greatCircleDist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.geoPack.greatCircleDist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the distance in radians along a great circle path between two points.</p>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>lat1</strong>:  latitude [deg]</li>
+<li><strong>lon1</strong>:  longitude [deg]</li>
+<li><strong>lat2</strong>:  latitude [deg]</li>
+<li><strong>lon2</strong>:  longitude [deg]</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>radDist</strong>:  distance [radians]</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.geoPack.greatCircleMove">
+<tt class="descclassname">utils.geoPack.</tt><tt class="descname">greatCircleMove</tt><big>(</big><em>origLat</em>, <em>origLon</em>, <em>dist</em>, <em>az</em>, <em>alt=0</em><big>)</big><a class="reference internal" href="_modules/utils/geoPack.html#greatCircleMove"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.geoPack.greatCircleMove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the coordinates of an end point along a great circle path 
+given the original coordinates, distance, azimuth, and altitude.</p>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>origLat</strong>:  latitude [degree]</li>
+<li><strong>origLon</strong>:  longitude [degree]</li>
+<li><strong>dist</strong>:     distance [km]</li>
+<li><strong>az</strong>:       azimuth [deg]</li>
+<li><strong>alt</strong>:      altitude [km] (added to default Re = 6378.1 km)</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>list</strong>:     [latitude, longitude] [deg]</li>
 </ul>
 </dd>
 </dl>

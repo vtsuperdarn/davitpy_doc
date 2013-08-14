@@ -33,10 +33,13 @@
     <link rel="up" title="models.raydarn" href="models.raydarn.html" />
     <link rel="next" title="models.tsyganenko" href="models.tsyganenko.html" />
     <link rel="prev" title="models.raydarn" href="models.raydarn.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -105,6 +108,12 @@
 <li>[<strong>site</strong>] (:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>pydarn.radar.site): radar site object</li>
 <li>[<strong>radar</strong>] (:class:<a href="#id3"><span class="problematic" id="id4">`</span></a>pydarn.radar.radar): radar object</li>
 <li>[<strong>debug</strong>] (bool): verbose mode</li>
+</ul>
+</dd>
+<dt><strong>Methods</strong>:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="#models.raydarn.rt.Edens.readEdens" title="models.raydarn.rt.Edens.readEdens"><tt class="xref py py-func docutils literal"><span class="pre">Edens.readEdens()</span></tt></a></li>
+<li><a class="reference internal" href="#models.raydarn.rt.Edens.plot" title="models.raydarn.rt.Edens.plot"><tt class="xref py py-func docutils literal"><span class="pre">Edens.plot()</span></tt></a></li>
 </ul>
 </dd>
 </dl>
@@ -184,6 +193,13 @@
 <li>[<strong>radar</strong>] (:class:<a href="#id7"><span class="problematic" id="id8">`</span></a>pydarn.radar.radar): radar object</li>
 <li>[<strong>saveToAscii</strong>] (str): file name where to output ray positions</li>
 <li>[<strong>debug</strong>] (bool): verbose mode</li>
+</ul>
+</dd>
+<dt><strong>Methods</strong>:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="#models.raydarn.rt.Rays.readRays" title="models.raydarn.rt.Rays.readRays"><tt class="xref py py-func docutils literal"><span class="pre">Rays.readRays()</span></tt></a></li>
+<li><a class="reference internal" href="#models.raydarn.rt.Rays.writeToAscii" title="models.raydarn.rt.Rays.writeToAscii"><tt class="xref py py-func docutils literal"><span class="pre">Rays.writeToAscii()</span></tt></a></li>
+<li><a class="reference internal" href="#models.raydarn.rt.Rays.plot" title="models.raydarn.rt.Rays.plot"><tt class="xref py py-func docutils literal"><span class="pre">Rays.plot()</span></tt></a></li>
 </ul>
 </dd>
 </dl>
@@ -285,9 +301,13 @@
 <li>[<strong>nprocs</strong>] (int): number of processes to use with MPI</li>
 </ul>
 </dd>
-<dt><strong>Returns</strong>:</dt>
+<dt><strong>Methods</strong>:</dt>
 <dd><ul class="first last simple">
-<li><strong>RtRun</strong> (<a class="reference internal" href="#models.raydarn.rt.RtRun" title="models.raydarn.rt.RtRun"><tt class="xref py py-class docutils literal"><span class="pre">RtRun</span></tt></a>)</li>
+<li><a class="reference internal" href="#models.raydarn.rt.RtRun.readRays" title="models.raydarn.rt.RtRun.readRays"><tt class="xref py py-func docutils literal"><span class="pre">RtRun.readRays()</span></tt></a></li>
+<li><a class="reference internal" href="#models.raydarn.rt.RtRun.readEdens" title="models.raydarn.rt.RtRun.readEdens"><tt class="xref py py-func docutils literal"><span class="pre">RtRun.readEdens()</span></tt></a></li>
+<li><a class="reference internal" href="#models.raydarn.rt.RtRun.readScatter" title="models.raydarn.rt.RtRun.readScatter"><tt class="xref py py-func docutils literal"><span class="pre">RtRun.readScatter()</span></tt></a></li>
+<li><a class="reference internal" href="#models.raydarn.rt.RtRun.save" title="models.raydarn.rt.RtRun.save"><tt class="xref py py-func docutils literal"><span class="pre">RtRun.save()</span></tt></a></li>
+<li><a class="reference internal" href="#models.raydarn.rt.RtRun.load" title="models.raydarn.rt.RtRun.load"><tt class="xref py py-func docutils literal"><span class="pre">RtRun.load()</span></tt></a></li>
 </ul>
 </dd>
 <dt><strong>Example</strong>:</dt>
@@ -354,7 +374,7 @@
 <dl class="method">
 <dt id="models.raydarn.rt.RtRun.readScatter">
 <tt class="descname">readScatter</tt><big>(</big><em>debug=False</em><big>)</big><a class="reference internal" href="_modules/models/raydarn/rt.html#RtRun.readScatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.raydarn.rt.RtRun.readScatter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read edens.dat fortran output</p>
+<dd><p>Read iscat.dat and gscat.dat fortran output</p>
 <dl class="docutils">
 <dt><strong>Args</strong>:</dt>
 <dd><ul class="first last simple">
@@ -389,6 +409,13 @@
 <li><strong>readGSFrom</strong> (str): gscat.dat file to read the ground scatter from</li>
 <li>[<strong>site</strong>] (:class:<a href="#id9"><span class="problematic" id="id10">`</span></a>pydarn.radar.site): radar site object</li>
 <li>[<strong>debug</strong>] (bool): verbose mode</li>
+</ul>
+</dd>
+<dt><strong>Methods</strong>:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="#models.raydarn.rt.Scatter.readGS" title="models.raydarn.rt.Scatter.readGS"><tt class="xref py py-func docutils literal"><span class="pre">Scatter.readGS()</span></tt></a></li>
+<li><a class="reference internal" href="#models.raydarn.rt.Scatter.readIS" title="models.raydarn.rt.Scatter.readIS"><tt class="xref py py-func docutils literal"><span class="pre">Scatter.readIS()</span></tt></a></li>
+<li><a class="reference internal" href="#models.raydarn.rt.Scatter.plot" title="models.raydarn.rt.Scatter.plot"><tt class="xref py py-func docutils literal"><span class="pre">Scatter.plot()</span></tt></a></li>
 </ul>
 </dd>
 </dl>

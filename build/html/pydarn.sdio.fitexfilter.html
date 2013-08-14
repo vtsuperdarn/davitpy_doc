@@ -32,11 +32,14 @@
     <link rel="top" title="davitpy" href="index.html" />
     <link rel="up" title="pydarn.sdio" href="pydarn.sdio.html" />
     <link rel="next" title="pydarn.sdio.dbUtils" href="pydarn.sdio.dbUtils.html" />
-    <link rel="prev" title="pydarn.sdio.radDataTypes" href="pydarn.sdio.radDataTypes.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="prev" title="pydarn.sdio.sdDataTypes" href="pydarn.sdio.sdDataTypes.html" /> 
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -55,7 +58,7 @@
           <a href="pydarn.sdio.dbUtils.html" title="pydarn.sdio.dbUtils"
              accesskey="N">next</a> &nbsp; &nbsp;</li>
         <li class="right" >
-          <a href="pydarn.sdio.radDataTypes.html" title="pydarn.sdio.radDataTypes"
+          <a href="pydarn.sdio.sdDataTypes.html" title="pydarn.sdio.sdDataTypes"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
     <li><a href="index.html">davitpy</a> &raquo;</li>
 
@@ -77,7 +80,46 @@
 <ul class="simple">
 </ul>
 </div>
-<span class="target" id="module-pydarn.sdio.fitexfilter"></span><dl class="function">
+<span class="target" id="module-pydarn.sdio.fitexfilter"></span><div class="section" id="module-pydarn-sdio-fitexfilter">
+<h2><strong>Module</strong>: pydarn.sdio.fitexfilter<a class="headerlink" href="#module-pydarn-sdio-fitexfilter" title="Permalink to this headline">¶</a></h2>
+<p>Filter fitexfiles natively in python</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This is very SLOW.  We are currently working on this.  We recommend using the c version which is folded into <a class="reference internal" href="pydarn.sdio.radDataRead.html#pydarn.sdio.radDataRead.radDataOpen" title="pydarn.sdio.radDataRead.radDataOpen"><tt class="xref py py-func docutils literal"><span class="pre">pydarn.sdio.radDataRead.radDataOpen()</span></tt></a></p>
+</div>
+<dl class="docutils">
+<dt><strong>Functions</strong>:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="#pydarn.sdio.fitexfilter.combBeams" title="pydarn.sdio.fitexfilter.combBeams"><tt class="xref py py-func docutils literal"><span class="pre">pydarn.sdio.fitexfilter.combBeams()</span></tt></a></li>
+<li><a class="reference internal" href="#pydarn.sdio.fitexfilter.fitFilter" title="pydarn.sdio.fitexfilter.fitFilter"><tt class="xref py py-func docutils literal"><span class="pre">pydarn.sdio.fitexfilter.fitFilter()</span></tt></a></li>
+<li><a class="reference internal" href="#pydarn.sdio.fitexfilter.doFilter" title="pydarn.sdio.fitexfilter.doFilter"><tt class="xref py py-func docutils literal"><span class="pre">pydarn.sdio.fitexfilter.doFilter()</span></tt></a></li>
+</ul>
+</dd>
+<dt><strong>Classes</strong>:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="#pydarn.sdio.fitexfilter.Gate" title="pydarn.sdio.fitexfilter.Gate"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.fitexfilter.Gate</span></tt></a></li>
+</ul>
+</dd>
+</dl>
+<dl class="class">
+<dt id="pydarn.sdio.fitexfilter.Gate">
+<em class="property">class </em><tt class="descclassname">pydarn.sdio.fitexfilter.</tt><tt class="descname">Gate</tt><big>(</big><em>fit</em>, <em>i</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/fitexfilter.html#Gate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.fitexfilter.Gate" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class to represent a single range gate</p>
+<dl class="docutils">
+<dt><strong>Attrs</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>v</strong> (float): velocity</li>
+<li><strong>w_l</strong> (float): spectral width</li>
+<li><strong>p_l</strong> (float): power</li>
+<li><strong>elv</strong> (float): elevation angle</li>
+<li><strong>phi0</strong> (float): phase difference between front and back array</li>
+</ul>
+</dd>
+</dl>
+<p>written by AJ, 20130402</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="pydarn.sdio.fitexfilter.combBeams">
 <tt class="descclassname">pydarn.sdio.fitexfilter.</tt><tt class="descname">combBeams</tt><big>(</big><em>scan</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/fitexfilter.html#combBeams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.fitexfilter.combBeams" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function combines all repeated beams within a scan into an averaged beam</p>
@@ -101,6 +143,67 @@
 <p>written by AJ, 20130402</p>
 </dd></dl>
 
+<dl class="function">
+<dt id="pydarn.sdio.fitexfilter.doFilter">
+<tt class="descclassname">pydarn.sdio.fitexfilter.</tt><tt class="descname">doFilter</tt><big>(</big><em>scans</em>, <em>thresh=0.4</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/fitexfilter.html#doFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.fitexfilter.doFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function applies a boxcar filter to consecutive scans</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This is <strong>VERY</strong> slow.  We are currently working on improving this.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>scans</strong> (list): a list of 3 consecutive scans in time.</li>
+<li><strong>[thresh]</strong> (float): the filter threshold for turning on a R-B cell.  default = 0.4</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>outScan** (<a class="reference internal" href="pydarn.sdio.radDataTypes.html#pydarn.sdio.radDataTypes.scanData" title="pydarn.sdio.radDataTypes.scanData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.scanData</span></tt></a>): the filtered scan</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">filtScan</span> <span class="o">=</span> <span class="n">pydarn</span><span class="o">.</span><span class="n">sdio</span><span class="o">.</span><span class="n">fitexfilter</span><span class="o">.</span><span class="n">doFilter</span><span class="p">(</span><span class="n">scanList</span><span class="p">,</span><span class="n">thresh</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130402</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydarn.sdio.fitexfilter.fitFilter">
+<tt class="descclassname">pydarn.sdio.fitexfilter.</tt><tt class="descname">fitFilter</tt><big>(</big><em>inFile</em>, <em>outFile</em>, <em>thresh=0.4</em>, <em>vb=False</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/fitexfilter.html#fitFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.fitexfilter.fitFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function applies a boxcar filter to a fitacf file</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This is <strong>VERY</strong> slow.  We are currently working on improving this.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>infile</strong> (str): the name of the input fitacf-format file</li>
+<li><strong>outfile</strong> (str): the name of the output file</li>
+<li><strong>[thresh]</strong> (float): the filter threshold for turning on a R-B cell.  default = 0.4</li>
+<li><strong>[vb]</strong> (boolean): a flag indicating verbose output.  default = False</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Nothing.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">pydarn</span><span class="o">.</span><span class="n">sdio</span><span class="o">.</span><span class="n">fitexfilter</span><span class="o">.</span><span class="n">fitFilter</span><span class="p">(</span><span class="s">&#39;input.fitacf&#39;</span><span class="p">,</span><span class="s">&#39;output.fitacf&#39;</span><span class="p">,</span><span class="n">thresh</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span><span class="n">vb</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130402</p>
+</dd></dl>
+
+</div>
 <dl class="attribute">
 <dt id="pydarn.sdio.fitexfilter">
 <tt class="descclassname">pydarn.sdio.</tt><tt class="descname">fitexfilter</tt><a class="headerlink" href="#pydarn.sdio.fitexfilter" title="Permalink to this definition">¶</a></dt>
@@ -118,9 +221,19 @@
         <p class="logo"><a href="index.html">
           <img class="logo" src="_static/davitpy.svg" alt="Logo" style="width: 80%;"/>
         </a></p>
+  <div class="sphinxlocaltoc">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">pydarn.sdio.fitexfilter</a><ul>
+<li><a class="reference internal" href="#module-pydarn-sdio-fitexfilter"><strong>Module</strong>: pydarn.sdio.fitexfilter</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
   <h4>Previous topic</h4>
-  <p class="topless"><a href="pydarn.sdio.radDataTypes.html"
-                        title="previous chapter">pydarn.sdio.radDataTypes</a></p>
+  <p class="topless"><a href="pydarn.sdio.sdDataTypes.html"
+                        title="previous chapter">pydarn.sdio.sdDataTypes</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="pydarn.sdio.dbUtils.html"
                         title="next chapter">pydarn.sdio.dbUtils</a></p>
@@ -161,7 +274,7 @@
           <a href="pydarn.sdio.dbUtils.html" title="pydarn.sdio.dbUtils"
              >next</a> &nbsp; &nbsp;</li>
         <li class="right" >
-          <a href="pydarn.sdio.radDataTypes.html" title="pydarn.sdio.radDataTypes"
+          <a href="pydarn.sdio.sdDataTypes.html" title="pydarn.sdio.sdDataTypes"
              >previous</a> &nbsp; &nbsp;</li>
     <li><a href="index.html">davitpy</a> &raquo;</li>
 

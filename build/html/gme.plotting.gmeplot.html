@@ -33,10 +33,13 @@
     <link rel="up" title="gme.plotting" href="gme.plotting.html" />
     <link rel="next" title="gme.sat" href="gme.sat.html" />
     <link rel="prev" title="gme.plotting" href="gme.plotting.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -77,41 +80,48 @@
 <ul class="simple">
 </ul>
 </div>
-<span class="target" id="module-gme.plotting.gmeplot"></span><div class="section" id="module-gme-plot-gmeplot">
-<h2>MODULE: gme.plot.gmeplot<a class="headerlink" href="#module-gme-plot-gmeplot" title="Permalink to this headline">¶</a></h2>
-<p>This module contains the following functions:</p>
+<span class="target" id="module-gme.plotting.gmeplot"></span><span class="target" id="module-gmeplot"></span><div class="section" id="module-gme-plotting-gmeplot">
+<h2><strong>Module</strong>: gme.plotting.gmeplot<a class="headerlink" href="#module-gme-plotting-gmeplot" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div>plotGMI</div></blockquote>
-<hr class="docutils" />
+<div><ul class="simple">
+<li><tt class="xref py py-func docutils literal"><span class="pre">gme.plotting.plotGME()</span></tt></li>
+</ul>
+</div></blockquote>
 <dl class="function">
-<dt id="gme.plotting.gmeplot.plotGMI">
-<tt class="descclassname">gme.plotting.gmeplot.</tt><tt class="descname">plotGMI</tt><big>(</big><em>gmiList</em>, <em>parameter=None</em>, <em>sTime=None</em>, <em>eTime=None</em>, <em>ymin=None</em>, <em>ymax=None</em>, <em>NoX=False</em>, <em>NoY=False</em>, <em>NoCredit=False</em>, <em>NoLegend=False</em>, <em>legendSize=None</em><big>)</big><a class="reference internal" href="_modules/gme/plotting/gmeplot.html#plotGMI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.plotting.gmeplot.plotGMI" title="Permalink to this definition">¶</a></dt>
-<dd><p>PACKAGE: gme.plot.gmeplot</p>
-<p>FUNCTION: plotGMI(gmiList,parameter=None,sTime=None,eTime=None,ymin=None,ymax=None,NoX=False,NoY=False,NoCredit=False,NoLegend=False,legendSize=None)</p>
-<p>PURPOSE: plots ground magnetic indicies, including AE,SYMH,ASYMH, and DST.</p>
+<dt id="gme.plotting.gmeplot.plotGME">
+<tt class="descclassname">gme.plotting.gmeplot.</tt><tt class="descname">plotGME</tt><big>(</big><em>gmiList</em>, <em>parameter=None</em>, <em>sTime=None</em>, <em>eTime=None</em>, <em>ymin=None</em>, <em>ymax=None</em>, <em>NoX=False</em>, <em>NoY=False</em>, <em>NoCredit=False</em>, <em>NoLegend=False</em>, <em>legendSize=None</em><big>)</big><a class="reference internal" href="_modules/gme/plotting/gmeplot.html#plotGME"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gme.plotting.gmeplot.plotGME" title="Permalink to this definition">¶</a></dt>
+<dd><p>plot ground magnetic indicies, including AE, SYMH, ASYMH, and DST.</p>
 <dl class="docutils">
-<dt>INPUTS:</dt>
-<dd><p class="first">gmiList: gmiList object returned from ae.readAe(), symAsy.readSymAsy(), or dst.readDst()
-[parameter]: List of parameters to plot. Valid values are</p>
-<blockquote>
-<div>aeList:     [&#8216;ae&#8217;,&#8217;al&#8217;,&#8217;au&#8217;,&#8217;ao&#8217;] (Defaults to &#8216;ae&#8217;)
-symAsyList: [&#8216;symh&#8217;,&#8217;symd&#8217;,&#8217;asymh&#8217;,&#8217;asymd&#8217;] (Defaults to &#8216;symh&#8217;)
-dstList:    [&#8216;dst&#8217;]</div></blockquote>
-<p class="last">[sTime]: datetime.datetime object for start of plotting.  If not given, earliest data availble from aeList is used.
-[eTime]: datetime.datetime object for end of plotting.  If not given, latest data availble from aeList is used.
-[ymin]: Y-Axis minimum limit
-[ymax]: Y-Axis maximum limit
-[NoX]:  Suppress X-Axis Titles and Ticks
-[NoY]:  Suppress Y-Axis Titles and Ticks
-[NoCredit]: Suppress printing source of data on plot
-[NoLegend]: Suppress a legend if more than one parameter is plotted
-[legendSize]: Character size of the legend</p>
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>gmiList</strong>: gmiList object returned from ae.readAe(), symAsy.readSymAsy(), or dst.readDst()</li>
+<li><strong>[parameter]</strong>: List of parameters to plot. Valid values are:<ul>
+<li>aeList:     [&#8216;ae&#8217;, &#8216;al&#8217;, &#8216;au&#8217;, &#8216;ao&#8217;] (Defaults to &#8216;ae&#8217;)</li>
+<li>symAsyList: [&#8216;symh&#8217;, &#8216;symd&#8217;, &#8216;asymh&#8217;, &#8216;asymd&#8217;] (Defaults to &#8216;symh&#8217;)</li>
+<li>dstList:    [&#8216;dst&#8217;]</li>
+</ul>
+</li>
+<li><strong>[sTime]</strong>: datetime.datetime object for start of plotting.  If not given, earliest data availble from aeList is used.</li>
+<li><strong>[eTime]</strong>: datetime.datetime object for end of plotting.  If not given, latest data availble from aeList is used.</li>
+<li><strong>[ymin]</strong>: Y-Axis minimum limit</li>
+<li><strong>[ymax]</strong>: Y-Axis maximum limit</li>
+<li><strong>[NoX]</strong>:  Suppress X-Axis Titles and Ticks</li>
+<li><strong>[NoY]</strong>:  Suppress Y-Axis Titles and Ticks</li>
+<li><strong>[NoCredit]</strong>: Suppress printing source of data on plot</li>
+<li><strong>[NoLegend]</strong>: Suppress a legend if more than one parameter is plotted</li>
+<li><strong>[legendSize]</strong>: Character size of the legend</li>
+</ul>
 </dd>
-<dt>OUTPUTS:</dt>
-<dd>NONE</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Nothing.</li>
+</ul>
+</dd>
 </dl>
-<p>NOTES:  If a matplotlib figure currently exists, it will be modified by this routine.  If not, a new one will be created.</p>
-<p>EXAMPLES:</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If a matplotlib figure currently exists, it will be modified by this routine.  If not, a new one will be created.</p>
+</div>
 <p>Written by Nathaniel Frissell 20130216</p>
 </dd></dl>
 
@@ -137,7 +147,7 @@ dstList:    [&#8216;dst&#8217;]</div></blockquote>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">gme.plotting.gmeplot</a><ul>
-<li><a class="reference internal" href="#module-gme-plot-gmeplot">MODULE: gme.plot.gmeplot</a></li>
+<li><a class="reference internal" href="#module-gme-plotting-gmeplot"><strong>Module</strong>: gme.plotting.gmeplot</a></li>
 </ul>
 </li>
 </ul>

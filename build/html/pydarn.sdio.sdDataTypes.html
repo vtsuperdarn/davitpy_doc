@@ -1,0 +1,409 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pydarn.sdio.sdDataTypes &mdash; davitpy</title>
+    
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="top" title="davitpy" href="index.html" />
+    <link rel="up" title="pydarn.sdio" href="pydarn.sdio.html" />
+    <link rel="next" title="pydarn.sdio.fitexfilter" href="pydarn.sdio.fitexfilter.html" />
+    <link rel="prev" title="pydarn.sdio.radDataTypes" href="pydarn.sdio.radDataTypes.html" /> 
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="pydarn.sdio.fitexfilter.html" title="pydarn.sdio.fitexfilter"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="pydarn.sdio.radDataTypes.html" title="pydarn.sdio.radDataTypes"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="pydarn.html" >pydarn</a> &raquo;</li>
+          <li><a href="pydarn.sdio.html" accesskey="U">pydarn.sdio</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="pydarn-sdio-sddatatypes">
+<h1>pydarn.sdio.sdDataTypes<a class="headerlink" href="#pydarn-sdio-sddatatypes" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<span class="target" id="module-pydarn.sdio.sdDataTypes"></span><span class="target" id="module-sdDataTypes"></span><div class="section" id="module-pydarn-sdio-sddatatypes">
+<h2><strong>Module</strong>: pydarn.sdio.sdDataTypes<a class="headerlink" href="#module-pydarn-sdio-sddatatypes" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><strong>Classes</strong>:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="#pydarn.sdio.sdDataTypes.sdDataPtr" title="pydarn.sdio.sdDataTypes.sdDataPtr"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataTypes.sdDataPtr</span></tt></a></li>
+<li><a class="reference internal" href="#pydarn.sdio.sdDataTypes.sdBaseData" title="pydarn.sdio.sdDataTypes.sdBaseData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataTypes.sdBaseData</span></tt></a></li>
+<li><a class="reference internal" href="#pydarn.sdio.sdDataTypes.gridData" title="pydarn.sdio.sdDataTypes.gridData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataTypes.gridData</span></tt></a></li>
+<li><a class="reference internal" href="#pydarn.sdio.sdDataTypes.mapData" title="pydarn.sdio.sdDataTypes.mapData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataTypes.mapData</span></tt></a></li>
+</ul>
+</dd>
+</dl>
+<dl class="class">
+<dt id="pydarn.sdio.sdDataTypes.gridData">
+<em class="property">class </em><tt class="descclassname">pydarn.sdio.sdDataTypes.</tt><tt class="descname">gridData</tt><big>(</big><em>dataDict=None</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/sdDataTypes.html#gridData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.sdDataTypes.gridData" title="Permalink to this definition">¶</a></dt>
+<dd><p>a class to contain a record of gridded data, extends <a class="reference internal" href="#pydarn.sdio.sdDataTypes.sdBaseData" title="pydarn.sdio.sdDataTypes.sdBaseData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataTypes.sdBaseData</span></tt></a></p>
+<dl class="docutils">
+<dt><strong>Attrs</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>sTime</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): start time of the record</li>
+<li><strong>eTime</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): end time of the record</li>
+<li><strong>stid</strong> (list): a list of the station IDs in the record, by radar</li>
+<li><strong>nvec</strong> (list): a list of the number of vectors in the record, by radar</li>
+<li><strong>freq</strong> (list): a list of the transmit frequencies, in kHz, by radar</li>
+<li><strong>programid</strong> (list): a list of the program IDs, by radar</li>
+<li><strong>noisemean</strong> (list): a list of the mean noise level, by radar</li>
+<li><strong>noisesd</strong> (list): a list of the standard deviation of noise level, by radar</li>
+<li><strong>gsct</strong> (list): a list of flags indicating whether ground scatter was excluded from the gridding, by radar</li>
+<li><strong>vmin</strong> (list): a list of minimum allowed Doppler velocity, by radar</li>
+<li><strong>vmax</strong> (list): a list of the maximum allowed Doppler velocity, by radar</li>
+<li><strong>pmin</strong> (list): a list of the minimum allowed power level, by radar</li>
+<li><strong>pmax</strong> (list): a list of the maximum allowed power level, by radar</li>
+<li><strong>wmin</strong> (list): a list of the minimum allowed spectral width, by radar</li>
+<li><strong>wmax</strong> (list): a list of the maximum allowed spectral width, by radar</li>
+<li><strong>vemin</strong> (list): a list of the minimum allowed velocity error, by radar</li>
+<li><strong>vemax</strong> (list): a list of the maximum allowed velocity error, by radar</li>
+<li><strong>vector</strong> (<a class="reference internal" href="#pydarn.sdio.sdDataTypes.sdVector" title="pydarn.sdio.sdDataTypes.sdVector"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataTypes.sdVector</span></tt></a>): an object containing all of the vector.* elements from the file</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>: </dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">myGrid</span> <span class="o">=</span> <span class="n">pydarn</span><span class="o">.</span><span class="n">sdio</span><span class="o">.</span><span class="n">gridData</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>Written by AJ 20130607</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pydarn.sdio.sdDataTypes.mapData">
+<em class="property">class </em><tt class="descclassname">pydarn.sdio.sdDataTypes.</tt><tt class="descname">mapData</tt><big>(</big><em>dataDict=None</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/sdDataTypes.html#mapData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.sdDataTypes.mapData" title="Permalink to this definition">¶</a></dt>
+<dd><p>a class to contain a record of map potential data, extends <a class="reference internal" href="#pydarn.sdio.sdDataTypes.sdBaseData" title="pydarn.sdio.sdDataTypes.sdBaseData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataTypes.sdBaseData</span></tt></a></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">I don&#8217;t know what <a class="reference external" href="http://4.bp.blogspot.com/_D_Z-D2tzi14/S8TRIo4br3I/AAAAAAAACv4/Zh7_GcMlRKo/s400/ALOT.png">alot</a> of these attributes mean.  If you do, please add them in.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Attrs</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>sTime</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): start time of the record</li>
+<li><strong>eTime</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): end time of the record</li>
+<li><strong>dopinglevel</strong> (int): density of points where statistical model is sampled</li>
+<li><strong>modelwt</strong> (int):</li>
+<li><strong>errorwt</strong> (int):</li>
+<li><strong>IMFflag</strong> (int):</li>
+<li><strong>IMFdelay</strong> (int):</li>
+<li><strong>IMFBx</strong> (float): the Bx component of the IMF</li>
+<li><strong>IMFBy</strong> (float): the By component of the IMF</li>
+<li><strong>IMFBz</strong> (float): the Bz component of the IMF</li>
+<li><strong>modelangle</strong> (string):</li>
+<li><strong>modellevel</strong> (string):</li>
+<li><strong>hemi</strong> (int): the hemisphere, 1=north, 2=south?</li>
+<li><strong>fitorder</strong> (int): the order of the spherical harmonic fit</li>
+<li><strong>latmin</strong> (float): the minimum latitude in the spherical harmonic fit</li>
+<li><strong>chisqr</strong> (double):</li>
+<li><strong>chisqrdat</strong> (double):</li>
+<li><strong>rmserr</strong> (double): an object containing all of the vector.* elements from the file</li>
+<li><strong>lonshft</strong> (double):</li>
+<li><strong>latshft</strong> (double):</li>
+<li><strong>mltstart</strong> (double):</li>
+<li><strong>mltend</strong> (double):</li>
+<li><strong>mltav</strong> (double):</li>
+<li><strong>potdrop</strong> (double): the cross polar cap potential, in volts</li>
+<li><strong>potdroperr</strong> (int): the error in the cross polar cap potential</li>
+<li><strong>potmax</strong> (double):</li>
+<li><strong>potmaxerr</strong> (double):</li>
+<li><strong>potmin</strong> (double):</li>
+<li><strong>potminerr</strong> (double):</li>
+<li><strong>grid</strong> (<a class="reference internal" href="#pydarn.sdio.sdDataTypes.gridData" title="pydarn.sdio.sdDataTypes.gridData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataTypes.gridData</span></tt></a>): an object to hold all of the grid data in the record</li>
+<li><strong>N</strong> (list):</li>
+<li><strong>Np1</strong> (list):</li>
+<li><strong>Np2</strong> (list):</li>
+<li><strong>Np3</strong> (list):</li>
+<li><strong>model</strong> (<a class="reference internal" href="#pydarn.sdio.sdDataTypes.sdModel" title="pydarn.sdio.sdDataTypes.sdModel"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataTypes.sdModel</span></tt></a>): an object to hold the model.* data in the record</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>: </dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">myMap</span> <span class="o">=</span> <span class="n">pydarn</span><span class="o">.</span><span class="n">sdio</span><span class="o">.</span><span class="n">mapData</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>Written by AJ 20130607</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pydarn.sdio.sdDataTypes.sdBaseData">
+<em class="property">class </em><tt class="descclassname">pydarn.sdio.sdDataTypes.</tt><tt class="descname">sdBaseData</tt><a class="reference internal" href="_modules/pydarn/sdio/sdDataTypes.html#sdBaseData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.sdDataTypes.sdBaseData" title="Permalink to this definition">¶</a></dt>
+<dd><p>a base class for the porocessed SD data types.  This allows for single definition of common routines</p>
+<dl class="docutils">
+<dt><strong>ATTRS</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Nothing.</li>
+</ul>
+</dd>
+<dt><strong>METHODS</strong>:</dt>
+<dd><ul class="first last simple">
+<li><tt class="xref py py-func docutils literal"><span class="pre">updateValsFromDict()</span></tt>: converts a dict from a dmap file to baseData</li>
+</ul>
+</dd>
+</dl>
+<p>Written by AJ 20130607</p>
+<dl class="method">
+<dt id="pydarn.sdio.sdDataTypes.sdBaseData.updateValsFromDict">
+<tt class="descname">updateValsFromDict</tt><big>(</big><em>aDict</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/sdDataTypes.html#sdBaseData.updateValsFromDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.sdDataTypes.sdBaseData.updateValsFromDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to to fill an sdBaseData object with the data in a dictionary that is returned from the reading of a dmap file</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In general, users will not need to use this.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>aDict (dict):</strong> the dictionary containing the radar data</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong></dt>
+<dd><ul class="first last simple">
+<li>Nothing.</li>
+</ul>
+</dd>
+</dl>
+<p>Written by AJ 20121130</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pydarn.sdio.sdDataTypes.sdDataPtr">
+<em class="property">class </em><tt class="descclassname">pydarn.sdio.sdDataTypes.</tt><tt class="descname">sdDataPtr</tt><big>(</big><em>ptr=None</em>, <em>sTime=None</em>, <em>eTime=None</em>, <em>hemi=None</em>, <em>fType=None</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/sdDataTypes.html#sdDataPtr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.sdDataTypes.sdDataPtr" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class which contains a pipeline to a data source</p>
+<dl class="docutils">
+<dt><strong>Attrs</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>ptr</strong> (file or mongodb query object): the file pointer</li>
+<li><strong>sTime</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): start time of the request</li>
+<li><strong>eTime</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): end time of the request</li>
+<li><strong>hemi</strong> (str): station id of the request</li>
+<li><strong>fType</strong> (str): the file type, &#8216;grid&#8217;, &#8216;map&#8217;</li>
+</ul>
+</dd>
+<dt><strong>Methods</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Nothing.</li>
+</ul>
+</dd>
+</dl>
+<p>Written by AJ 20130607</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pydarn.sdio.sdDataTypes.sdModel">
+<em class="property">class </em><tt class="descclassname">pydarn.sdio.sdDataTypes.</tt><tt class="descname">sdModel</tt><big>(</big><em>dataDict=None</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/sdDataTypes.html#sdModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.sdDataTypes.sdModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>a class to contain model records of map poential data, extends <a class="reference internal" href="#pydarn.sdio.sdDataTypes.sdBaseData" title="pydarn.sdio.sdDataTypes.sdBaseData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataTypes.sdBaseData</span></tt></a></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">I don&#8217;t know what <a class="reference external" href="http://4.bp.blogspot.com/_D_Z-D2tzi14/S8TRIo4br3I/AAAAAAAACv4/Zh7_GcMlRKo/s400/ALOT.png">alot</a> of these attributes mean.  If you do, please add them in.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Attrs</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>mlat</strong> (list):</li>
+<li><strong>kvect</strong> (list):</li>
+<li><strong>velmedian</strong> (list):</li>
+<li><strong>boundarymlat</strong> (int):</li>
+<li><strong>boundarymlon</strong> (int):</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>: </dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">myMod</span> <span class="o">=</span> <span class="n">pydarn</span><span class="o">.</span><span class="n">sdio</span><span class="o">.</span><span class="n">sdModel</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>Written by AJ 20130607</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pydarn.sdio.sdDataTypes.sdVector">
+<em class="property">class </em><tt class="descclassname">pydarn.sdio.sdDataTypes.</tt><tt class="descname">sdVector</tt><big>(</big><em>dataDict=None</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/sdDataTypes.html#sdVector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.sdDataTypes.sdVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>a class to contain vector records of gridded data, extends <a class="reference internal" href="#pydarn.sdio.sdDataTypes.sdBaseData" title="pydarn.sdio.sdDataTypes.sdBaseData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataTypes.sdBaseData</span></tt></a></p>
+<dl class="docutils">
+<dt><strong>Attrs</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>mlat</strong> (list): the magnetic longitude of the grid cells</li>
+<li><strong>mlon</strong> (list): the magnetic longitude of the grid cells</li>
+<li><strong>kvect</strong> (list): the kvectors of the vectors in the grid cells</li>
+<li><strong>stid</strong> (int): the station ID of the radar which made the measurement of the vector in the grid cell</li>
+<li><strong>channel</strong> (int): the channel of the radar which made the measurement of the vector in the grid cell</li>
+<li><strong>index</strong> (int):</li>
+<li><strong>velmedian</strong> (int): the median velocity of the vector</li>
+<li><strong>velsd</strong> (float): the standard deviation of the velocity of the vector</li>
+<li><strong>pwrmedian</strong> (float): the median power of the vector</li>
+<li><strong>pwrsd</strong> (float): the standard devation of the power of the vector</li>
+<li><strong>wdtmedian</strong> (string): the median spectral width of the vector</li>
+<li><strong>wdtsd</strong> (string): the standard devation on the spectral width of the vector</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>: </dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">myVec</span> <span class="o">=</span> <span class="n">pydarn</span><span class="o">.</span><span class="n">sdio</span><span class="o">.</span><span class="n">sdVector</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>Written by AJ 20130607</p>
+</dd></dl>
+
+</div>
+<dl class="attribute">
+<dt id="pydarn.sdio.sdDataTypes">
+<tt class="descclassname">pydarn.sdio.</tt><tt class="descname">sdDataTypes</tt><a class="headerlink" href="#pydarn.sdio.sdDataTypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pydarn.sdio.sdDataTypes" title="pydarn.sdio.sdDataTypes"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.sdDataTypes</span></tt></a></p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html">
+          <img class="logo" src="_static/davitpy.svg" alt="Logo" style="width: 80%;"/>
+        </a></p>
+  <div class="sphinxlocaltoc">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">pydarn.sdio.sdDataTypes</a><ul>
+<li><a class="reference internal" href="#module-pydarn-sdio-sddatatypes"><strong>Module</strong>: pydarn.sdio.sdDataTypes</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pydarn.sdio.radDataTypes.html"
+                        title="previous chapter">pydarn.sdio.radDataTypes</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pydarn.sdio.fitexfilter.html"
+                        title="next chapter">pydarn.sdio.fitexfilter</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/pydarn.sdio.sdDataTypes.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="pydarn.sdio.fitexfilter.html" title="pydarn.sdio.fitexfilter"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="pydarn.sdio.radDataTypes.html" title="pydarn.sdio.radDataTypes"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">davitpy</a> &raquo;</li>
+
+          <li><a href="pydarn.html" >pydarn</a> &raquo;</li>
+          <li><a href="pydarn.sdio.html" >pydarn.sdio</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+
+    <div class="footer">
+        &copy; Copyright 2013, VT SuperDARN Lab and Friends.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-40150576-2', 'vt.edu');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+</html>

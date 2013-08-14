@@ -31,10 +31,13 @@
     <script type="text/javascript" src="../../../_static/cloud.js"></script>
     <link rel="top" title="davitpy" href="../../../index.html" />
     <link rel="up" title="pydarn.radar" href="../radar.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -67,6 +70,9 @@
 <span class="c"># Copyright (C) 2012  VT SuperDARN Lab</span>
 <span class="c"># Full license can be found in LICENSE.txt</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. module:: radStruct</span>
+<span class="sd">   :synopsis: Load and browse radar information</span>
+<span class="sd">.. moduleauthor:: Sebastien</span>
 <span class="sd">*********************</span>
 <span class="sd">**Module**: pydarn.radar.radStruct</span>
 <span class="sd">*********************</span>
@@ -81,17 +87,17 @@
 <span class="c"># *************************************************************</span>
 <div class="viewcode-block" id="network"><a class="viewcode-back" href="../../../pydarn.radar.radStruct.html#pydarn.radar.radStruct.network">[docs]</a><span class="k">class</span> <span class="nc">network</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;This class stores information from all radars according to their hdw.dat and radar.dat</span>
-<span class="sd">    This information is read from the radar.hdf5 files provided with the pydarn module.</span>
+<span class="sd">    This information is read from the radar.sqlite files provided with the pydarn module.</span>
 <span class="sd">    </span>
 <span class="sd">    **Members**: </span>
 <span class="sd">        * **nradar** (int): number of radars in class</span>
 <span class="sd">        * **radars** (list): list of :class:`radar` objects</span>
 <span class="sd">    **Methods**:</span>
-<span class="sd">        * :func:`getRadarById`</span>
-<span class="sd">        * :func:`getRadarByName`</span>
-<span class="sd">        * :func:`getRadarByCode`</span>
-<span class="sd">        * :func:`getRadarsByPosition`</span>
-<span class="sd">        * :func:`getAllCodes`</span>
+<span class="sd">        * :func:`network.getRadarById`</span>
+<span class="sd">        * :func:`network.getRadarByName`</span>
+<span class="sd">        * :func:`network.getRadarByCode`</span>
+<span class="sd">        * :func:`network.getRadarsByPosition`</span>
+<span class="sd">        * :func:`network.getAllCodes`</span>
 <span class="sd">    **Example**:</span>
 <span class="sd">        ::</span>
 
@@ -114,22 +120,28 @@
 <span class="sd">                    </span>
 <span class="sd">        written by Sebastien, 2012-08</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span> <span class="nn">h5py</span>
-
-        <span class="c"># Date format</span>
-        <span class="n">dtfmt</span> <span class="o">=</span> <span class="s">&quot;%Y-%m-</span><span class="si">%d</span><span class="s"> %H:%M:%S&quot;</span>
+        <span class="kn">import</span> <span class="nn">sqlite3</span> <span class="kn">as</span> <span class="nn">lite</span>
+        <span class="kn">import</span> <span class="nn">os</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">radars</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="c"># Open file</span>
-        <span class="n">rad_path</span> <span class="o">=</span> <span class="n">__file__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;radStruct.py&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">rad_path</span><span class="o">+</span><span class="s">&#39;/radars.hdf5&#39;</span><span class="p">,</span><span class="s">&#39;r&#39;</span><span class="p">)</span>
-        <span class="n">radarF</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s">&#39;/radar&#39;</span><span class="p">]</span>
-        <span class="n">siteF</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s">&#39;/hdw&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nradar</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">radarF</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">])</span>
-        <span class="k">for</span> <span class="n">irad</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">nradar</span> <span class="p">):</span>
+        <span class="c"># Get DB name</span>
+        <span class="n">rad_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span> <span class="n">__file__</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">dbname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rad_path</span><span class="p">,</span> <span class="s">&#39;radars.sqlite&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">dbname</span><span class="p">):</span>
+            <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> not found&quot;</span> <span class="o">%</span> <span class="n">dbname</span>
+            <span class="k">return</span>
+
+        <span class="k">with</span> <span class="n">lite</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">dbname</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+            <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&quot;select count() from rad&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nradar</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&quot;select id from rad&quot;</span><span class="p">)</span>
+            <span class="n">rows</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">radars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">radar</span><span class="p">())</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">radars</span><span class="p">[</span><span class="n">irad</span><span class="p">]</span><span class="o">.</span><span class="n">fillFromHdf5</span><span class="p">(</span><span class="n">radarF</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">][</span><span class="n">irad</span><span class="p">],</span> <span class="n">radarF</span><span class="p">,</span> <span class="n">siteF</span><span class="p">)</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">radars</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">fillFromSqlite</span><span class="p">(</span><span class="n">dbname</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             
     <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Object length (number of radars)</span>
@@ -398,7 +410,8 @@
 <span class="sd">        * **snum** (int): number of site objects (i.e. number of updates to the hdw.dat)</span>
 <span class="sd">        * **sites** (list): list of :class:`site` objects</span>
 <span class="sd">    **Methods**:</span>
-<span class="sd">        * :func:`getSiteByDate`</span>
+<span class="sd">        * :func:`radar.fillFromSqlite`</span>
+<span class="sd">        * :func:`radar.getSiteByDate`</span>
 <span class="sd">    **Example**:</span>
 <span class="sd">        ::</span>
 
@@ -423,8 +436,9 @@
 <span class="sd">                    </span>
 <span class="sd">        written by Sebastien, 2012-08</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span> <span class="nn">h5py</span>
-        <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">where</span>
+        <span class="kn">import</span> <span class="nn">sqlite3</span> <span class="kn">as</span> <span class="nn">lite</span>
+        <span class="kn">import</span> <span class="nn">pickle</span>
+        <span class="kn">import</span> <span class="nn">os</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="mi">0</span>
@@ -440,53 +454,70 @@
 
         <span class="c"># If a radar is requested...</span>
         <span class="k">if</span> <span class="n">code</span> <span class="ow">or</span> <span class="n">radId</span><span class="p">:</span>
-            <span class="n">rad_path</span> <span class="o">=</span> <span class="n">__file__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;radStruct.py&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">rad_path</span><span class="o">+</span><span class="s">&#39;/radars.hdf5&#39;</span><span class="p">,</span><span class="s">&#39;r&#39;</span><span class="p">)</span>
-            <span class="n">radarF</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s">&#39;/radar&#39;</span><span class="p">]</span>
-            <span class="n">siteF</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s">&#39;/hdw&#39;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">code</span><span class="p">:</span> <span class="n">radId</span> <span class="o">=</span> <span class="n">radarF</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">][</span> <span class="n">where</span><span class="p">(</span> <span class="n">radarF</span><span class="p">[</span><span class="s">&#39;code&#39;</span><span class="p">][:]</span> <span class="o">==</span> <span class="n">code</span> <span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">fillFromHdf5</span><span class="p">(</span><span class="n">radId</span><span class="p">,</span> <span class="n">radarF</span><span class="p">,</span> <span class="n">siteF</span><span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">rad_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span> <span class="n">__file__</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">dbname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rad_path</span><span class="p">,</span> <span class="s">&#39;radars.sqlite&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="radar.fillFromHdf5"><a class="viewcode-back" href="../../../pydarn.radar.radStruct.html#pydarn.radar.radStruct.radar.fillFromHdf5">[docs]</a>    <span class="k">def</span> <span class="nf">fillFromHdf5</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radId</span><span class="p">,</span> <span class="n">dset</span><span class="p">,</span> <span class="n">siteDset</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;fill radar structure from hdf5 dataset</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">dbname</span><span class="p">):</span>
+                <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> not found&quot;</span> <span class="o">%</span> <span class="n">dbname</span>
+                <span class="k">return</span>
+
+            <span class="c"># if the radar code was provided, look for corresponding id</span>
+            <span class="k">if</span> <span class="n">code</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">lite</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">dbname</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+                    <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+                    <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;SELECT id,code FROM rad&#39;</span><span class="p">)</span>
+                    <span class="n">rows</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;ascii&#39;</span><span class="p">)):</span>
+                        <span class="n">radId</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">fillFromSqlite</span><span class="p">(</span><span class="n">dbname</span><span class="p">,</span> <span class="n">radId</span><span class="p">)</span>
+
+<div class="viewcode-block" id="radar.fillFromSqlite"><a class="viewcode-back" href="../../../pydarn.radar.radStruct.html#pydarn.radar.radStruct.radar.fillFromSqlite">[docs]</a>    <span class="k">def</span> <span class="nf">fillFromSqlite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dbname</span><span class="p">,</span> <span class="n">radId</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;fill radar structure from sqlite DB</span>
 <span class="sd">        </span>
 <span class="sd">        **Belongs to**: :class:`radar`</span>
 <span class="sd">        </span>
 <span class="sd">        **Args**: </span>
+<span class="sd">            * **dbname** (str): sqlite database path/name</span>
 <span class="sd">            * **radID** (int): radar ID</span>
-<span class="sd">            * **dset** (h5py.dset): hdf5 radar dataset</span>
-<span class="sd">            * **sitedset** (h5py.dset): hdf5 site dataset</span>
 <span class="sd">        **Returns**:</span>
 <span class="sd">            * **None**</span>
 <span class="sd">                    </span>
 <span class="sd">        written by Sebastien, 2013-02</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-        <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">where</span>
+        <span class="kn">import</span> <span class="nn">sqlite3</span> <span class="kn">as</span> <span class="nn">lite</span>
+        <span class="kn">import</span> <span class="nn">pickle</span>
+        <span class="kn">import</span> <span class="nn">os</span>
 
-        <span class="c"># Date format</span>
-        <span class="n">dtfmt</span> <span class="o">=</span> <span class="s">&quot;%Y-%m-</span><span class="si">%d</span><span class="s"> %H:%M:%S&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">dbname</span><span class="p">):</span>
+            <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> not found&quot;</span> <span class="o">%</span> <span class="n">dbname</span>
+            <span class="k">return</span>
 
-        <span class="n">irad</span> <span class="o">=</span> <span class="n">where</span><span class="p">(</span> <span class="n">dset</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">][:]</span> <span class="o">==</span> <span class="n">radId</span> <span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">dset</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">][</span><span class="n">irad</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">dset</span><span class="p">[</span><span class="s">&#39;status&#39;</span><span class="p">][</span><span class="n">irad</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cnum</span> <span class="o">=</span> <span class="n">dset</span><span class="p">[</span><span class="s">&#39;cnum&#39;</span><span class="p">][</span><span class="n">irad</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stTime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">dset</span><span class="p">[</span><span class="s">&#39;stTime&#39;</span><span class="p">][</span><span class="n">irad</span><span class="p">],</span> <span class="n">dtfmt</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">edTime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">dset</span><span class="p">[</span><span class="s">&#39;edTime&#39;</span><span class="p">][</span><span class="n">irad</span><span class="p">],</span> <span class="n">dtfmt</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">dset</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">][</span><span class="n">irad</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">operator</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">dset</span><span class="p">[</span><span class="s">&#39;operator&#39;</span><span class="p">][</span><span class="n">irad</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hdwfname</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">dset</span><span class="p">[</span><span class="s">&#39;hdwfname&#39;</span><span class="p">][</span><span class="n">irad</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">dset</span><span class="p">[</span><span class="s">&#39;code&#39;</span><span class="p">][</span><span class="n">irad</span><span class="p">]</span>
-        <span class="n">siteInds</span> <span class="o">=</span> <span class="n">where</span><span class="p">(</span> <span class="n">siteDset</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">][:]</span> <span class="o">==</span> <span class="n">radId</span> <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">siteInds</span> <span class="o">==</span> <span class="p">[]:</span> <span class="k">return</span>
-        <span class="n">tsnum</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">ist</span><span class="p">,</span><span class="n">isit</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">siteInds</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sites</span><span class="p">[</span><span class="n">ist</span><span class="p">]</span><span class="o">.</span><span class="n">fillFromHdf5</span><span class="p">(</span><span class="n">radId</span><span class="p">,</span> <span class="n">siteDset</span><span class="p">,</span> <span class="n">ind</span><span class="o">=</span><span class="n">ist</span><span class="p">)</span>
-            <span class="n">tsnum</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sites</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">site</span><span class="p">())</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">sites</span><span class="p">[</span><span class="n">tsnum</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">snum</span> <span class="o">=</span> <span class="n">tsnum</span>
+        <span class="k">with</span> <span class="n">lite</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">dbname</span><span class="p">,</span> <span class="n">detect_types</span><span class="o">=</span><span class="n">lite</span><span class="o">.</span><span class="n">PARSE_DECLTYPES</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+            <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;SELECT * FROM rad WHERE id=?&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">radId</span><span class="p">,))</span>
+            
+            <span class="n">row</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">row</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&#39;Radar not found in DB: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">radId</span><span class="p">)</span>
+                <span class="k">return</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cnum</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;ascii&#39;</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">operator</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hdwfname</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stTime</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">edTime</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">snum</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">ist</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">snum</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sites</span><span class="p">[</span><span class="n">ist</span><span class="p">]</span><span class="o">.</span><span class="n">fillFromSqlite</span><span class="p">(</span><span class="n">dbname</span><span class="p">,</span> <span class="n">radId</span><span class="p">,</span> <span class="n">ind</span><span class="o">=</span><span class="n">ist</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sites</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">site</span><span class="p">())</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">sites</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             </div>
     <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Object length (number of site updates)</span>
@@ -512,7 +543,7 @@
         <span class="n">outstring</span> <span class="o">=</span> <span class="s">&#39;id: {0} </span><span class="se">\</span>
 <span class="s">                    </span><span class="se">\n</span><span class="s">status: {1} </span><span class="se">\</span>
 <span class="s">                    </span><span class="se">\n</span><span class="s">cnum: {2} </span><span class="se">\</span>
-<span class="s">                    </span><span class="se">\n</span><span class="s">code: [{3}] </span><span class="se">\</span>
+<span class="s">                    </span><span class="se">\n</span><span class="s">code: {3} </span><span class="se">\</span>
 <span class="s">                    </span><span class="se">\n</span><span class="s">name: {4} </span><span class="se">\</span>
 <span class="s">                    </span><span class="se">\n</span><span class="s">operator: {5} </span><span class="se">\</span>
 <span class="s">                    </span><span class="se">\n</span><span class="s">hdwfname: {6} </span><span class="se">\</span>
@@ -584,6 +615,11 @@
 <span class="sd">        * **maxatten** (int): maximum number of analog attenuation stages</span>
 <span class="sd">        * **maxgate** (int): maximum number of range gates (assuming 45km gates)</span>
 <span class="sd">        * **maxbeam** (int): maximum number of beams</span>
+<span class="sd">    **Methods**:</span>
+<span class="sd">        * :func:`site.fillFromSqlite`</span>
+<span class="sd">        * :func:`site.beamToAzim`</span>
+<span class="sd">        * :func:`site.azimToBeam`</span>
+
 <span class="sd">    **Example**:</span>
 <span class="sd">        ::</span>
 
@@ -608,8 +644,9 @@
 <span class="sd">                    </span>
 <span class="sd">        written by Sebastien, 2012-08</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span> <span class="nn">h5py</span>
-        <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">where</span>
+        <span class="kn">import</span> <span class="nn">sqlite3</span> <span class="kn">as</span> <span class="nn">lite</span>
+        <span class="kn">import</span> <span class="nn">pickle</span>
+        <span class="kn">import</span> <span class="nn">os</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">tval</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">geolat</span> <span class="o">=</span> <span class="mf">0.0</span>
@@ -627,21 +664,33 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">maxgate</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">maxbeam</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">if</span> <span class="n">radId</span> <span class="ow">or</span> <span class="n">code</span><span class="p">:</span> 
-            <span class="n">rad_path</span> <span class="o">=</span> <span class="n">__file__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;radStruct.py&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">rad_path</span><span class="o">+</span><span class="s">&#39;/radars.hdf5&#39;</span><span class="p">,</span><span class="s">&#39;r&#39;</span><span class="p">)</span>
-            <span class="n">siteF</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s">&#39;/hdw&#39;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">code</span><span class="p">:</span> <span class="n">radId</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s">&#39;/radar&#39;</span><span class="p">][</span><span class="s">&#39;id&#39;</span><span class="p">][</span> <span class="n">where</span><span class="p">(</span> <span class="n">f</span><span class="p">[</span><span class="s">&#39;/radar&#39;</span><span class="p">][</span><span class="s">&#39;code&#39;</span><span class="p">][:]</span> <span class="o">==</span> <span class="n">code</span> <span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">fillFromHdf5</span><span class="p">(</span><span class="n">radId</span><span class="p">,</span> <span class="n">siteF</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">rad_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span> <span class="n">__file__</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">dbname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rad_path</span><span class="p">,</span> <span class="s">&#39;radars.sqlite&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="site.fillFromHdf5"><a class="viewcode-back" href="../../../pydarn.radar.radStruct.html#pydarn.radar.radStruct.site.fillFromHdf5">[docs]</a>    <span class="k">def</span> <span class="nf">fillFromHdf5</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radId</span><span class="p">,</span> <span class="n">dset</span><span class="p">,</span> <span class="n">ind</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;fill site structure from hdf5 dataset</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">dbname</span><span class="p">):</span>
+                <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> not found&quot;</span> <span class="o">%</span> <span class="n">dbname</span>
+                <span class="k">return</span>
+
+            <span class="c"># if the radar code was provided, look for corresponding id</span>
+            <span class="k">if</span> <span class="n">code</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">lite</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">dbname</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+                    <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+                    <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;SELECT id,code FROM rad&#39;</span><span class="p">)</span>
+                    <span class="n">rows</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;ascii&#39;</span><span class="p">)):</span>
+                        <span class="n">radId</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">fillFromSqlite</span><span class="p">(</span><span class="n">dbname</span><span class="p">,</span> <span class="n">radId</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
+
+<div class="viewcode-block" id="site.fillFromSqlite"><a class="viewcode-back" href="../../../pydarn.radar.radStruct.html#pydarn.radar.radStruct.site.fillFromSqlite">[docs]</a>    <span class="k">def</span> <span class="nf">fillFromSqlite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dbname</span><span class="p">,</span> <span class="n">radId</span><span class="p">,</span> <span class="n">ind</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;fill site structure from sqlite databse</span>
 <span class="sd">        </span>
 <span class="sd">        **Belongs to**: :class:`site`</span>
 <span class="sd">        </span>
 <span class="sd">        **Args**: </span>
+<span class="sd">            * **dbname** (str): sqlite database path/name</span>
 <span class="sd">            * **radID** (int): radar ID</span>
-<span class="sd">            * **dset** (h5py.dset): hdf5 dataset</span>
 <span class="sd">            * [**ind**] (int): site index; defaults to most recent configuration</span>
 <span class="sd">            * [**dt**] (datetime.datetime)</span>
 <span class="sd">        **Returns**:</span>
@@ -650,43 +699,39 @@
 <span class="sd">        written by Sebastien, 2013-02</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-        <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">where</span>
+        <span class="kn">import</span> <span class="nn">sqlite3</span> <span class="kn">as</span> <span class="nn">lite</span>
+        <span class="kn">import</span> <span class="nn">pickle</span>
+        <span class="kn">import</span> <span class="nn">os</span>
 
-        <span class="c"># Date format</span>
-        <span class="n">dtfmt</span> <span class="o">=</span> <span class="s">&quot;%Y-%m-</span><span class="si">%d</span><span class="s"> %H:%M:%S&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">dbname</span><span class="p">):</span>
+            <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> not found&quot;</span> <span class="o">%</span> <span class="n">dbname</span>
+            <span class="k">return</span>
 
-        <span class="c"># Find the data index</span>
-        <span class="n">siteInds</span> <span class="o">=</span> <span class="n">where</span><span class="p">(</span> <span class="n">dset</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">][:]</span> <span class="o">==</span> <span class="n">radId</span> <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="c"># Adjust index if negative</span>
-        <span class="k">if</span> <span class="n">ind</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span> <span class="n">ind</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">siteInds</span><span class="p">)</span> <span class="o">+</span> <span class="n">ind</span>
-        <span class="c"># Get index</span>
-        <span class="k">if</span> <span class="n">siteInds</span> <span class="o">==</span> <span class="p">[]:</span> <span class="k">return</span>
-        <span class="k">if</span> <span class="n">dt</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">ist</span><span class="p">,</span><span class="n">isit</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">siteInds</span><span class="p">):</span>
-                <span class="n">tval</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">dset</span><span class="p">[</span><span class="s">&#39;tval&#39;</span><span class="p">][</span><span class="n">isit</span><span class="p">],</span> <span class="n">dtfmt</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">tval</span> <span class="o">&lt;</span> <span class="n">dt</span><span class="p">:</span> 
-                    <span class="k">continue</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">ind</span> <span class="o">=</span> <span class="n">isit</span> 
-                    <span class="k">break</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">ind</span> <span class="o">=</span> <span class="n">siteInds</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+        <span class="k">with</span> <span class="n">lite</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">dbname</span><span class="p">,</span> <span class="n">detect_types</span><span class="o">=</span><span class="n">lite</span><span class="o">.</span><span class="n">PARSE_DECLTYPES</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">dt</span><span class="p">:</span>
+                <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;SELECT * FROM hdw WHERE id=? and tval&gt;=? ORDER BY tval ASC&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">radId</span><span class="p">,</span> <span class="n">dt</span><span class="p">))</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;SELECT * FROM hdw WHERE id=? ORDER BY tval ASC&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">radId</span><span class="p">,))</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()[</span><span class="n">ind</span><span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">tval</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">dset</span><span class="p">[</span><span class="s">&#39;tval&#39;</span><span class="p">][</span><span class="n">ind</span><span class="p">],</span> <span class="n">dtfmt</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">geolat</span> <span class="o">=</span> <span class="n">dset</span><span class="p">[</span><span class="s">&#39;geolat&#39;</span><span class="p">][</span><span class="n">ind</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">geolon</span> <span class="o">=</span> <span class="n">dset</span><span class="p">[</span><span class="s">&#39;geolon&#39;</span><span class="p">][</span><span class="n">ind</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">alt</span> <span class="o">=</span> <span class="n">dset</span><span class="p">[</span><span class="s">&#39;alt&#39;</span><span class="p">][</span><span class="n">ind</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">boresite</span> <span class="o">=</span> <span class="n">dset</span><span class="p">[</span><span class="s">&#39;boresite&#39;</span><span class="p">][</span><span class="n">ind</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bmsep</span> <span class="o">=</span> <span class="n">dset</span><span class="p">[</span><span class="s">&#39;bmsep&#39;</span><span class="p">][</span><span class="n">ind</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">vdir</span> <span class="o">=</span> <span class="n">dset</span><span class="p">[</span><span class="s">&#39;vdir&#39;</span><span class="p">][</span><span class="n">ind</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">atten</span> <span class="o">=</span> <span class="n">dset</span><span class="p">[</span><span class="s">&#39;atten&#39;</span><span class="p">][</span><span class="n">ind</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tdiff</span> <span class="o">=</span> <span class="n">dset</span><span class="p">[</span><span class="s">&#39;tdiff&#39;</span><span class="p">][</span><span class="n">ind</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">phidiff</span> <span class="o">=</span> <span class="n">dset</span><span class="p">[</span><span class="s">&#39;phidiff&#39;</span><span class="p">][</span><span class="n">ind</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">interfer</span> <span class="o">=</span> <span class="n">dset</span><span class="p">[</span><span class="s">&#39;interfer&#39;</span><span class="p">][</span><span class="n">ind</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">recrise</span> <span class="o">=</span> <span class="n">dset</span><span class="p">[</span><span class="s">&#39;recrise&#39;</span><span class="p">][</span><span class="n">ind</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">maxatten</span> <span class="o">=</span> <span class="n">dset</span><span class="p">[</span><span class="s">&#39;maxatten&#39;</span><span class="p">][</span><span class="n">ind</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">maxgate</span> <span class="o">=</span> <span class="n">dset</span><span class="p">[</span><span class="s">&#39;maxgate&#39;</span><span class="p">][</span><span class="n">ind</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">maxbeam</span> <span class="o">=</span> <span class="n">dset</span><span class="p">[</span><span class="s">&#39;maxbeam&#39;</span><span class="p">][</span><span class="n">ind</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tval</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">geolat</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">geolon</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">alt</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">boresite</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bmsep</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vdir</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tdiff</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phidiff</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">recrise</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">atten</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">maxatten</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">maxgate</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">maxbeam</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">interfer</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;ascii&#39;</span><span class="p">))</span>
             </div>
     <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

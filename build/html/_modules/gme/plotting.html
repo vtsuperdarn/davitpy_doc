@@ -31,10 +31,13 @@
     <script type="text/javascript" src="../../_static/cloud.js"></script>
     <link rel="top" title="davitpy" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -65,57 +68,21 @@
   <h1>Source code for gme.plotting</h1><div class="highlight"><pre>
 <span class="c"># Copyright (C) 2012  VT SuperDARN Lab</span>
 <span class="c"># Full license can be found in LICENSE.txt</span>
-<span class="c"># </span>
-<span class="c"># This program is free software: you can redistribute it and/or modify</span>
-<span class="c"># it under the terms of the GNU General Public License as published by</span>
-<span class="c"># the Free Software Foundation, either version 3 of the License, or</span>
-<span class="c"># (at your option) any later version.</span>
-<span class="c"># </span>
-<span class="c"># This program is distributed in the hope that it will be useful,</span>
-<span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
-<span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
-<span class="c"># GNU General Public License for more details.</span>
-<span class="c"># </span>
-<span class="c"># You should have received a copy of the GNU General Public License</span>
-<span class="c"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
-
-<span class="c"># Plot module __init__.py</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">*******************************</span>
-<span class="sd">            PLOT</span>
-<span class="sd">*******************************</span>
-<span class="sd">This subpackage contains various plotting routines for DaViT-py</span>
+<span class="sd">*********************</span>
+<span class="sd">**Module**: gme.plotting</span>
+<span class="sd">*********************</span>
+<span class="sd">This subpackage contains various plotting routines for geomagnetic environment data.</span>
 
-<span class="sd">This includes the following function(s):</span>
-<span class="sd">	*rti</span>
-<span class="sd">		rti data plots</span>
-<span class="sd">	*scan</span>
-<span class="sd">		scan data plots</span>
-<span class="sd">	*freq</span>
-<span class="sd">		frequency plot</span>
-<span class="sd">	*noise</span>
-<span class="sd">		noise plot</span>
-<span class="sd">	</span>
-<span class="sd">This includes the following module(s):</span>
-<span class="sd">	*map</span>
-<span class="sd">		empty maps in polar projections with the following function(s):</span>
-<span class="sd">			*overlay_radar</span>
-<span class="sd">			*overlay_fov</span>
-<span class="sd">			*overlay_terminator</span>
-<span class="sd">			*overlay_daynight</span>
+<span class="sd">**Modules**:</span>
+<span class="sd">	* :mod:`gme.plotting.gmeplot`</span>
 
 <span class="sd">*******************************</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">gmeplot</span> <span class="kn">import</span> <span class="o">*</span>
-
-<span class="c">#from rti import *</span>
-<span class="c">#from plotUtils import *</span>
-<span class="c">#from map import *</span>
-<span class="c">#from printRec import *</span>
-<span class="c">#from fan import *</span>
-<span class="c">#from pygridPlot import *</span>
-<span class="c">#import pygridPlot</span>
+<span class="k">try</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">gmeplot</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span> 
+  <span class="k">print</span> <span class="s">&#39;problem importing gme.plotting.gmeplot: &#39;</span><span class="p">,</span> <span class="n">e</span>
 </pre></div>
 
           </div>

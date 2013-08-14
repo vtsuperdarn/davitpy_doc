@@ -5,7 +5,11 @@ pydarn.sdio
 
    pydarn.sdio.radDataRead
 
+   pydarn.sdio.sdDataRead
+
    pydarn.sdio.radDataTypes
+
+   pydarn.sdio.sdDataTypes
 
    pydarn.sdio.fitexfilter
 

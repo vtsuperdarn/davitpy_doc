@@ -31,10 +31,13 @@
     <script type="text/javascript" src="../../../_static/cloud.js"></script>
     <link rel="top" title="davitpy" href="../../../index.html" />
     <link rel="up" title="pydarn.sdio" href="../sdio.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -64,9 +67,25 @@
           <div class="body">
             
   <h1>Source code for pydarn.sdio.radDataRead</h1><div class="highlight"><pre>
+<span class="c"># Copyright (C) 2012  VT SuperDARN Lab</span>
+<span class="c"># Full license can be found in LICENSE.txt</span>
+<span class="c"># </span>
+<span class="c"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c"># it under the terms of the GNU General Public License as published by</span>
+<span class="c"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c"># (at your option) any later version.</span>
+<span class="c"># </span>
+<span class="c"># This program is distributed in the hope that it will be useful,</span>
+<span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c"># GNU General Public License for more details.</span>
+<span class="c"># </span>
+<span class="c"># You should have received a copy of the GNU General Public License</span>
+<span class="c"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">.. module:: radDataRead</span>
-<span class="sd">   :synopsis: A module for reading radar data</span>
+<span class="sd">   :synopsis: A module for reading radar data (iqdat, raw, fit)</span>
 
 <span class="sd">.. moduleauthor:: AJ, 20130110</span>
 
@@ -75,14 +94,15 @@
 <span class="sd">************************************</span>
 
 <span class="sd">**Functions**:</span>
-<span class="sd">  * :func:`radDataOpen`</span>
-<span class="sd">  * :func:`radDataReadRec`</span>
-<span class="sd">  * :func:`radDataReadScan`</span>
+<span class="sd">  * :func:`pydarn.sdio.radDataRead.radDataOpen`</span>
+<span class="sd">  * :func:`pydarn.sdio.radDataRead.radDataReadRec`</span>
+<span class="sd">  * :func:`pydarn.sdio.radDataRead.radDataReadScan`</span>
+<span class="sd">  * :func:`pydarn.sdio.radDataRead.radDataReadAll`</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="radDataOpen"><a class="viewcode-back" href="../../../pydarn.sdio.radDataRead.html#pydarn.sdio.radDataRead.radDataOpen">[docs]</a><span class="k">def</span> <span class="nf">radDataOpen</span><span class="p">(</span><span class="n">sTime</span><span class="p">,</span><span class="n">rad</span><span class="p">,</span><span class="n">eTime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">channel</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">bmnum</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">cp</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> \
                 <span class="n">fileType</span><span class="o">=</span><span class="s">&#39;fitex&#39;</span><span class="p">,</span><span class="n">filtered</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">src</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">fileName</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> \
-                <span class="n">custType</span><span class="o">=</span><span class="s">&#39;fitex&#39;</span><span class="p">):</span>
+                <span class="n">custType</span><span class="o">=</span><span class="s">&#39;fitex&#39;</span><span class="p">,</span><span class="n">noCache</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 
   <span class="sd">&quot;&quot;&quot;A function to establish a pipeline through which we can read radar data.  first it tries the mongodb, then it tries to find local files, and lastly it sftp&#39;s over to the VT data server.</span>
 
@@ -95,11 +115,12 @@
 <span class="sd">    * **[cp]** (int): the control program which you want data for.  If this is set to None, data from all cp&#39;s will be read.  default = None</span>
 <span class="sd">    * **[fileType]** (str):  The type of data you want to read.  valid inputs are: &#39;fitex&#39;,&#39;fitacf&#39;,&#39;lmfit&#39;,&#39;rawacf&#39;,&#39;iqdat&#39;.   if you choose a fit file format and the specified one isn&#39;t found, we will search for one of the others.  Beware: if you ask for rawacf/iq data, these files are large and the data transfer might take a long time.  default = &#39;fitex&#39;</span>
 <span class="sd">    * **[filtered]** (boolean): a boolean specifying whether you want the fit data to be boxcar filtered.  ONLY VALID FOR FIT.  default = False</span>
-<span class="sd">    * **[src]** (str): the source of the data.  valid inputs are &#39;mongo&#39; &#39;local&#39; &#39;sftp&#39;.  if this is set to None, it will try all possibilites sequentially.  default = None</span>
+<span class="sd">    * **[src]** (str): the source of the data.  valid inputs are &#39;local&#39; &#39;sftp&#39;.  if this is set to None, it will try all possibilites sequentially.  default = None</span>
 <span class="sd">    * **[fileName]** (str): the name of a specific file which you want to open.  default=None</span>
 <span class="sd">    * **[custType]** (str): if fileName is specified, the filetype of the file.  default=&#39;fitex&#39;</span>
+<span class="sd">    * **[noCache]** (boolean): flag to indicate that you do not want to check first for cached files.  default = False.</span>
 <span class="sd">  **Returns**:</span>
-<span class="sd">    * **myPtr** (:class:`radDataTypes.radDataPtr`): a radDataPtr object which contains a link to the data to be read.  this can then be passed to radDataReadRec in order to actually read the data.</span>
+<span class="sd">    * **myPtr** (:class:`pydarn.sdio.radDataTypes.radDataPtr`): a radDataPtr object which contains a link to the data to be read.  this can then be passed to radDataReadRec in order to actually read the data.</span>
 <span class="sd">    </span>
 <span class="sd">  **Example**:</span>
 <span class="sd">    ::</span>
@@ -109,7 +130,9 @@
 <span class="sd">    </span>
 <span class="sd">  Written by AJ 20130110</span>
 <span class="sd">  &quot;&quot;&quot;</span>
-  <span class="kn">import</span> <span class="nn">subprocess</span> <span class="kn">as</span> <span class="nn">sub</span><span class="o">,</span> <span class="nn">paramiko</span> <span class="kn">as</span> <span class="nn">p</span><span class="o">,</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">string</span>
+  <span class="kn">import</span> <span class="nn">paramiko</span> <span class="kn">as</span> <span class="nn">p</span>
+  <span class="kn">import</span> <span class="nn">re</span>
+  <span class="kn">import</span> <span class="nn">string</span>
   <span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">pydarn.sdio</span><span class="o">,</span> <span class="nn">glob</span>
   <span class="kn">from</span> <span class="nn">pydarn.sdio</span> <span class="kn">import</span> <span class="n">radDataPtr</span>
   <span class="kn">from</span> <span class="nn">pydarn.radar</span> <span class="kn">import</span> <span class="n">network</span>
@@ -135,8 +158,8 @@
     <span class="s">&#39;error, fileName must be None or a string&#39;</span>
   <span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">filtered</span><span class="p">,</span><span class="nb">bool</span><span class="p">)),</span> \
     <span class="s">&#39;error, filtered must be True of False&#39;</span>
-  <span class="k">assert</span><span class="p">(</span><span class="n">src</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">src</span> <span class="o">==</span> <span class="s">&#39;mongo&#39;</span> <span class="ow">or</span> <span class="n">src</span> <span class="o">==</span> <span class="s">&#39;local&#39;</span> <span class="ow">or</span> <span class="n">src</span> <span class="o">==</span> <span class="s">&#39;sftp&#39;</span><span class="p">),</span> \
-    <span class="s">&#39;error, src must be one of None,local,mongo,sftp&#39;</span>
+  <span class="k">assert</span><span class="p">(</span><span class="n">src</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">src</span> <span class="o">==</span> <span class="s">&#39;local&#39;</span> <span class="ow">or</span> <span class="n">src</span> <span class="o">==</span> <span class="s">&#39;sftp&#39;</span><span class="p">),</span> \
+    <span class="s">&#39;error, src must be one of None,local,sftp&#39;</span>
     
   <span class="k">if</span><span class="p">(</span><span class="n">eTime</span> <span class="o">==</span> <span class="bp">None</span><span class="p">):</span>
     <span class="n">eTime</span> <span class="o">=</span> <span class="n">sTime</span><span class="o">+</span><span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -150,16 +173,20 @@
   <span class="k">elif</span><span class="p">(</span><span class="n">fileType</span> <span class="o">==</span> <span class="s">&#39;fitacf&#39;</span><span class="p">):</span> <span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;fitacf&#39;</span><span class="p">,</span><span class="s">&#39;fitex&#39;</span><span class="p">,</span><span class="s">&#39;lmfit&#39;</span><span class="p">]</span>
   <span class="k">elif</span><span class="p">(</span><span class="n">fileType</span> <span class="o">==</span> <span class="s">&#39;lmfit&#39;</span><span class="p">):</span> <span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;lmfit&#39;</span><span class="p">,</span><span class="s">&#39;fitex&#39;</span><span class="p">,</span><span class="s">&#39;fitacf&#39;</span><span class="p">]</span>
   <span class="k">else</span><span class="p">:</span> <span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="n">fileType</span><span class="p">]</span>
+
   <span class="c">#move back a little in time because files often start at 2 mins after the hour</span>
   <span class="n">sTime</span> <span class="o">=</span> <span class="n">sTime</span><span class="o">-</span><span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
   <span class="c">#a temporary directory to store a temporary file</span>
-  <span class="n">tmpDir</span> <span class="o">=</span> <span class="s">&#39;/tmp/fit/&#39;</span>
+  <span class="n">tmpDir</span> <span class="o">=</span> <span class="s">&#39;/tmp/sd/&#39;</span>
   <span class="n">d</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">tmpDir</span><span class="p">)</span>
   <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
+  <span class="n">cached</span> <span class="o">=</span> <span class="bp">False</span>
+  <span class="n">fileSt</span> <span class="o">=</span> <span class="bp">None</span>
+
   <span class="c">#FIRST, check if a specific filename was given</span>
-  <span class="k">if</span><span class="p">(</span><span class="n">fileName</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span>
+  <span class="k">if</span> <span class="n">fileName</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
     <span class="k">try</span><span class="p">:</span>
       <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fileName</span><span class="p">)):</span>
         <span class="k">print</span> <span class="s">&#39;problem reading&#39;</span><span class="p">,</span><span class="n">fileName</span><span class="p">,</span><span class="s">&#39;:file does not exist&#39;</span>
@@ -178,12 +205,50 @@
         <span class="k">print</span> <span class="s">&#39;cp &#39;</span><span class="o">+</span><span class="n">fileName</span><span class="o">+</span><span class="s">&#39; &#39;</span><span class="o">+</span><span class="n">outname</span>
       <span class="n">filelist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">outname</span><span class="p">)</span>
       <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span><span class="p">,</span><span class="n">myPtr</span><span class="o">.</span><span class="n">dType</span> <span class="o">=</span> <span class="n">custType</span><span class="p">,</span><span class="s">&#39;dmap&#39;</span>
+      <span class="n">fileSt</span> <span class="o">=</span> <span class="n">sTime</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
       <span class="k">print</span> <span class="n">e</span>
       <span class="k">print</span> <span class="s">&#39;problem reading file&#39;</span><span class="p">,</span><span class="n">fileName</span>
       <span class="k">return</span> <span class="bp">None</span>
+
+  <span class="c">#Next, check for a cached file</span>
+  <span class="k">if</span> <span class="n">fileName</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">noCache</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">filtered</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">????????.??????.????????.??????.</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">f&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tmpDir</span><span class="p">,</span><span class="n">rad</span><span class="p">,</span><span class="n">fileType</span><span class="p">)):</span>
+          <span class="k">try</span><span class="p">:</span>
+            <span class="n">ff</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">tmpDir</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+            <span class="c">#check time span of file</span>
+            <span class="n">t1</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">8</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">9</span><span class="p">:</span><span class="mi">11</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">11</span><span class="p">:</span><span class="mi">13</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">13</span><span class="p">:</span><span class="mi">15</span><span class="p">]))</span>
+            <span class="n">t2</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">16</span><span class="p">:</span><span class="mi">20</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">20</span><span class="p">:</span><span class="mi">22</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">22</span><span class="p">:</span><span class="mi">24</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">25</span><span class="p">:</span><span class="mi">27</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">27</span><span class="p">:</span><span class="mi">29</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">29</span><span class="p">:</span><span class="mi">31</span><span class="p">]))</span>
+            <span class="c">#check if file covers our timespan</span>
+            <span class="k">if</span> <span class="n">t1</span> <span class="o">&lt;=</span> <span class="n">sTime</span> <span class="ow">and</span> <span class="n">t2</span> <span class="o">&gt;=</span> <span class="n">eTime</span><span class="p">:</span>
+              <span class="n">cached</span> <span class="o">=</span> <span class="bp">True</span>
+              <span class="n">filelist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+              <span class="k">print</span> <span class="s">&#39;Found cached file: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">f</span>
+              <span class="k">break</span>
+          <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span>
+            <span class="k">print</span> <span class="n">e</span>
+      <span class="k">if</span> <span class="ow">not</span> <span class="n">cached</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">????????.??????.????????.??????.</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tmpDir</span><span class="p">,</span><span class="n">rad</span><span class="p">,</span><span class="n">fileType</span><span class="p">)):</span>
+          <span class="k">try</span><span class="p">:</span>
+            <span class="n">ff</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">tmpDir</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+            <span class="c">#check time span of file</span>
+            <span class="n">t1</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">8</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">9</span><span class="p">:</span><span class="mi">11</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">11</span><span class="p">:</span><span class="mi">13</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">13</span><span class="p">:</span><span class="mi">15</span><span class="p">]))</span>
+            <span class="n">t2</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">16</span><span class="p">:</span><span class="mi">20</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">20</span><span class="p">:</span><span class="mi">22</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">22</span><span class="p">:</span><span class="mi">24</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">25</span><span class="p">:</span><span class="mi">27</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">27</span><span class="p">:</span><span class="mi">29</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">29</span><span class="p">:</span><span class="mi">31</span><span class="p">]))</span>
+            <span class="c">#check if file covers our timespan</span>
+            <span class="k">if</span> <span class="n">t1</span> <span class="o">&lt;=</span> <span class="n">sTime</span> <span class="ow">and</span> <span class="n">t2</span> <span class="o">&gt;=</span> <span class="n">eTime</span><span class="p">:</span>
+              <span class="n">cached</span> <span class="o">=</span> <span class="bp">True</span>
+              <span class="n">filelist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+              <span class="k">print</span> <span class="s">&#39;Found cached file: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">f</span>
+              <span class="k">break</span>
+          <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span>
+            <span class="k">print</span> <span class="n">e</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span>
+      <span class="k">print</span> <span class="n">e</span>
+
   <span class="c">#Next, LOOK LOCALLY FOR FILES</span>
-  <span class="k">if</span><span class="p">((</span><span class="n">src</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">src</span> <span class="o">==</span> <span class="s">&#39;local&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">fileName</span> <span class="o">==</span> <span class="bp">None</span><span class="p">):</span>
+  <span class="k">if</span> <span class="ow">not</span> <span class="n">cached</span> <span class="ow">and</span> <span class="p">(</span><span class="n">src</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">src</span> <span class="o">==</span> <span class="s">&#39;local&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">fileName</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
     <span class="k">try</span><span class="p">:</span>
       <span class="k">for</span> <span class="n">ftype</span> <span class="ow">in</span> <span class="n">arr</span><span class="p">:</span>
         <span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">Looking locally for&#39;</span><span class="p">,</span><span class="n">ftype</span><span class="p">,</span><span class="s">&#39;files&#39;</span>
@@ -213,12 +278,19 @@
                 <span class="n">outname</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">outname</span><span class="p">,</span><span class="s">&#39;.bz2&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">)</span>
                 <span class="k">print</span> <span class="s">&#39;bunzip2 -c &#39;</span><span class="o">+</span><span class="n">filename</span><span class="o">+</span><span class="s">&#39; &gt; &#39;</span><span class="o">+</span><span class="n">outname</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s">&#39;bunzip2 -c &#39;</span><span class="o">+</span><span class="n">filename</span><span class="o">+</span><span class="s">&#39; &gt; &#39;</span><span class="o">+</span><span class="n">outname</span><span class="p">)</span>
-              <span class="k">else</span><span class="p">:</span>
+              <span class="k">elif</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="s">&#39;.gz&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
                 <span class="n">outname</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">outname</span><span class="p">,</span><span class="s">&#39;.gz&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">)</span>
                 <span class="k">print</span> <span class="s">&#39;gunzip -c &#39;</span><span class="o">+</span><span class="n">filename</span><span class="o">+</span><span class="s">&#39; &gt; &#39;</span><span class="o">+</span><span class="n">outname</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s">&#39;gunzip -c &#39;</span><span class="o">+</span><span class="n">filename</span><span class="o">+</span><span class="s">&#39; &gt; &#39;</span><span class="o">+</span><span class="n">outname</span><span class="p">)</span>
               
               <span class="n">filelist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">outname</span><span class="p">)</span>
+
+              <span class="c">#HANDLE CACHEING NAME</span>
+              <span class="n">ff</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">outname</span><span class="p">,</span><span class="n">tmpDir</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+              <span class="c">#check the beginning time of the file (for cacheing)</span>
+              <span class="n">t1</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">8</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">9</span><span class="p">:</span><span class="mi">11</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">11</span><span class="p">:</span><span class="mi">13</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">14</span><span class="p">:</span><span class="mi">16</span><span class="p">]))</span>
+              <span class="k">if</span> <span class="n">fileSt</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">t1</span> <span class="o">&lt;</span> <span class="n">fileSt</span><span class="p">:</span> <span class="n">fileSt</span> <span class="o">=</span> <span class="n">t1</span>
+
             <span class="c">##################################################################</span>
             <span class="c">### END SECTION YOU WILL HAVE TO CHANGE</span>
             <span class="c">##################################################################</span>
@@ -226,6 +298,7 @@
           <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">filelist</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
             <span class="k">print</span> <span class="s">&#39;found&#39;</span><span class="p">,</span><span class="n">ftype</span><span class="p">,</span><span class="s">&#39;data in local files&#39;</span>
             <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span><span class="p">,</span><span class="n">myPtr</span><span class="o">.</span><span class="n">dType</span> <span class="o">=</span> <span class="n">ftype</span><span class="p">,</span><span class="s">&#39;dmap&#39;</span>
+            <span class="n">fileType</span> <span class="o">=</span> <span class="n">ftype</span>
             <span class="k">break</span>
         <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">filelist</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span> <span class="k">break</span>
         <span class="k">else</span><span class="p">:</span>
@@ -237,22 +310,8 @@
       <span class="k">print</span> <span class="s">&#39;I will try to read from other sources&#39;</span>
       <span class="n">src</span><span class="o">=</span><span class="bp">None</span>
         
-  <span class="c">#NEXT, CHECK IF THE DATA EXISTS IN THE DATABASE</span>
-  <span class="k">if</span><span class="p">((</span><span class="n">src</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">src</span> <span class="o">==</span> <span class="s">&#39;mongo&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">filelist</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">fileName</span> <span class="o">==</span> <span class="bp">None</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">ftype</span> <span class="ow">in</span> <span class="n">arr</span><span class="p">:</span>
-      <span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">Looking on mongodb for&#39;</span><span class="p">,</span><span class="n">ftype</span><span class="p">,</span><span class="s">&#39;data&#39;</span>
-      <span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span> <span class="o">=</span> <span class="n">pydarn</span><span class="o">.</span><span class="n">sdio</span><span class="o">.</span><span class="n">readFromDb</span><span class="p">(</span><span class="n">sTime</span><span class="o">=</span><span class="n">myPtr</span><span class="o">.</span><span class="n">sTime</span><span class="p">,</span> <span class="n">eTime</span><span class="o">=</span><span class="n">myPtr</span><span class="o">.</span><span class="n">eTime</span><span class="p">,</span> <span class="n">stid</span><span class="o">=</span><span class="n">myPtr</span><span class="o">.</span><span class="n">stid</span><span class="p">,</span> \
-                  <span class="n">channel</span><span class="o">=</span><span class="n">myPtr</span><span class="o">.</span><span class="n">channel</span><span class="p">,</span> <span class="n">bmnum</span><span class="o">=</span><span class="n">myPtr</span><span class="o">.</span><span class="n">bmnum</span><span class="p">,</span> <span class="n">cp</span><span class="o">=</span><span class="n">myPtr</span><span class="o">.</span><span class="n">cp</span><span class="p">,</span> \
-                  <span class="n">fileType</span><span class="o">=</span><span class="n">fileType</span><span class="p">,</span><span class="n">exactFlg</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-      <span class="k">if</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span> 
-        <span class="k">print</span> <span class="s">&#39;found&#39;</span><span class="p">,</span><span class="n">ftype</span><span class="p">,</span><span class="s">&#39;data on mongodb&#39;</span>
-        <span class="n">myPtr</span><span class="o">.</span><span class="n">dType</span><span class="p">,</span><span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span> <span class="o">=</span> <span class="s">&#39;mongo&#39;</span><span class="p">,</span><span class="n">ftype</span>
-        <span class="k">break</span>
-      <span class="k">else</span><span class="p">:</span>
-        <span class="k">print</span>  <span class="s">&#39;could not find&#39;</span><span class="p">,</span><span class="n">ftype</span><span class="p">,</span><span class="s">&#39;data on mongodb&#39;</span>
-        
   <span class="c">#finally, check the VT sftp server if we have not yet found files</span>
-  <span class="k">if</span><span class="p">((</span><span class="n">src</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">src</span> <span class="o">==</span> <span class="s">&#39;sftp&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">filelist</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">fileName</span> <span class="o">==</span> <span class="bp">None</span><span class="p">):</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">src</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">src</span> <span class="o">==</span> <span class="s">&#39;sftp&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">filelist</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">fileName</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">ftype</span> <span class="ow">in</span> <span class="n">arr</span><span class="p">:</span>
       <span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">Looking on the remote SFTP server for&#39;</span><span class="p">,</span><span class="n">ftype</span><span class="p">,</span><span class="s">&#39;files&#39;</span>
       <span class="k">try</span><span class="p">:</span>
@@ -269,7 +328,7 @@
           <span class="c">#iterate through all of the hours in the request</span>
           <span class="c">#ie, iterate through all possible file names</span>
           <span class="n">ctime</span> <span class="o">=</span> <span class="n">sTime</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-          <span class="k">if</span><span class="p">(</span><span class="n">ctime</span><span class="o">.</span><span class="n">hour</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span> <span class="n">ctime</span> <span class="o">=</span> <span class="n">ctime</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="n">ctime</span><span class="o">.</span><span class="n">hour</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+          <span class="k">if</span> <span class="n">ctime</span><span class="o">.</span><span class="n">hour</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="n">ctime</span> <span class="o">=</span> <span class="n">ctime</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="n">ctime</span><span class="o">.</span><span class="n">hour</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
           <span class="n">oldyr</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
           <span class="k">while</span> <span class="n">ctime</span> <span class="o">&lt;=</span> <span class="n">eTime</span><span class="p">:</span>
             <span class="c">#directory on the data server</span>
@@ -304,13 +363,20 @@
                   <span class="k">print</span> <span class="s">&#39;Strange things might happen from here on out...&#39;</span>
                   
                 <span class="n">filelist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">outname</span><span class="p">)</span>
-              
+
+                <span class="c">#HANDLE CACHEING NAME</span>
+                <span class="n">ff</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">outname</span><span class="p">,</span><span class="n">tmpDir</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+                <span class="c">#check the beginning time of the file</span>
+                <span class="n">t1</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">8</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">9</span><span class="p">:</span><span class="mi">11</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">11</span><span class="p">:</span><span class="mi">13</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="mi">14</span><span class="p">:</span><span class="mi">16</span><span class="p">]))</span>
+                <span class="k">if</span> <span class="n">fileSt</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">t1</span> <span class="o">&lt;</span> <span class="n">fileSt</span><span class="p">:</span> <span class="n">fileSt</span> <span class="o">=</span> <span class="n">t1</span>
+
             <span class="n">ctime</span> <span class="o">=</span> <span class="n">ctime</span><span class="o">+</span><span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-          <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">filelist</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+          <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">filelist</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">:</span>
             <span class="k">print</span> <span class="s">&#39;found&#39;</span><span class="p">,</span><span class="n">ftype</span><span class="p">,</span><span class="s">&#39;data on sftp server&#39;</span>
             <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span><span class="p">,</span><span class="n">myPtr</span><span class="o">.</span><span class="n">dType</span> <span class="o">=</span> <span class="n">ftype</span><span class="p">,</span><span class="s">&#39;dmap&#39;</span>
+            <span class="n">fileType</span> <span class="o">=</span> <span class="n">ftype</span>
             <span class="k">break</span>
-        <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">filelist</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span> <span class="k">break</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">filelist</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">:</span> <span class="k">break</span>
         <span class="k">else</span><span class="p">:</span>
           <span class="k">print</span>  <span class="s">&#39;could not find&#39;</span><span class="p">,</span><span class="n">ftype</span><span class="p">,</span><span class="s">&#39;data on sftp server&#39;</span>
       <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span>
@@ -318,29 +384,44 @@
         <span class="k">print</span> <span class="s">&#39;problem reading from sftp server&#39;</span>
         
   <span class="c">#check if we have found files</span>
-  <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">filelist</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+  <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">filelist</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
     <span class="c">#concatenate the files into a single file</span>
-    <span class="k">print</span> <span class="s">&#39;Concatenating all the files in to one&#39;</span>
-    <span class="n">tmpName</span> <span class="o">=</span> <span class="n">tmpDir</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">datetimeToEpoch</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())))</span><span class="o">+</span><span class="s">&#39;.&#39;</span><span class="o">+</span><span class="n">rad</span><span class="o">+</span><span class="s">&#39;.&#39;</span><span class="o">+</span><span class="n">fileType</span>
-    <span class="k">print</span> <span class="s">&#39;cat &#39;</span><span class="o">+</span><span class="n">string</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filelist</span><span class="p">)</span><span class="o">+</span><span class="s">&#39; &gt; &#39;</span><span class="o">+</span><span class="n">tmpName</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s">&#39;cat &#39;</span><span class="o">+</span><span class="n">string</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filelist</span><span class="p">)</span><span class="o">+</span><span class="s">&#39; &gt; &#39;</span><span class="o">+</span><span class="n">tmpName</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filelist</span><span class="p">:</span>
-      <span class="k">print</span> <span class="s">&#39;rm &#39;</span><span class="o">+</span><span class="n">filename</span>
-      <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s">&#39;rm &#39;</span><span class="o">+</span><span class="n">filename</span><span class="p">)</span>
-      
-    <span class="c">#filter(if desired) and open the file</span>
-    <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">filtered</span><span class="p">):</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmpName</span><span class="p">,</span><span class="s">&#39;r&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cached</span><span class="p">:</span>
+      <span class="k">print</span> <span class="s">&#39;Concatenating all the files in to one&#39;</span>
+      <span class="c">#choose a temp file name with time span info for cacheing</span>
+      <span class="n">tmpName</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s%s</span><span class="s">.</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tmpDir</span><span class="p">,</span> \
+                <span class="n">fileSt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y%m</span><span class="si">%d</span><span class="s">&quot;</span><span class="p">),</span><span class="n">fileSt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%H%M%S&quot;</span><span class="p">),</span> \
+                <span class="n">eTime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y%m</span><span class="si">%d</span><span class="s">&quot;</span><span class="p">),</span><span class="n">eTime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%H%M%S&quot;</span><span class="p">),</span><span class="n">rad</span><span class="p">,</span><span class="n">fileType</span><span class="p">)</span>
+      <span class="k">print</span> <span class="s">&#39;cat &#39;</span><span class="o">+</span><span class="n">string</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filelist</span><span class="p">)</span><span class="o">+</span><span class="s">&#39; &gt; &#39;</span><span class="o">+</span><span class="n">tmpName</span>
+      <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s">&#39;cat &#39;</span><span class="o">+</span><span class="n">string</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filelist</span><span class="p">)</span><span class="o">+</span><span class="s">&#39; &gt; &#39;</span><span class="o">+</span><span class="n">tmpName</span><span class="p">)</span>
+      <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filelist</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&#39;rm &#39;</span><span class="o">+</span><span class="n">filename</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s">&#39;rm &#39;</span><span class="o">+</span><span class="n">filename</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-      <span class="k">print</span> <span class="s">&#39;fitexfilter &#39;</span><span class="o">+</span><span class="n">tmpName</span><span class="o">+</span><span class="s">&#39; &gt; &#39;</span><span class="o">+</span><span class="n">tmpName</span><span class="o">+</span><span class="s">&#39;f&#39;</span>
-      <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s">&#39;fitexfilter &#39;</span><span class="o">+</span><span class="n">tmpName</span><span class="o">+</span><span class="s">&#39; &gt; &#39;</span><span class="o">+</span><span class="n">tmpName</span><span class="o">+</span><span class="s">&#39;f&#39;</span><span class="p">)</span>
-      <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s">&#39;rm &#39;</span><span class="o">+</span><span class="n">tmpName</span><span class="p">)</span>
+      <span class="n">tmpName</span> <span class="o">=</span> <span class="n">filelist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+      <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span> <span class="o">=</span> <span class="n">fileType</span>
+      <span class="n">myPtr</span><span class="o">.</span><span class="n">dType</span> <span class="o">=</span> <span class="s">&#39;dmap&#39;</span>
+
+    <span class="c">#filter(if desired) and open the file</span>
+    <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">filtered</span><span class="p">):</span> 
+      <span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmpName</span><span class="p">,</span><span class="s">&#39;r&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">if</span> <span class="ow">not</span> <span class="n">fileType</span><span class="o">+</span><span class="s">&#39;f&#39;</span> <span class="ow">in</span> <span class="n">tmpName</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+          <span class="n">fTmpName</span> <span class="o">=</span> <span class="n">tmpName</span><span class="o">+</span><span class="s">&#39;f&#39;</span>
+          <span class="k">print</span> <span class="s">&#39;fitexfilter &#39;</span><span class="o">+</span><span class="n">tmpName</span><span class="o">+</span><span class="s">&#39; &gt; &#39;</span><span class="o">+</span><span class="n">fTmpName</span>
+          <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s">&#39;fitexfilter &#39;</span><span class="o">+</span><span class="n">tmpName</span><span class="o">+</span><span class="s">&#39; &gt; &#39;</span><span class="o">+</span><span class="n">fTmpName</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span>
+          <span class="k">print</span> <span class="s">&#39;problem filtering file, using unfiltered&#39;</span>
+          <span class="n">fTmpName</span> <span class="o">=</span> <span class="n">tmpName</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">fTmpName</span> <span class="o">=</span> <span class="n">tmpName</span>
       <span class="k">try</span><span class="p">:</span>
-        <span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmpName</span><span class="o">+</span><span class="s">&#39;f&#39;</span><span class="p">,</span><span class="s">&#39;r&#39;</span><span class="p">)</span>
+        <span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">fTmpName</span><span class="p">,</span><span class="s">&#39;r&#39;</span><span class="p">)</span>
       <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span>
         <span class="k">print</span> <span class="s">&#39;problem opening file&#39;</span>
         <span class="k">print</span> <span class="n">e</span>
         <span class="k">return</span> <span class="bp">None</span>
-      
   <span class="k">if</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span> 
     <span class="k">if</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">dType</span> <span class="o">==</span> <span class="bp">None</span><span class="p">):</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">dType</span> <span class="o">=</span> <span class="s">&#39;dmap&#39;</span>
     <span class="k">return</span> <span class="n">myPtr</span>
@@ -349,15 +430,15 @@
     <span class="k">return</span> <span class="bp">None</span>
   </div>
 <div class="viewcode-block" id="radDataReadRec"><a class="viewcode-back" href="../../../pydarn.sdio.radDataRead.html#pydarn.sdio.radDataRead.radDataReadRec">[docs]</a><span class="k">def</span> <span class="nf">radDataReadRec</span><span class="p">(</span><span class="n">myPtr</span><span class="p">):</span>
-  <span class="sd">&quot;&quot;&quot;A function to read a single record of radar data from a :class:`radDataTypes.radDataPtr` object</span>
+  <span class="sd">&quot;&quot;&quot;A function to read a single record of radar data from a :class:`pydarn.sdio.radDataTypes.radDataPtr` object</span>
 <span class="sd">  </span>
 <span class="sd">  .. note::</span>
-<span class="sd">    to use this, you must first create a :class:`radDataTypes.radDataPtr` object with :func:`radDataOpen` </span>
+<span class="sd">    to use this, you must first create a :class:`pydarn.sdio.radDataTypes.radDataPtr` object with :func:`radDataOpen` </span>
 
 <span class="sd">  **Args**:</span>
-<span class="sd">    * **myPtr** (:class:`radDataTypes.radDataPtr`): contains the pipeline to the data we are after</span>
+<span class="sd">    * **myPtr** (:class:`pydarn.sdio.radDataTypes.radDataPtr`): contains the pipeline to the data we are after</span>
 <span class="sd">  **Returns**:</span>
-<span class="sd">    * **myBeam** (:class:`radDataTypes.beamData`): an object filled with the data we are after.  *will return None when finished reading*</span>
+<span class="sd">    * **myBeam** (:class:`pydarn.sdio.radDataTypes.beamData`): an object filled with the data we are after.  *will return None when finished reading*</span>
 <span class="sd">    </span>
 <span class="sd">  **Example**:</span>
 <span class="sd">    ::</span>
@@ -368,10 +449,10 @@
 <span class="sd">    </span>
 <span class="sd">  Written by AJ 20130110</span>
 <span class="sd">  &quot;&quot;&quot;</span>
+
   <span class="kn">from</span> <span class="nn">pydarn.sdio.radDataTypes</span> <span class="kn">import</span> <span class="n">radDataPtr</span><span class="p">,</span> <span class="n">beamData</span><span class="p">,</span> \
-    <span class="n">fitData</span><span class="p">,</span> <span class="n">prmData</span><span class="p">,</span> <span class="n">rawData</span><span class="p">,</span> <span class="n">iqData</span><span class="p">,</span> <span class="n">refArr</span><span class="p">,</span> <span class="n">alpha</span>
+    <span class="n">fitData</span><span class="p">,</span> <span class="n">prmData</span><span class="p">,</span> <span class="n">rawData</span><span class="p">,</span> <span class="n">iqData</span><span class="p">,</span> <span class="n">alpha</span>
   <span class="kn">import</span> <span class="nn">pydarn</span><span class="o">,</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
-  <span class="kn">from</span> <span class="nn">pydarn.sdio.radDataTypes</span> <span class="kn">import</span> <span class="n">cipher</span>
   
   <span class="c">#check input</span>
   <span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">myPtr</span><span class="p">,</span><span class="n">radDataPtr</span><span class="p">)),</span>\
@@ -379,86 +460,57 @@
   <span class="k">if</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span> <span class="o">==</span> <span class="bp">None</span><span class="p">):</span>
     <span class="k">print</span> <span class="s">&#39;error, your pointer does not point to any data&#39;</span>
     <span class="k">return</span> <span class="bp">None</span>
+  <span class="k">if</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&#39;error, your file pointer is closed&#39;</span>
+    <span class="k">return</span> <span class="bp">None</span>
   
   <span class="n">myBeam</span> <span class="o">=</span> <span class="n">beamData</span><span class="p">()</span>
   
   <span class="c">#do this until we reach the requested start time</span>
   <span class="c">#and have a parameter match</span>
   <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
-    <span class="c">#check for a mongodb query object</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">dType</span> <span class="o">==</span> <span class="s">&#39;mongo&#39;</span><span class="p">):</span>
-      <span class="c">#get the next record from the database</span>
-      <span class="n">rec</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span><span class="p">,</span><span class="bp">None</span><span class="p">)</span>
-      <span class="c">#check for valid data</span>
-      <span class="k">if</span><span class="p">(</span><span class="n">rec</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">rec</span><span class="p">[</span><span class="n">cipher</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">]]</span> <span class="o">&gt;</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">eTime</span><span class="p">):</span>
-        <span class="c">#if we dont have valid data, clean up, get out</span>
-        <span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">reached end of data&#39;</span>
-        <span class="k">try</span><span class="p">:</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
-        <span class="k">except</span><span class="p">:</span> <span class="k">pass</span>
-        <span class="k">return</span> <span class="bp">None</span>
-      <span class="c">#check that we&#39;re in the time window, and that we have a </span>
-      <span class="c">#match for out params</span>
-      <span class="k">if</span><span class="p">(</span><span class="n">rec</span><span class="p">[</span><span class="n">cipher</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">]]</span> <span class="o">&gt;=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">sTime</span> <span class="ow">and</span> <span class="n">rec</span><span class="p">[</span><span class="n">cipher</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">]]</span> <span class="o">&lt;=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">eTime</span> <span class="ow">and</span> \
-          <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">stid</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">stid</span> <span class="o">==</span> <span class="n">rec</span><span class="p">[</span><span class="n">cipher</span><span class="p">[</span><span class="s">&#39;stid&#39;</span><span class="p">]])</span> <span class="ow">and</span>
-          <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">channel</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">channel</span> <span class="o">==</span> <span class="n">rec</span><span class="p">[</span><span class="n">cipher</span><span class="p">[</span><span class="s">&#39;channel&#39;</span><span class="p">]])</span> <span class="ow">and</span>
-          <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">bmnum</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">bmnum</span> <span class="o">==</span> <span class="n">rec</span><span class="p">[</span><span class="n">cipher</span><span class="p">[</span><span class="s">&#39;bmnum&#39;</span><span class="p">]])</span> <span class="ow">and</span>
-          <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">cp</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">cp</span> <span class="o">==</span> <span class="n">rec</span><span class="p">[</span><span class="n">cipher</span><span class="p">[</span><span class="s">&#39;cp&#39;</span><span class="p">]])):</span>
-        <span class="c">#fill the beamData object</span>
-        <span class="n">myBeam</span><span class="o">.</span><span class="n">dbDictToObj</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
-        <span class="n">myBeam</span><span class="o">.</span><span class="n">fType</span> <span class="o">=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span>
-        <span class="nb">setattr</span><span class="p">(</span><span class="n">myBeam</span><span class="p">,</span><span class="n">refArr</span><span class="p">[</span><span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span><span class="p">],</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span> <span class="o">==</span> <span class="s">&#39;fitex&#39;</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span> <span class="o">==</span> <span class="s">&#39;fitex&#39;</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span> <span class="o">==</span> <span class="s">&#39;lmfit&#39;</span><span class="p">):</span>
-          <span class="k">if</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">slist</span> <span class="o">==</span> <span class="bp">None</span><span class="p">):</span> <span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">slist</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">return</span> <span class="n">myBeam</span>
-    <span class="c">#check if we&#39;re reading from a dmap file</span>
-    <span class="k">elif</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">dType</span> <span class="o">==</span> <span class="s">&#39;dmap&#39;</span><span class="p">):</span>
-      <span class="c">#read the next record from the dmap file</span>
-      <span class="n">dfile</span> <span class="o">=</span> <span class="n">pydarn</span><span class="o">.</span><span class="n">dmapio</span><span class="o">.</span><span class="n">readDmapRec</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span><span class="p">)</span>
-      <span class="c">#check for valid data</span>
-      <span class="k">if</span><span class="p">(</span><span class="n">dfile</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">eTime</span><span class="p">):</span>
-        <span class="c">#if we dont have valid data, clean up, get out</span>
-        <span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">reached end of data&#39;</span>
-        <span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">None</span>
-      <span class="c">#check that we&#39;re in the time window, and that we have a </span>
-      <span class="c">#match for the desired params</span>
-      <span class="k">if</span><span class="p">(</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;channel&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">):</span> <span class="n">channel</span> <span class="o">=</span> <span class="s">&#39;a&#39;</span>
-      <span class="k">else</span><span class="p">:</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">[</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;channel&#39;</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-      <span class="k">if</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">sTime</span> <span class="ow">and</span> \
-          <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">eTime</span> <span class="ow">and</span> \
-          <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">stid</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">dfile</span><span class="p">[</span><span class="s">&#39;stid&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">stid</span> <span class="o">==</span> <span class="n">dfile</span><span class="p">[</span><span class="s">&#39;stid&#39;</span><span class="p">])</span> <span class="ow">and</span>
-          <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">channel</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">channel</span> <span class="o">==</span> <span class="n">channel</span><span class="p">)</span> <span class="ow">and</span>
-          <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">bmnum</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">bmnum</span> <span class="o">==</span> <span class="n">dfile</span><span class="p">[</span><span class="s">&#39;bmnum&#39;</span><span class="p">])</span> <span class="ow">and</span>
-          <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">cp</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">cp</span> <span class="o">==</span> <span class="n">dfile</span><span class="p">[</span><span class="s">&#39;cp&#39;</span><span class="p">])):</span>
-        <span class="c">#fill the beamdata object</span>
-        <span class="n">myBeam</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
-        <span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
-        <span class="n">myBeam</span><span class="o">.</span><span class="n">prm</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
-        <span class="n">myBeam</span><span class="o">.</span><span class="n">rawacf</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
-        <span class="n">myBeam</span><span class="o">.</span><span class="n">iqdat</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
-        <span class="n">myBeam</span><span class="o">.</span><span class="n">fType</span> <span class="o">=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span>
-        <span class="nb">setattr</span><span class="p">(</span><span class="n">myBeam</span><span class="p">,</span><span class="n">refArr</span><span class="p">[</span><span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span><span class="p">],</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span> <span class="o">==</span> <span class="s">&#39;fitex&#39;</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span> <span class="o">==</span> <span class="s">&#39;fitex&#39;</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span> <span class="o">==</span> <span class="s">&#39;lmfit&#39;</span><span class="p">):</span>
-          <span class="nb">setattr</span><span class="p">(</span><span class="n">myBeam</span><span class="p">,</span><span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span><span class="p">,</span><span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="p">)</span>
-          <span class="k">if</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">slist</span> <span class="o">==</span> <span class="bp">None</span><span class="p">):</span> <span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">slist</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">return</span> <span class="n">myBeam</span>
-    <span class="k">else</span><span class="p">:</span> 
-      <span class="k">print</span> <span class="s">&#39;error, unrecognized data type&#39;</span>
+    <span class="n">dfile</span> <span class="o">=</span> <span class="n">pydarn</span><span class="o">.</span><span class="n">dmapio</span><span class="o">.</span><span class="n">readDmapRec</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span><span class="p">)</span>
+    <span class="c">#check for valid data</span>
+    <span class="k">if</span> <span class="n">dfile</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">eTime</span><span class="p">:</span>
+      <span class="c">#if we dont have valid data, clean up, get out</span>
+      <span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">reached end of data&#39;</span>
+      <span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
       <span class="k">return</span> <span class="bp">None</span>
+    <span class="c">#check that we&#39;re in the time window, and that we have a </span>
+    <span class="c">#match for the desired params</span>
+    <span class="k">if</span> <span class="n">dfile</span><span class="p">[</span><span class="s">&#39;channel&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span> <span class="n">channel</span> <span class="o">=</span> <span class="s">&#39;a&#39;</span>
+    <span class="k">else</span><span class="p">:</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">[</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;channel&#39;</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">sTime</span> <span class="ow">and</span> \
+        <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">eTime</span> <span class="ow">and</span> \
+        <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">stid</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">dfile</span><span class="p">[</span><span class="s">&#39;stid&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">stid</span> <span class="o">==</span> <span class="n">dfile</span><span class="p">[</span><span class="s">&#39;stid&#39;</span><span class="p">])</span> <span class="ow">and</span>
+        <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">channel</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">channel</span> <span class="o">==</span> <span class="n">channel</span><span class="p">)</span> <span class="ow">and</span>
+        <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">bmnum</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">bmnum</span> <span class="o">==</span> <span class="n">dfile</span><span class="p">[</span><span class="s">&#39;bmnum&#39;</span><span class="p">])</span> <span class="ow">and</span>
+        <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">cp</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">cp</span> <span class="o">==</span> <span class="n">dfile</span><span class="p">[</span><span class="s">&#39;cp&#39;</span><span class="p">])):</span>
+      <span class="c">#fill the beamdata object</span>
+      <span class="n">myBeam</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
+      <span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
+      <span class="n">myBeam</span><span class="o">.</span><span class="n">prm</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
+      <span class="n">myBeam</span><span class="o">.</span><span class="n">rawacf</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
+      <span class="n">myBeam</span><span class="o">.</span><span class="n">iqdat</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
+      <span class="n">myBeam</span><span class="o">.</span><span class="n">fType</span> <span class="o">=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span> <span class="o">==</span> <span class="s">&#39;fitacf&#39;</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span> <span class="o">==</span> <span class="s">&#39;fitex&#39;</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span> <span class="o">==</span> <span class="s">&#39;lmfit&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">slist</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span> 
+          <span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">slist</span> <span class="o">=</span> <span class="p">[]</span>
+      <span class="k">return</span> <span class="n">myBeam</span>
       </div>
 <div class="viewcode-block" id="radDataReadScan"><a class="viewcode-back" href="../../../pydarn.sdio.radDataRead.html#pydarn.sdio.radDataRead.radDataReadScan">[docs]</a><span class="k">def</span> <span class="nf">radDataReadScan</span><span class="p">(</span><span class="n">myPtr</span><span class="p">):</span>
-  <span class="sd">&quot;&quot;&quot;A function to read a full scan of data from a :class:`radDataTypes.radDataPtr` object</span>
+  <span class="sd">&quot;&quot;&quot;A function to read a full scan of data from a :class:`pydarn.sdio.radDataTypes.radDataPtr` object</span>
 <span class="sd">  </span>
 <span class="sd">  .. note::</span>
-<span class="sd">    to use this, you must first create a :class:`radDataTypes.radDataPtr` object with :func:`radDataOpen`</span>
+<span class="sd">    to use this, you must first create a :class:`pydarn.sdio.radDataTypes.radDataPtr` object with :func:`radDataOpen`</span>
 <span class="sd">    </span>
 <span class="sd">  .. note::</span>
 <span class="sd">    This will ignore any bmnum request.  Also, if no channel was specified in radDataOpen, it will only read channel &#39;a&#39;</span>
 
 <span class="sd">  **Args**:</span>
-<span class="sd">    * **myPtr** (:class:`radDataTypes.radDataPtr`): contains the pipeline to the data we are after</span>
+<span class="sd">    * **myPtr** (:class:`pydarn.sdio.radDataTypes.radDataPtr`): contains the pipeline to the data we are after</span>
 <span class="sd">  **Returns**:</span>
-<span class="sd">    * **myScan** (:class:`radDataTypes.scanData): an object filled with the data we are after.  *will return None when finished reading*</span>
+<span class="sd">    * **myScan** (:class:`pydarn.sdio.radDataTypes.scanData`): an object filled with the data we are after.  *will return None when finished reading*</span>
 <span class="sd">    </span>
 <span class="sd">  **Example**:</span>
 <span class="sd">    ::</span>
@@ -470,15 +522,96 @@
 <span class="sd">  Written by AJ 20130110</span>
 <span class="sd">  &quot;&quot;&quot;</span>
   <span class="kn">from</span> <span class="nn">pydarn.sdio</span> <span class="kn">import</span> <span class="n">radDataPtr</span><span class="p">,</span> <span class="n">beamData</span><span class="p">,</span> <span class="n">fitData</span><span class="p">,</span> <span class="n">prmData</span><span class="p">,</span> \
-    <span class="n">rawData</span><span class="p">,</span> <span class="n">iqData</span><span class="p">,</span> <span class="n">refArr</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">scanData</span>
+    <span class="n">rawData</span><span class="p">,</span> <span class="n">iqData</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">scanData</span>
   <span class="kn">import</span> <span class="nn">pydarn</span><span class="o">,</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
-  <span class="kn">from</span> <span class="nn">pydarn.sdio.radDataTypes</span> <span class="kn">import</span> <span class="n">cipher</span>
   
   <span class="c">#check input</span>
   <span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">myPtr</span><span class="p">,</span><span class="n">radDataPtr</span><span class="p">)),</span>\
     <span class="s">&#39;error, input must be of type radDataPtr&#39;</span>
   <span class="k">if</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span> <span class="o">==</span> <span class="bp">None</span><span class="p">):</span>
     <span class="k">print</span> <span class="s">&#39;error, your pointer does not point to any data&#39;</span>
+    <span class="k">return</span> <span class="bp">None</span>
+  <span class="k">if</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&#39;error, your file pointer is closed&#39;</span>
+    <span class="k">return</span> <span class="bp">None</span>
+  
+  <span class="n">myScan</span> <span class="o">=</span> <span class="n">scanData</span><span class="p">()</span>
+  <span class="k">if</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">fBeam</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span> <span class="n">myScan</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">fBeam</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span> <span class="n">firstflg</span> <span class="o">=</span> <span class="bp">True</span>
+  <span class="k">if</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">channel</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span> <span class="n">tmpchn</span> <span class="o">=</span> <span class="s">&#39;a&#39;</span>
+  <span class="k">else</span><span class="p">:</span> <span class="n">tmpchn</span> <span class="o">=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">channel</span>
+  
+  <span class="c">#do this until we reach the requested start time</span>
+  <span class="c">#and have a parameter match</span>
+  <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+      <span class="c">#read the next record from the dmap file</span>
+    <span class="n">dfile</span> <span class="o">=</span> <span class="n">pydarn</span><span class="o">.</span><span class="n">dmapio</span><span class="o">.</span><span class="n">readDmapRec</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span><span class="p">)</span>
+    <span class="c">#check for valid data</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">dfile</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">eTime</span><span class="p">):</span>
+      <span class="c">#if we dont have valid data, clean up, get out</span>
+      <span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">reached end of data&#39;</span>
+      <span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+      <span class="k">return</span> <span class="bp">None</span>
+    <span class="c">#check that we&#39;re in the time window, and that we have a </span>
+    <span class="c">#match for the desired params</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;channel&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">):</span> <span class="n">channel</span> <span class="o">=</span> <span class="s">&#39;a&#39;</span>
+    <span class="k">else</span><span class="p">:</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">[</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;channel&#39;</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">sTime</span> <span class="ow">and</span> \
+        <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">eTime</span> <span class="ow">and</span> \
+        <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">stid</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">stid</span> <span class="o">==</span> <span class="n">dfile</span><span class="p">[</span><span class="s">&#39;stid&#39;</span><span class="p">])</span> <span class="ow">and</span>
+        <span class="p">(</span><span class="n">tmpchn</span> <span class="o">==</span> <span class="n">channel</span><span class="p">)</span> <span class="ow">and</span>
+        <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">cp</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">cp</span> <span class="o">==</span> <span class="n">dfile</span><span class="p">[</span><span class="s">&#39;cp&#39;</span><span class="p">])):</span>
+      <span class="c">#fill the beamdata object</span>
+      <span class="n">myBeam</span> <span class="o">=</span> <span class="n">beamData</span><span class="p">()</span>
+      <span class="n">myBeam</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
+      <span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
+      <span class="n">myBeam</span><span class="o">.</span><span class="n">prm</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
+      <span class="n">myBeam</span><span class="o">.</span><span class="n">rawacf</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
+      <span class="n">myBeam</span><span class="o">.</span><span class="n">iqdat</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
+      <span class="n">myBeam</span><span class="o">.</span><span class="n">fType</span> <span class="o">=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span> <span class="o">==</span> <span class="s">&#39;fitacf&#39;</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span> <span class="o">==</span> <span class="s">&#39;fitex&#39;</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span> <span class="o">==</span> <span class="s">&#39;lmfit&#39;</span><span class="p">):</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">slist</span> <span class="o">==</span> <span class="bp">None</span><span class="p">):</span> 
+          <span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">slist</span> <span class="o">=</span> <span class="p">[]</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">prm</span><span class="o">.</span><span class="n">scan</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">firstflg</span><span class="p">):</span>
+        <span class="n">myScan</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myBeam</span><span class="p">)</span>
+        <span class="n">firstflg</span> <span class="o">=</span> <span class="bp">False</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">myPtr</span><span class="o">.</span><span class="n">fBeam</span> <span class="o">=</span> <span class="n">myBeam</span>
+        <span class="k">return</span> <span class="n">myScan</span>
+</div>
+<div class="viewcode-block" id="radDataReadAll"><a class="viewcode-back" href="../../../pydarn.sdio.radDataRead.html#pydarn.sdio.radDataRead.radDataReadAll">[docs]</a><span class="k">def</span> <span class="nf">radDataReadAll</span><span class="p">(</span><span class="n">myPtr</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;A function to read a large amount (to the end of the request) of radar data into a list from a :class:`pydarn.sdio.radDataTypes.radDataPtr` object</span>
+<span class="sd">  </span>
+<span class="sd">  .. note::</span>
+<span class="sd">    to use this, you must first create a :class:`pydarn.sdio.radDataTypes.radDataPtr` object with :func:`radDataOpen`</span>
+
+<span class="sd">  **Args**:</span>
+<span class="sd">    * **myPtr** (:class:`pydarn.sdio.radDataTypes.radDataPtr`): contains the pipeline to the data we are after</span>
+<span class="sd">  **Returns**:</span>
+<span class="sd">    * **myList** (list): a list filled with :class:`pydarn.sdio.radDataTypes.scanData` objects holding the data we are after.  *will return None if nothing is found*</span>
+<span class="sd">    </span>
+<span class="sd">  **Example**:</span>
+<span class="sd">    ::</span>
+<span class="sd">    </span>
+<span class="sd">      import datetime as dt</span>
+<span class="sd">      myPtr = radDataOpen(dt.datetime(2011,1,1),&#39;bks&#39;,eTime=dt.datetime(2011,1,1,2),channel=&#39;a&#39;, bmnum=7,cp=153,fileType=&#39;fitex&#39;,filtered=False, src=None):</span>
+<span class="sd">      myList = radDataReadAll(myPtr)</span>
+<span class="sd">    </span>
+<span class="sd">  Written by AJ 20130606</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="kn">from</span> <span class="nn">pydarn.sdio</span> <span class="kn">import</span> <span class="n">radDataPtr</span><span class="p">,</span> <span class="n">beamData</span><span class="p">,</span> <span class="n">fitData</span><span class="p">,</span> <span class="n">prmData</span><span class="p">,</span> \
+    <span class="n">rawData</span><span class="p">,</span> <span class="n">iqData</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">scanData</span>
+  <span class="kn">import</span> <span class="nn">pydarn</span><span class="o">,</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+  
+  <span class="c">#check input</span>
+  <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">myPtr</span><span class="p">,</span><span class="n">radDataPtr</span><span class="p">):</span>
+    <span class="s">&#39;error, input must be of type radDataPtr&#39;</span>
+    <span class="k">return</span> <span class="bp">None</span>
+  <span class="k">if</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&#39;error, your pointer does not point to any data&#39;</span>
+    <span class="k">return</span> <span class="bp">None</span>
+  <span class="k">if</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&#39;error, your file pointer is closed&#39;</span>
     <span class="k">return</span> <span class="bp">None</span>
   
   <span class="n">myScan</span> <span class="o">=</span> <span class="n">scanData</span><span class="p">()</span>
@@ -490,77 +623,40 @@
   <span class="c">#do this until we reach the requested start time</span>
   <span class="c">#and have a parameter match</span>
   <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
-    <span class="c">#check for a mongodb query object</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">dType</span> <span class="o">==</span> <span class="s">&#39;mongo&#39;</span><span class="p">):</span>
-      <span class="c">#get the next record from the database</span>
-      <span class="n">rec</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span><span class="p">,</span><span class="bp">None</span><span class="p">)</span>
-      <span class="c">#check for valid data</span>
-      <span class="k">if</span><span class="p">(</span><span class="n">rec</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">rec</span><span class="p">[</span><span class="n">cipher</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">]]</span> <span class="o">&gt;</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">eTime</span><span class="p">):</span>
-        <span class="c">#if we dont have valid data, clean up, get out</span>
-        <span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">reached end of data&#39;</span>
-        <span class="k">try</span><span class="p">:</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
-        <span class="k">except</span><span class="p">:</span> <span class="k">pass</span>
-        <span class="k">return</span> <span class="bp">None</span>
-      <span class="c">#check that we&#39;re in the time window, and that we have a </span>
-      <span class="c">#match for our params</span>
-      <span class="k">if</span><span class="p">(</span><span class="n">rec</span><span class="p">[</span><span class="n">cipher</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">]]</span> <span class="o">&gt;=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">sTime</span> <span class="ow">and</span> <span class="n">rec</span><span class="p">[</span><span class="n">cipher</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">]]</span> <span class="o">&lt;=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">eTime</span> <span class="ow">and</span> \
-          <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">stid</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">stid</span> <span class="o">==</span> <span class="n">rec</span><span class="p">[</span><span class="n">cipher</span><span class="p">[</span><span class="s">&#39;stid&#39;</span><span class="p">]])</span> <span class="ow">and</span>
-          <span class="p">(</span><span class="n">tmpchn</span> <span class="o">==</span> <span class="n">rec</span><span class="p">[</span><span class="n">cipher</span><span class="p">[</span><span class="s">&#39;channel&#39;</span><span class="p">]])</span> <span class="ow">and</span>
-          <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">cp</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">cp</span> <span class="o">==</span> <span class="n">rec</span><span class="p">[</span><span class="n">cipher</span><span class="p">[</span><span class="s">&#39;cp&#39;</span><span class="p">]])):</span>
-        <span class="n">myBeam</span> <span class="o">=</span> <span class="n">beamData</span><span class="p">()</span>
-        <span class="c">#fill the beamData object</span>
-        <span class="n">myBeam</span><span class="o">.</span><span class="n">dbDictToObj</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
-        <span class="n">myBeam</span><span class="o">.</span><span class="n">fType</span> <span class="o">=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span>
-        <span class="nb">setattr</span><span class="p">(</span><span class="n">myBeam</span><span class="p">,</span><span class="n">refArr</span><span class="p">[</span><span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span><span class="p">],</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span> <span class="o">==</span> <span class="s">&#39;fitacf&#39;</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span> <span class="o">==</span> <span class="s">&#39;fitex&#39;</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span> <span class="o">==</span> <span class="s">&#39;lmfit&#39;</span><span class="p">):</span>
-          <span class="k">if</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">slist</span> <span class="o">==</span> <span class="bp">None</span><span class="p">):</span> <span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">slist</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">prm</span><span class="o">.</span><span class="n">scan</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">firstflg</span><span class="p">):</span>
-          <span class="n">myScan</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myBeam</span><span class="p">)</span>
-          <span class="n">firstflg</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="k">else</span><span class="p">:</span>
-          <span class="n">myPtr</span><span class="o">.</span><span class="n">fBeam</span> <span class="o">=</span> <span class="n">myBeam</span>
-          <span class="k">return</span> <span class="n">myScan</span>
-    <span class="c">#check if we&#39;re reading from a dmap file</span>
-    <span class="k">elif</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">dType</span> <span class="o">==</span> <span class="s">&#39;dmap&#39;</span><span class="p">):</span>
       <span class="c">#read the next record from the dmap file</span>
-      <span class="n">dfile</span> <span class="o">=</span> <span class="n">pydarn</span><span class="o">.</span><span class="n">dmapio</span><span class="o">.</span><span class="n">readDmapRec</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span><span class="p">)</span>
-      <span class="c">#check for valid data</span>
-      <span class="k">if</span><span class="p">(</span><span class="n">dfile</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">eTime</span><span class="p">):</span>
-        <span class="c">#if we dont have valid data, clean up, get out</span>
-        <span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">reached end of data&#39;</span>
-        <span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">None</span>
-      <span class="c">#check that we&#39;re in the time window, and that we have a </span>
-      <span class="c">#match for the desired params</span>
-      <span class="k">if</span><span class="p">(</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;channel&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">):</span> <span class="n">channel</span> <span class="o">=</span> <span class="s">&#39;a&#39;</span>
-      <span class="k">else</span><span class="p">:</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">[</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;channel&#39;</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-      <span class="k">if</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">sTime</span> <span class="ow">and</span> \
-          <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">eTime</span> <span class="ow">and</span> \
-          <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">stid</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">stid</span> <span class="o">==</span> <span class="n">dfile</span><span class="p">[</span><span class="s">&#39;stid&#39;</span><span class="p">])</span> <span class="ow">and</span>
-          <span class="p">(</span><span class="n">tmpchn</span> <span class="o">==</span> <span class="n">channel</span><span class="p">)</span> <span class="ow">and</span>
-          <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">cp</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">cp</span> <span class="o">==</span> <span class="n">dfile</span><span class="p">[</span><span class="s">&#39;cp&#39;</span><span class="p">])):</span>
-        <span class="c">#fill the beamdata object</span>
-        <span class="n">myBeam</span> <span class="o">=</span> <span class="n">beamData</span><span class="p">()</span>
-        <span class="n">myBeam</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
-        <span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
-        <span class="n">myBeam</span><span class="o">.</span><span class="n">prm</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
-        <span class="n">myBeam</span><span class="o">.</span><span class="n">rawacf</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
-        <span class="n">myBeam</span><span class="o">.</span><span class="n">iqdat</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
-        <span class="n">myBeam</span><span class="o">.</span><span class="n">fType</span> <span class="o">=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span>
-        <span class="nb">setattr</span><span class="p">(</span><span class="n">myBeam</span><span class="p">,</span><span class="n">refArr</span><span class="p">[</span><span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span><span class="p">],</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span> <span class="o">==</span> <span class="s">&#39;fitacf&#39;</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span> <span class="o">==</span> <span class="s">&#39;fitex&#39;</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span> <span class="o">==</span> <span class="s">&#39;lmfit&#39;</span><span class="p">):</span>
-          <span class="nb">setattr</span><span class="p">(</span><span class="n">myBeam</span><span class="p">,</span><span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span><span class="p">,</span><span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="p">)</span>
-          <span class="k">if</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">slist</span> <span class="o">==</span> <span class="bp">None</span><span class="p">):</span> <span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">slist</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">prm</span><span class="o">.</span><span class="n">scan</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">firstflg</span><span class="p">):</span>
-          <span class="n">myScan</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myBeam</span><span class="p">)</span>
-          <span class="n">firstflg</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="k">else</span><span class="p">:</span>
-          <span class="n">myPtr</span><span class="o">.</span><span class="n">fBeam</span> <span class="o">=</span> <span class="n">myBeam</span>
-          <span class="k">return</span> <span class="n">myScan</span>
-    <span class="k">else</span><span class="p">:</span> 
-      <span class="k">print</span> <span class="s">&#39;error, unrecognized data type&#39;</span>
-      <span class="k">return</span> <span class="bp">None</span></div>
-</pre></div>
+    <span class="n">dfile</span> <span class="o">=</span> <span class="n">pydarn</span><span class="o">.</span><span class="n">dmapio</span><span class="o">.</span><span class="n">readDmapRec</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span><span class="p">)</span>
+    <span class="c">#check for valid data</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">dfile</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">eTime</span><span class="p">):</span>
+      <span class="c">#if we dont have valid data, clean up, get out</span>
+      <span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">reached end of data&#39;</span>
+      <span class="n">myPtr</span><span class="o">.</span><span class="n">ptr</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+      <span class="k">return</span> <span class="bp">None</span>
+    <span class="c">#check that we&#39;re in the time window, and that we have a </span>
+    <span class="c">#match for the desired params</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;channel&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">):</span> <span class="n">channel</span> <span class="o">=</span> <span class="s">&#39;a&#39;</span>
+    <span class="k">else</span><span class="p">:</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">[</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;channel&#39;</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">sTime</span> <span class="ow">and</span> \
+        <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">dfile</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">eTime</span> <span class="ow">and</span> \
+        <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">stid</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">stid</span> <span class="o">==</span> <span class="n">dfile</span><span class="p">[</span><span class="s">&#39;stid&#39;</span><span class="p">])</span> <span class="ow">and</span>
+        <span class="p">(</span><span class="n">tmpchn</span> <span class="o">==</span> <span class="n">channel</span><span class="p">)</span> <span class="ow">and</span>
+        <span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">cp</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">cp</span> <span class="o">==</span> <span class="n">dfile</span><span class="p">[</span><span class="s">&#39;cp&#39;</span><span class="p">])):</span>
+      <span class="c">#fill the beamdata object</span>
+      <span class="n">myBeam</span> <span class="o">=</span> <span class="n">beamData</span><span class="p">()</span>
+      <span class="n">myBeam</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
+      <span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
+      <span class="n">myBeam</span><span class="o">.</span><span class="n">prm</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
+      <span class="n">myBeam</span><span class="o">.</span><span class="n">rawacf</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
+      <span class="n">myBeam</span><span class="o">.</span><span class="n">iqdat</span><span class="o">.</span><span class="n">updateValsFromDict</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
+      <span class="n">myBeam</span><span class="o">.</span><span class="n">fType</span> <span class="o">=</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span> <span class="o">==</span> <span class="s">&#39;fitacf&#39;</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span> <span class="o">==</span> <span class="s">&#39;fitex&#39;</span> <span class="ow">or</span> <span class="n">myPtr</span><span class="o">.</span><span class="n">fType</span> <span class="o">==</span> <span class="s">&#39;lmfit&#39;</span><span class="p">):</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">slist</span> <span class="o">==</span> <span class="bp">None</span><span class="p">):</span> <span class="n">myBeam</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">slist</span> <span class="o">=</span> <span class="p">[]</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">myBeam</span><span class="o">.</span><span class="n">prm</span><span class="o">.</span><span class="n">scan</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">firstflg</span><span class="p">):</span>
+        <span class="n">myScan</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myBeam</span><span class="p">)</span>
+        <span class="n">firstflg</span> <span class="o">=</span> <span class="bp">False</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">myPtr</span><span class="o">.</span><span class="n">fBeam</span> <span class="o">=</span> <span class="n">myBeam</span>
+        <span class="k">return</span> <span class="n">myScan</span>
+</pre></div></div>
 
           </div>
         </div>

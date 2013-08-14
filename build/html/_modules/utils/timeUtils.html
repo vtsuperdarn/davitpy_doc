@@ -31,10 +31,13 @@
     <script type="text/javascript" src="../../_static/cloud.js"></script>
     <link rel="top" title="davitpy" href="../../index.html" />
     <link rel="up" title="utils" href="../utils.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -80,126 +83,151 @@
 <span class="c"># You should have received a copy of the GNU General Public License</span>
 <span class="c"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. module:: timeUtils</span>
+<span class="sd">   :synopsis: A module for manipulating time representations</span>
+
+<span class="sd">.. moduleauthor:: VTSD Lab</span>
+
+<span class="sd">****************************</span>
+<span class="sd">**Module**: utils.timeUtils</span>
+<span class="sd">****************************</span>
+<span class="sd">**Functions**:</span>
+<span class="sd">  * :func:`utils.timeUtils.dateToDecYear`</span>
+<span class="sd">  * :func:`utils.timeUtils.dateToYyyymmdd`</span>
+<span class="sd">  * :func:`utils.timeUtils.datetimeToEpoch`</span>
+<span class="sd">  * :func:`utils.timeUtils.julToDatetime`</span>
+<span class="sd">  * :func:`utils.timeUtils.parseDate`</span>
+<span class="sd">  * :func:`utils.timeUtils.parseTime`</span>
+<span class="sd">  * :func:`utils.timeUtils.timeYrsecToDate`</span>
+<span class="sd">  * :func:`utils.timeUtils.yyyymmddToDate`</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
 <div class="viewcode-block" id="dateToYyyymmdd"><a class="viewcode-back" href="../../utils.timeUtils.html#utils.timeUtils.dateToYyyymmdd">[docs]</a><span class="k">def</span> <span class="nf">dateToYyyymmdd</span><span class="p">(</span><span class="n">myDate</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	*******************************</span>
-<span class="sd">	dateStr = dateToYyyymmdd(myDate)</span>
-<span class="sd">	</span>
-<span class="sd">	takes a python datetime object and returns a string in yyyymmdd format</span>
+  <span class="sd">&quot;&quot;&quot;takes a python datetime object and returns a string in yyyymmdd format</span>
 
-<span class="sd">	INPUTS:</span>
-<span class="sd">		myDate : a python date object</span>
-<span class="sd">	OUTPUTS:</span>
-<span class="sd">		dateStr : a string in yyyymmdd format</span>
+<span class="sd">  **Args**:</span>
+<span class="sd">    * **myDate** (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_): a python datetime object</span>
+<span class="sd">  **Returns**:</span>
+<span class="sd">    * **dateStr** (str): a string in yyyymmdd format</span>
 
-<span class="sd">	Written by AJ 20120718</span>
-<span class="sd">	</span>
-<span class="sd">	*******************************</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-	<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-	
-	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">myDate</span><span class="p">,</span><span class="n">datetime</span><span class="p">):</span>
-		<span class="n">dateStr</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
-		<span class="c">#create year string</span>
-		<span class="n">yr</span> <span class="o">=</span> <span class="n">myDate</span><span class="o">.</span><span class="n">year</span>
-		<span class="k">if</span><span class="p">(</span><span class="n">yr</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">):</span>
-			<span class="n">dateStr</span> <span class="o">+=</span> <span class="s">&#39;000&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">yr</span><span class="p">)</span>
-		<span class="k">elif</span><span class="p">(</span><span class="n">yr</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">):</span>
-			<span class="n">dateStr</span> <span class="o">+=</span> <span class="s">&#39;00&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">yr</span><span class="p">)</span>
-		<span class="k">elif</span><span class="p">(</span><span class="n">yr</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">):</span>
-			<span class="n">dateStr</span> <span class="o">+=</span> <span class="s">&#39;0&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">yr</span><span class="p">)</span>
-		<span class="k">else</span><span class="p">:</span>
-			<span class="n">dateStr</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">yr</span><span class="p">)</span>
-			
-		<span class="c">#create month string</span>
-		<span class="n">mon</span> <span class="o">=</span> <span class="n">myDate</span><span class="o">.</span><span class="n">month</span>
-		<span class="k">if</span><span class="p">(</span><span class="n">mon</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">):</span>
-			<span class="n">dateStr</span> <span class="o">+=</span> <span class="s">&#39;0&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">mon</span><span class="p">)</span>
-		<span class="k">else</span><span class="p">:</span>
-			<span class="n">dateStr</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">mon</span><span class="p">)</span>
-			
-		<span class="c">#create day string</span>
-		<span class="n">day</span> <span class="o">=</span> <span class="n">myDate</span><span class="o">.</span><span class="n">day</span>
-		<span class="k">if</span><span class="p">(</span><span class="n">day</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">):</span>
-			<span class="n">dateStr</span> <span class="o">+=</span> <span class="s">&#39;0&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">day</span><span class="p">)</span>
-		<span class="k">else</span><span class="p">:</span>
-			<span class="n">dateStr</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">day</span><span class="p">)</span>
-			
-		<span class="c">#return everything together</span>
-		<span class="k">return</span> <span class="n">dateStr</span>
-	<span class="k">else</span><span class="p">:</span>
-		<span class="k">print</span> <span class="s">&#39;error, input must be type datetime&#39;</span>
-		<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
-	</div>
+<span class="sd">  **Example**:</span>
+<span class="sd">    ::</span>
+
+<span class="sd">      import datetime as dt</span>
+<span class="sd">      dateStr = utils.timeUtils.dateToYyyymmdd(dt.datetime(2012,7,10))</span>
+
+<span class="sd">  Written by AJ 20120718</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+  
+  <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">myDate</span><span class="p">,</span><span class="n">datetime</span><span class="p">):</span>
+    <span class="n">dateStr</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+    <span class="c">#create year string</span>
+    <span class="n">yr</span> <span class="o">=</span> <span class="n">myDate</span><span class="o">.</span><span class="n">year</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">yr</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">):</span>
+      <span class="n">dateStr</span> <span class="o">+=</span> <span class="s">&#39;000&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">yr</span><span class="p">)</span>
+    <span class="k">elif</span><span class="p">(</span><span class="n">yr</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">):</span>
+      <span class="n">dateStr</span> <span class="o">+=</span> <span class="s">&#39;00&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">yr</span><span class="p">)</span>
+    <span class="k">elif</span><span class="p">(</span><span class="n">yr</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">):</span>
+      <span class="n">dateStr</span> <span class="o">+=</span> <span class="s">&#39;0&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">yr</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">dateStr</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">yr</span><span class="p">)</span>
+      
+    <span class="c">#create month string</span>
+    <span class="n">mon</span> <span class="o">=</span> <span class="n">myDate</span><span class="o">.</span><span class="n">month</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">mon</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">):</span>
+      <span class="n">dateStr</span> <span class="o">+=</span> <span class="s">&#39;0&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">mon</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">dateStr</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">mon</span><span class="p">)</span>
+      
+    <span class="c">#create day string</span>
+    <span class="n">day</span> <span class="o">=</span> <span class="n">myDate</span><span class="o">.</span><span class="n">day</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">day</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">):</span>
+      <span class="n">dateStr</span> <span class="o">+=</span> <span class="s">&#39;0&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">day</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">dateStr</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">day</span><span class="p">)</span>
+      
+    <span class="c">#return everything together</span>
+    <span class="k">return</span> <span class="n">dateStr</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&#39;error, input must be type datetime&#39;</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+  </div>
 <div class="viewcode-block" id="yyyymmddToDate"><a class="viewcode-back" href="../../utils.timeUtils.html#utils.timeUtils.yyyymmddToDate">[docs]</a><span class="k">def</span> <span class="nf">yyyymmddToDate</span><span class="p">(</span><span class="n">dateStr</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	*******************************</span>
-<span class="sd">	myDate = yyyymmddToDate(dateStr)</span>
-<span class="sd">	</span>
-<span class="sd">	takes a string in yyyymmdd format and returns a python date object</span>
+  <span class="sd">&quot;&quot;&quot;takes a string in yyyymmdd format and returns a python date object</span>
 
-<span class="sd">	INPUTS:</span>
-<span class="sd">		dateStr : a string in yyyymmdd format</span>
-<span class="sd">	OUTPUTS:</span>
-<span class="sd">		myDate : a python datetime object</span>
-<span class="sd">		</span>
-<span class="sd">	Written by AJ 20120718</span>
-<span class="sd">	*******************************</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-	
-	<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-	<span class="kn">import</span> <span class="nn">sys</span>
-	<span class="c">#check input type</span>
-	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dateStr</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
-		<span class="c">#try to make the date object</span>
-		<span class="k">try</span><span class="p">:</span>
-			<span class="k">return</span> <span class="n">datetime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">dateStr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">dateStr</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">dateStr</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">8</span><span class="p">]))</span>
-		<span class="c">#if there was a problem with the input</span>
-		<span class="k">except</span><span class="p">:</span>
-			<span class="k">print</span> <span class="s">&#39;error in input &#39;</span><span class="o">+</span><span class="n">dateStr</span> 
-			<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
-	<span class="k">else</span><span class="p">:</span>
-		<span class="k">print</span> <span class="s">&#39;error, input must be a string&#39;</span>
-		<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
-		
-		</div>
+<span class="sd">  **Args**:</span>
+<span class="sd">    * **dateStr** (str): a string in yyyymmdd format</span>
+<span class="sd">  **Returns**:</span>
+<span class="sd">    * **myDate** (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_): a python datetime object</span>
+<span class="sd">    </span>
+<span class="sd">  **Example**:</span>
+<span class="sd">    ::</span>
+
+<span class="sd">      myDate = utils.timeUtils.yyyymmddToDate(&#39;20120710&#39;)</span>
+
+<span class="sd">  Written by AJ 20120718</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  
+  <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+  <span class="kn">import</span> <span class="nn">sys</span>
+  <span class="c">#check input type</span>
+  <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dateStr</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+    <span class="c">#try to make the date object</span>
+    <span class="k">try</span><span class="p">:</span>
+      <span class="k">return</span> <span class="n">datetime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">dateStr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">dateStr</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">dateStr</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">8</span><span class="p">]))</span>
+    <span class="c">#if there was a problem with the input</span>
+    <span class="k">except</span><span class="p">:</span>
+      <span class="k">print</span> <span class="s">&#39;error in input &#39;</span><span class="o">+</span><span class="n">dateStr</span> 
+      <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&#39;error, input must be a string&#39;</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+    
+    </div>
 <div class="viewcode-block" id="timeYrsecToDate"><a class="viewcode-back" href="../../utils.timeUtils.html#utils.timeUtils.timeYrsecToDate">[docs]</a><span class="k">def</span> <span class="nf">timeYrsecToDate</span><span class="p">(</span><span class="n">yrsec</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	*******************************</span>
-<span class="sd">	myDate = timeYrsecToDate(yrsec, year)</span>
-<span class="sd">	</span>
-<span class="sd">	Converts time expressed in seconds from start of year to a python DATETIME object</span>
+  <span class="sd">&quot;&quot;&quot;Converts time expressed in seconds from start of year to a python DATETIME object</span>
 
-<span class="sd">	INPUTS:</span>
-<span class="sd">		yrsec : seconds since start of year</span>
-<span class="sd">		year : year in YYYY </span>
-<span class="sd">	OUTPUTS:</span>
-<span class="sd">		myDate : a python DATETIME object</span>
-<span class="sd">		</span>
-<span class="sd">	Written by Sebastien, Jul. 2012</span>
-<span class="sd">	*******************************</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-	<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-	<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
-	
-	<span class="k">if</span> <span class="n">year</span> <span class="o">&gt;=</span> <span class="mi">2038</span><span class="p">:</span> 
-		<span class="k">print</span> <span class="s">&#39;timeYrsecToDate: Year {:d} out of range: forcing 2038&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
-		<span class="n">year</span> <span class="o">=</span> <span class="mi">2038</span>
-	<span class="n">myDate</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span> <span class="o">=</span> <span class="n">yrsec</span><span class="p">)</span>
-	
-	<span class="k">return</span> <span class="n">myDate</span>
+<span class="sd">  **Args**:</span>
+<span class="sd">    * **yrsec** (int): seconds since start of year</span>
+<span class="sd">    * **year** (int): year in YYYY </span>
+<span class="sd">  **Returns**:</span>
+<span class="sd">    * **myDate** (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_): a python DATETIME object.</span>
+
+<span class="sd">  **Example**:</span>
+<span class="sd">    ::</span>
+
+<span class="sd">      myDate = utils.timeUtils.timeYrsecToDate(1205304,2012)</span>
+
+<span class="sd">  Written by Sebastien, Jul. 2012</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+  <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+  
+  <span class="k">if</span> <span class="n">year</span> <span class="o">&gt;=</span> <span class="mi">2038</span><span class="p">:</span> 
+    <span class="k">print</span> <span class="s">&#39;timeYrsecToDate: Year {:d} out of range: forcing 2038&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+    <span class="n">year</span> <span class="o">=</span> <span class="mi">2038</span>
+  <span class="n">myDate</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span> <span class="o">=</span> <span class="n">yrsec</span><span class="p">)</span>
+  
+  <span class="k">return</span> <span class="n">myDate</span>
 </div>
 <div class="viewcode-block" id="julToDatetime"><a class="viewcode-back" href="../../utils.timeUtils.html#utils.timeUtils.julToDatetime">[docs]</a><span class="k">def</span> <span class="nf">julToDatetime</span><span class="p">(</span> <span class="n">ndarray</span> <span class="p">)</span> <span class="p">:</span>
-  <span class="sd">&quot;&quot;&quot; </span>
-<span class="sd">  ****************************</span>
-<span class="sd">  adate = julToDatetime( ndarray )</span>
-<span class="sd">  Convert a julian date to a datetime object.</span>
+  <span class="sd">&quot;&quot;&quot;Convert a julian date to a datetime object.</span>
 
-<span class="sd">  INPUT: </span>
-<span class="sd">  NDARRAY: single float64 or a numpy array of Julian Dates.</span>
+<span class="sd">  **Args**: </span>
+<span class="sd">    * **NDARRAY** (float or list): single float64 or a numpy array of Julian Dates.</span>
+<span class="sd">  **Returns**:</span>
+<span class="sd">    * **dt** (list): list of datetime objects</span>
+
+<span class="sd">  **Example**:</span>
+<span class="sd">    ::</span>
+
+<span class="sd">      myDateList = utils.timeUtils.julToDatetime(2456118.5)</span>
 
 <span class="sd">  Created by Nathaniel Frissell 20120810</span>
-<span class="sd">  *******************************</span>
 <span class="sd">  &quot;&quot;&quot;</span>
   <span class="kn">import</span> <span class="nn">datetime</span>
   <span class="kn">import</span> <span class="nn">dateutil.parser</span>
@@ -213,118 +241,138 @@
 
   <span class="k">return</span> <span class="n">dt</span>
   
-	</div>
+  </div>
 <div class="viewcode-block" id="datetimeToEpoch"><a class="viewcode-back" href="../../utils.timeUtils.html#utils.timeUtils.datetimeToEpoch">[docs]</a><span class="k">def</span> <span class="nf">datetimeToEpoch</span><span class="p">(</span><span class="n">myDate</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	*******************************</span>
-<span class="sd">	myEpoch = datetimeToEpoch(dateStr)</span>
-<span class="sd">	</span>
-<span class="sd">	reads in a datetime and outputs the equivalent epoch time</span>
+  <span class="sd">&quot;&quot;&quot;reads in a datetime and outputs the equivalent epoch time</span>
 
-<span class="sd">	INPUTS:</span>
-<span class="sd">		myDate : a datetime object</span>
-<span class="sd">	OUTPUTS:</span>
-<span class="sd">		myEpoch : an epoch time equal to the datetime object</span>
-<span class="sd">		</span>
-<span class="sd">	Written by AJ 20120914</span>
-<span class="sd">	*******************************</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-	
-	<span class="kn">import</span> <span class="nn">datetime</span><span class="o">,</span><span class="nn">calendar</span>
-	<span class="k">return</span> <span class="n">calendar</span><span class="o">.</span><span class="n">timegm</span><span class="p">(</span><span class="n">myDate</span><span class="o">.</span><span class="n">timetuple</span><span class="p">())</span><span class="o">+</span><span class="n">myDate</span><span class="o">.</span><span class="n">microsecond</span><span class="o">/</span><span class="mf">1e6</span>
+<span class="sd">  **Args**:</span>
+<span class="sd">    * **myDate** (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_): a datetime object</span>
+<span class="sd">  **Returns**:</span>
+<span class="sd">    * **myEpoch** (float): an epoch time equal to the datetime object</span>
+<span class="sd">  </span>
+<span class="sd">  **Example**</span>
+<span class="sd">    ::</span>
+
+<span class="sd">      import datetime as dt</span>
+<span class="sd">      epoch = utils.timeUtils.datetimeToEpoch(dt.datetime(2012,7,10))</span>
+
+<span class="sd">  Written by AJ 20120914</span>
+<span class="sd">  Modified by Nathaniel Frissell 20130729 - Added list support.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="kn">import</span> <span class="nn">numpy</span>
+  <span class="kn">import</span> <span class="nn">time</span>
+
+  <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">myDate</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="n">unx</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="n">myDate</span><span class="o">.</span><span class="n">timetuple</span><span class="p">())</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">unx</span> <span class="o">=</span> <span class="p">[</span><span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">timetuple</span><span class="p">())</span> <span class="k">for</span> <span class="n">dt</span> <span class="ow">in</span> <span class="n">myDate</span><span class="p">]</span>
+
+  <span class="k">return</span> <span class="n">unx</span>
 </div>
 <div class="viewcode-block" id="dateToDecYear"><a class="viewcode-back" href="../../utils.timeUtils.html#utils.timeUtils.dateToDecYear">[docs]</a><span class="k">def</span> <span class="nf">dateToDecYear</span><span class="p">(</span><span class="n">date</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;Convert :class:`datetime.datetime` object to decimal year</span>
-<span class="sd">	</span>
-<span class="sd">	**Args**: </span>
-<span class="sd">		* **date** (datetime.datetime): date and time</span>
-<span class="sd">	**Returns**:</span>
-<span class="sd">		* **dyear** (float): decimal year</span>
-<span class="sd">			</span>
-<span class="sd">	written by Sebastien, 2013-02</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-	<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span> <span class="k">as</span> <span class="n">dt</span>
-	<span class="kn">import</span> <span class="nn">time</span>
-	
-	<span class="c"># returns seconds since epoch</span>
-	<span class="n">sE</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">date</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">timetuple</span><span class="p">())</span>
+  <span class="sd">&quot;&quot;&quot;Convert (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_) object to decimal year</span>
+<span class="sd">  </span>
+<span class="sd">  **Args**: </span>
+<span class="sd">    * **date** (`datetime &lt;http://tinyurl.com/bl352yx&gt;`_): date and time</span>
+<span class="sd">  **Returns**:</span>
+<span class="sd">    * **dyear** (float): decimal year</span>
 
-	<span class="n">year</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">year</span>
-	<span class="n">startOfThisYear</span> <span class="o">=</span> <span class="n">dt</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-	<span class="n">startOfNextYear</span> <span class="o">=</span> <span class="n">dt</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="sd">  **Example**</span>
+<span class="sd">    ::</span>
 
-	<span class="n">yearElapsed</span> <span class="o">=</span> <span class="n">sE</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="o">-</span> <span class="n">sE</span><span class="p">(</span><span class="n">startOfThisYear</span><span class="p">)</span>
-	<span class="n">yearDuration</span> <span class="o">=</span> <span class="n">sE</span><span class="p">(</span><span class="n">startOfNextYear</span><span class="p">)</span> <span class="o">-</span> <span class="n">sE</span><span class="p">(</span><span class="n">startOfThisYear</span><span class="p">)</span>
-	<span class="n">fraction</span> <span class="o">=</span> <span class="n">yearElapsed</span><span class="o">/</span><span class="n">yearDuration</span>
+<span class="sd">      import datetime as dt</span>
+<span class="sd">      decYr = utils.timeUtils.dateToDecYear(dt.datetime(2012,7,10))</span>
 
-	<span class="k">return</span> <span class="n">date</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="n">fraction</span>
+<span class="sd">  written by Sebastien, 2013-02</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span> <span class="k">as</span> <span class="n">dt</span>
+  <span class="kn">import</span> <span class="nn">time</span>
+  
+  <span class="c"># returns seconds since epoch</span>
+  <span class="n">sE</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">date</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">timetuple</span><span class="p">())</span>
+
+  <span class="n">year</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">year</span>
+  <span class="n">startOfThisYear</span> <span class="o">=</span> <span class="n">dt</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+  <span class="n">startOfNextYear</span> <span class="o">=</span> <span class="n">dt</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+  <span class="n">yearElapsed</span> <span class="o">=</span> <span class="n">sE</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="o">-</span> <span class="n">sE</span><span class="p">(</span><span class="n">startOfThisYear</span><span class="p">)</span>
+  <span class="n">yearDuration</span> <span class="o">=</span> <span class="n">sE</span><span class="p">(</span><span class="n">startOfNextYear</span><span class="p">)</span> <span class="o">-</span> <span class="n">sE</span><span class="p">(</span><span class="n">startOfThisYear</span><span class="p">)</span>
+  <span class="n">fraction</span> <span class="o">=</span> <span class="n">yearElapsed</span><span class="o">/</span><span class="n">yearDuration</span>
+
+  <span class="k">return</span> <span class="n">date</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="n">fraction</span>
 </div>
 <div class="viewcode-block" id="parseDate"><a class="viewcode-back" href="../../utils.timeUtils.html#utils.timeUtils.parseDate">[docs]</a><span class="k">def</span> <span class="nf">parseDate</span><span class="p">(</span> <span class="n">date</span> <span class="p">)</span> <span class="p">:</span> 
-        <span class="sd">&quot;&quot;&quot; </span>
-<span class="sd">*******************************</span>
-<span class="sd">** adate = parseDate( date )</span>
-<span class="sd">Parse YYYYMMDD dates in YYYY, MM, DD and vice versa</span>
+  <span class="sd">&quot;&quot;&quot; Parse YYYYMMDD dates in YYYY, MM, DD and vice versa</span>
 
-<span class="sd">INPUT:</span>
-<span class="sd">DATE: experiment date in YYYYMMDD or [YYYY,MM,DD]</span>
+<span class="sd">  **Args**:</span>
+<span class="sd">    * **date** (str or list): experiment date in YYYYMMDD or [YYYY,MM,DD]</span>
+<span class="sd">  **Returns**:</span>
+<span class="sd">    * **tdate** (list or int): experiment date in [YYYY,MM,DD] or YYYYMMDD</span>
 
-<span class="sd">Created by Sebastien</span>
+<span class="sd">  **Example**:</span>
+<span class="sd">    ::</span>
 
-<span class="sd">*******************************</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># transform date into an array for testing</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span> <span class="n">date</span> <span class="o">=</span> <span class="p">[</span><span class="n">date</span><span class="p">]</span>
-    
-        <span class="c"># make sure we are getting integers</span>
-        <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="p">):</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">date</span><span class="p">[</span><span class="nb">id</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span> <span class="n">date</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">date</span><span class="p">[</span><span class="nb">id</span><span class="p">])</span>
-    
-        <span class="c"># parse date one way or another</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-                <span class="n">tdate</span> <span class="o">=</span> <span class="n">date</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">10000</span> <span class="o">+</span> <span class="n">date</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span> <span class="o">+</span> <span class="n">date</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">tdate</span> <span class="o">=</span> <span class="p">[</span><span class="n">date</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">10000</span><span class="p">,</span> <span class="n">date</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span><span class="o">-</span><span class="n">date</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">10000</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">date</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">date</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span><span class="o">*</span><span class="mi">100</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-                <span class="k">print</span> <span class="s">&#39;Invalid date format: &#39;</span><span class="p">,</span> <span class="n">date</span>
-                <span class="k">return</span>
-    
-        <span class="k">return</span> <span class="n">tdate</span>
+<span class="sd">      tlist = utils.timeUtils.parseDate(&#39;20120710&#39;)</span>
+<span class="sd">      ttime = utils.timeUtils.parseDate([2012,07,10])</span>
+
+<span class="sd">  Created by Sebastien</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="c"># transform date into an array for testing</span>
+  <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span> <span class="n">date</span> <span class="o">=</span> <span class="p">[</span><span class="n">date</span><span class="p">]</span>
+
+  <span class="c"># make sure we are getting integers</span>
+  <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">date</span><span class="p">[</span><span class="nb">id</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span> <span class="n">date</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">date</span><span class="p">[</span><span class="nb">id</span><span class="p">])</span>
+
+  <span class="c"># parse date one way or another</span>
+  <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+    <span class="n">tdate</span> <span class="o">=</span> <span class="n">date</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">10000</span> <span class="o">+</span> <span class="n">date</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span> <span class="o">+</span> <span class="n">date</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+  <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="n">tdate</span> <span class="o">=</span> <span class="p">[</span><span class="n">date</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">10000</span><span class="p">,</span> <span class="n">date</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span><span class="o">-</span><span class="n">date</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">10000</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">date</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">date</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span><span class="o">*</span><span class="mi">100</span><span class="p">]</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&#39;Invalid date format: &#39;</span><span class="p">,</span> <span class="n">date</span>
+    <span class="k">return</span>
+
+  <span class="k">return</span> <span class="n">tdate</span>
 
 </div>
 <div class="viewcode-block" id="parseTime"><a class="viewcode-back" href="../../utils.timeUtils.html#utils.timeUtils.parseTime">[docs]</a><span class="k">def</span> <span class="nf">parseTime</span><span class="p">(</span> <span class="n">time</span> <span class="p">)</span> <span class="p">:</span> 
-        <span class="sd">&quot;&quot;&quot; </span>
-<span class="sd">*******************************</span>
-<span class="sd">** atime = parseTime( time )</span>
-<span class="sd">Parse HHMM or HHMMSS dates in HH, MM, SS and vice versa</span>
+  <span class="sd">&quot;&quot;&quot; Parse HHMM or HHMMSS dates in HH, MM, SS and vice versa</span>
 
-<span class="sd">INPUT:</span>
-<span class="sd">TIME: time in HHMM or HHMMSS or [HH,MM] or [HH,MM,SS]</span>
+<span class="sd">  **Args**:</span>
+<span class="sd">    * **TIME** (str or list): time in HHMM or HHMMSS OR [HH,MM] or [HH,MM,SS]</span>
+<span class="sd">  **Returns** </span>
+<span class="sd">    * **ttime** (list or int): time in [HH,MM] or [HH,MM,SS] OR HHMM or HHMMSS</span>
 
-<span class="sd">Created by Sebastien</span>
+<span class="sd">  **Example**:</span>
+<span class="sd">    ::</span>
 
-<span class="sd">*******************************</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># transform time into an array for testing</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span> <span class="n">time</span> <span class="o">=</span> <span class="p">[</span><span class="n">time</span><span class="p">]</span>
-    
-        <span class="c"># make sure we are getting integers</span>
-        <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="p">):</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="n">it</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span> <span class="n">time</span><span class="p">[</span><span class="n">it</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="n">it</span><span class="p">])</span>
-    
-        <span class="c"># parse time one way or another</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-                <span class="n">ttime</span> <span class="o">=</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">10000</span> <span class="o">+</span> <span class="n">time</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span> <span class="o">+</span> <span class="n">time</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="n">ttime</span> <span class="o">=</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span> <span class="o">+</span> <span class="n">time</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">&gt;</span> <span class="mi">4</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">&lt;=</span> <span class="mi">6</span><span class="p">:</span>
-                <span class="n">ttime</span> <span class="o">=</span> <span class="p">[</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">10000</span><span class="p">,</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span><span class="o">-</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">10000</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span><span class="o">*</span><span class="mi">100</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">&gt;=</span><span class="mi">1</span>  <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">&lt;=</span> <span class="mi">4</span><span class="p">:</span>
-                <span class="n">ttime</span> <span class="o">=</span> <span class="p">[</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span><span class="p">,</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span><span class="o">*</span><span class="mi">100</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-                <span class="k">print</span> <span class="s">&#39;Invalid time format: &#39;</span><span class="p">,</span> <span class="n">time</span>
-                <span class="k">return</span>
-    
-        <span class="k">return</span> <span class="n">ttime</span></div>
+<span class="sd">      tlist = utils.timeUtils.parseDate(&#39;065022&#39;)</span>
+<span class="sd">      tstr = utils.timeUtils.parseDate([6,50,22])</span>
+
+<span class="sd">  Created by Sebastien</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="c"># transform time into an array for testing</span>
+  <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span> <span class="n">time</span> <span class="o">=</span> <span class="p">[</span><span class="n">time</span><span class="p">]</span>
+
+  <span class="c"># make sure we are getting integers</span>
+  <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="n">it</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span> <span class="n">time</span><span class="p">[</span><span class="n">it</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="n">it</span><span class="p">])</span>
+
+  <span class="c"># parse time one way or another</span>
+  <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+    <span class="n">ttime</span> <span class="o">=</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">10000</span> <span class="o">+</span> <span class="n">time</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span> <span class="o">+</span> <span class="n">time</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+  <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="n">ttime</span> <span class="o">=</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span> <span class="o">+</span> <span class="n">time</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+  <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">&gt;</span> <span class="mi">4</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">&lt;=</span> <span class="mi">6</span><span class="p">:</span>
+    <span class="n">ttime</span> <span class="o">=</span> <span class="p">[</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">10000</span><span class="p">,</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span><span class="o">-</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">10000</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span><span class="o">*</span><span class="mi">100</span><span class="p">]</span>
+  <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">&gt;=</span><span class="mi">1</span>  <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">&lt;=</span> <span class="mi">4</span><span class="p">:</span>
+    <span class="n">ttime</span> <span class="o">=</span> <span class="p">[</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span><span class="p">,</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span><span class="o">*</span><span class="mi">100</span><span class="p">]</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&#39;Invalid time format: &#39;</span><span class="p">,</span> <span class="n">time</span>
+    <span class="k">return</span>
+
+  <span class="k">return</span> <span class="n">ttime</span></div>
 </pre></div>
 
           </div>

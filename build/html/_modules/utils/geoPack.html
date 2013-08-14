@@ -31,10 +31,13 @@
     <script type="text/javascript" src="../../_static/cloud.js"></script>
     <link rel="top" title="davitpy" href="../../index.html" />
     <link rel="up" title="utils" href="../utils.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -85,6 +88,14 @@
 <span class="sd">    * :func:`utils.geoPack.calcDistPnt`: </span>
 <span class="sd">        calculates the coordines|distance,elevation,azimuth of a point given a point of origin and </span>
 <span class="sd">        distance,elevation,azimuth|distant point coordinates</span>
+<span class="sd">    * :func: `utils.geoPack.greatCircleMove`:</span>
+<span class="sd">        Calculates the coordinates of an end point along a great circle path </span>
+<span class="sd">        given the original coordinates, distance, azimuth, and altitude.</span>
+<span class="sd">    * :func: `utils.geoPack.greatCircleAzm`:</span>
+<span class="sd">        Calculates the azimuth from the coordinates of a start point to and end point</span>
+<span class="sd">        along a great circle path.</span>
+<span class="sd">    * :func: `utils.geoPack.greatCircleDist`:</span>
+<span class="sd">        Calculates the distance in radians along a great circle path between two points.</span>
 
 <span class="sd">Based on J.M. Ruohoniemi&#39;s geopack</span>
 <span class="sd">Based on R.J. Barnes radar.pro</span>
@@ -443,7 +454,7 @@
         <span class="c"># convert pointing direction from local spherical to local cartesian</span>
         <span class="p">(</span><span class="n">pX</span><span class="p">,</span> <span class="n">pY</span><span class="p">,</span> <span class="n">pZ</span><span class="p">)</span> <span class="o">=</span> <span class="n">lspToLcar</span><span class="p">(</span><span class="n">gaz</span><span class="p">,</span> <span class="n">gel</span><span class="p">,</span> <span class="n">dist</span><span class="p">)</span>
         <span class="c"># convert pointing direction from local cartesian to global cartesian</span>
-        <span class="p">(</span><span class="n">dX</span><span class="p">,</span> <span class="n">dY</span><span class="p">,</span> <span class="n">dZ</span><span class="p">)</span> <span class="o">=</span> <span class="n">gcarToLcar</span><span class="p">(</span><span class="n">pX</span><span class="p">,</span> <span class="n">pY</span><span class="p">,</span> <span class="n">pZ</span><span class="p">,</span> <span class="n">gcLat</span><span class="p">,</span> <span class="n">gcLon</span><span class="p">,</span> <span class="n">origRe</span><span class="o">+</span><span class="n">origAlt</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">dX</span><span class="p">,</span> <span class="n">dY</span><span class="p">,</span> <span class="n">dZ</span><span class="p">)</span> <span class="o">=</span> <span class="n">gcarToLcar</span><span class="p">(</span><span class="n">pX</span><span class="p">,</span> <span class="n">pY</span><span class="p">,</span> <span class="n">pZ</span><span class="p">,</span> <span class="n">gcLat</span><span class="p">,</span> <span class="n">gcLon</span><span class="p">,</span> <span class="n">origRe</span><span class="o">+</span><span class="n">origAlt</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
         <span class="c"># Convert distant point from global cartesian to geocentric</span>
         <span class="p">(</span><span class="n">gcDistLat</span><span class="p">,</span> <span class="n">gcDistLon</span><span class="p">,</span> <span class="n">rho</span><span class="p">)</span> <span class="o">=</span> <span class="n">gspToGcar</span><span class="p">(</span><span class="n">dX</span><span class="p">,</span> <span class="n">dY</span><span class="p">,</span> <span class="n">dZ</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
         <span class="c"># Convert distant point from geocentric to geodetic</span>
@@ -462,10 +473,22 @@
 
 
 <span class="c"># *************************************************************</span></div>
-<span class="k">def</span> <span class="nf">greatCircleMove</span><span class="p">(</span><span class="n">origLat</span><span class="p">,</span> <span class="n">origLon</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">az</span><span class="p">):</span>
+<div class="viewcode-block" id="greatCircleMove"><a class="viewcode-back" href="../../utils.geoPack.html#utils.geoPack.greatCircleMove">[docs]</a><span class="k">def</span> <span class="nf">greatCircleMove</span><span class="p">(</span><span class="n">origLat</span><span class="p">,</span> <span class="n">origLon</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">az</span><span class="p">,</span> <span class="n">alt</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the coordinates of an end point along a great circle path </span>
+<span class="sd">    given the original coordinates, distance, azimuth, and altitude.</span>
+
+<span class="sd">    **Args**:</span>
+<span class="sd">        * **origLat**:  latitude [degree]</span>
+<span class="sd">        * **origLon**:  longitude [degree]</span>
+<span class="sd">        * **dist**:     distance [km]</span>
+<span class="sd">        * **az**:       azimuth [deg]</span>
+<span class="sd">        * **alt**:      altitude [km] (added to default Re = 6378.1 km)</span>
+<span class="sd">    **Returns**:</span>
+<span class="sd">        * **list**:     [latitude, longitude] [deg]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">numpy</span>
     
-    <span class="n">Re</span> <span class="o">=</span> <span class="mf">6378.1e3</span>
+    <span class="n">Re</span> <span class="o">=</span> <span class="mf">6378.1e3</span> <span class="o">+</span> <span class="p">(</span><span class="n">alt</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">)</span>
     <span class="n">lat1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">origLat</span><span class="p">)</span> 
     <span class="n">lon1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">origLon</span><span class="p">)</span>
     <span class="n">az</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">az</span><span class="p">)</span>
@@ -477,21 +500,52 @@
 
     <span class="k">return</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">lat2</span><span class="p">),</span><span class="n">numpy</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">lon2</span><span class="p">)]</span>
 
+<span class="c"># *************************************************************</span></div>
+<div class="viewcode-block" id="greatCircleAzm"><a class="viewcode-back" href="../../utils.geoPack.html#utils.geoPack.greatCircleAzm">[docs]</a><span class="k">def</span> <span class="nf">greatCircleAzm</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span><span class="n">lon1</span><span class="p">,</span><span class="n">lat2</span><span class="p">,</span><span class="n">lon2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the azimuth from the coordinates of a start point to and end point</span>
+<span class="sd">    along a great circle path.</span>
 
-<span class="c"># *************************************************************</span>
-<span class="k">def</span> <span class="nf">greatCircleAzm</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span><span class="n">lon1</span><span class="p">,</span><span class="n">lat2</span><span class="p">,</span><span class="n">lon2</span><span class="p">):</span>
-    
-    <span class="kn">import</span> <span class="nn">numpy</span>
-    <span class="n">lat1</span><span class="p">,</span><span class="n">lon1</span><span class="p">,</span><span class="n">lat2</span><span class="p">,</span><span class="n">lon2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat1</span><span class="p">),</span><span class="n">numpy</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lon1</span><span class="p">),</span><span class="n">numpy</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat2</span><span class="p">),</span><span class="n">numpy</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lon2</span><span class="p">)</span>
-    
-    <span class="n">y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lon2</span><span class="o">-</span><span class="n">lon1</span><span class="p">)</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lat2</span><span class="p">)</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lat1</span><span class="p">)</span><span class="o">*</span><span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lat2</span><span class="p">)</span> <span class="o">-</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lat1</span><span class="p">)</span><span class="o">*</span><span class="n">numpy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lat2</span><span class="p">)</span><span class="o">*</span><span class="n">numpy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lon2</span><span class="o">-</span><span class="n">lon1</span><span class="p">)</span>
-    
-    <span class="n">azm</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+<span class="sd">    **Args**:</span>
+<span class="sd">        * **lat1**:  latitude [deg]</span>
+<span class="sd">        * **lon1**:  longitude [deg]</span>
+<span class="sd">        * **lat2**:  latitude [deg]</span>
+<span class="sd">        * **lon2**:  longitude [deg]</span>
+<span class="sd">    **Returns**:</span>
+<span class="sd">        * **azm**:   azimuth [deg]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">azm</span><span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">arctan2</span><span class="p">,</span> <span class="n">degrees</span><span class="p">,</span> <span class="n">radians</span>
+    <span class="n">lat1</span><span class="p">,</span><span class="n">lon1</span><span class="p">,</span><span class="n">lat2</span><span class="p">,</span><span class="n">lon2</span> <span class="o">=</span> <span class="n">radians</span><span class="p">(</span><span class="n">lat1</span><span class="p">),</span><span class="n">radians</span><span class="p">(</span><span class="n">lon1</span><span class="p">),</span><span class="n">radians</span><span class="p">(</span><span class="n">lat2</span><span class="p">),</span><span class="n">radians</span><span class="p">(</span><span class="n">lon2</span><span class="p">)</span>
+    <span class="n">dlon</span>  <span class="o">=</span> <span class="n">lon2</span><span class="o">-</span><span class="n">lon1</span>
+    <span class="n">y</span>     <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">dlon</span><span class="p">)</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">lat2</span><span class="p">)</span>
+    <span class="n">x</span>     <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">lat1</span><span class="p">)</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">lat2</span><span class="p">)</span><span class="o">-</span><span class="n">sin</span><span class="p">(</span><span class="n">lat1</span><span class="p">)</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">lat2</span><span class="p">)</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">dlon</span><span class="p">)</span>
+    <span class="n">azm</span>   <span class="o">=</span> <span class="n">degrees</span><span class="p">(</span><span class="n">arctan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="p">))</span>
 
-    
+    <span class="k">return</span> <span class="n">azm</span>
+
+
+<span class="c"># *************************************************************</span></div>
+<div class="viewcode-block" id="greatCircleDist"><a class="viewcode-back" href="../../utils.geoPack.html#utils.geoPack.greatCircleDist">[docs]</a><span class="k">def</span> <span class="nf">greatCircleDist</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span><span class="n">lon1</span><span class="p">,</span><span class="n">lat2</span><span class="p">,</span><span class="n">lon2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the distance in radians along a great circle path between two points.</span>
+
+<span class="sd">    **Args**:</span>
+<span class="sd">        * **lat1**:  latitude [deg]</span>
+<span class="sd">        * **lon1**:  longitude [deg]</span>
+<span class="sd">        * **lat2**:  latitude [deg]</span>
+<span class="sd">        * **lon2**:  longitude [deg]</span>
+<span class="sd">    **Returns**:</span>
+<span class="sd">        * **radDist**:  distance [radians]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">arctan2</span><span class="p">,</span> <span class="n">radians</span><span class="p">,</span> <span class="n">sqrt</span>
+
+    <span class="n">lat1</span><span class="p">,</span><span class="n">lon1</span><span class="p">,</span><span class="n">lat2</span><span class="p">,</span><span class="n">lon2</span> <span class="o">=</span> <span class="n">radians</span><span class="p">(</span><span class="n">lat1</span><span class="p">),</span><span class="n">radians</span><span class="p">(</span><span class="n">lon1</span><span class="p">),</span><span class="n">radians</span><span class="p">(</span><span class="n">lat2</span><span class="p">),</span><span class="n">radians</span><span class="p">(</span><span class="n">lon2</span><span class="p">)</span>
+
+    <span class="n">dlat</span> <span class="o">=</span> <span class="n">lat2</span><span class="o">-</span><span class="n">lat1</span>
+    <span class="n">dlon</span> <span class="o">=</span> <span class="n">lon2</span><span class="o">-</span><span class="n">lon1</span>
+    <span class="n">a</span>    <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">dlat</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">dlat</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span><span class="o">+</span><span class="n">cos</span><span class="p">(</span><span class="n">lat1</span><span class="p">)</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">lat2</span><span class="p">)</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">dlon</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">dlon</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span>
+    <span class="n">radDist</span> <span class="o">=</span> <span class="mf">2.</span><span class="o">*</span><span class="n">arctan2</span><span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="p">),</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.</span><span class="o">-</span><span class="n">a</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">radDist</span></div>
 </pre></div>
 
           </div>

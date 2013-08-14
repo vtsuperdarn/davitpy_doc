@@ -31,10 +31,13 @@
     <script type="text/javascript" src="../../_static/cloud.js"></script>
     <link rel="top" title="davitpy" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -95,11 +98,23 @@
 	<span class="kn">import</span> <span class="nn">radDataRead</span>
 	<span class="kn">from</span> <span class="nn">radDataRead</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="k">except</span><span class="p">:</span> <span class="k">print</span> <span class="s">&#39;problem importing radDataRead&#39;</span>
+
+<span class="k">try</span><span class="p">:</span>
+	<span class="kn">import</span> <span class="nn">sdDataTypes</span>
+	<span class="kn">from</span> <span class="nn">sdDataTypes</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="k">except</span><span class="p">:</span> <span class="k">print</span> <span class="s">&#39;problem importing sdDataTypes&#39;</span>
 	
 <span class="k">try</span><span class="p">:</span>
-	<span class="kn">import</span> <span class="nn">pygridIo</span>
-	<span class="kn">from</span> <span class="nn">pygridIo</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="k">except</span><span class="p">:</span> <span class="k">print</span> <span class="s">&#39;problem importing pygridIo&#39;</span>
+	<span class="kn">import</span> <span class="nn">sdDataRead</span>
+	<span class="kn">from</span> <span class="nn">sdDataRead</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span> 
+	<span class="k">print</span> <span class="n">e</span>
+	<span class="k">print</span> <span class="s">&#39;problem importing sdDataRead&#39;</span>
+	
+<span class="c"># try:</span>
+<span class="c"># 	import pygridIo</span>
+<span class="c"># 	from pygridIo import *</span>
+<span class="c"># except: print &#39;problem importing pygridIo&#39;</span>
 
 <span class="k">try</span><span class="p">:</span>
 	<span class="kn">import</span> <span class="nn">fitexfilter</span>

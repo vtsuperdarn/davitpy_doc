@@ -33,10 +33,13 @@
     <link rel="up" title="pydarn.sdio" href="pydarn.sdio.html" />
     <link rel="next" title="gme" href="gme.html" />
     <link rel="prev" title="pydarn.sdio.fitexfilter" href="pydarn.sdio.fitexfilter.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -188,44 +191,33 @@ in turn be used to get a data connection.</div></blockquote>
 <dl class="function">
 <dt id="pydarn.sdio.dbUtils.mapDbFit">
 <tt class="descclassname">pydarn.sdio.dbUtils.</tt><tt class="descname">mapDbFit</tt><big>(</big><em>dateStr, rad, time=[0, 2400], fileType='fitex', vb=0</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/dbUtils.html#mapDbFit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.dbUtils.mapDbFit" title="Permalink to this definition">¶</a></dt>
-<dd><div class="line-block">
-<div class="line"><strong>PACKAGE</strong>: pydarn.sdio.dbUtils</div>
-<div class="line"><strong>FUNCTION</strong>: mapDbFit(dateStr, rad, [time], [fileType], [vb]):</div>
-<div class="line"><strong>PURPOSE</strong>: put dmap data into the mongodb database</div>
-<div class="line"><br /></div>
-<div class="line"><strong>NOTE</strong>: this is a write operation, so you must have DBWRITEUSER</div>
-<div class="line-block">
-<div class="line">and DBWRITEPASS defined in your ~/.bashrc.  these can be obtained</div>
-<div class="line">from the VT crew, as needed.  most people will not need this capability</div>
-<div class="line"><br /></div>
+<dd><p>put dmap data into the mongodb database</p>
+<dl class="docutils">
+<dt><strong>NOTE</strong>: this is a write operation, so you must have DBWRITEUSER</dt>
+<dd>and DBWRITEPASS defined in your ~/.bashrc.  these can be obtained
+from the VT crew, as needed.  most people will not need this capability</dd>
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>dateStr</strong>: the target date in &#8216;yyymmdd&#8217; format</li>
+<li><strong>rad</strong>: the three letter radar code, e.g. &#8216;bks&#8217;</li>
+<li><strong>[time]</strong>: the time range to perform the operation in REDUCED
+hhmm format, ie [28,652] instead of [0028,0652].  default = [0,2400]</li>
+<li><strong>[fileType]</strong>: the file type for which to perform the operation.
+valid inputs are &#8216;fitex&#8217; [default], &#8216;fitacf&#8217;, &#8216;lmfit&#8217;, &#8216;rawacf&#8217; , &#8216;iqdat&#8217;</li>
+<li><strong>[vb]</strong>: a flag for verbose output.  default = 0</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Nothing</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><pre>mapDbFit('20110710', 'bks', time=[0,240], fileType='fitacf', vb=1):</pre>
 </div>
-<div class="line"><strong>INPUTS</strong>:</div>
-<div class="line-block">
-<div class="line"><strong>dateStr</strong>: the target date in &#8216;yyymmdd&#8217; format</div>
-<div class="line"><strong>rad</strong>: the three letter radar code, e.g. &#8216;bks&#8217;</div>
-<div class="line"><strong>[time]</strong>: the time range to perform the operation in REDUCED</div>
-<div class="line-block">
-<div class="line">hhmm format, ie [28,652] instead of [0028,0652].  default = [0,2400]</div>
-</div>
-<div class="line"><strong>[fileType]</strong>: the file type for which to perform the operation.</div>
-<div class="line-block">
-<div class="line">valid inputs are &#8216;fitex&#8217; [default], &#8216;fitacf&#8217;, &#8216;lmfit&#8217;, &#8216;rawacf&#8217; , &#8216;iqdat&#8217;</div>
-</div>
-<div class="line"><strong>[vb]</strong>: a flag for verbose output.  default = 0</div>
-<div class="line"><br /></div>
-</div>
-<div class="line"><strong>OUTPUTS</strong>:</div>
-<div class="line-block">
-<div class="line">NONE</div>
-<div class="line"><br /></div>
-</div>
-<div class="line"><strong>EXAMPLES</strong>:</div>
-<div class="line-block">
-<div class="line">mapDbFit(&#8216;20110710&#8217;, &#8216;bks&#8217;, time=[0,240], fileType=&#8217;fitacf&#8217;, vb=1):</div>
-<div class="line"><br /></div>
-</div>
-<div class="line">Written by AJ 20130108</div>
-</div>
+</dd>
+</dl>
+<p>Written by AJ 20130108</p>
 </dd></dl>
 
 <dl class="function">

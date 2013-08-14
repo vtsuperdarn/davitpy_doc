@@ -31,10 +31,13 @@
     <script type="text/javascript" src="_static/cloud.js"></script>
     <link rel="top" title="davitpy" href="index.html" />
  
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
 
 
@@ -77,6 +80,7 @@
    <a href="#cap-p"><strong>p</strong></a> | 
    <a href="#cap-r"><strong>r</strong></a> | 
    <a href="#cap-s"><strong>s</strong></a> | 
+   <a href="#cap-t"><strong>t</strong></a> | 
    <a href="#cap-u"><strong>u</strong></a>
    </div>
 
@@ -179,6 +183,11 @@
        <td>
        <a href="gme.base.gmeBase.html#module-gmeBase"><tt class="xref">gmeBase</tt></a></td><td>
        <em>A base class for gme data.  Allows definition of common routines</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="gme.plotting.gmeplot.html#module-gmeplot"><tt class="xref">gmeplot</tt></a></td><td>
+       <em>A module for reading, writing, and storing kp Data</em></td></tr>
      <tr class="pcap"><td></td><td>&nbsp;</td><td></td></tr>
      <tr class="cap" id="cap-k"><td></td><td>
        <strong>k</strong></td><td></td></tr>
@@ -212,6 +221,11 @@
      <tr class="pcap"><td></td><td>&nbsp;</td><td></td></tr>
      <tr class="cap" id="cap-p"><td></td><td>
        <strong>p</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="utils.plotUtils.html#module-plotUtils"><tt class="xref">plotUtils</tt></a></td><td>
+       <em>Plotting utilities (maps, colormaps, ...)</em></td></tr>
      <tr>
        <td></td>
        <td>
@@ -252,11 +266,6 @@
        <td></td>
        <td>&nbsp;&nbsp;&nbsp;
        <a href="pydarn.proc.signal.compare.html#module-pydarn.proc.signal.compare"><tt class="xref">pydarn.proc.signal.compare</tt></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-3">
-       <td></td>
-       <td>&nbsp;&nbsp;&nbsp;
-       <a href="pydarn.proc.signal.sigio.html#module-pydarn.proc.signal.sigio"><tt class="xref">pydarn.proc.signal.sigio</tt></a></td><td>
        <em></em></td></tr>
      <tr class="cg-3">
        <td></td>
@@ -318,6 +327,16 @@
        <td>&nbsp;&nbsp;&nbsp;
        <a href="pydarn.sdio.radDataTypes.html#module-pydarn.sdio.radDataTypes"><tt class="xref">pydarn.sdio.radDataTypes</tt></a></td><td>
        <em></em></td></tr>
+     <tr class="cg-3">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="pydarn.sdio.sdDataRead.html#module-pydarn.sdio.sdDataRead"><tt class="xref">pydarn.sdio.sdDataRead</tt></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-3">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="pydarn.sdio.sdDataTypes.html#module-pydarn.sdio.sdDataTypes"><tt class="xref">pydarn.sdio.sdDataTypes</tt></a></td><td>
+       <em></em></td></tr>
      <tr class="pcap"><td></td><td>&nbsp;</td><td></td></tr>
      <tr class="cap" id="cap-r"><td></td><td>
        <strong>r</strong></td><td></td></tr>
@@ -325,20 +344,53 @@
        <td></td>
        <td>
        <a href="pydarn.sdio.radDataRead.html#module-radDataRead"><tt class="xref">radDataRead</tt></a></td><td>
-       <em>A module for reading radar data</em></td></tr>
+       <em>A module for reading radar data (iqdat, raw, fit)</em></td></tr>
      <tr>
        <td></td>
        <td>
        <a href="pydarn.sdio.radDataTypes.html#module-radDataTypes"><tt class="xref">radDataTypes</tt></a></td><td>
-       <em>the classes needed for reading, writing, and storing radar data</em></td></tr>
+       <em>the classes needed for reading, writing, and storing fundamental radar data (iq,raw,fit)</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="pydarn.radar.radInfoIo.html#module-radInfoIo"><tt class="xref">radInfoIo</tt></a></td><td>
+       <em>read/write radar information</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="pydarn.radar.radStruct.html#module-radStruct"><tt class="xref">radStruct</tt></a></td><td>
+       <em>Load and browse radar information</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="pydarn.plotting.rti.html#module-rti"><tt class="xref">rti</tt></a></td><td>
+       <em>A module for generating rti plots</em></td></tr>
      <tr class="pcap"><td></td><td>&nbsp;</td><td></td></tr>
      <tr class="cap" id="cap-s"><td></td><td>
        <strong>s</strong></td><td></td></tr>
      <tr>
        <td></td>
        <td>
+       <a href="pydarn.sdio.sdDataRead.html#module-sdDataRead"><tt class="xref">sdDataRead</tt></a></td><td>
+       <em>A module for reading processed SD data (grid, map)</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="pydarn.sdio.sdDataTypes.html#module-sdDataTypes"><tt class="xref">sdDataTypes</tt></a></td><td>
+       <em>the classes needed for reading, writing, and storing processed radar data (grid, map)</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
        <a href="gme.ind.symasy.html#module-symasy"><tt class="xref">symasy</tt></a></td><td>
        <em>A module for reading, writing, and storing symasy Data</em></td></tr>
+     <tr class="pcap"><td></td><td>&nbsp;</td><td></td></tr>
+     <tr class="cap" id="cap-t"><td></td><td>
+       <strong>t</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="utils.timeUtils.html#module-timeUtils"><tt class="xref">timeUtils</tt></a></td><td>
+       <em>A module for manipulating time representations</em></td></tr>
      <tr class="pcap"><td></td><td>&nbsp;</td><td></td></tr>
      <tr class="cap" id="cap-u"><td></td><td>
        <strong>u</strong></td><td></td></tr>

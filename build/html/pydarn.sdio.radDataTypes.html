@@ -31,12 +31,15 @@
     <script type="text/javascript" src="_static/cloud.js"></script>
     <link rel="top" title="davitpy" href="index.html" />
     <link rel="up" title="pydarn.sdio" href="pydarn.sdio.html" />
-    <link rel="next" title="pydarn.sdio.fitexfilter" href="pydarn.sdio.fitexfilter.html" />
-    <link rel="prev" title="pydarn.sdio.radDataRead" href="pydarn.sdio.radDataRead.html" /> 
-    <link rel="shortcut icon" href="py_16.png" />  
-    <link rel=”apple-touch-icon” sizes=”114×114″ href=”/py_114.png” />
-    <link rel=”apple-touch-icon” sizes=”72×72″ href=”/py_72.png” />
-    <link rel=”apple-touch-icon” href=”py_57.png” />
+    <link rel="next" title="pydarn.sdio.sdDataTypes" href="pydarn.sdio.sdDataTypes.html" />
+    <link rel="prev" title="pydarn.sdio.sdDataRead" href="pydarn.sdio.sdDataRead.html" /> 
+    <link rel="shortcut icon" href="http://sd-work2.ece.vt.edu/davitpylogos/py_16.png" />  
+    <link rel=”apple-touch-icon-precomposed” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon-precomposed” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon-precomposed” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
+    <link rel=”apple-touch-icon” sizes=”114×114″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_114.png” />
+    <link rel=”apple-touch-icon” sizes=”72×72″ href=”http://sd-work2.ece.vt.edu/davitpylogos/py_72.png” />
+    <link rel=”apple-touch-icon” href=”http://sd-work2.ece.vt.edu/davitpylogos/py_57.png” />
 
   </head>
   <body>
@@ -52,10 +55,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
         <li class="right" >
-          <a href="pydarn.sdio.fitexfilter.html" title="pydarn.sdio.fitexfilter"
+          <a href="pydarn.sdio.sdDataTypes.html" title="pydarn.sdio.sdDataTypes"
              accesskey="N">next</a> &nbsp; &nbsp;</li>
         <li class="right" >
-          <a href="pydarn.sdio.radDataRead.html" title="pydarn.sdio.radDataRead"
+          <a href="pydarn.sdio.sdDataRead.html" title="pydarn.sdio.sdDataRead"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
     <li><a href="index.html">davitpy</a> &raquo;</li>
 
@@ -82,148 +85,21 @@
 <dl class="docutils">
 <dt><strong>Classes</strong>:</dt>
 <dd><ul class="first last simple">
-<li><tt class="xref py py-class docutils literal"><span class="pre">radDataPtr</span></tt></li>
-<li><tt class="xref py py-class docutils literal"><span class="pre">baseData</span></tt></li>
-<li><tt class="xref py py-class docutils literal"><span class="pre">beamData</span></tt></li>
-<li><tt class="xref py py-class docutils literal"><span class="pre">prmData</span></tt></li>
-<li><tt class="xref py py-class docutils literal"><span class="pre">fitData</span></tt></li>
-<li><tt class="xref py py-class docutils literal"><span class="pre">rawData</span></tt></li>
-<li><tt class="xref py py-class docutils literal"><span class="pre">iqData</span></tt></li>
+<li><a class="reference internal" href="#pydarn.sdio.radDataTypes.radDataPtr" title="pydarn.sdio.radDataTypes.radDataPtr"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.radDataPtr</span></tt></a></li>
+<li><a class="reference internal" href="#pydarn.sdio.radDataTypes.radBaseData" title="pydarn.sdio.radDataTypes.radBaseData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.radBaseData</span></tt></a></li>
+<li><a class="reference internal" href="#pydarn.sdio.radDataTypes.scanData" title="pydarn.sdio.radDataTypes.scanData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.scanData</span></tt></a></li>
+<li><a class="reference internal" href="#pydarn.sdio.radDataTypes.beamData" title="pydarn.sdio.radDataTypes.beamData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.beamData</span></tt></a></li>
+<li><a class="reference internal" href="#pydarn.sdio.radDataTypes.prmData" title="pydarn.sdio.radDataTypes.prmData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.prmData</span></tt></a></li>
+<li><a class="reference internal" href="#pydarn.sdio.radDataTypes.fitData" title="pydarn.sdio.radDataTypes.fitData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.fitData</span></tt></a></li>
+<li><a class="reference internal" href="#pydarn.sdio.radDataTypes.rawData" title="pydarn.sdio.radDataTypes.rawData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.rawData</span></tt></a></li>
+<li><a class="reference internal" href="#pydarn.sdio.radDataTypes.iqData" title="pydarn.sdio.radDataTypes.iqData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.iqData</span></tt></a></li>
 </ul>
 </dd>
 </dl>
-<dl class="class">
-<dt id="pydarn.sdio.radDataTypes.baseData">
-<em class="property">class </em><tt class="descclassname">pydarn.sdio.radDataTypes.</tt><tt class="descname">baseData</tt><a class="reference internal" href="_modules/pydarn/sdio/radDataTypes.html#baseData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.radDataTypes.baseData" title="Permalink to this definition">¶</a></dt>
-<dd><p>a base class for the radar data types.  This allows for single definition of common routines</p>
-<dl class="docutils">
-<dt><strong>ATTRS</strong>:</dt>
-<dd><ul class="first last simple">
-<li>Nothing.</li>
-</ul>
-</dd>
-<dt><strong>METHODS</strong>:</dt>
-<dd><ul class="first last simple">
-<li><tt class="xref py py-func docutils literal"><span class="pre">dbDictToObj()</span></tt>: converts a mongodb dictionary to a baseData object</li>
-<li><tt class="xref py py-func docutils literal"><span class="pre">toDbDict()</span></tt>: converts a baseData object to a mongodb dictionaty</li>
-<li><tt class="xref py py-func docutils literal"><span class="pre">updateValsFromDict()</span></tt>: converts a dict from a dmap file to baseData</li>
-</ul>
-</dd>
-</dl>
-<p>Written by AJ 20130108</p>
-<dl class="method">
-<dt id="pydarn.sdio.radDataTypes.baseData.copyData">
-<tt class="descname">copyData</tt><big>(</big><em>obj</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/radDataTypes.html#baseData.copyData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.radDataTypes.baseData.copyData" title="Permalink to this definition">¶</a></dt>
-<dd><p>This method is used to recursively copy all of the contents from ont object to self</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">In general, users will not need to use this.</p>
-</div>
-<dl class="docutils">
-<dt><strong>Args</strong>: </dt>
-<dd><ul class="first last simple">
-<li><strong>obj</strong> (<tt class="xref py py-class docutils literal"><span class="pre">baseData</span></tt>): the object to be copied</li>
-</ul>
-</dd>
-<dt><strong>Returns</strong>:</dt>
-<dd><ul class="first last simple">
-<li>Nothing.</li>
-</ul>
-</dd>
-<dt><strong>Example</strong>:</dt>
-<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">myBaseData</span><span class="o">.</span><span class="n">copyData</span><span class="p">(</span><span class="n">baseDataObj</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd>
-</dl>
-<p>written by AJ, 20130402</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydarn.sdio.radDataTypes.baseData.dbDictToObj">
-<tt class="descname">dbDictToObj</tt><big>(</big><em>aDict</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/radDataTypes.html#baseData.dbDictToObj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.radDataTypes.baseData.dbDictToObj" title="Permalink to this definition">¶</a></dt>
-<dd><p>This method is used to parse a dictionary of radar data from the mongodb into a <tt class="xref py py-class docutils literal"><span class="pre">baseData</span></tt> object.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">In general, users will not need to use this.</p>
-</div>
-<dl class="docutils">
-<dt><strong>Args</strong>: </dt>
-<dd><ul class="first last simple">
-<li><strong>aDict</strong> (dict): the dictionary from the mongodb</li>
-</ul>
-</dd>
-<dt><strong>Returns</strong>:</dt>
-<dd><ul class="first last simple">
-<li>Nothing.</li>
-</ul>
-</dd>
-<dt><strong>Example</strong>:</dt>
-<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">myBaseData</span><span class="o">.</span><span class="n">dbDictToObj</span><span class="p">(</span><span class="n">mongoDbDict</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd>
-</dl>
-<p>written by AJ, 20130123</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydarn.sdio.radDataTypes.baseData.toDbDict">
-<tt class="descname">toDbDict</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/radDataTypes.html#baseData.toDbDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.radDataTypes.baseData.toDbDict" title="Permalink to this definition">¶</a></dt>
-<dd><p>This method is used to convert a <tt class="xref py py-class docutils literal"><span class="pre">baseData</span></tt> object into a mongodb radData data dictionary.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">In general, users will not need to worry about this.</p>
-</div>
-<dl class="docutils">
-<dt><strong>Args</strong>: </dt>
-<dd><ul class="first last simple">
-<li>Nothing.</li>
-</ul>
-</dd>
-<dt><strong>Returns</strong>:</dt>
-<dd><ul class="first last simple">
-<li><strong>aDict</strong> (dict): a dictionary in the correct format for writing to the radData mongodb</li>
-</ul>
-</dd>
-<dt><strong>Example</strong>:</dt>
-<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">mongoDbDict</span> <span class="o">=</span> <span class="n">aBaseDataObj</span><span class="o">.</span><span class="n">todbDict</span><span class="p">()</span>
-</pre></div>
-</div>
-</dd>
-</dl>
-<p>written by AJ, 20130123</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydarn.sdio.radDataTypes.baseData.updateValsFromDict">
-<tt class="descname">updateValsFromDict</tt><big>(</big><em>aDict</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/radDataTypes.html#baseData.updateValsFromDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.radDataTypes.baseData.updateValsFromDict" title="Permalink to this definition">¶</a></dt>
-<dd><p>A function to to fill a radar params structure with the data in a dictionary that is returned from the reading of a dmap file</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">In general, users will not need to us this.</p>
-</div>
-<dl class="docutils">
-<dt><strong>Args</strong>:</dt>
-<dd><ul class="first last simple">
-<li><strong>aDict (dict):</strong> the dictionary containing the radar data</li>
-</ul>
-</dd>
-<dt><strong>Returns</strong></dt>
-<dd><ul class="first last simple">
-<li>nothing.</li>
-</ul>
-</dd>
-</dl>
-<p>Written by AJ 20121130</p>
-</dd></dl>
-
-</dd></dl>
-
 <dl class="class">
 <dt id="pydarn.sdio.radDataTypes.beamData">
 <em class="property">class </em><tt class="descclassname">pydarn.sdio.radDataTypes.</tt><tt class="descname">beamData</tt><big>(</big><em>beamDict=None</em>, <em>myBeam=None</em>, <em>proctype=None</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/radDataTypes.html#beamData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.radDataTypes.beamData" title="Permalink to this definition">¶</a></dt>
-<dd><p>a class to contain the data from a radar beam sounding, extends class <tt class="xref py py-class docutils literal"><span class="pre">baseData</span></tt></p>
+<dd><p>a class to contain the data from a radar beam sounding, extends class <a class="reference internal" href="#pydarn.sdio.radDataTypes.radBaseData" title="pydarn.sdio.radDataTypes.radBaseData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.radBaseData</span></tt></a></p>
 <dl class="docutils">
 <dt><strong>Attrs</strong>:</dt>
 <dd><ul class="first last simple">
@@ -232,18 +108,10 @@
 <li><strong>time</strong> (<a class="reference external" href="http://tinyurl.com/bl352yx">datetime</a>): timestamp of beam sounding</li>
 <li><strong>channel</strong> (str): radar operating channel, eg &#8216;a&#8217;, &#8216;b&#8217;, ...</li>
 <li><strong>bmnum</strong> (int): beam number</li>
-<li><strong>prm</strong> (<tt class="xref py py-class docutils literal"><span class="pre">prmData</span></tt>): operating params</li>
-<li><strong>fit</strong> (<tt class="xref py py-class docutils literal"><span class="pre">fitData</span></tt>): fitted params</li>
-<li><strong>rawacf</strong> (<tt class="xref py py-class docutils literal"><span class="pre">rawData</span></tt>): rawacf data</li>
-<li><strong>iqdat</strong> (<tt class="xref py py-class docutils literal"><span class="pre">iqData</span></tt>): iqdat data</li>
-<li><strong>fitex</strong> (<tt class="xref py py-class docutils literal"><span class="pre">fitData</span></tt>): fitted params from fitex file.  this is useful for mongodb interface.  Users can ignore this, just use at the fit attribute.</li>
-<li><strong>fitacf</strong> (<tt class="xref py py-class docutils literal"><span class="pre">fitData</span></tt>): fitted params from fitacf file.  this is useful for mongodb interface.  Users can ignore this, just use at the fit attribute.</li>
-<li><strong>lmfit</strong> (<tt class="xref py py-class docutils literal"><span class="pre">fitData</span></tt>): fitted params from lmfit file.  this is useful for mongodb interface.  Users can ignore this, just use at the fit attribute.</li>
-<li><strong>exflg</strong> (int): a flag indicating the presence of fitex data. this is useful for database operation, can enerally be ignored by users</li>
-<li><strong>acflg</strong> (int): a flag indicating the presence of acflg data. this is useful for database operation, can generally be ignored by users</li>
-<li><strong>lmflg</strong> (int): a flag indicating the presence of lmfit data. this is useful for database operation, can generally be ignored by users</li>
-<li><strong>rawflg</strong> (int): a flag indicating the presence of rawacf data. this is useful for database operation, can generally be ignored by users</li>
-<li><strong>iqflg</strong> (int): a flag indicating the presence of iqdat data. this is useful for database operation, can generally be ignored by users</li>
+<li><strong>prm</strong> (<a class="reference internal" href="#pydarn.sdio.radDataTypes.prmData" title="pydarn.sdio.radDataTypes.prmData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.prmData</span></tt></a>): operating params</li>
+<li><strong>fit</strong> (<a class="reference internal" href="#pydarn.sdio.radDataTypes.fitData" title="pydarn.sdio.radDataTypes.fitData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.fitData</span></tt></a>): fitted params</li>
+<li><strong>rawacf</strong> (<a class="reference internal" href="#pydarn.sdio.radDataTypes.rawData" title="pydarn.sdio.radDataTypes.rawData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.rawData</span></tt></a>): rawacf data</li>
+<li><strong>iqdat</strong> (<a class="reference internal" href="#pydarn.sdio.radDataTypes.iqData" title="pydarn.sdio.radDataTypes.iqData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.iqData</span></tt></a>): iqdat data</li>
 <li><strong>fType</strong> (str): the file type, &#8216;fitacf&#8217;, &#8216;rawacf&#8217;, &#8216;iqdat&#8217;, &#8216;fitex&#8217;, &#8216;lmfit&#8217;</li>
 </ul>
 </dd>
@@ -259,7 +127,7 @@
 <dl class="class">
 <dt id="pydarn.sdio.radDataTypes.fitData">
 <em class="property">class </em><tt class="descclassname">pydarn.sdio.radDataTypes.</tt><tt class="descname">fitData</tt><big>(</big><em>fitDict=None</em>, <em>myFit=None</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/radDataTypes.html#fitData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.radDataTypes.fitData" title="Permalink to this definition">¶</a></dt>
-<dd><p>a class to contain the fitted params of a radar beam sounding, extends <tt class="xref py py-class docutils literal"><span class="pre">baseData</span></tt></p>
+<dd><p>a class to contain the fitted params of a radar beam sounding, extends <a class="reference internal" href="#pydarn.sdio.radDataTypes.radBaseData" title="pydarn.sdio.radDataTypes.radBaseData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.radBaseData</span></tt></a></p>
 <dl class="docutils">
 <dt><strong>Attrs</strong>:</dt>
 <dd><ul class="first last simple">
@@ -296,7 +164,7 @@
 <dl class="class">
 <dt id="pydarn.sdio.radDataTypes.iqData">
 <em class="property">class </em><tt class="descclassname">pydarn.sdio.radDataTypes.</tt><tt class="descname">iqData</tt><big>(</big><em>iqDict=None</em>, <em>parent=None</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/radDataTypes.html#iqData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.radDataTypes.iqData" title="Permalink to this definition">¶</a></dt>
-<dd><p>a class to contain the iq data from a radar beam sounding, extends <tt class="xref py py-class docutils literal"><span class="pre">baseData</span></tt></p>
+<dd><p>a class to contain the iq data from a radar beam sounding, extends <a class="reference internal" href="#pydarn.sdio.radDataTypes.radBaseData" title="pydarn.sdio.radDataTypes.radBaseData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.radBaseData</span></tt></a></p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">I&#8217;m not sure what all of the attributes mean.  if somebody knows what these are, please help!</p>
@@ -331,7 +199,7 @@
 <dl class="class">
 <dt id="pydarn.sdio.radDataTypes.prmData">
 <em class="property">class </em><tt class="descclassname">pydarn.sdio.radDataTypes.</tt><tt class="descname">prmData</tt><big>(</big><em>prmDict=None</em>, <em>myPrm=None</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/radDataTypes.html#prmData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.radDataTypes.prmData" title="Permalink to this definition">¶</a></dt>
-<dd><p>A class to represent radar operating parameters, extends <tt class="xref py py-class docutils literal"><span class="pre">baseData</span></tt></p>
+<dd><p>A class to represent radar operating parameters, extends <a class="reference internal" href="#pydarn.sdio.radDataTypes.radBaseData" title="pydarn.sdio.radDataTypes.radBaseData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.radBaseData</span></tt></a></p>
 <dl class="docutils">
 <dt><strong>Attrs</strong>:</dt>
 <dd><ul class="first last simple">
@@ -365,6 +233,76 @@
 </dd></dl>
 
 <dl class="class">
+<dt id="pydarn.sdio.radDataTypes.radBaseData">
+<em class="property">class </em><tt class="descclassname">pydarn.sdio.radDataTypes.</tt><tt class="descname">radBaseData</tt><a class="reference internal" href="_modules/pydarn/sdio/radDataTypes.html#radBaseData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.radDataTypes.radBaseData" title="Permalink to this definition">¶</a></dt>
+<dd><p>a base class for the radar data types.  This allows for single definition of common routines</p>
+<dl class="docutils">
+<dt><strong>ATTRS</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Nothing.</li>
+</ul>
+</dd>
+<dt><strong>METHODS</strong>:</dt>
+<dd><ul class="first last simple">
+<li><tt class="xref py py-func docutils literal"><span class="pre">updateValsFromDict()</span></tt>: converts a dict from a dmap file to radBaseData</li>
+</ul>
+</dd>
+</dl>
+<p>Written by AJ 20130108</p>
+<dl class="method">
+<dt id="pydarn.sdio.radDataTypes.radBaseData.copyData">
+<tt class="descname">copyData</tt><big>(</big><em>obj</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/radDataTypes.html#radBaseData.copyData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.radDataTypes.radBaseData.copyData" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is used to recursively copy all of the contents from ont object to self</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In general, users will not need to use this.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Args</strong>: </dt>
+<dd><ul class="first last simple">
+<li><strong>obj</strong> (<a class="reference internal" href="#pydarn.sdio.radDataTypes.radBaseData" title="pydarn.sdio.radDataTypes.radBaseData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.radBaseData</span></tt></a>): the object to be copied</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Nothing.</li>
+</ul>
+</dd>
+<dt><strong>Example</strong>:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="n">myradBaseData</span><span class="o">.</span><span class="n">copyData</span><span class="p">(</span><span class="n">radBaseDataObj</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>written by AJ, 20130402</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydarn.sdio.radDataTypes.radBaseData.updateValsFromDict">
+<tt class="descname">updateValsFromDict</tt><big>(</big><em>aDict</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/radDataTypes.html#radBaseData.updateValsFromDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.radDataTypes.radBaseData.updateValsFromDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to to fill a radar params structure with the data in a dictionary that is returned from the reading of a dmap file</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In general, users will not need to us this.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Args</strong>:</dt>
+<dd><ul class="first last simple">
+<li><strong>aDict (dict):</strong> the dictionary containing the radar data</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong></dt>
+<dd><ul class="first last simple">
+<li>nothing.</li>
+</ul>
+</dd>
+</dl>
+<p>Written by AJ 20121130</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="pydarn.sdio.radDataTypes.radDataPtr">
 <em class="property">class </em><tt class="descclassname">pydarn.sdio.radDataTypes.</tt><tt class="descname">radDataPtr</tt><big>(</big><em>ptr=None</em>, <em>sTime=None</em>, <em>eTime=None</em>, <em>stid=None</em>, <em>channel=None</em>, <em>bmnum=None</em>, <em>cp=None</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/radDataTypes.html#radDataPtr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.radDataTypes.radDataPtr" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class which contains a pipeline to a data source</p>
@@ -378,9 +316,8 @@
 <li><strong>channel</strong> (str): channel of the request</li>
 <li><strong>bmnum</strong> (int): beam number of the request</li>
 <li><strong>cp</strong> (int): control prog id of the request</li>
-<li><strong>dType</strong> (str): the data type, &#8216;mongo&#8217; or &#8216;dmap&#8217;</li>
 <li><strong>fType</strong> (str): the file type, &#8216;fitacf&#8217;, &#8216;rawacf&#8217;, &#8216;iqdat&#8217;, &#8216;fitex&#8217;, &#8216;lmfit&#8217;</li>
-<li><strong>fBeam</strong> (<tt class="xref py py-class docutils literal"><span class="pre">beamData</span></tt>): the first beam of the next scan, useful for when reading into scan objects</li>
+<li><strong>fBeam</strong> (<a class="reference internal" href="#pydarn.sdio.radDataTypes.beamData" title="pydarn.sdio.radDataTypes.beamData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.beamData</span></tt></a>): the first beam of the next scan, useful for when reading into scan objects</li>
 </ul>
 </dd>
 <dt><strong>Methods</strong>:</dt>
@@ -395,7 +332,7 @@
 <dl class="class">
 <dt id="pydarn.sdio.radDataTypes.rawData">
 <em class="property">class </em><tt class="descclassname">pydarn.sdio.radDataTypes.</tt><tt class="descname">rawData</tt><big>(</big><em>rawDict=None</em>, <em>parent=None</em><big>)</big><a class="reference internal" href="_modules/pydarn/sdio/radDataTypes.html#rawData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.radDataTypes.rawData" title="Permalink to this definition">¶</a></dt>
-<dd><p>a class to contain the rawacf data from a radar beam sounding, extends <tt class="xref py py-class docutils literal"><span class="pre">baseData</span></tt></p>
+<dd><p>a class to contain the rawacf data from a radar beam sounding, extends <a class="reference internal" href="#pydarn.sdio.radDataTypes.radBaseData" title="pydarn.sdio.radDataTypes.radBaseData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.radBaseData</span></tt></a></p>
 <dl class="docutils">
 <dt><strong>Attrs</strong>:</dt>
 <dd><ul class="first last simple">
@@ -415,7 +352,7 @@
 <dl class="class">
 <dt id="pydarn.sdio.radDataTypes.scanData">
 <em class="property">class </em><tt class="descclassname">pydarn.sdio.radDataTypes.</tt><tt class="descname">scanData</tt><a class="reference internal" href="_modules/pydarn/sdio/radDataTypes.html#scanData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydarn.sdio.radDataTypes.scanData" title="Permalink to this definition">¶</a></dt>
-<dd><p>a class to contain a radar scan.  Extends list.  Basically just a list of <tt class="xref py py-class docutils literal"><span class="pre">beamData</span></tt> objects</p>
+<dd><p>a class to contain a radar scan.  Extends list.  Just a list of <a class="reference internal" href="#pydarn.sdio.radDataTypes.beamData" title="pydarn.sdio.radDataTypes.beamData"><tt class="xref py py-class docutils literal"><span class="pre">pydarn.sdio.radDataTypes.beamData</span></tt></a> objects</p>
 <dl class="docutils">
 <dt><strong>Attrs</strong>:</dt>
 <dd>Nothing.</dd>
@@ -457,11 +394,11 @@
 
   </div>
   <h4>Previous topic</h4>
-  <p class="topless"><a href="pydarn.sdio.radDataRead.html"
-                        title="previous chapter">pydarn.sdio.radDataRead</a></p>
+  <p class="topless"><a href="pydarn.sdio.sdDataRead.html"
+                        title="previous chapter">pydarn.sdio.sdDataRead</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="pydarn.sdio.fitexfilter.html"
-                        title="next chapter">pydarn.sdio.fitexfilter</a></p>
+  <p class="topless"><a href="pydarn.sdio.sdDataTypes.html"
+                        title="next chapter">pydarn.sdio.sdDataTypes</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/pydarn.sdio.radDataTypes.txt"
@@ -496,10 +433,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
         <li class="right" >
-          <a href="pydarn.sdio.fitexfilter.html" title="pydarn.sdio.fitexfilter"
+          <a href="pydarn.sdio.sdDataTypes.html" title="pydarn.sdio.sdDataTypes"
              >next</a> &nbsp; &nbsp;</li>
         <li class="right" >
-          <a href="pydarn.sdio.radDataRead.html" title="pydarn.sdio.radDataRead"
+          <a href="pydarn.sdio.sdDataRead.html" title="pydarn.sdio.sdDataRead"
              >previous</a> &nbsp; &nbsp;</li>
     <li><a href="index.html">davitpy</a> &raquo;</li>
 
